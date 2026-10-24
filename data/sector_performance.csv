@@ -1,0 +1,13 @@
+sector,day_pct,week_pct,month_pct,month3_pct,ytd_pct,pct_above_sma50,score_avg,n,data_status,note,disclaimer
+,-0.43,-3.0,-4.32,-3.33,1.19,0.0,-5.0,1,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+Communication Services,-0.98,-3.09,-3.56,-2.85,-8.04,50.0,3.83,6,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+Consumer Discretionary,-1.8,-5.09,-10.01,-7.46,-8.43,3.1,1.97,32,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+Consumer Staples,-1.56,-5.76,-8.7,-13.23,-17.51,0.0,3.31,16,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+Energy,-1.1,-2.57,-6.37,-6.4,-8.78,0.0,0.33,9,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+Financials,-2.32,-5.18,-9.42,-9.13,-10.16,11.9,0.93,59,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+Health Care,-0.88,-3.13,-9.71,-5.57,9.3,12.0,1.52,25,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+Industrials,-2.3,-7.06,-11.15,-13.71,-4.14,0.0,-0.14,35,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+Information Technology,-0.97,0.2,5.81,6.17,-7.44,62.5,5.06,16,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+Materials,-1.87,-3.67,-8.93,-10.12,-10.25,0.0,1.9,30,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+Real Estate,-2.48,-5.53,-8.7,-11.95,-9.41,0.0,0.0,6,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+Utilities,-3.05,-6.46,-10.52,-16.01,-2.31,0.0,0.86,14,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."

@@ -1,0 +1,955 @@
+"""Turn scored rows into one CSV per Looker page.
+
+Pages are pre-aggregated here so Looker only filters and draws.
+Missing numbers stay blank. A feed that cannot be built is one MISSING row with a note.
+"""
+import numpy as np
+import pandas as pd
+import fundamentals as fund
+from scoring import FIN_SPECS, grade_earnings, headline_tone, beat_flag
+
+DISCLAIMER = "Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+
+# How a macro surprise maps onto each sector ETF. +1 means a "good" surprise helps that ETF.
+# The third bucket is still called Jobs in the file so the columns stay stable.
+# On this desk that bucket is the rate backdrop, not a jobs report.
+MACRO_WEIGHT = {
+    "^CNXIT": {"Growth": 1, "Inflation": -1, "Jobs": -1},
+    "^CNXPHARMA": {"Growth": 0, "Inflation": -1, "Jobs": 0},
+    "^CNXFIN": {"Growth": 1, "Inflation": 1, "Jobs": 1},
+    "^NSEBANK": {"Growth": 1, "Inflation": 1, "Jobs": 1},
+    "^CNXPSUBANK": {"Growth": 1, "Inflation": 1, "Jobs": 1},
+    "^CNXINFRA": {"Growth": 1, "Inflation": 0, "Jobs": -1},
+    "^CNXMEDIA": {"Growth": 1, "Inflation": -1, "Jobs": 0},
+    "^CNXAUTO": {"Growth": 1, "Inflation": -1, "Jobs": -1},
+    "^CNXCONSUM": {"Growth": 1, "Inflation": -1, "Jobs": -1},
+    "^CNXFMCG": {"Growth": -1, "Inflation": 0, "Jobs": 0},
+    "^CNXENERGY": {"Growth": 0, "Inflation": 1, "Jobs": 0},
+    "^CNXREALTY": {"Growth": 1, "Inflation": -1, "Jobs": -1},
+    "^CNXMETAL": {"Growth": 1, "Inflation": 1, "Jobs": 0},
+    "XLK": {"Growth": 1, "Inflation": -1, "Jobs": 0},
+    "XLY": {"Growth": 1, "Inflation": -1, "Jobs": 1},
+    "XLP": {"Growth": -1, "Inflation": 0, "Jobs": 0},
+}
+
+INDUSTRY_ETF = (
+    ("bank", "^NSEBANK"),
+    ("psu", "^CNXPSUBANK"),
+    ("media", "^CNXMEDIA"),
+    ("oil", "^CNXENERGY"),
+    ("realty", "^CNXREALTY"),
+    ("real estate", "^CNXREALTY"),
+    ("metal", "^CNXMETAL"),
+    ("auto", "^CNXAUTO"),
+    ("pharma", "^CNXPHARMA"),
+    ("software", "^CNXIT"),
+    ("it ", "^CNXIT"),
+)
+
+
+def blank_row(columns, status, note):
+    row = {c: "" for c in columns}
+    row["data_status"] = status
+    row["note"] = note
+    if "disclaimer" in columns:
+        row["disclaimer"] = DISCLAIMER
+    return row
+
+
+def _cell_blank(v):
+    if v is None:
+        return True
+    try:
+        if pd.isna(v):
+            return True
+    except (ValueError, TypeError):
+        pass
+    if isinstance(v, str) and v.strip().lower() in ("", "nan", "none", "<na>"):
+        return True
+    return False
+
+
+def flag_blank_columns(df):
+    """OK is wrong when a measured column is blank on every row.
+
+    A one-row MISSING placeholder stays MISSING. An alerts info row is a
+    message, not a broken feed. note and disclaimer may be empty.
+    """
+    if df is None or len(df) == 0 or "data_status" not in df.columns:
+        return df
+    status = df["data_status"].astype(str)
+    if len(df) == 1 and status.iloc[0] == "MISSING":
+        return df
+    if "kind" in df.columns and len(df) == 1 and str(df.iloc[0].get("kind") or "") == "info":
+        return df
+    measured = [c for c in df.columns if c not in ("note", "disclaimer", "data_status")]
+    blanks = [c for c in measured if df[c].map(_cell_blank).all()]
+    if not blanks:
+        return df
+    out = df.copy()
+    all_blank = len(blanks) == len(measured)
+    new_status = "MISSING" if all_blank else "PARTIAL"
+    def _next(s):
+        if s in ("MISSING", "CACHED"):
+            return s
+        return new_status
+    out["data_status"] = status.map(_next)
+    extra = "Blank on every row: " + ", ".join(blanks) + ". A blank is missing data, not zero."
+    notes = out["note"].map(lambda v: "" if _cell_blank(v) else str(v).strip())
+    out["note"] = np.where(notes.eq(""), extra, notes + " " + extra)
+    return out
+
+
+def ensure(df, columns, status_if_empty, note):
+    if df is None or len(df) == 0:
+        return pd.DataFrame([blank_row(columns, status_if_empty, note)])
+    out = df.copy()
+    for c in columns:
+        if c not in out.columns:
+            out[c] = ""
+    if "disclaimer" in columns:
+        out["disclaimer"] = DISCLAIMER
+    if "data_status" in columns and (out["data_status"].eq("").all() or out["data_status"].isna().all()):
+        out["data_status"] = "OK"
+    out = out[columns]
+    out = flag_blank_columns(out)
+    return out
+
+
+def _off(columns):
+    return pd.DataFrame(columns=columns)
+
+
+# Column orders are the Looker headers. Do not rename them after the Sheet is connected.
+COLS = {}
+
+COLS["scores"] = [
+    "rank", "ticker", "company", "sector", "industry", "index_membership", "universe", "price", "day_pct", "price_as_of",
+    "score", "confidence", "verdict", "reason",
+    "pts_tech", "pts_fin", "pts_sent", "pts_earnings", "pts_sector",
+    "pts_trend", "pts_oscillator",
+    "pts_forward_pe", "pts_ttm_pe", "pts_ps", "pts_de", "pts_pfcf",
+    "pts_rev_growth", "pts_eps_growth", "pts_roe", "pts_div_yield",
+    "pts_analyst", "pts_institutional", "pts_insider",
+    "forward_pe", "forward_pe_avg", "ttm_pe", "ttm_pe_avg", "ps", "ps_avg", "de", "de_avg",
+    "pfcf", "pfcf_avg", "rev_growth", "rev_growth_avg", "eps_growth", "eps_growth_avg",
+    "roe", "roe_avg", "div_yield", "div_yield_avg", "forward_pe_avg_basis", "fin_avg_years", "fundamentals_basis", "fundamentals_filed",
+    "ind_forward_pe", "pts_forward_pe_ind", "ind_ttm_pe", "pts_ttm_pe_ind", "ind_ps", "pts_ps_ind",
+    "ind_de", "pts_de_ind", "ind_pfcf", "pts_pfcf_ind", "ind_rev_growth", "pts_rev_growth_ind",
+    "ind_eps_growth", "pts_eps_growth_ind", "ind_roe", "pts_roe_ind", "ind_div_yield", "pts_div_yield_ind",
+    "analyst_mean", "analyst_count", "target_analyst", "target_analyst_kind", "target_pfcf", "target_peg", "target_blended", "target_blend_n",
+    "entry_low", "entry_high", "stop", "trade_target", "reward_risk",
+    "timing", "sma_alignment", "rsi14", "rs_spy_3m", "dist_52w_high_pct", "volume_ratio",
+    "above_sma20", "above_sma50", "above_sma100", "above_sma200",
+    "next_earnings", "missing_fields", "missing_count",
+    "price_status", "fundamentals_status", "analyst_status", "holders_status",
+    "data_status", "note", "disclaimer",
+]
+
+# Breakdown columns the scorecard table uses. Status and the disclaimer are not repeated on every row.
+COLS["score_details"] = ["ticker", "group_name", "item", "points", "points_label", "now_value", "avg_value", "vs_industry"]
+COLS["market_today"] = [
+    "spy_price", "spy_day_pct", "qqq_day_pct", "buy_count",
+    "breadth_sma20", "breadth_sma50", "breadth_sma100", "breadth_sma200",
+    "breadth_sma50_week_ago", "advancers", "decliners", "universe_n", "highs_52w", "lows_52w",
+    "put_call", "put_call_ma5", "put_call_zone", "put_call_name", "vix",
+    "fred_dgs10", "fred_t10y2y", "inr_usd", "xly_xlp", "updated_pt", "price_as_of",
+    "data_status", "note", "disclaimer",
+]
+COLS["sectors"] = ["ticker", "name", "group_name", "day_pct", "week_pct", "month_pct", "month3_pct", "ytd_pct", "rs_3m_pct", "score_avg", "n_stocks", "pct_above_sma50", "macro_growth", "macro_inflation", "macro_jobs", "macro_score", "data_status", "note", "disclaimer"]
+COLS["breadth_history"] = ["date", "pct_above_sma20", "pct_above_sma50", "pct_above_sma100", "pct_above_sma200", "data_status", "note", "disclaimer"]
+COLS["alerts"] = ["ticker", "kind", "text", "score", "score_prev", "verdict", "verdict_prev", "price", "data_status", "note", "disclaimer"]
+COLS["score_changes"] = ["ticker", "company", "price", "day_pct", "score", "score_prev", "score_change", "verdict", "data_status", "note", "disclaimer"]
+COLS["portfolio"] = ["ticker", "company", "shares", "avg_cost", "price", "day_pct", "value", "cost", "gain", "gain_pct", "weight_pct", "score", "score_week_ago", "score_week_change", "verdict", "stop", "status", "example", "data_status", "note", "disclaimer"]
+COLS["portfolio_summary"] = ["value", "day_pnl", "day_pnl_pct", "total_gain", "total_gain_pct", "avg_score", "needs_attention", "n_holdings", "example_warning", "data_status", "note", "disclaimer"]
+COLS["watchlist"] = ["ticker", "company", "price", "day_pct", "score", "verdict", "entry_low", "entry_high", "distance_to_entry_pct", "timing", "note_input", "data_status", "note", "disclaimer"]
+# Chart columns only. Full daily history stays in cache/ohlcv.csv.gz, not in this file.
+COLS["prices"] = ["date", "ticker", "close", "sma20", "sma50", "entry_low", "entry_high", "stop", "trade_target"]
+COLS["news"] = ["ticker", "kind", "headline", "summary", "publisher", "link", "published", "data_status", "note", "disclaimer"]
+COLS["scanner_growth"] = ["ticker", "company", "sector", "price", "score", "verdict", "rev_growth", "eps_growth", "rs_spy_3m", "passes", "why", "data_status", "note", "disclaimer"]
+COLS["scanner_quality"] = ["ticker", "company", "sector", "price", "score", "verdict", "roe", "de", "pts_roe", "pts_de", "passes", "why", "data_status", "note", "disclaimer"]
+COLS["scanner_dividend"] = ["ticker", "company", "sector", "price", "score", "verdict", "div_yield", "div_yield_avg", "pts_div_yield", "passes", "why", "data_status", "note", "disclaimer"]
+COLS["scanner_wheel"] = ["ticker", "company", "sector", "price", "score", "verdict", "timing", "rsi14", "above_sma200", "dollar_volume", "passes", "why", "data_status", "note", "disclaimer"]
+_SETUP = ["ticker", "company", "sector", "index_membership", "status", "pivot", "stop", "target", "strength", "reason", "freshness", "price", "price_as_of"]
+COLS["scanner_vcp"] = _SETUP + [
+    "trail", "trend_score", "contractions", "depths", "volume_ok", "in_trade", "stop_basis",
+    "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8",
+    "data_status", "note", "disclaimer",
+]
+COLS["scanner_canslim"] = _SETUP + [
+    "c_quarterly_eps", "c_status", "a_annual_eps", "a_status",
+    "n_pct_from_high", "n_status", "s_adv", "s_status",
+    "l_rs_percentile", "l_status", "i_trend", "i_status",
+    "m_market", "m_spy", "m_qqq", "m_status", "qualify", "vcp_heuristic",
+    "data_status", "note", "disclaimer",
+]
+COLS["scanner_box"] = _SETUP + ["range_days", "range_width_pct", "volume_ratio", "data_status", "note", "disclaimer"]
+COLS["scanner_flag"] = _SETUP + ["pole_pct", "flag_bars", "retrace_pct", "volume_ratio", "data_status", "note", "disclaimer"]
+COLS["scanner_leaders"] = _SETUP + [
+    "vcp_status", "canslim_status", "vcp_strength", "canslim_strength", "on_vcp", "on_canslim",
+    "data_status", "note", "disclaimer",
+]
+COLS["earnings_calendar"] = ["ticker", "company", "next_earnings", "when_hint", "days_away", "last_eps_actual", "last_eps_estimate", "last_surprise_pct", "last_1d_move_pct", "avg_1d_move_pct", "n_past", "owns", "data_status", "note", "disclaimer"]
+COLS["earnings_heatmap"] = ["ticker", "quarter", "eps_flag", "rev_flag", "label", "heat", "data_status", "note", "disclaimer"]
+COLS["earnings_cards"] = ["ticker", "company", "grade", "summary", "sources", "data_status", "note", "disclaimer"]
+COLS["earnings_history"] = ["ticker", "earnings_date", "eps_estimate", "eps_actual", "surprise_pct", "move_1d_pct", "data_status", "note", "disclaimer"]
+COLS["put_call"] = ["date", "name", "value", "ma5", "fear_line", "greed_line", "zone", "data_status", "note", "disclaimer"]
+COLS["option_walls"] = ["ticker", "expiry", "side", "strike", "open_interest", "volume", "is_wall", "nearest_expiry", "data_status", "note", "disclaimer"]
+COLS["analyst_ratings"] = ["ticker", "company", "analyst_mean", "analyst_count", "pts_analyst", "target_analyst", "target_analyst_kind", "price", "upside_pct", "data_status", "note", "disclaimer"]
+COLS["institutional_13f"] = [
+    "ticker", "row_type", "owner", "promoter_pct", "fii_pct", "dii_pct", "public_pct",
+    "promoter_chg", "fii_chg", "dii_chg", "public_chg", "as_of", "pts_institutional",
+    "data_status", "note", "disclaimer",
+]
+COLS["aaii_sentiment"] = ["as_of", "india_vix", "vix_zone", "fii_net_cr", "dii_net_cr", "data_status", "note", "disclaimer"]
+COLS["insider_trading"] = ["ticker", "buys_3m", "sells_3m", "pts_insider", "data_status", "note", "disclaimer"]
+COLS["headline_sentiment"] = ["ticker", "headline", "publisher", "link", "published", "tone", "tone_note", "data_status", "note", "disclaimer"]
+COLS["xly_xlp"] = ["date", "xly", "xlp", "ratio", "ratio_sma50", "zone", "data_status", "note", "disclaimer"]
+COLS["financials_summary"] = ["ticker", "sector", "metric", "direction", "now_value", "avg_3y", "pts_vs_self", "industry_median", "pts_vs_industry", "data_status", "note", "disclaimer"]
+COLS["earnings_tracker"] = ["ticker", "earnings_date", "eps_estimate", "eps_actual", "surprise_pct", "result", "data_status", "note", "disclaimer"]
+COLS["company_financials"] = ["ticker", "fy_end", "filed", "revenue", "gross_profit", "op_income", "net_income", "eps", "gross_margin", "operating_margin", "net_margin", "fcf", "pe", "ps", "pfcf", "data_status", "note", "disclaimer"]
+COLS["dividend_scanner"] = ["ticker", "company", "sector", "price", "div_yield", "div_yield_avg", "dps", "pts_div_yield", "verdict", "data_status", "note", "disclaimer"]
+COLS["macro_screener"] = ["country", "category", "indicator", "date", "actual", "forecast", "surprise", "signal", "data_status", "note", "disclaimer"]
+COLS["sector_macro"] = ["ticker", "name", "macro_growth", "macro_inflation", "macro_jobs", "macro_score", "plain_english", "data_status", "note", "disclaimer"]
+COLS["historical_pe"] = ["date", "desk_median_trailing_pe", "n", "official_sp500_pe", "official_status", "data_status", "note", "disclaimer"]
+COLS["breakouts"] = ["ticker", "company", "sector", "price", "dist_52w_high_pct", "volume_ratio", "score", "verdict", "data_status", "note", "disclaimer"]
+COLS["trends"] = ["ticker", "company", "sector", "price", "trend_label", "sma_alignment", "above_sma20", "above_sma50", "above_sma100", "above_sma200", "score", "data_status", "note", "disclaimer"]
+COLS["pullbacks"] = ["ticker", "company", "sector", "price", "rsi14", "entry_low", "entry_high", "score", "verdict", "passes", "why", "data_status", "note", "disclaimer"]
+COLS["gainers_losers"] = ["side", "ticker", "company", "sector", "price", "day_pct", "score", "verdict", "data_status", "note", "disclaimer"]
+COLS["sector_performance"] = ["sector", "day_pct", "week_pct", "month_pct", "month3_pct", "ytd_pct", "pct_above_sma50", "score_avg", "n", "data_status", "note", "disclaimer"]
+COLS["heatmaps"] = ["ticker", "company", "sector", "ret_1d", "ret_1w", "ret_1m", "ret_ytd", "above_sma20", "above_sma50", "above_sma100", "above_sma200", "data_status", "note", "disclaimer"]
+COLS["freshness"] = ["field", "n_missing", "n_present", "data_status", "note", "disclaimer"]
+COLS["updates_log"] = ["source", "status", "latest", "note", "checked_pt"]
+COLS["help"] = ["topic", "plain_english"]
+COLS["settings"] = ["setting", "value"]
+COLS["universe"] = ["ticker", "company", "sector", "index_membership", "in_nifty50", "in_next50", "in_midcap150", "data_status", "note", "disclaimer"]
+COLS["backtest_summary"] = ["window", "start", "end", "months", "top20_cagr_pct", "spy_cagr_pct", "bottom20_cagr_pct", "top20_total_pct", "spy_total_pct", "bottom20_total_pct", "top20_max_drawdown_pct", "spy_max_drawdown_pct", "hit_rate_12w_pct", "top_bucket_excess_12w_pct", "headline", "is_headline", "data_status", "note", "disclaimer"]
+COLS["backtest_buckets"] = ["horizon", "bucket", "bucket_order", "n", "avg_return_pct", "avg_spy_pct", "excess_pct", "hit_rate_pct", "data_status", "note", "disclaimer"]
+COLS["backtest_equity"] = ["date", "top20", "spy", "bottom20", "data_status", "note", "disclaimer"]
+COLS["backtest_yearly"] = ["year", "top20_pct", "spy_pct", "difference_pct", "hit_rate_12w_pct", "signals", "data_status", "note", "disclaimer"]
+COLS["backtest_notes"] = ["item", "detail", "data_status", "note", "disclaimer"]
+
+
+def _date_cell(v):
+    if v is None or (isinstance(v, float) and not np.isfinite(v)):
+        return ""
+    try:
+        if pd.isna(v):
+            return ""
+    except (ValueError, TypeError):
+        return ""
+    try:
+        return str(pd.Timestamp(v).date())
+    except Exception:
+        return str(v)
+
+
+def _num(v):
+    try:
+        x = float(v)
+    except (TypeError, ValueError):
+        return None
+    if not np.isfinite(x):
+        return None
+    return x
+
+
+def _yn(flag):
+    return 1 if flag else 0
+
+
+def missing_fields(row):
+    fields = []
+    for key, _ in FIN_SPECS:
+        if _num(row.get(key)) is None or _num(row.get("pts_" + key)) is None:
+            # a present value with no points means the baseline was missing
+            if _num(row.get(key)) is None or _num(row.get(key + "_avg")) is None:
+                fields.append(key)
+    for key in ("pts_analyst", "pts_institutional", "pts_insider", "pts_earnings", "pts_trend", "pts_sector"):
+        if row.get(key) is None or (isinstance(row.get(key), float) and not np.isfinite(row.get(key))):
+            fields.append(key)
+    return fields
+
+
+def score_details(scores):
+    rows = []
+    items = [
+        ("Technical", "Trend vs 20-day and 50-day", "pts_trend", None, None),
+        ("Technical", "Oscillator (RSI-14)", "pts_oscillator", "rsi14", None),
+        ("Financials", "Forward P/E (lower is better)", "pts_forward_pe", "forward_pe", "forward_pe_avg"),
+        ("Financials", "Trailing P/E (lower is better)", "pts_ttm_pe", "ttm_pe", "ttm_pe_avg"),
+        ("Financials", "Price / sales (lower is better)", "pts_ps", "ps", "ps_avg"),
+        ("Financials", "Debt / equity (lower is better)", "pts_de", "de", "de_avg"),
+        ("Financials", "Price / free cash flow (lower is better)", "pts_pfcf", "pfcf", "pfcf_avg"),
+        ("Financials", "Revenue growth (higher is better)", "pts_rev_growth", "rev_growth", "rev_growth_avg"),
+        ("Financials", "EPS growth (higher is better)", "pts_eps_growth", "eps_growth", "eps_growth_avg"),
+        ("Financials", "Return on equity (higher is better)", "pts_roe", "roe", "roe_avg"),
+        ("Financials", "Dividend yield (higher is better)", "pts_div_yield", "div_yield", "div_yield_avg"),
+        ("Sentiment", "Analyst rating", "pts_analyst", "analyst_mean", None),
+        ("Sentiment", "Institutional 13F trend", "pts_institutional", None, None),
+        ("Sentiment", "Insider buys vs sells", "pts_insider", None, None),
+        ("Earnings", "Latest earnings vs estimate", "pts_earnings", None, None),
+        ("Sector", "Sector vs S&P 500, 3 months", "pts_sector", "rs_spy_3m", None),
+    ]
+    for _, r in scores.iterrows():
+        for group, item, pts, now, avg in items:
+            p = r.get(pts)
+            missing_pt = p is None or p == "" or (isinstance(p, (float, np.floating)) and not np.isfinite(p))
+            try:
+                missing_pt = missing_pt or bool(pd.isna(p))
+            except (ValueError, TypeError):
+                pass
+            label = "n/a" if missing_pt else points_label(p)
+            ind = ""
+            if pts.startswith("pts_") and "ind_" + pts[4:] in scores.columns:
+                ind = r.get("pts_" + pts[4:] + "_ind") if False else r.get("pts_" + pts.replace("pts_", "") + "_ind", "")
+            rows.append({
+                "ticker": r["ticker"], "group_name": group, "item": item,
+                "points": "" if label == "n/a" else int(p), "points_label": label,
+                "now_value": r.get(now) if now else "", "avg_value": r.get(avg) if avg else "",
+                "vs_industry": "" if ind is None else ind,
+            })
+    return pd.DataFrame(rows)
+
+
+def points_label(p):
+    """Words, so a sheet does not turn '+1' into a number. The points column stays numeric."""
+    n = int(p)
+    if n > 0:
+        return "plus %d" % n
+    if n < 0:
+        return "minus %d" % abs(n)
+    return "zero"
+
+
+def _passes_frame(df, cols):
+    return df
+
+
+def scanners(scores, cfg):
+    g = scores.copy()
+    growth_cut = cfg["growth_min_pct"]
+    g["passes"] = np.where(
+        g["rev_growth"].map(_num).ge(growth_cut) & g["verdict"].ne("AVOID") & g["rev_growth"].notna(),
+        "yes", "no")
+    g["why"] = np.where(g["passes"].eq("yes"), "Revenue growth is at least the screen level and the label is not AVOID.", "Does not pass the growth screen.")
+    q = scores.copy()
+    q["passes"] = np.where((q["pts_roe"] == 1) & (q["de"].map(_num).fillna(99) < cfg["quality_max_de"]) & q["verdict"].ne("AVOID"), "yes", "no")
+    q["why"] = np.where(
+        q["passes"].eq("yes"),
+        "Return on equity point is +1 and debt/equity is under the desk limit. Debt points compare to the sector and can be -1. The label is not AVOID.",
+        "Does not pass the quality screen.")
+    d = scores.copy()
+    d["passes"] = np.where(d["div_yield"].map(_num).ge(cfg["dividend_min_pct"]) & d["verdict"].ne("AVOID"), "yes", "no")
+    d["why"] = np.where(d["passes"].eq("yes"), "Dividend yield clears the screen and the label is not AVOID.", "Does not pass the dividend screen.")
+    w = scores.copy()
+    dv = w["dollar_volume"].map(_num) if "dollar_volume" in w.columns else pd.Series(np.nan, index=w.index)
+    w["dollar_volume"] = dv
+    w["passes"] = np.where(
+        w["verdict"].ne("AVOID") & (w["above_sma200"] == 1) & w["rsi14"].map(_num).lt(70) & dv.ge(cfg["wheel_min_dollar_volume"]) & ~w["timing"].isin(["Extended", "Downtrend"]),
+        "yes", "no")
+    w["why"] = np.where(
+        w["passes"].eq("yes"),
+        "Liquid stock in an uptrend that is not extended.",
+        "Does not pass the liquid-stock screen.")
+    w["why"] = w["why"] + " Stock screen only. No option contracts. Indian options use fixed lot sizes, so this page does not pick a contract."
+    return g, q, d, w
+
+
+def _reaction_table(earnings, close):
+    """1-day move after each report. After 4pm Eastern, the move is the next session."""
+    rows = []
+    if earnings is None or len(earnings) == 0 or close is None or close.empty:
+        return pd.DataFrame(rows)
+    idx = close.index
+    for _, r in earnings.iterrows():
+        ts = pd.Timestamp(r["earnings_dt"])
+        if ts.tzinfo is not None:
+            ts = ts.tz_convert("America/New_York").tz_localize(None)
+        day = ts.normalize()
+        if ts.hour >= 16:
+            day = day + pd.Timedelta(days=1)
+        i = idx.searchsorted(day)
+        move = np.nan
+        if 0 < i < len(idx):
+            t = r["ticker"]
+            if t in close.columns:
+                a, b = close.iloc[i - 1][t], close.iloc[i][t]
+                if pd.notna(a) and pd.notna(b) and a > 0:
+                    move = (b / a - 1) * 100
+        result = beat_flag(_num(r.get("eps_actual")), _num(r.get("eps_estimate")))
+        rows.append({
+            "ticker": r["ticker"],
+            "earnings_date": str(pd.Timestamp(r["earnings_dt"]).date()) if pd.notna(r["earnings_dt"]) else "",
+            "eps_estimate": r.get("eps_estimate"),
+            "eps_actual": r.get("eps_actual"),
+            "surprise_pct": r.get("surprise_pct"),
+            "result": result,
+            "move_1d_pct": None if not np.isfinite(move) else round(float(move), 2),
+            "has_actual": pd.notna(r.get("eps_actual")),
+            "earnings_dt": r["earnings_dt"],
+        })
+    return pd.DataFrame(rows)
+
+
+def earnings_pages(scores, earnings, close, holdings):
+    hist = _reaction_table(earnings, close)
+    if hist.empty:
+        return {}, hist
+    cal_rows, heat_rows, card_rows = [], [], []
+    owns = set(holdings or [])
+    names = scores.set_index("ticker")["company"].to_dict() if len(scores) else {}
+    growth_pts = scores.set_index("ticker")["pts_rev_growth"].to_dict() if len(scores) else {}
+    for t, g in hist.groupby("ticker"):
+        g = g.sort_values("earnings_dt")
+        past = g[g["has_actual"] == True]
+        future = g[g["has_actual"] == False]
+        moves = past["move_1d_pct"].dropna()
+        avg = float(moves.tail(8).mean()) if len(moves) else np.nan
+        last = past.iloc[-1] if len(past) else None
+        nxt = future.iloc[0] if len(future) else None
+        days = ""
+        when = ""
+        nxt_s = ""
+        if nxt is not None and pd.notna(nxt["earnings_dt"]):
+            ts = pd.Timestamp(nxt["earnings_dt"])
+            if ts.tzinfo is not None:
+                ts_et = ts.tz_convert("America/New_York")
+                when = "after close" if ts_et.hour >= 16 else "before or during the session"
+                days = int((ts_et.tz_localize(None).normalize() - pd.Timestamp.now().normalize()).days)
+            nxt_s = str(ts.date())
+        cal_rows.append({
+            "ticker": t, "company": names.get(t, ""), "next_earnings": nxt_s, "when_hint": when, "days_away": days,
+            "last_eps_actual": None if last is None else last["eps_actual"],
+            "last_eps_estimate": None if last is None else last["eps_estimate"],
+            "last_surprise_pct": None if last is None else last["surprise_pct"],
+            "last_1d_move_pct": None if last is None else last["move_1d_pct"],
+            "avg_1d_move_pct": None if not np.isfinite(avg) else round(avg, 2),
+            "n_past": int(len(past)), "owns": "yes" if t in owns else "no",
+        })
+        flags = []
+        for _, row in past.tail(4).iloc[::-1].iterrows():
+            flag = beat_flag(_num(row["eps_actual"]), _num(row["eps_estimate"]))
+            flags.append(flag)
+            label = {"beat": "eps beat, revenue n/a", "miss": "eps miss, revenue n/a", "inline": "eps inline, revenue n/a"}.get(flag, "incomplete")
+            heat = {"beat": 1, "miss": -1, "inline": 0}.get(flag, "")
+            heat_rows.append({"ticker": t, "quarter": row["earnings_date"], "eps_flag": flag or "", "rev_flag": "", "label": label, "heat": heat})
+        grade, summary = grade_earnings(flags, growth_pts.get(t))
+        card_rows.append({
+            "ticker": t, "company": names.get(t, ""), "grade": grade or "",
+            "summary": summary,
+            "sources": "Yahoo Finance earnings dates. Revenue vs estimate is not in that free feed, so revenue is left blank.",
+        })
+    return {
+        "calendar": pd.DataFrame(cal_rows),
+        "heatmap": pd.DataFrame(heat_rows),
+        "cards": pd.DataFrame(card_rows),
+        "history": hist,
+    }, hist
+
+
+def financials_long(scores):
+    rows = []
+    labels = {
+        "forward_pe": ("Forward P/E", "lower"),
+        "ttm_pe": ("Trailing P/E", "lower"),
+        "ps": ("Price / sales", "lower"),
+        "de": ("Debt / equity", "lower"),
+        "pfcf": ("Price / free cash flow", "lower"),
+        "rev_growth": ("Revenue growth %", "higher"),
+        "eps_growth": ("EPS growth %", "higher"),
+        "roe": ("Return on equity %", "higher"),
+        "div_yield": ("Dividend yield %", "higher"),
+    }
+    for _, r in scores.iterrows():
+        for key, (label, direction) in labels.items():
+            avg = r.get(key + "_avg")
+            pts = r.get("pts_" + key)
+            note = ""
+            # A sector fallback used to be written into the own-history column.
+            if key in ("roe", "de") and _cell_blank(avg) and not _cell_blank(pts):
+                note = "sector fallback"
+                pts = ""
+            rows.append({
+                "ticker": r["ticker"], "sector": r.get("sector"), "metric": label, "direction": direction,
+                "now_value": r.get(key), "avg_3y": avg, "pts_vs_self": pts,
+                "industry_median": r.get("ind_" + key), "pts_vs_industry": r.get("pts_" + key + "_ind"),
+                "note": note,
+            })
+    return pd.DataFrame(rows)
+
+
+def _multiple(price, denominator):
+    """Price (or market cap) over a fundamental. Blank when either side is missing or not positive."""
+    if price is None or denominator is None or not np.isfinite(price) or price <= 0 or denominator <= 0:
+        return None
+    value = round(float(price) / float(denominator), 4)
+    # A ratio that rounds to zero is a unit mismatch (shares in millions, revenue in dollars). Leave it blank.
+    if value <= 0:
+        return None
+    return value
+
+
+def company_rows(annual, close):
+    rows = []
+    if annual is None or len(annual) == 0:
+        return pd.DataFrame(rows)
+    closes = {}
+    if close is not None and hasattr(close, "columns"):
+        for t in pd.unique(annual["ticker"]):
+            if t in close.columns:
+                closes[t] = pd.to_numeric(close[t], errors="coerce").dropna()
+    for _, r in annual.iterrows():
+        rev, gp, oi, ni = _num(r.get("revenue")), _num(r.get("gross_profit")), _num(r.get("op_income")), _num(r.get("net_income"))
+        fcf = None
+        if _num(r.get("ocf")) is not None and _num(r.get("capex")) is not None:
+            fcf = _num(r.get("ocf")) - _num(r.get("capex"))
+        gm = gp / rev if rev and gp is not None and rev > 0 else None
+        om = oi / rev if rev and oi is not None and rev > 0 else None
+        nm = ni / rev if rev and ni is not None and rev > 0 else None
+        eps = _num(r.get("eps"))
+        shares = _num(r.get("shares"))
+        filed = r.get("filed")
+        known = None
+        if not _cell_blank(filed):
+            try:
+                known = pd.Timestamp(filed) + pd.Timedelta(days=1)
+            except Exception:
+                known = None
+        px = fund._price_on_or_after(closes.get(r["ticker"]), known)
+        if px is not None and not np.isfinite(px):
+            px = None
+        mcap = px * shares if px is not None and shares is not None else None
+        rows.append({
+            "ticker": r["ticker"],
+            "fy_end": _date_cell(r.get("fy_end") if not _cell_blank(r.get("fy_end")) else r.get("end")),
+            "filed": _date_cell(filed),
+            "revenue": rev, "gross_profit": gp, "op_income": oi, "net_income": ni,
+            "eps": eps,
+            "gross_margin": None if gm is None else round(gm * 100, 2),
+            "operating_margin": None if om is None else round(om * 100, 2),
+            "net_margin": None if nm is None else round(nm * 100, 2),
+            "fcf": fcf,
+            "pe": fund.guard_multiple(_multiple(px, eps)),
+            "ps": _multiple(mcap, rev),
+            "pfcf": _multiple(mcap, fcf),
+        })
+    return pd.DataFrame(rows)
+
+
+def mark_nearest_expiry(df, today=None):
+    """Flag the expiry on or after today for each ticker. No chain download.
+
+    If every expiry is already past, the latest one is the nearest. The flag
+    is the text true or false so it is not stored as 1 or 0.
+    """
+    if df is None or len(df) == 0 or "expiry" not in df.columns:
+        return df
+    out = df.copy()
+    day = pd.Timestamp(today).normalize() if today is not None else pd.Timestamp.now().normalize()
+    exp = pd.to_datetime(out["expiry"], errors="coerce")
+    out["nearest_expiry"] = "false"
+    for _, idx in out.groupby(out["ticker"].astype(str)).groups.items():
+        dates = exp.loc[idx]
+        future = dates[dates >= day]
+        if len(future):
+            pick = future.min()
+        else:
+            past = dates.dropna()
+            if not len(past):
+                continue
+            pick = past.max()
+        out.loc[dates[dates == pick].index, "nearest_expiry"] = "true"
+    return out
+
+
+def macro_tables(econ, sector_etfs):
+    if econ is None or len(econ) == 0:
+        return pd.DataFrame(), pd.DataFrame()
+    screener = econ.copy()
+    if "signal" in econ.columns:
+        released = econ[pd.to_numeric(econ["signal"], errors="coerce").notna()]
+    else:
+        released = econ
+    # latest signal per category
+    sig = {}
+    if len(released):
+        for cat, g in released.groupby("category"):
+            sig[cat] = int(np.sign(g["signal"].sum())) if g["signal"].sum() != 0 else 0
+    rows = []
+    for etf in sector_etfs:
+        w = MACRO_WEIGHT.get(etf["ticker"], {})
+        if not sig or not w:
+            rows.append({"ticker": etf["ticker"], "name": etf["name"], "macro_growth": "", "macro_inflation": "", "macro_jobs": "", "macro_score": "", "plain_english": "No mapped macro surprise."})
+            continue
+        parts = {}
+        for cat in ("Growth", "Inflation", "Jobs"):
+            parts[cat] = sig.get(cat, 0) * w.get(cat, 0)
+        score = parts["Growth"] + parts["Inflation"] + parts["Jobs"]
+        rows.append({
+            "ticker": etf["ticker"], "name": etf["name"],
+            "macro_growth": parts["Growth"], "macro_inflation": parts["Inflation"], "macro_jobs": parts["Jobs"],
+            "macro_score": score,
+            "plain_english": "Rule of thumb from the latest surprises. It is not a forecast.",
+        })
+    return screener, pd.DataFrame(rows)
+
+
+def put_call_table(pcr, fear, greed):
+    if pcr is None or len(pcr) == 0:
+        return pd.DataFrame()
+    df = pcr.copy()
+    df["date"] = pd.to_datetime(df["date"])
+    df = df.sort_values(["name", "date"])
+    df["ma5"] = df.groupby("name")["value"].transform(lambda s: s.rolling(5, min_periods=1).mean())
+    df["fear_line"] = fear
+    df["greed_line"] = greed
+    def zone(v):
+        if v is None or not np.isfinite(v):
+            return ""
+        if v >= fear:
+            return "Fear"
+        if v <= greed:
+            return "Greed"
+        return "Neutral"
+    df["zone"] = df["ma5"].map(zone)
+    df["date"] = df["date"].dt.strftime("%Y-%m-%d")
+    return df
+
+
+def xly_xlp_table(close):
+    if close is None:
+        return pd.DataFrame()
+    left = "^CNXAUTO" if "^CNXAUTO" in close.columns else ("XLY" if "XLY" in close.columns else None)
+    right = "^CNXFMCG" if "^CNXFMCG" in close.columns else ("XLP" if "XLP" in close.columns else None)
+    if left is None or right is None:
+        return pd.DataFrame()
+    df = pd.DataFrame({"xly": close[left], "xlp": close[right]}).dropna()
+    if df.empty:
+        return pd.DataFrame()
+    df["ratio"] = df["xly"] / df["xlp"]
+    df["ratio_sma50"] = df["ratio"].rolling(50).mean()
+    df["zone"] = np.where(df["ratio"] > df["ratio_sma50"], "Risk on", "Risk off")
+    df = df.dropna(subset=["ratio"]).tail(260).reset_index()
+    date_col = "date" if "date" in df.columns else df.columns[0]
+    df["date"] = pd.to_datetime(df[date_col]).dt.strftime("%Y-%m-%d")
+    return df[["date", "xly", "xlp", "ratio", "ratio_sma50", "zone"]]
+
+
+def historical_pe(close, prepared):
+    rows = []
+    if close is None or close.empty or not prepared:
+        return pd.DataFrame()
+    idx = close.index
+    month_ends = idx.to_series().groupby(idx.to_period("M")).max().tolist()
+    for d in month_ends[-120:]:
+        pes = []
+        for t, prep in prepared.items():
+            if t not in close.columns or prep is None or len(prep) == 0:
+                continue
+            known = prep[prep["known_on"] <= d]
+            if known.empty:
+                continue
+            eps = known.iloc[-1].get("eps")
+            price = close.at[d, t]
+            try:
+                eps = float(eps)
+                price = float(price)
+            except (TypeError, ValueError):
+                continue
+            if np.isfinite(eps) and eps > 0 and np.isfinite(price) and price > 0:
+                pe = price / eps
+                if 0 < pe < 2000:
+                    pes.append(pe)
+        if len(pes) < 20:
+            continue
+        rows.append({
+            "date": str(pd.Timestamp(d).date()),
+            "desk_median_trailing_pe": round(float(np.median(pes)), 2),
+            "n": len(pes),
+            "official_sp500_pe": "",
+            "official_status": "MISSING",
+        })
+    return pd.DataFrame(rows)
+
+
+def technical_pages(scores):
+    br = scores[scores["dist_52w_high_pct"].map(_num).ge(-1)].copy() if "dist_52w_high_pct" in scores.columns else scores.iloc[0:0]
+    tr = scores.copy()
+    def trend_label(r):
+        flags = [r.get("above_sma20"), r.get("above_sma50"), r.get("above_sma100"), r.get("above_sma200")]
+        if all(f == 1 for f in flags):
+            return "Uptrend"
+        if all(f == 0 for f in flags if f in (0, 1)) and all(f in (0, 1) for f in flags):
+            return "Downtrend"
+        return "Mixed"
+    tr["trend_label"] = tr.apply(trend_label, axis=1)
+    pb = scores.copy()
+    has_entry = pb["entry_low"].map(_num).notna() & pb["entry_high"].map(_num).notna() if "entry_low" in pb.columns else False
+    pb["passes"] = np.where(
+        (pb["above_sma200"] == 1) & (pb["above_sma50"] == 1) & pb["timing"].isin(["Pullback", "In entry zone"])
+        & pb["rsi14"].map(_num).lt(70) & pb["verdict"].ne("AVOID") & has_entry,
+        "yes", "no")
+    pb["why"] = np.where(pb["passes"].eq("yes"), "Uptrend structure with price back near the entry area.", "Not a pullback setup.")
+    gl = []
+    s2 = scores.dropna(subset=["day_pct"]).sort_values("day_pct", ascending=False)
+    for _, r in s2.head(15).iterrows():
+        gl.append({**r.to_dict(), "side": "gainer"})
+    for _, r in s2.tail(15).iterrows():
+        gl.append({**r.to_dict(), "side": "loser"})
+    heat = scores.copy()
+    heat["ret_1d"] = heat["day_pct"]
+    heat["ret_1w"] = heat.get("ret_1w")
+    heat["ret_1m"] = heat.get("ret_1m")
+    heat["ret_ytd"] = heat.get("ret_ytd")
+    return br, tr, pb, pd.DataFrame(gl), heat
+
+
+def sector_perf(scores):
+    rows = []
+    if scores is None or len(scores) == 0:
+        return pd.DataFrame()
+    for sector, g in scores.groupby(scores["sector"].fillna("Unknown")):
+        rows.append({
+            "sector": sector,
+            "day_pct": round(float(pd.to_numeric(g["day_pct"], errors="coerce").mean()), 2),
+            "week_pct": _mean(g, "ret_1w"),
+            "month_pct": _mean(g, "ret_1m"),
+            "month3_pct": _mean(g, "ret_3m"),
+            "ytd_pct": _mean(g, "ret_ytd"),
+            "pct_above_sma50": round(float((g["above_sma50"] == 1).mean()) * 100, 1) if "above_sma50" in g else "",
+            "score_avg": _mean(g, "score"),
+            "n": int(len(g)),
+        })
+    return pd.DataFrame(rows)
+
+
+def _mean(g, col):
+    if col not in g.columns:
+        return ""
+    s = pd.to_numeric(g[col], errors="coerce").dropna()
+    if not len(s):
+        return ""
+    return round(float(s.mean()), 2)
+
+
+def etf_sectors(close, scores, sector_etfs, macro_df):
+    rows = []
+    macro = macro_df.set_index("ticker") if macro_df is not None and len(macro_df) else None
+    for etf in sector_etfs:
+        t = etf["ticker"]
+        rec = {"ticker": t, "name": etf["name"], "group_name": etf.get("group", etf["name"])}
+        if close is not None and t in close.columns:
+            s = close[t].dropna()
+            if len(s) > 5:
+                rec["day_pct"] = _ret(s, 1)
+                rec["week_pct"] = _ret(s, 5)
+                rec["month_pct"] = _ret(s, 21)
+                rec["month3_pct"] = _ret(s, 63)
+                rec["ytd_pct"] = _ytd(s)
+                bench_name = "^NSEI" if "^NSEI" in close.columns else ("SPY" if "SPY" in close.columns else None)
+                if bench_name:
+                    spy = close[bench_name].reindex(s.index).dropna()
+                    both = s.reindex(spy.index).dropna()
+                    if len(both) > 63 and len(spy) > 63:
+                        rec["rs_3m_pct"] = round((both.iloc[-1] / both.iloc[-64] - spy.iloc[-1] / spy.iloc[-64]) * 100, 2)
+        members = _members(scores, etf)
+        if len(members):
+            rec["score_avg"] = _mean(members, "score")
+            rec["n_stocks"] = int(len(members))
+            rec["pct_above_sma50"] = round(float((members["above_sma50"] == 1).mean()) * 100, 1)
+        if macro is not None and t in macro.index:
+            m = macro.loc[t]
+            for k in ("macro_growth", "macro_inflation", "macro_jobs", "macro_score"):
+                rec[k] = m.get(k)
+        rows.append(rec)
+    return pd.DataFrame(rows)
+
+
+def _members(scores, etf):
+    if scores is None or len(scores) == 0:
+        return scores.iloc[0:0]
+    group = etf.get("group")
+    base = scores[scores["sector"] == group] if group else scores.iloc[0:0]
+    ticker = etf["ticker"]
+    if ticker in ("XLK", "XLV", "XLF", "XLI", "XLC", "XLY", "XLP", "XLE", "XLU", "XLRE", "XLB",
+                  "^CNXIT", "^CNXFIN", "^CNXAUTO", "^CNXPHARMA", "^CNXFMCG", "^CNXENERGY", "^CNXINFRA", "^CNXCONSUM"):
+        return base
+    key = etf["name"].lower()
+    ind = scores["industry"].fillna("").str.lower() if "industry" in scores.columns else pd.Series("", index=scores.index)
+    for needle, code in INDUSTRY_ETF:
+        if code == ticker:
+            # A narrower index (banks, media, metal) keeps only that industry.
+            return scores[ind.str.contains(needle, regex=False)]
+    return base
+
+
+def _ret(s, n):
+    if len(s) <= n or s.iloc[-1 - n] == 0:
+        return ""
+    return round(float(s.iloc[-1] / s.iloc[-1 - n] - 1) * 100, 2)
+
+
+def _ytd(s):
+    year = s.index[-1].year
+    sub = s[s.index.year == year]
+    if len(sub) < 2 or sub.iloc[0] == 0:
+        return ""
+    return round(float(sub.iloc[-1] / sub.iloc[0] - 1) * 100, 2)
+
+
+def breadth_history(close):
+    """Share of stocks above each moving average, on sessions where stocks traded.
+
+    A holiday that only has a VIX print used to leave one blank row in the price
+    panel. The next 20, 50, 100, and 200 sessions then had no average, and those
+    missing readings were stored as 0. Missing stays blank. A stock with no price
+    or no average that day is left out of the count. It is not treated as below.
+    """
+    if close is None or close.empty:
+        return pd.DataFrame()
+    drop = [c for c in list(MACRO_WEIGHT) + ["SPY", "QQQ", "^VIX", "^NSEI", "^NSEBANK", "^INDIAVIX", "INR=X"] if c in close.columns]
+    px = close.drop(columns=drop, errors="ignore")
+    if px.shape[1] == 0:
+        return pd.DataFrame()
+    traded = px.notna().sum(axis=1)
+    if int(traded.max()) == 0:
+        return pd.DataFrame()
+    # Half the usual names, and at least 20. That drops a holiday row and keeps a normal session.
+    floor = max(20, int(traded.max() * 0.5))
+    px = px.loc[traded >= floor]
+    if px.empty:
+        return pd.DataFrame()
+    shares = {}
+    for n, name in ((20, "pct_above_sma20"), (50, "pct_above_sma50"), (100, "pct_above_sma100"), (200, "pct_above_sma200")):
+        sma = px.rolling(n, min_periods=n).mean()
+        valid = px.notna() & sma.notna()
+        count = valid.sum(axis=1)
+        above = (px > sma) & valid
+        share = above.sum(axis=1) / count.where(count >= 20)
+        shares[name] = share * 100
+    ready = shares["pct_above_sma20"].dropna()
+    if ready.empty:
+        return pd.DataFrame()
+    idx = px.index[px.index >= ready.index[0]][-140:]
+    rows = []
+    for d in idx:
+        row = {"date": str(pd.Timestamp(d).date())}
+        for name, series in shares.items():
+            v = series.loc[d]
+            if pd.notna(v):
+                row[name] = round(float(v), 1)
+        rows.append(row)
+    return pd.DataFrame(rows)
+
+
+def market_row(close, breadth, pcr_df, fred, xratio, updated, asof, n, scores):
+    row = {"updated_pt": updated, "price_as_of": asof, "universe_n": n}
+    bench = "^NSEI" if close is not None and "^NSEI" in close.columns else ("SPY" if close is not None and "SPY" in close.columns else None)
+    if bench:
+        s = close[bench].dropna()
+        if len(s):
+            row["spy_price"] = round(float(s.iloc[-1]), 2)
+            if len(s) > 1 and s.iloc[-2]:
+                row["spy_day_pct"] = round(float(s.iloc[-1] / s.iloc[-2] - 1) * 100, 2)
+    bank = "^NSEBANK" if close is not None and "^NSEBANK" in close.columns else ("QQQ" if close is not None and "QQQ" in close.columns else None)
+    if bank:
+        q = close[bank].dropna()
+        if len(q) > 1 and q.iloc[-2]:
+            row["qqq_day_pct"] = round(float(q.iloc[-1] / q.iloc[-2] - 1) * 100, 2)
+    vix_name = "^INDIAVIX" if close is not None and "^INDIAVIX" in close.columns else ("^VIX" if close is not None and "^VIX" in close.columns else None)
+    if vix_name:
+        v = close[vix_name].dropna()
+        if len(v):
+            row["vix"] = round(float(v.iloc[-1]), 2)
+    if close is not None and "INR=X" in close.columns:
+        fx = close["INR=X"].dropna()
+        if len(fx):
+            row["inr_usd"] = round(float(fx.iloc[-1]), 2)
+    if breadth is not None and len(breadth):
+        last = breadth.iloc[-1]
+        for k in ("pct_above_sma20", "pct_above_sma50", "pct_above_sma100", "pct_above_sma200"):
+            row[k.replace("pct_above_", "breadth_")] = last.get(k)
+        if len(breadth) > 5:
+            row["breadth_sma50_week_ago"] = breadth.iloc[-6].get("pct_above_sma50")
+    if scores is not None and len(scores):
+        if "verdict" in scores.columns:
+            row["buy_count"] = int((scores["verdict"].astype(str) == "BUY").sum())
+        day = pd.to_numeric(scores["day_pct"], errors="coerce")
+        row["advancers"] = int((day > 0).sum())
+        row["decliners"] = int((day < 0).sum())
+        dist = pd.to_numeric(scores["dist_52w_high_pct"], errors="coerce")
+        row["highs_52w"] = int((dist >= -1).sum())
+        # lows: price near 252-day low is not in dist. leave blank if we didn't compute it
+        if "near_low" in scores.columns:
+            row["lows_52w"] = int(scores["near_low"].sum())
+    if pcr_df is not None and len(pcr_df):
+        eq = pcr_df[pcr_df["name"] == "EQUITY PUT/CALL RATIO"]
+        use = eq if len(eq) else pcr_df
+        last = use.iloc[-1]
+        row["put_call"] = last.get("value")
+        row["put_call_ma5"] = last.get("ma5")
+        row["put_call_zone"] = last.get("zone")
+        row["put_call_name"] = last.get("name")
+    if fred:
+        row["fred_dgs10"] = fred.get("DGS10")
+        row["fred_t10y2y"] = fred.get("T10Y2Y")
+    if xratio is not None and len(xratio):
+        row["xly_xlp"] = round(float(xratio.iloc[-1]["ratio"]), 3)
+    return pd.DataFrame([row])
+
+
+def freshness_table(scores):
+    fields = [k for k, _ in FIN_SPECS] + ["pts_analyst", "pts_institutional", "pts_insider", "pts_earnings", "pts_trend", "pts_sector"]
+    rows = []
+    n = len(scores)
+    for f in fields:
+        if f not in scores.columns or n == 0:
+            rows.append({"field": f, "n_missing": n, "n_present": 0})
+            continue
+        present = pd.to_numeric(scores[f], errors="coerce").notna().sum()
+        rows.append({"field": f, "n_missing": int(n - present), "n_present": int(present)})
+    return pd.DataFrame(rows)
+
+
+def help_rows():
+    return [
+        ("What this is", "Nick's India Stock Desk is a research screen for NSE stocks. It does not place trades and it does not connect to a broker. Nothing here is a recommendation to buy or sell."),
+        ("Stocks only", "There are no option contract picks. The liquid stocks page is a stock screen. The put and call walls page is market mood only. Indian options use fixed lot sizes, so this desk does not pick a contract."),
+        ("Prices", "Prices are in rupees. They come from Yahoo Finance using the .NS ticker. The benchmark is the Nifty 50. Bank Nifty is shown next to it."),
+        ("The score", "Each money measure is plus 1, 0, or minus 1 versus that company's own recent history. Lower is better for forward P/E, trailing P/E, price/sales, debt/equity, and price/free cash flow. Higher is better for revenue growth, EPS growth, return on equity, and dividend yield. Analyst rating can be plus 2 to minus 2. Shareholding, insiders, the price trend, the oscillator, the latest result, and the sector each add a small point. The score is the sum of the points we actually have."),
+        ("Missing data", "A missing number is left blank and marked n/a. It is not stored as zero and it does not add or subtract a point. If a free source is blocked, the page says not available."),
+        ("Forward P/E history", "Free data does not include a history of forward estimates. The baseline for forward P/E is the 3-year average of year-end trailing P/E."),
+        ("Versus the industry", "The industry figure is the middle value of the other stocks in the same sector on this desk. It is not a paid database. If fewer than four peers have a number, the comparison is blank."),
+        ("Verdicts", "BUY, HOLD, and AVOID are research labels. A high score that is extended, in a downtrend, or missing most of its financials is labeled HOLD instead of BUY. Entry, stop, and target are a plan for study, not an order."),
+        ("Targets", "You will see an analyst target when Yahoo has one, a price/free-cash-flow target, a PEG-style target, and a blend of whichever of those exist. The trade target is separate. It is an entry-zone plan using the recent daily range."),
+        ("Backtest", "Once a month the job asks what the score would have been using only data that was already public, then looks at the next 1, 4, and 12 weeks versus the Nifty 50. Read the headline. If it says there is no clear edge, believe that. Past results are not future results."),
+        ("Shareholding", "Promoter, FII, DII, and other public percents come from the NSE shareholding filing when that file is reachable. The change is versus the prior quarter. If the split is missing, the cell says not verified. It is not a US 13F report."),
+        ("Insiders", "Insider points use NSE PIT buy and sell counts over three months. If NSE blocks the file, the page says data not available for free and the score for that piece stays blank."),
+        ("Put/call and walls", "The put/call line is Nifty put open interest divided by call open interest, when the NSE option chain answers. Walls are the strikes with the most open interest. They are mood, not a trade. If NSE blocks the chain, the page says not available."),
+        ("India mood", "There is no Indian version of the AAII survey, so that survey is not shown. This page uses India VIX and, when the NSE file answers, the day's FII and DII cash flow in crores."),
+        ("Nifty P/E", "There is no free official daily Nifty 50 P/E this desk can rely on. The chart is the median trailing P/E of the stocks on this desk. The official column stays blank."),
+        ("Macro", "The macro page shows India CPI, GDP, and industry growth from the World Bank when that feed answers, plus the rupee from Yahoo. A forecast is often missing, so the surprise stays blank. It is a sketch, not a forecast. The rate column on the sector map is a simple rule of thumb."),
+        ("Auto versus FMCG", "This is the Nifty Auto index divided by the Nifty FMCG index. It stands in for the old discretionary versus staples chart. Above the 50-day average of the ratio is labeled risk on."),
+        ("Rate limits", "Prices are downloaded in batches. Hourly runs only fetch the latest bars and keep the saved history. Statements, ratings, shareholding, insider counts, and option chains refresh at most once a day. If a source fails, the previous file is kept and the updates log says CACHED."),
+        ("The lists", "The desk scores the Nifty 50, the Nifty Next 50, and the Nifty Midcap 150. A stock in more than one list appears once. Each list has an on/off switch in config.json. Your holdings and watchlist are always included."),
+        ("Times", "Times are shown in India time (IST) and Pacific time (PT)."),
+        ("VCP scanner", "This page follows the same 8-point trend template and contraction count as Nick's indicator, with the Nifty 50 as the benchmark. READY means 8 of 8 and price is still under the buy point. BROKEN OUT today means today's close crossed that point on big volume."),
+        ("CANSLIM scanner", "C and A are the year-ago EPS change from the saved statements. N is how close the price is to its 52-week closing high. S is the 20-day average volume. L is the relative-strength percentile versus the Nifty inside this universe. I is the shareholding change when we have it. M is the Nifty, and Bank Nifty when that price is already on file. A blank that says not verified was not in the cache. It is not a guess."),
+        ("Box and flag", "A box is a tight sideways range that closes out the top on above-average volume. A flag is a sharp rise, a short pause, then a close above the pause on volume. These two are desk rules."),
+        ("Leaders", "Leaders puts a VCP that is ready or broken out today together with a strict CANSLIM qualify. One row per stock."),
+        ("Your list", "Edit input/holdings.csv and input/my_watchlist.csv to change the portfolio and the watchlist. Example rows are marked example=yes. Replace them with your own shares and cost. The desk still will not place a trade."),
+        ("Alerts", "The alerts page lists score and label changes since the last run. It does not send a phone alert, an email, or a message."),
+        ("Updates log", "OK means the source answered. PARTIAL means a column is blank on every row. CACHED means this run failed and an older copy was used. MISSING means there is no copy at all. A blank cell is missing data. It is not a zero."),
+        ("Switches", "Every page has an on/off switch in config.json under features. The index lists have switches under indexes. Turning a page off keeps the file headers so the site does not break."),
+    ]
+
+
+def settings_rows(cfg):
+    rows = [{"setting": "feature." + k, "value": v} for k, v in cfg["features"].items()]
+    for k, v in (cfg.get("indexes") or {}).items():
+        rows.append({"setting": "index." + k, "value": v})
+    for k, v in cfg.get("scoring", {}).items():
+        rows.append({"setting": "scoring." + k, "value": v})
+    rows.append({"setting": "label", "value": DISCLAIMER})
+    return pd.DataFrame(rows)
