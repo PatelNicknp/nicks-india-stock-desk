@@ -1,0 +1,2 @@
+ticker,company,sector,index_membership,status,pivot,stop,target,strength,reason,freshness,price,price_as_of,pole_pct,flag_bars,retrace_pct,volume_ratio,data_status,note,disclaimer
+,,,,,,,,,,,,,,,,,MISSING,No flag setups in the cached prices.,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."

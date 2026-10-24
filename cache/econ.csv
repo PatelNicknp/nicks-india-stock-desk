@@ -1,0 +1,4 @@
+country,category,indicator,date,actual,forecast,surprise,signal,note
+India,Inflation,CPI,2025-12-31,2.39884954182294,,,,"India CPI inflation, yearly percent. World Bank. Not a monthly print. No forecast in this free feed, so there is no surprise score."
+India,Growth,GDP,2025-12-31,7.56666179284244,,,,"India real GDP growth, yearly percent. World Bank. No forecast in this free feed, so there is no surprise score."
+India,Growth,IIP,2025-12-31,8.77781858936414,,,,"India industry growth, yearly percent. World Bank. This is not the monthly IIP. No forecast in this free feed, so there is no surprise score."

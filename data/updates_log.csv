@@ -1,0 +1,19 @@
+source,status,latest,note,checked_pt
+Universe (Nifty 50),OK,50,"offline mode, used cache",2026-10-25 04:32 IST · 2026-10-24 16:02 PT
+Universe (Nifty Next 50),OK,50,"offline mode, used cache",2026-10-25 04:32 IST · 2026-10-24 16:02 PT
+Universe (Nifty Midcap 150),OK,150,"offline mode, used cache",2026-10-25 04:32 IST · 2026-10-24 16:02 PT
+Prices (Yahoo Finance),OK,2026-10-24,"offline mode, used cache",2026-10-25 04:32 IST · 2026-10-24 16:02 PT
+Fundamentals (Yahoo statements),OK,2026-10-25,"offline mode, used cache",2026-10-25 04:32 IST · 2026-10-24 16:02 PT
+Analyst and profile (Yahoo Finance),OK,2026-10-25,"offline mode, used cache",2026-10-25 04:32 IST · 2026-10-24 16:02 PT
+Earnings dates (Yahoo Finance),OK,2026-10-25,reused cache,2026-10-25 04:32 IST · 2026-10-24 16:02 PT
+Shareholding (NSE),OK,2026-10-25,"offline mode, used cache",2026-10-25 04:32 IST · 2026-10-24 16:02 PT
+Insiders (NSE PIT),OK,,reused cache,2026-10-25 04:32 IST · 2026-10-24 16:02 PT
+News headlines (RSS),OK,2026-10-25,"offline mode, used cache",2026-10-25 04:32 IST · 2026-10-24 16:02 PT
+Option walls (NSE),OK,,"offline mode, used cache",2026-10-25 04:32 IST · 2026-10-24 16:02 PT
+Put/call (NSE open interest),OK,,reused cache,2026-10-25 04:32 IST · 2026-10-24 16:02 PT
+FII and DII cash (NSE),OK,,"offline mode, used cache",2026-10-25 04:32 IST · 2026-10-24 16:02 PT
+Macro (World Bank and FRED),OK,,"offline mode, used cache",2026-10-25 04:32 IST · 2026-10-24 16:02 PT
+Backtest,OK,2026-09-30,monthly point-in-time test,2026-10-25 04:32 IST · 2026-10-24 16:02 PT
+Price candles,OK,2026-10-23,"249 tickers, 0 rewritten, up to 741 cached sessions.",2026-10-25 04:33 IST · 2026-10-24 16:03 PT
+Pattern scanners,OK,2026-10-23,"VCP 83, CANSLIM 19, box 89, flag 0, leaders 16. No new downloads.",2026-10-25 04:33 IST · 2026-10-24 16:03 PT
+Column check,PARTIAL,,"A column is blank on every row: market_today, sectors, portfolio, scanner_canslim, earnings_heatmap, institutional_13f, macro_screener, sector_macro, historical_pe. Blank is missing, not zero.",2026-10-25 04:33 IST · 2026-10-24 16:03 PT
