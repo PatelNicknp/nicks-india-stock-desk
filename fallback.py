@@ -40,14 +40,15 @@ class SourceBook:
     def allow(self, name):
         return name not in self.dead
 
-    def hit(self, field, source, status, detail):
+    def hit(self, field, source, status, detail, counts=True):
         self.rows.append({
             "field": field,
             "source": source,
             "status": status,
             "detail": str(detail or "")[:180],
         })
-        if status in ("MISSING", "FAILED"):
+        # An empty filing is not a dead host. Only real errors retire a source.
+        if counts and status in ("MISSING", "FAILED"):
             self.fails[source] = self.fails.get(source, 0) + 1
             if self.fails[source] >= self.give_up_after:
                 self.dead.add(source)

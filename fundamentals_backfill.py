@@ -7,10 +7,13 @@ writes the cache back. After every name has a saved row, the oldest records
 come around again: shareholding about every 90 days, results after an earnings
 date or every 90 days.
 
-Free sources, no API key. Statements try Yahoo .NS, then Yahoo .BO. Shareholding
-tries the NSE filing, then the public Screener page, then the BSE shareholding
-file. A source that fails three times in one run is skipped for the rest of
-that run. A name that fails is tried again the next day, not every half hour.
+Free sources, no API key. Shareholding runs before statements so a long
+statement pass cannot use up the clock. Shareholding tries the NSE filing,
+then the public Screener page, then the BSE shareholding file. Statements try
+Yahoo .NS, then Yahoo .BO. A source that errors three times in one run is
+skipped for the rest of that run. An empty filing is recorded and tried again
+later in the pass. It does not stop the batch. A name whose sources error is
+tried again the next day, not every half hour.
 """
 import json
 import os
@@ -29,9 +32,11 @@ IST = "Asia/Kolkata"
 CURSOR_NAME = "backfill_cursor.json"
 LIQUID, NSE, BSE = 0, 1, 2
 PASS_NOTE = (
-    "At 40 names a run, every 30 minutes, the first pass of about 4,300 stocks "
-    "takes about 2 to 3 days when the free sources answer. "
-    "Liquid names come first, then the rest of the NSE list, then BSE-only names."
+    "At 200 statements and 200 shareholding names a run, the first pass of about "
+    "4,300 stocks takes well under a day when the free sources answer. "
+    "Liquid names come first, then the rest of the NSE list, then BSE-only names. "
+    "A name with no shareholding filing is saved for later in the pass, so one "
+    "empty name does not stop the batch."
 )
 REFRESH_NOTE = (
     "Every name has a saved row. Shareholding refreshes about every 90 days. "
@@ -259,6 +264,11 @@ def build_queue(universe, scores, info, annual, holders, earn, cursor, today, re
         retry_after = parse_day(retry.get(ticker))
         if retry_after and retry_after > today:
             due = False
+        # An empty filing stays in the pass, behind names that have not been tried yet.
+        defer = False
+        if kind == "shareholding":
+            stamped = parse_day(((cursor or {}).get("shareholding_empty_on") or {}).get(ticker))
+            defer = bool(stamped) and stamped == today
         rows.append({
             "ticker": ticker,
             "band": band_for(rec, liquid),
@@ -267,13 +277,20 @@ def build_queue(universe, scores, info, annual, holders, earn, cursor, today, re
             "as_of": as_of,
             "due": due,
             "retry_after": retry_after,
+            "defer": defer,
             "exchange": rec.get("exchange") or "",
             "nse_symbol": rec.get("nse_symbol") or "",
             "bse_symbol": rec.get("bse_symbol") or "",
             "in_bse_only": rec.get("in_bse_only") or "",
             "isin": rec.get("isin") or "",
         })
-    rows.sort(key=lambda r: (0 if not r["covered"] else 1, r["band"], r["fetched_on"] or "0000-00-00", r["ticker"]))
+    rows.sort(key=lambda r: (
+        0 if not r["covered"] else 1,
+        1 if r.get("defer") else 0,
+        r["band"],
+        r["fetched_on"] or "0000-00-00",
+        r["ticker"],
+    ))
     return rows
 
 
@@ -307,7 +324,12 @@ def statement_symbols(rec):
 
 
 def first_good(field, steps, book, pause=0.0):
-    """Try each source until one answers. Later sources are not called after a hit."""
+    """Try each source until one answers. Later sources are not called after a hit.
+
+    The third value is ok, empty, or down. An empty reply means this name has
+    no filing at that source. It does not retire the source. An exception does.
+    """
+    saw_empty = False
     for name, fn in steps:
         if not book.allow(name):
             book.hit(field, name, "FAILED", "skipped after repeated failures")
@@ -320,13 +342,25 @@ def first_good(field, steps, book, pause=0.0):
                 time.sleep(min(pause, 0.4))
             continue
         if fallback.empty(value):
-            book.hit(field, name, "MISSING", "empty reply")
+            saw_empty = True
+            book.hit(field, name, "MISSING", "empty reply", counts=False)
             if pause:
                 time.sleep(min(pause, 0.4))
             continue
         book.ok(field, name, "answered")
-        return value, name
-    return None, ""
+        return value, name, "ok"
+    if saw_empty:
+        return None, "", "empty"
+    return None, "", "down"
+
+
+def next_streak(streak, outcome):
+    """Errors add to the outage streak. A saved row clears it. An empty filing does not."""
+    if outcome == "ok":
+        return 0
+    if outcome == "empty":
+        return streak
+    return streak + 1
 
 
 def _bundle_useful(info, annual, quarters):
@@ -361,7 +395,8 @@ def fetch_statements(rec, cfg, book):
         # One label per listing so three failures skip that listing for the rest of the run.
         label = "Yahoo BO" if str(symbol).endswith(".BO") else "Yahoo NS"
         steps.append((label, attempt(symbol)))
-    return first_good("statements:" + ticker, steps, book, pause=0.2)
+    value, source, _outcome = first_good("statements:" + ticker, steps, book, pause=0.2)
+    return value, source
 
 
 def parse_screener_shareholding(html):
@@ -370,9 +405,15 @@ def parse_screener_shareholding(html):
     import re
     if not html:
         return None
-    cut = re.search(r'id="quarterly-shp"(.*?)(?:id="yearly-shp"|$)', html, re.S)
-    chunk = cut.group(1) if cut else ""
-    if not chunk:
+    # The tab button is data-tab-id="quarterly-shp". The table is id="quarterly-shp".
+    # A bare id= search hits the button first and then reads no rows.
+    start = re.search(r'\sid="quarterly-shp"', html)
+    if not start:
+        return None
+    rest = html[start.end():]
+    end = re.search(r'\sid="yearly-shp"', rest)
+    chunk = rest[:end.start()] if end else rest
+    if not chunk.strip():
         return None
     dates = re.findall(r"<th>([A-Z][a-z]{2} \d{4})</th>", chunk)
     found = {}
@@ -381,7 +422,7 @@ def parse_screener_shareholding(html):
         if not label_m:
             continue
         label = re.sub(r"<[^>]+>", " ", label_m.group(1))
-        label = html_lib.unescape(label).replace("\xa0", " ")
+        label = html_lib.unescape(label).replace("\xa0", " ").replace("+", " ")
         label = " ".join(label.split()).lower()
         nums = []
         for raw in re.findall(r">\s*([0-9]+(?:\.[0-9]+)?)%\s*<", tr):
@@ -560,15 +601,15 @@ def fetch_shareholding(rec, cfg, codes, book):
     code = codes.get(ticker) or codes.get(bse_sym) or codes.get(str(rec.get("isin") or "").strip().upper())
     if code:
         steps.append(("BSE shareholding", lambda scrip=code: fetch_bse_shareholding(scrip, cfg)))
-    value, source = first_good("shareholding:" + ticker, steps, book, pause=0.25)
+    value, source, outcome = first_good("shareholding:" + ticker, steps, book, pause=0.25)
     if not value:
-        return None, source
+        return None, source, outcome
     row = dict(value)
     row["ticker"] = ticker
     row["source"] = row.get("source") or source
     if row.get("ownership_pct") in (None, ""):
         row["ownership_pct"] = row.get("promoter_pct")
-    return row, source
+    return row, source, "ok"
 
 
 def _merge_frames(old, add_rows):
@@ -595,6 +636,20 @@ def _clear_retry(cursor, kind, ticker):
     book = dict(cursor.get(key) or {})
     book.pop(ticker, None)
     cursor[key] = book
+
+
+def _mark_empty(cursor, ticker, today):
+    """Remember a name with no filing so the rest of the pass can go first."""
+    book = dict(cursor.get("shareholding_empty_on") or {})
+    book[ticker] = today
+    cursor["shareholding_empty_on"] = book
+
+
+def _clear_empty(cursor, ticker):
+    book = dict(cursor.get("shareholding_empty_on") or {})
+    if ticker in book:
+        book.pop(ticker, None)
+        cursor["shareholding_empty_on"] = book
 
 
 def run_batch(root, cfg, max_names=None):
@@ -627,7 +682,13 @@ def run_batch(root, cfg, max_names=None):
     book = fallback.SourceBook(give_up_after=3)
     codes = bse_code_map(root)
     pause = spec["pause_seconds"]
-    stats = {"statements_ok": 0, "statements_fail": 0, "shareholding_ok": 0, "shareholding_fail": 0}
+    stats = {
+        "statements_ok": 0,
+        "statements_fail": 0,
+        "shareholding_ok": 0,
+        "shareholding_fail": 0,
+        "shareholding_empty": 0,
+    }
 
     def over_time():
         return time.time() >= deadline
@@ -636,6 +697,62 @@ def run_batch(root, cfg, max_names=None):
     if len(info):
         info_rows.extend(info.to_dict("records"))
     hold_map = _row_map(holders)
+
+    # Shareholding first so a full statement pass cannot use up the 18 minute budget
+    # before any holder rows are saved.
+    hold_queue = build_queue(universe, scores, info, annual, holders, earn, cursor, today, refresh, "shareholding")
+    hold_todo = take_batch(hold_queue, spec["shareholding_per_run"])
+    print("Shareholding batch %d" % len(hold_todo))
+    streak = 0
+    for i, rec in enumerate(hold_todo):
+        if over_time():
+            print("Stopping shareholding at the time limit")
+            break
+        ticker = rec["ticker"]
+        fail_note = "no shareholding source answered"
+        try:
+            row, source, outcome = fetch_shareholding(rec, cfg, codes, book)
+        except Exception as exc:
+            row, source, outcome = None, "", "down"
+            fail_note = str(exc)[:140]
+        if outcome == "ok" and row:
+            row["fetched_on"] = today
+            row["source"] = source or row.get("source") or ""
+            chg = row.get("fii_chg")
+            if chg is None:
+                chg = row.get("promoter_chg")
+            try:
+                chg_n = float(chg) if chg is not None and chg != "" else float("nan")
+            except (TypeError, ValueError):
+                chg_n = float("nan")
+            up, down = india_data.trend_from_change(chg_n)
+            row["inst_up"] = up
+            row["inst_down"] = down
+            hold_map[ticker] = row
+            _clear_retry(cursor, "shareholding", ticker)
+            _clear_empty(cursor, ticker)
+            stats["shareholding_ok"] += 1
+            streak = next_streak(streak, "ok")
+        elif outcome == "empty":
+            stats["shareholding_empty"] += 1
+            _mark_empty(cursor, ticker, today)
+            streak = next_streak(streak, "empty")
+            print("shareholding none", ticker, "no filing, saved for later in this pass")
+        else:
+            stats["shareholding_fail"] += 1
+            streak = next_streak(streak, "down")
+            _mark_retry(cursor, "shareholding", ticker, today)
+            print("shareholding fail", ticker, fail_note)
+            if streak >= 6:
+                print("Shareholding paused after 6 failures in a row")
+                break
+        if (i + 1) % 8 == 0:
+            _flush_holders(hold_map, cache)
+            save_cursor(cache, cursor)
+        time.sleep(pause)
+    _flush_holders(hold_map, cache)
+    save_cursor(cache, cursor)
+
     state_queue = build_queue(universe, scores, info, annual, holders, earn, cursor, today, refresh, "statements")
     todo = take_batch(state_queue, spec["statements_per_run"])
     print("Statements batch %d" % len(todo))
@@ -677,62 +794,24 @@ def run_batch(root, cfg, max_names=None):
         time.sleep(pause)
     annual, quarters = _flush_statements(annual, quarters, new_a, new_q, cache)
     _flush_info_earn(info_rows, earn_rows, earn, cache)
-    info = read_csv(os.path.join(cache, "yahoo_info.csv"))
-    earn = read_csv(os.path.join(cache, "earnings.csv"))
-
-    hold_queue = build_queue(universe, scores, info, annual, holders, earn, cursor, today, refresh, "shareholding")
-    hold_todo = take_batch(hold_queue, spec["shareholding_per_run"])
-    print("Shareholding batch %d" % len(hold_todo))
-    streak = 0
-    for i, rec in enumerate(hold_todo):
-        if over_time():
-            print("Stopping shareholding at the time limit")
-            break
-        ticker = rec["ticker"]
-        try:
-            row, source = fetch_shareholding(rec, cfg, codes, book)
-            if not row:
-                raise RuntimeError("no shareholding source answered")
-            row["fetched_on"] = today
-            row["source"] = source or row.get("source") or ""
-            chg = row.get("fii_chg")
-            if chg is None:
-                chg = row.get("promoter_chg")
-            try:
-                chg_n = float(chg) if chg is not None and chg != "" else float("nan")
-            except (TypeError, ValueError):
-                chg_n = float("nan")
-            up, down = india_data.trend_from_change(chg_n)
-            row["inst_up"] = up
-            row["inst_down"] = down
-            hold_map[ticker] = row
-            _clear_retry(cursor, "shareholding", ticker)
-            stats["shareholding_ok"] += 1
-            streak = 0
-        except Exception as exc:
-            stats["shareholding_fail"] += 1
-            streak += 1
-            _mark_retry(cursor, "shareholding", ticker, today)
-            print("shareholding fail", ticker, str(exc)[:140])
-            if streak >= 6:
-                print("Shareholding paused after 6 failures in a row")
-                break
-        if (i + 1) % 8 == 0:
-            _flush_holders(hold_map, cache)
-            save_cursor(cache, cursor)
-        time.sleep(pause)
-    _flush_holders(hold_map, cache)
     cursor["last_batch_at"] = now_iso()
     cursor["last_statements_ok"] = stats["statements_ok"]
     cursor["last_statements_fail"] = stats["statements_fail"]
     cursor["last_shareholding_ok"] = stats["shareholding_ok"]
     cursor["last_shareholding_fail"] = stats["shareholding_fail"]
+    cursor["last_shareholding_empty"] = stats["shareholding_empty"]
     save_cursor(cache, cursor)
     frame = progress_frame(root)
     _write_progress(data, frame)
     print(
-        "Backfill statements %d ok / %d failed, shareholding %d ok / %d failed"
-        % (stats["statements_ok"], stats["statements_fail"], stats["shareholding_ok"], stats["shareholding_fail"])
+        "Backfill statements %d ok / %d failed, shareholding %d ok / %d no filing / %d failed"
+        % (
+            stats["statements_ok"],
+            stats["statements_fail"],
+            stats["shareholding_ok"],
+            stats["shareholding_empty"],
+            stats["shareholding_fail"],
+        )
     )
     stats["enabled"] = True
     return stats

@@ -2,8 +2,11 @@ name: Financials and shareholding backfill
 
 on:
   schedule:
-    # Every 30 minutes, all week. Continues from cache/backfill_cursor.json.
+    # GitHub delays and drops scheduled runs that land on the hour and the half hour.
+    # The second line starts the same job at :15 and :45 so a quiet hour still gets a run.
+    # The concurrency group below keeps two starts from downloading at the same time.
     - cron: "*/30 * * * *"
+    - cron: "15,45 * * * *"
   workflow_dispatch: {}
 
 permissions:
