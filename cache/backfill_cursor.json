@@ -16,9 +16,11 @@
   "EMPOWER": "2026-10-26",
   "FEDDERSHOL": "2026-10-26",
   "FREDUN": "2026-10-26",
-  "FRONTSP": "2026-10-26"
+  "FRONTSP": "2026-10-26",
+  "GNRL": "2026-10-26",
+  "GRAUWEIL": "2026-10-26"
  },
- "last_batch_at": "2026-10-25T13:19Z",
+ "last_batch_at": "2026-10-25T13:27Z",
  "last_statements_ok": 40,
  "last_statements_fail": 0,
  "last_shareholding_ok": 38,
