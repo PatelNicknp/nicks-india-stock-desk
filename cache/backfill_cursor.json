@@ -1,14 +1,16 @@
 {
- "statements_retry_after": {},
+ "statements_retry_after": {
+  "BAGMANE": "2026-10-27"
+ },
  "shareholding_retry_after": {},
- "last_batch_at": "2026-10-25T19:57Z",
- "last_statements_ok": 200,
- "last_statements_fail": 0,
- "last_shareholding_ok": 198,
+ "last_batch_at": "2026-10-25T21:32Z",
+ "last_statements_ok": 199,
+ "last_statements_fail": 1,
+ "last_shareholding_ok": 200,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
   "BIRET": "2026-10-26",
   "EMBASSY": "2026-10-26"
  },
- "last_shareholding_empty": 2
+ "last_shareholding_empty": 0
 }
