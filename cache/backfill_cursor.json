@@ -1,12 +1,12 @@
 {
  "statements_retry_after": {},
  "shareholding_retry_after": {
-  "3BBLACKBIO": "2026-10-26",
-  "ABBOTINDIA": "2026-10-26",
-  "AMAL": "2026-10-26",
-  "BAYERCROP": "2026-10-26",
-  "BIRET": "2026-10-26",
-  "BLUECLOUDS": "2026-10-26",
+  "3BBLACKBIO": "2026-10-27",
+  "ABBOTINDIA": "2026-10-27",
+  "AMAL": "2026-10-27",
+  "BAYERCROP": "2026-10-27",
+  "BIRET": "2026-10-27",
+  "BLUECLOUDS": "2026-10-27",
   "BPLPHARMA": "2026-10-26",
   "COCKERILL": "2026-10-26",
   "DECNGOLD": "2026-10-26",
@@ -28,9 +28,9 @@
   "KOVAI": "2026-10-26",
   "KPL": "2026-10-26"
  },
- "last_batch_at": "2026-10-25T18:22Z",
- "last_statements_ok": 40,
+ "last_batch_at": "2026-10-25T19:19Z",
+ "last_statements_ok": 200,
  "last_statements_fail": 0,
- "last_shareholding_ok": 35,
- "last_shareholding_fail": 5
+ "last_shareholding_ok": 0,
+ "last_shareholding_fail": 6
 }
