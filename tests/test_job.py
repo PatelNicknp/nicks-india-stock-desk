@@ -431,10 +431,15 @@ def test_candle_file_keeps_full_history_for_average_warmup():
 
 
 def test_published_candles_use_real_opens():
-    path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "ohlc", "RELIANCE.csv")
-    if not os.path.exists(path):
+    path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "ohlc", "R.csv.gz")
+    legacy = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "ohlc", "RELIANCE.csv")
+    if os.path.exists(path):
+        df = pd.read_csv(path)
+        df = df[df["ticker"].astype(str).str.upper() == "RELIANCE"]
+    elif os.path.exists(legacy):
+        df = pd.read_csv(legacy)
+    else:
         return
-    df = pd.read_csv(path)
     assert len(df) >= 450
     assert df["open"].notna().all()
     assert float(df["open"].iloc[-1]) > 0

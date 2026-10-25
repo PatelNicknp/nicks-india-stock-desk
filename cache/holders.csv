@@ -1,248 +1,249 @@
-ticker,promoter_pct,fii_pct,dii_pct,public_pct,promoter_chg,fii_chg,dii_chg,public_chg,as_of,company,source,inst_up,inst_down,insider_buys,insider_sells,ownership_pct
-360ONE,6.18,,,,-0.02,,,,2026-09-30,360 ONE WAM LIMITED,NSE shareholding summary,1.0,1.0,,,6.18
-ABB,75.0,,,,0.0,,,,2026-09-30,ABB India Limited,NSE shareholding summary,1.0,1.0,,,75.0
-ABCAPITAL,68.82,,,,0.01,,,,2026-09-30,Aditya Birla Capital Limited,NSE shareholding summary,1.0,1.0,,,68.82
-ADANIENSOL,73.39,,,,0.0,,,,2026-09-30,Adani Energy Solutions Limited,NSE shareholding summary,1.0,1.0,,,73.39
-ADANIENT,71.97,,,,0.0,,,,2026-09-30,Adani Enterprises Limited,NSE shareholding summary,1.0,1.0,,,71.97
-ADANIGREEN,62.43,,,,0.0,,,,2026-09-30,Adani Green Energy Limited,NSE shareholding summary,1.0,1.0,,,62.43
-ADANIPORTS,66.03,,,,0.0,,,,2026-09-30,Adani Ports and Special Economic Zone Limited,NSE shareholding summary,1.0,1.0,,,66.03
-ADANIPOWER,74.96,,,,0.0,,,,2026-09-30,Adani Power Limited,NSE shareholding summary,1.0,1.0,,,74.96
-AIAENG,58.5,,,,0.0,,,,2026-09-30,AIA Engineering Limited,NSE shareholding summary,1.0,1.0,,,58.5
-AIIL,68.81,,,,0.0,,,,2026-09-30,Authum Investment & Infrastructure Limited,NSE shareholding summary,1.0,1.0,,,68.81
-AJANTPHARM,63.47,,,,-0.01,,,,2026-09-30,Ajanta Pharma Limited,NSE shareholding summary,1.0,1.0,,,63.47
-ALKEM,49.7,,,,-1.5,,,,2026-06-30,Alkem Laboratories Limited,NSE shareholding summary,0.0,1.0,,,49.7
-AMBUJACEM,67.33,,,,0.0,,,,2026-09-30,Ambuja Cements Limited,NSE shareholding summary,1.0,1.0,,,67.33
-ANTHEM,71.4,,,,-0.02,,,,2026-09-30,Anthem Biosciences Limited,NSE shareholding summary,1.0,1.0,,,71.4
-APARINDS,55.42,,,,0.0,,,,2026-09-30,Apar Industries Limited,NSE shareholding summary,1.0,1.0,,,55.42
-APLAPOLLO,28.18,,,,-0.07,,,,2026-09-30,APL Apollo Tubes Limited,NSE shareholding summary,1.0,1.0,,,28.18
-APOLLOHOSP,28.02,,,,0.0,,,,2026-09-30,Apollo Hospitals Enterprise Limited,NSE shareholding summary,1.0,1.0,,,28.02
-ASHOKLEY,51.51,,,,0.0,,,,2026-09-30,Ashok Leyland Limited,NSE shareholding summary,1.0,1.0,,,51.51
-ASIANPAINT,52.65,13.76,20.5,13.02,0.02,,,,2026-09-30,Asian Paints Limited,NSE shareholding,1.0,1.0,0.0,0.0,52.65
-ASTERDM,53.79,,,,0.07,,,,2026-09-30,Aster DM Quality Care Limited,NSE shareholding summary,1.0,1.0,,,53.79
-ASTRAL,54.22,,,,0.0,,,,2026-09-30,Astral Limited,NSE shareholding summary,1.0,1.0,,,54.22
-ATGL,74.8,,,,0.0,,,,2026-09-30,Adani Total Gas Limited,NSE shareholding summary,1.0,1.0,,,74.8
-AUBANK,22.67,,,,-0.07,,,,2026-09-30,AU Small Finance Bank Limited,NSE shareholding summary,1.0,1.0,,,22.67
-AUROPHARMA,51.88,,,,0.0,,,,2026-09-30,Aurobindo Pharma Limited,NSE shareholding summary,1.0,1.0,,,51.88
-AXISBANK,7.86,,,,-0.01,,,,2026-09-30,Axis Bank Limited,NSE shareholding summary,1.0,1.0,,,7.86
-BAJAJ-AUTO,55.95,,,,0.94,,,,2026-09-30,Bajaj Auto Limited,NSE shareholding summary,1.0,0.0,,,55.95
-BAJAJFINSV,58.65,,,,-0.06,,,,2026-09-30,Bajaj Finserv Limited,NSE shareholding summary,1.0,1.0,,,58.65
-BAJAJHFL,86.7,,,,0.0,,,,2026-09-30,Bajaj Housing Finance Limited,NSE shareholding summary,1.0,1.0,,,86.7
-BAJAJHLDNG,51.46,,,,0.0,,,,2026-09-30,Bajaj Holdings & Investment Limited,NSE shareholding summary,1.0,1.0,,,51.46
-BAJFINANCE,54.67,,,,0.0,,,,2026-09-30,Bajaj Finance Limited,NSE shareholding summary,1.0,1.0,,,54.67
-BALKRISIND,58.29,,,,0.0,,,,2026-09-30,Balkrishna Industries Limited,NSE shareholding summary,1.0,1.0,,,58.29
-BANKBARODA,63.97,,,,0.0,,,,2026-09-30,Bank of Baroda,NSE shareholding summary,1.0,1.0,,,63.97
-BANKINDIA,73.38,,,,0.0,,,,2026-09-30,Bank of India,NSE shareholding summary,1.0,1.0,,,73.38
-BDL,74.93,,,,0.0,,,,2026-09-30,Bharat Dynamics Limited,NSE shareholding summary,1.0,1.0,,,74.93
-BEL,51.14,,,,0.0,,,,2026-09-30,Bharat Electronics Limited,NSE shareholding summary,1.0,1.0,,,51.14
-BERGEPAINT,74.99,,,,0.01,,,,2026-09-30,Berger Paints (I) Limited,NSE shareholding summary,1.0,1.0,,,74.99
-BHARATFORG,43.12,,,,0.0,,,,2026-09-30,Bharat Forge Limited,NSE shareholding summary,1.0,1.0,,,43.12
-BHARTIARTL,50.07,25.45,21.74,2.72,0.0,,,,2026-09-30,Bharti Airtel Limited,NSE shareholding,1.0,1.0,0.0,0.0,50.07
-BHARTIHEXA,70.0,,,,0.0,,,,2026-09-30,Bharti Hexacom Limited,NSE shareholding summary,1.0,1.0,,,70.0
-BHEL,58.17,,,,0.0,,,,2026-09-30,Bharat Heavy Electricals Limited,NSE shareholding summary,1.0,1.0,,,58.17
-BIOCON,44.68,,,,0.0,,,,2026-09-30,Biocon Limited,NSE shareholding summary,1.0,1.0,,,44.68
-BLUESTARCO,36.5,,,,0.0,,,,2026-09-30,Blue Star Limited,NSE shareholding summary,1.0,1.0,,,36.5
-BOSCHLTD,70.54,,,,0.0,,,,2026-09-30,Bosch Limited,NSE shareholding summary,1.0,1.0,,,70.54
-BPCL,52.98,,,,0.0,,,,2026-09-30,Bharat Petroleum Corporation Limited,NSE shareholding summary,1.0,1.0,,,52.98
-BRITANNIA,50.55,,,,0.0,,,,2026-09-30,Britannia Industries Limited,NSE shareholding summary,1.0,1.0,,,50.55
-BSE,0.0,,,,0.0,,,,2026-09-30,BSE Limited,NSE shareholding summary,1.0,1.0,,,0.0
-CANBK,62.93,,,,0.0,,,,2026-09-30,Canara Bank,NSE shareholding summary,1.0,1.0,,,62.93
-CGPOWER,56.34,,,,-0.02,,,,2026-09-30,CG Power and Industrial Solutions Limited,NSE shareholding summary,1.0,1.0,,,56.34
-CHOLAFIN,48.93,,,,-0.29,,,,2026-09-30,Cholamandalam Investment and Finance Company Limited,NSE shareholding summary,0.0,1.0,,,48.93
-CIPLA,29.21,,,,0.0,,,,2026-09-30,Cipla Limited,NSE shareholding summary,1.0,1.0,,,29.21
-COALINDIA,61.13,,,,0.0,,,,2026-09-30,Coal India Limited,NSE shareholding summary,1.0,1.0,,,61.13
-COCHINSHIP,63.33,,,,-4.58,,,,2026-09-30,Cochin Shipyard Limited,NSE shareholding summary,0.0,1.0,,,63.33
-COFORGE,0.0,,,,0.0,,,,2026-09-30,Coforge Limited,NSE shareholding summary,1.0,1.0,,,0.0
-COLPAL,51.0,,,,0.0,,,,2026-09-30,Colgate Palmolive (India) Limited,NSE shareholding summary,1.0,1.0,,,51.0
-CONCOR,54.8,,,,0.0,,,,2026-09-30,Container Corporation of India Limited,NSE shareholding summary,1.0,1.0,,,54.8
-COROMANDEL,56.34,,,,-0.01,,,,2026-09-30,Coromandel International Limited,NSE shareholding summary,1.0,1.0,,,56.34
-CRISIL,66.64,,,,0.0,,,,2026-09-30,Crisil Limited,NSE shareholding summary,1.0,1.0,,,66.64
-CUMMINSIND,51.0,,,,0.0,,,,2026-09-30,Cummins India Limited,NSE shareholding summary,1.0,1.0,,,51.0
-DABUR,66.25,,,,0.01,,,,2026-09-30,Dabur India Limited,NSE shareholding summary,1.0,1.0,,,66.25
-DALBHARAT,55.84,,,,0.0,,,,2026-09-30,Dalmia Bharat Limited,NSE shareholding summary,1.0,1.0,,,55.84
-DIVISLAB,51.88,,,,0.0,,,,2026-09-30,Divi's Laboratories Limited,NSE shareholding summary,1.0,1.0,,,51.88
-DIXON,28.5,,,,-0.05,,,,2026-09-30,Dixon Technologies (India) Limited,NSE shareholding summary,1.0,1.0,,,28.5
-DLF,74.08,,,,0.0,,,,2026-09-30,DLF Limited,NSE shareholding summary,1.0,1.0,,,74.08
-DMART,74.48,,,,0.0,,,,2026-09-30,Avenue Supermarts Limited,NSE shareholding summary,1.0,1.0,,,74.48
-DRREDDY,26.63,,,,-0.01,,,,2026-09-30,Dr. Reddy's Laboratories Limited,NSE shareholding summary,1.0,1.0,,,26.63
-EICHERMOT,49.02,,,,0.0,,,,2026-09-30,Eicher Motors Limited,NSE shareholding summary,1.0,1.0,,,49.02
-ENDURANCE,75.0,,,,0.0,,,,2026-09-30,Endurance Technologies Limited,NSE shareholding summary,1.0,1.0,,,75.0
-ENRIN,75.0,,,,0.0,,,,2026-09-30,Siemens Energy India Limited,NSE shareholding summary,1.0,1.0,,,75.0
-ESCORTS,68.04,,,,0.0,,,,2026-09-30,Escorts Kubota Limited,NSE shareholding summary,1.0,1.0,,,68.04
-ETERNAL,0.0,,,,0.0,,,,2026-09-30,ETERNAL LIMITED,NSE shareholding summary,1.0,1.0,,,0.0
-EXIDEIND,45.99,,,,0.0,,,,2026-09-30,Exide Industries Limited,NSE shareholding summary,1.0,1.0,,,45.99
-FACT,90.0,,,,0.0,,,,2026-09-30,Fertilizers and Chemicals Travancore Limited,NSE shareholding summary,1.0,1.0,,,90.0
-FEDERALBNK,0.0,,,,0.0,,,,2026-09-30,The Federal Bank  Limited,NSE shareholding summary,1.0,1.0,,,0.0
-FLUOROCHEM,61.39,,,,0.0,,,,2026-09-30,Gujarat Fluorochemicals Limited,NSE shareholding summary,1.0,1.0,,,61.39
-FORTIS,31.17,,,,0.0,,,,2026-09-30,Fortis Healthcare Limited,NSE shareholding summary,1.0,1.0,,,31.17
-GAIL,51.85,,,,0.06,,,,2026-09-30,GAIL (India) Limited,NSE shareholding summary,1.0,1.0,,,51.85
-GICRE,77.4,,,,0.0,,,,2026-09-30,General Insurance Corporation of India,NSE shareholding summary,1.0,1.0,,,77.4
-GLAXO,75.0,,,,0.0,,,,2026-09-30,GlaxoSmithKline Pharmaceuticals Limited,NSE shareholding summary,1.0,1.0,,,75.0
-GLENMARK,46.65,,,,0.0,,,,2026-09-30,Glenmark Pharmaceuticals Limited,NSE shareholding summary,1.0,1.0,,,46.65
-GMRAIRPORT,67.48,,,,0.32,,,,2026-09-30,GMR AIRPORTS LIMITED,NSE shareholding summary,1.0,0.0,,,67.48
-GODFRYPHLP,72.58,,,,0.0,,,,2026-09-30,Godfrey Phillips India Limited,NSE shareholding summary,1.0,1.0,,,72.58
-GODREJCP,53.05,,,,0.0,,,,2026-09-30,Godrej Consumer Products Limited,NSE shareholding summary,1.0,1.0,,,53.05
-GODREJIND,74.63,,,,-0.01,,,,2026-09-30,Godrej Industries Limited,NSE shareholding summary,1.0,1.0,,,74.63
-GODREJPROP,51.66,,,,0.0,,,,2026-09-30,Godrej Properties Limited,NSE shareholding summary,1.0,1.0,,,51.66
-GRASIM,45.2,,,,1.46,,,,2026-09-30,Grasim Industries Limited,NSE shareholding summary,1.0,0.0,,,45.2
-GROWW,27.13,,,,-0.01,,,,2026-09-30,Billionbrains Garage Ventures Limited,NSE shareholding summary,1.0,1.0,,,27.13
-GVT&D,51.0,,,,0.0,,,,2026-09-30,GE Vernova T&D India Limited,NSE shareholding summary,1.0,1.0,,,51.0
-HAL,71.64,,,,0.0,,,,2026-09-30,Hindustan Aeronautics Limited,NSE shareholding summary,1.0,1.0,,,71.64
-HAVELLS,59.35,,,,0.0,,,,2026-09-30,Havells India Limited,NSE shareholding summary,1.0,1.0,,,59.35
-HCLTECH,60.88,,,,0.0,,,,2026-09-30,HCL Technologies Limited,NSE shareholding summary,1.0,1.0,,,60.88
-HDBFS,74.08,,,,-0.04,,,,2026-09-30,HDB Financial Services Limited,NSE shareholding summary,1.0,1.0,,,74.08
-HDFCAMC,52.29,,,,-0.05,,,,2026-09-30,HDFC Asset Management Company Limited,NSE shareholding summary,1.0,1.0,,,52.29
-HDFCBANK,0.0,39.4,43.63,16.97,0.0,,,,2026-09-30,HDFC Bank Limited,NSE shareholding,1.0,1.0,0.0,0.0,0.0
-HDFCLIFE,50.53,,,,-0.01,,,,2026-09-30,HDFC Life Insurance Company Limited,NSE shareholding summary,1.0,1.0,,,50.53
-HEROMOTOCO,34.72,,,,-0.01,,,,2026-09-30,Hero MotoCorp Limited,NSE shareholding summary,1.0,1.0,,,34.72
-HEXT,74.3,,,,0.0,,,,2026-09-30,Hexaware Technologies Limited,NSE shareholding summary,1.0,1.0,,,74.3
-HINDALCO,34.66,,,,0.0,,,,2026-09-30,Hindalco Industries Limited,NSE shareholding summary,1.0,1.0,,,34.66
-HINDCOPPER,60.14,,,,-6.0,,,,2026-09-30,Hindustan Copper Limited,NSE shareholding summary,0.0,1.0,,,60.14
-HINDPETRO,54.9,,,,0.0,,,,2026-09-30,Hindustan Petroleum Corporation Limited,NSE shareholding summary,1.0,1.0,,,54.9
-HINDUNILVR,61.9,,,,0.0,,,,2026-09-30,Hindustan Unilever Limited,NSE shareholding summary,1.0,1.0,,,61.9
-HINDZINC,60.71,,,,0.0,,,,2026-09-30,Hindustan Zinc Limited,NSE shareholding summary,1.0,1.0,,,60.71
-HUDCO,75.0,,,,0.0,,,,2026-09-30,Housing & Urban Development Corporation Limited,NSE shareholding summary,1.0,1.0,,,75.0
-HYUNDAI,82.5,,,,0.0,,,,2026-09-30,Hyundai Motor India Limited,NSE shareholding summary,1.0,1.0,,,82.5
-ICICIAMC,85.6,,,,-2.0,,,,2026-09-30,ICICI Prudential Asset Management Company Limited,NSE shareholding summary,0.0,1.0,,,85.6
-ICICIBANK,0.0,50.44,41.78,7.56,0.0,,,,2026-09-30,ICICI Bank Limited,NSE shareholding,1.0,1.0,0.0,0.0,0.0
-ICICIGI,51.28,,,,0.06,,,,2026-09-30,ICICI Lombard General Insurance Company Limited,NSE shareholding summary,1.0,1.0,,,51.28
-ICICILIFE,74.7,,,,1.97,,,,2026-09-30,ICICI Life Insurance Limited,NSE shareholding summary,1.0,0.0,,,74.7
-IDEA,25.64,,,,0.0,,,,2026-09-30,Vodafone Idea Limited,NSE shareholding summary,1.0,1.0,,,25.64
-IDFCFIRSTB,0.0,,,,0.0,,,,2026-09-30,IDFC First Bank Limited,NSE shareholding summary,1.0,1.0,,,0.0
-INDHOTEL,38.12,,,,0.0,,,,2026-09-30,The Indian Hotels Company Limited,NSE shareholding summary,1.0,1.0,,,38.12
-INDIANB,73.84,,,,0.0,,,,2026-09-30,Indian Bank,NSE shareholding summary,1.0,1.0,,,73.84
-INDIGO,41.57,,,,0.0,,,,2026-09-30,InterGlobe Aviation Limited,NSE shareholding summary,1.0,1.0,,,41.57
-INDUSINDBK,15.82,,,,0.0,,,,2026-09-30,IndusInd Bank Limited,NSE shareholding summary,1.0,1.0,,,15.82
-INDUSTOWER,51.26,,,,0.0,,,,2026-09-30,Indus Towers Limited,NSE shareholding summary,1.0,1.0,,,51.26
-INFY,13.9,27.44,42.85,15.57,0.08,,,,2026-09-30,Infosys Limited,NSE shareholding,1.0,1.0,0.0,0.0,13.9
-IOB,92.44,,,,0.0,,,,2026-09-30,Indian Overseas Bank,NSE shareholding summary,1.0,1.0,,,92.44
-IOC,51.5,,,,0.0,,,,2026-09-30,Indian Oil Corporation Limited,NSE shareholding summary,1.0,1.0,,,51.5
-IPCALAB,44.72,,,,0.0,,,,2026-09-30,IPCA Laboratories Limited,NSE shareholding summary,1.0,1.0,,,44.72
-IRCTC,62.4,,,,0.0,,,,2026-09-30,Indian Railway Catering And Tourism Corporation Limited,NSE shareholding summary,1.0,1.0,,,62.4
-IREDA,71.76,,,,0.0,,,,2026-09-30,Indian Renewable Energy Development Agency Limited,NSE shareholding summary,1.0,1.0,,,71.76
-IRFC,82.9,,,,0.0,,,,2026-09-30,Indian Railway Finance Corporation Limited,NSE shareholding summary,1.0,1.0,,,82.9
-ITC,0.0,33.22,49.82,16.93,0.0,,,,2026-09-30,ITC Limited,NSE shareholding,1.0,1.0,0.0,0.0,0.0
-ITCHOTELS,39.85,,,,0.0,,,,2026-09-30,ITC Hotels Limited,NSE shareholding summary,1.0,1.0,,,39.85
-JINDALSTEL,62.69,,,,0.0,,,,2026-09-30,JINDAL STEEL LIMITED,NSE shareholding summary,1.0,1.0,,,62.69
-JIOFIN,49.13,,,,0.0,,,,2026-09-30,Jio Financial Services Limited,NSE shareholding summary,1.0,1.0,,,49.13
-JKCEMENT,45.66,,,,0.0,,,,2026-09-30,JK Cement Limited,NSE shareholding summary,1.0,1.0,,,45.66
-JSL,62.55,,,,0.5,,,,2026-09-30,Jindal Stainless Limited,NSE shareholding summary,1.0,0.0,,,62.55
-JSWENERGY,66.53,,,,0.0,,,,2026-09-30,JSW Energy Limited,NSE shareholding summary,1.0,1.0,,,66.53
-JSWINFRA,73.93,,,,0.0,,,,2026-09-30,JSW Infrastructure Limited,NSE shareholding summary,1.0,1.0,,,73.93
-JSWSTEEL,44.3,,,,0.01,,,,2026-09-30,JSW Steel Limited,NSE shareholding summary,1.0,1.0,,,44.3
-JUBLFOOD,40.27,,,,0.0,,,,2026-09-30,Jubilant Foodworks Limited,NSE shareholding summary,1.0,1.0,,,40.27
-KALYANKJIL,62.85,,,,-0.01,,,,2026-09-30,Kalyan Jewellers India Limited,NSE shareholding summary,1.0,1.0,,,62.85
-KEI,35.0,,,,0.0,,,,2026-09-30,KEI Industries Limited,NSE shareholding summary,1.0,1.0,,,35.0
-KOTAKBANK,25.87,,,,0.0,,,,2026-09-30,Kotak Mahindra Bank Limited,NSE shareholding summary,1.0,1.0,,,25.87
-KPRMILL,67.52,,,,0.0,,,,2026-09-30,K.P.R. Mill Limited,NSE shareholding summary,1.0,1.0,,,67.52
-LAURUSLABS,27.47,,,,0.0,,,,2026-09-30,Laurus Labs Limited,NSE shareholding summary,1.0,1.0,,,27.47
-LENSKART,17.52,,,,-0.01,,,,2026-09-30,Lenskart Solutions Limited,NSE shareholding summary,1.0,1.0,,,17.52
-LGEINDIA,85.0,,,,0.0,,,,2026-09-30,LG Electronics India Limited,NSE shareholding summary,1.0,1.0,,,85.0
-LICHSGFIN,45.24,,,,0.0,,,,2026-09-30,LIC Housing Finance Limited,NSE shareholding summary,1.0,1.0,,,45.24
-LICI,90.0,,,,-6.5,,,,2026-09-30,Life Insurance Corporation Of India,NSE shareholding summary,0.0,1.0,,,90.0
-LINDEINDIA,75.0,,,,0.0,,,,2026-09-30,Linde India Limited,NSE shareholding summary,1.0,1.0,,,75.0
-LLOYDSME,61.61,,,,-0.02,,,,2026-09-30,Lloyds Metals And Energy Limited,NSE shareholding summary,1.0,1.0,,,61.61
-LODHA,70.29,,,,-0.02,,,,2026-09-30,Lodha Developers Limited,NSE shareholding summary,1.0,1.0,,,70.29
-LT,0.0,19.21,42.86,37.67,0.0,,,,2026-09-30,Larsen & Toubro Limited,NSE shareholding,1.0,1.0,0.0,0.0,0.0
-LTF,65.93,,,,-0.03,,,,2026-09-30,L&T Finance Limited,NSE shareholding summary,1.0,1.0,,,65.93
-LTM,69.01,,,,0.52,,,,2026-09-30,LTM Limited,NSE shareholding summary,1.0,0.0,,,69.01
-LTTS,73.51,,,,-0.01,,,,2026-09-30,L&T Technology Services Limited,NSE shareholding summary,1.0,1.0,,,73.51
-LUPIN,46.84,,,,-0.01,,,,2026-09-30,Lupin Limited,NSE shareholding summary,1.0,1.0,,,46.84
-M&M,18.39,,,,-0.06,,,,2026-09-30,Mahindra & Mahindra Limited,NSE shareholding summary,1.0,1.0,,,18.39
-M&MFIN,52.48,,,,-0.01,,,,2026-09-30,Mahindra & Mahindra Financial Services Limited,NSE shareholding summary,1.0,1.0,,,52.48
-MAHABANK,73.6,,,,0.0,,,,2026-09-30,Bank of Maharashtra,NSE shareholding summary,1.0,1.0,,,73.6
-MANKIND,72.62,,,,-0.01,,,,2026-09-30,Mankind Pharma Limited,NSE shareholding summary,1.0,1.0,,,72.62
-MARICO,58.83,,,,-0.08,,,,2026-09-30,Marico Limited,NSE shareholding summary,1.0,1.0,,,58.83
-MARUTI,58.72,,,,0.07,,,,2026-09-30,Maruti Suzuki India Limited,NSE shareholding summary,1.0,1.0,,,58.72
-MAXHEALTH,23.71,,,,0.0,,,,2026-09-30,Max Healthcare Institute Limited,NSE shareholding summary,1.0,1.0,,,23.71
-MAZDOCK,81.22,,,,0.0,,,,2026-09-30,Mazagon Dock Shipbuilders Limited,NSE shareholding summary,1.0,1.0,,,81.22
-MEDANTA,33.0,,,,0.0,,,,2026-09-30,Global Health Limited,NSE shareholding summary,1.0,1.0,,,33.0
-MEESHO,16.34,,,,-0.07,,,,2026-09-30,Meesho Limited,NSE shareholding summary,1.0,1.0,,,16.34
-MFSL,1.25,,,,0.0,,,,2026-09-30,Max Financial Services Limited,NSE shareholding summary,1.0,1.0,,,1.25
-MOTHERSON,48.6,,,,0.0,,,,2026-09-30,Samvardhana Motherson International Limited,NSE shareholding summary,1.0,1.0,,,48.6
-MOTILALOFS,66.71,,,,-0.49,,,,2026-09-30,Motilal Oswal Financial Services Limited,NSE shareholding summary,0.0,1.0,,,66.71
-MPHASIS,30.53,,,,-0.01,,,,2026-09-30,MphasiS Limited,NSE shareholding summary,1.0,1.0,,,30.53
-MRF,27.61,,,,-0.16,,,,2026-09-30,MRF Limited,NSE shareholding summary,1.0,1.0,,,27.61
-MUTHOOTFIN,73.35,,,,0.0,,,,2026-09-30,Muthoot Finance Limited,NSE shareholding summary,1.0,1.0,,,73.35
-NAM-INDIA,71.72,,,,-0.08,,,,2026-09-30,Nippon Life India Asset Management Limited,NSE shareholding summary,1.0,1.0,,,71.72
-NATIONALUM,51.28,,,,0.0,,,,2026-09-30,National Aluminium Company Limited,NSE shareholding summary,1.0,1.0,,,51.28
-NAUKRI,37.19,,,,-0.28,,,,2026-09-30,Info Edge (India) Limited,NSE shareholding summary,0.0,1.0,,,37.19
-NESTLEIND,62.76,,,,0.0,,,,2026-09-30,Nestle India Limited,NSE shareholding summary,1.0,1.0,,,62.76
-NH,63.27,,,,0.0,,,,2026-09-30,Narayana Hrudayalaya Ltd.,NSE shareholding summary,1.0,1.0,,,63.27
-NHPC,61.39,,,,0.0,,,,2026-09-30,NHPC Limited,NSE shareholding summary,1.0,1.0,,,61.39
-NLCINDIA,69.47,,,,0.0,,,,2026-09-30,NLC India Limited,NSE shareholding summary,1.0,1.0,,,69.47
-NMDC,60.79,,,,0.0,,,,2026-09-30,NMDC Limited,NSE shareholding summary,1.0,1.0,,,60.79
-NTPC,51.1,,,,0.0,,,,2026-09-30,NTPC Limited,NSE shareholding summary,1.0,1.0,,,51.1
-NTPCGREEN,89.01,,,,0.0,,,,2026-09-30,NTPC Green Energy Limited,NSE shareholding summary,1.0,1.0,,,89.01
-NYKAA,52.07,,,,-0.01,,,,2026-09-30,FSN E-Commerce Ventures Limited,NSE shareholding summary,1.0,1.0,,,52.07
-OBEROIRLTY,67.7,,,,0.0,,,,2026-09-30,Oberoi Realty Limited,NSE shareholding summary,1.0,1.0,,,67.7
-OFSS,72.39,,,,-0.02,,,,2026-09-30,Oracle Financial Services Software Limited,NSE shareholding summary,1.0,1.0,,,72.39
-OIL,56.66,,,,0.0,,,,2026-09-30,Oil India Limited,NSE shareholding summary,1.0,1.0,,,56.66
-ONGC,58.89,,,,0.0,,,,2026-09-30,Oil & Natural Gas Corporation Limited,NSE shareholding summary,1.0,1.0,,,58.89
-PAGEIND,42.89,,,,0.0,,,,2026-09-30,Page Industries Limited,NSE shareholding summary,1.0,1.0,,,42.89
-PATANJALI,68.25,,,,0.0,,,,2026-09-30,Patanjali Foods Limited,NSE shareholding summary,1.0,1.0,,,68.25
-PAYTM,0.0,,,,0.0,,,,2026-09-30,One 97 Communications Limited,NSE shareholding summary,1.0,1.0,,,0.0
-PERSISTENT,30.29,,,,0.0,,,,2026-09-30,Persistent Systems Limited,NSE shareholding summary,1.0,1.0,,,30.29
-PETRONET,50.0,,,,0.0,,,,2026-09-30,Petronet LNG Limited,NSE shareholding summary,1.0,1.0,,,50.0
-PFC,55.99,,,,0.0,,,,2026-09-30,Power Finance Corporation Limited,NSE shareholding summary,1.0,1.0,,,55.99
-PHOENIXLTD,47.24,,,,-0.01,,,,2026-09-30,The Phoenix Mills Limited,NSE shareholding summary,1.0,1.0,,,47.24
-PIDILITIND,69.18,,,,-0.06,,,,2026-09-30,Pidilite Industries Limited,NSE shareholding summary,1.0,1.0,,,69.18
-PIIND,46.09,,,,0.0,,,,2026-09-30,PI Industries Limited,NSE shareholding summary,1.0,1.0,,,46.09
-PIRAMALFIN,44.22,,,,0.0,,,,2026-09-30,Piramal Finance Limited,NSE shareholding summary,1.0,1.0,,,44.22
-PNB,70.08,,,,0.0,,,,2026-09-30,Punjab National Bank,NSE shareholding summary,1.0,1.0,,,70.08
-POLICYBZR,0.0,,,,0.0,,,,2026-09-30,PB Fintech Limited,NSE shareholding summary,1.0,1.0,,,0.0
-POLYCAB,61.44,,,,-0.02,,,,2026-09-30,Polycab India Limited,NSE shareholding summary,1.0,1.0,,,61.44
-POWERGRID,51.34,,,,0.0,,,,2026-09-30,Power Grid Corporation of India Limited,NSE shareholding summary,1.0,1.0,,,51.34
-POWERINDIA,71.31,,,,0.0,,,,2026-09-30,Hitachi Energy India Limited,NSE shareholding summary,1.0,1.0,,,71.31
-PREMIERENE,58.49,,,,0.0,,,,2026-09-30,Premier Energies Limited,NSE shareholding summary,1.0,1.0,,,58.49
-PRESTIGE,60.94,,,,0.0,,,,2026-09-30,Prestige Estates Projects Limited,NSE shareholding summary,1.0,1.0,,,60.94
-RADICO,40.17,,,,-0.02,,,,2026-09-30,Radico Khaitan Limited,NSE shareholding summary,1.0,1.0,,,40.17
-RECLTD,52.63,,,,0.0,,,,2026-09-30,REC Limited,NSE shareholding summary,1.0,1.0,,,52.63
-RELIANCE,50.44,16.67,21.72,11.07,-0.04,,,,2026-09-30,Reliance Industries Limited,NSE shareholding,1.0,1.0,0.0,0.0,50.44
-RVNL,72.84,,,,0.0,,,,2026-09-30,Rail Vikas Nigam Limited,NSE shareholding summary,1.0,1.0,,,72.84
-SAIL,65.0,,,,0.0,,,,2026-09-30,Steel Authority of India Limited,NSE shareholding summary,1.0,1.0,,,65.0
-SBICARD,68.86,,,,0.0,,,,2026-09-30,SBI Cards and Payment Services Limited,NSE shareholding summary,1.0,1.0,,,68.86
-SBILIFE,55.31,,,,-0.01,,,,2026-09-30,SBI Life Insurance Company Limited,NSE shareholding summary,1.0,1.0,,,55.31
-SBIN,55.45,11.07,26.34,7.12,-0.02,,,,2026-09-30,State Bank of India,NSE shareholding,1.0,1.0,0.0,0.0,55.45
-SCHAEFFLER,74.13,,,,0.0,,,,2026-09-30,Schaeffler India Limited,NSE shareholding summary,1.0,1.0,,,74.13
-SHREECEM,62.55,,,,0.0,,,,2026-09-30,SHREE CEMENT LIMITED,NSE shareholding summary,1.0,1.0,,,62.55
-SHRIRAMFIN,20.3,,,,0.0,,,,2026-09-30,Shriram Finance Limited,NSE shareholding summary,1.0,1.0,,,20.3
-SIEMENS,75.0,,,,0.0,,,,2026-09-30,Siemens Limited,NSE shareholding summary,1.0,1.0,,,75.0
-SOLARINDS,73.15,,,,0.0,,,,2026-09-30,Solar Industries India Limited,NSE shareholding summary,1.0,1.0,,,73.15
-SRF,50.26,,,,0.0,,,,2026-09-30,SRF Limited,NSE shareholding summary,1.0,1.0,,,50.26
-SUNDARMFIN,37.19,,,,-0.02,,,,2026-09-30,Sundaram Finance Limited,NSE shareholding summary,1.0,1.0,,,37.19
-SUNPHARMA,52.68,,,,-1.8,,,,2026-09-30,Sun Pharmaceutical Industries Limited,NSE shareholding summary,0.0,1.0,,,52.68
-SUPREMEIND,48.96,,,,0.0,,,,2026-09-30,Supreme Industries Limited,NSE shareholding summary,1.0,1.0,,,48.96
-SUZLON,11.7,,,,-0.01,,,,2026-09-30,Suzlon Energy Limited,NSE shareholding summary,1.0,1.0,,,11.7
-SWIGGY,0.0,,,,0.0,,,,2026-09-30,Swiggy Limited,NSE shareholding summary,1.0,1.0,,,0.0
-TATACAP,85.41,,,,0.0,,,,2026-09-30,Tata Capital Limited,NSE shareholding summary,1.0,1.0,,,85.41
-TATACOMM,58.85,,,,-0.01,,,,2026-09-30,Tata Communications Limited,NSE shareholding summary,1.0,1.0,,,58.85
-TATACONSUM,33.83,,,,0.0,,,,2026-09-30,TATA CONSUMER PRODUCTS LIMITED,NSE shareholding summary,1.0,1.0,,,33.83
-TATAINVEST,73.38,,,,0.0,,,,2026-09-30,Tata Investment Corporation Limited,NSE shareholding summary,1.0,1.0,,,73.38
-TATAPOWER,46.86,,,,0.0,,,,2026-09-30,Tata Power Company Limited,NSE shareholding summary,1.0,1.0,,,46.86
-TATASTEEL,32.94,,,,0.0,,,,2026-09-30,Tata Steel Limited,NSE shareholding summary,1.0,1.0,,,32.94
-TCS,71.77,9.01,13.57,5.65,0.0,,,,2026-09-30,Tata Consultancy Services Limited,NSE shareholding,1.0,1.0,0.0,0.0,71.77
-TECHM,34.96,,,,-0.01,,,,2026-09-30,Tech Mahindra Limited,NSE shareholding summary,1.0,1.0,,,34.96
-THERMAX,61.98,,,,0.0,,,,2026-09-30,Thermax Limited,NSE shareholding summary,1.0,1.0,,,61.98
-TIINDIA,44.1,,,,0.0,,,,2026-09-30,Tube Investments of India Limited,NSE shareholding summary,1.0,1.0,,,44.1
-TITAN,52.9,,,,0.0,,,,2026-09-30,Titan Company Limited,NSE shareholding summary,1.0,1.0,,,52.9
-TMCV,42.51,,,,-0.05,,,,2026-09-30,Tata Motors Limited,NSE shareholding summary,1.0,1.0,,,42.51
-TMPV,42.5,,,,-0.01,,,,2026-09-30,Tata Motors Passenger Vehicles Limited,NSE shareholding summary,1.0,1.0,,,42.5
-TORNTPHARM,60.78,,,,0.0,,,,2026-09-30,Torrent Pharmaceuticals Limited,NSE shareholding summary,1.0,1.0,,,60.78
-TORNTPOWER,51.09,,,,0.0,,,,2026-09-30,Torrent Power Limited,NSE shareholding summary,1.0,1.0,,,51.09
-TRENT,37.01,,,,0.0,,,,2026-09-30,Trent Limited,NSE shareholding summary,1.0,1.0,,,37.01
-TVSMOTOR,50.27,,,,0.0,,,,2026-09-30,TVS Motor Company Limited,NSE shareholding summary,1.0,1.0,,,50.27
-UBL,70.83,,,,0.0,,,,2026-09-30,United Breweries Limited,NSE shareholding summary,1.0,1.0,,,70.83
-ULTRACEMCO,58.48,,,,-0.85,,,,2026-09-30,UltraTech Cement Limited,NSE shareholding summary,0.0,1.0,,,58.48
-UNIONBANK,74.76,,,,0.0,,,,2026-09-30,Union Bank of India,NSE shareholding summary,1.0,1.0,,,74.76
-UNITDSPR,56.67,,,,0.0,,,,2026-09-30,United Spirits Limited,NSE shareholding summary,1.0,1.0,,,56.67
-UNOMINDA,68.36,,,,0.0,,,,2026-09-30,UNO Minda Limited,NSE shareholding summary,1.0,1.0,,,68.36
-UPL,33.51,,,,0.0,,,,2026-09-30,UPL Limited,NSE shareholding summary,1.0,1.0,,,33.51
-VAML,56.38,,,,0.0,,,,2026-09-30,Vedanta Aluminium Metal Limited,NSE shareholding summary,1.0,1.0,,,56.38
-VBL,59.43,,,,0.0,,,,2026-09-30,Varun Beverages Limited,NSE shareholding summary,1.0,1.0,,,59.43
-VEDL,54.72,,,,0.0,,,,2026-09-30,Vedanta Limited,NSE shareholding summary,1.0,1.0,,,54.72
-VMM,40.02,,,,-0.07,,,,2026-09-30,Vishal Mega Mart Limited,NSE shareholding summary,1.0,1.0,,,40.02
-VOLTAS,30.3,,,,0.0,,,,2026-09-30,Voltas Limited,NSE shareholding summary,1.0,1.0,,,30.3
-WAAREEENER,64.12,,,,0.0,,,,2026-09-30,Waaree Energies Limited,NSE shareholding summary,1.0,1.0,,,64.12
-WIPRO,72.58,,,,-0.01,,,,2026-09-30,Wipro Limited,NSE shareholding summary,1.0,1.0,,,72.58
-YESBANK,0.0,,,,0.0,,,,2026-09-30,Yes Bank Limited,NSE shareholding summary,1.0,1.0,,,0.0
-ZYDUSLIFE,75.01,,,,0.0,,,,2026-09-30,Zydus Lifesciences Limited,NSE shareholding summary,1.0,1.0,,,75.01
+ticker,promoter_pct,fii_pct,dii_pct,public_pct,promoter_chg,fii_chg,dii_chg,public_chg,as_of,company,source,inst_up,inst_down,insider_buys,insider_sells,ownership_pct,fetched_on
+360ONE,6.18,,,,-0.02,,,,2026-09-30,360 ONE WAM LIMITED,NSE shareholding summary,1.0,1.0,,,6.18,
+ABB,75.0,,,,0.0,,,,2026-09-30,ABB India Limited,NSE shareholding summary,1.0,1.0,,,75.0,
+ABCAPITAL,68.82,,,,0.01,,,,2026-09-30,Aditya Birla Capital Limited,NSE shareholding summary,1.0,1.0,,,68.82,
+ADANIENSOL,73.39,,,,0.0,,,,2026-09-30,Adani Energy Solutions Limited,NSE shareholding summary,1.0,1.0,,,73.39,
+ADANIENT,71.97,,,,0.0,,,,2026-09-30,Adani Enterprises Limited,NSE shareholding summary,1.0,1.0,,,71.97,
+ADANIGREEN,62.43,,,,0.0,,,,2026-09-30,Adani Green Energy Limited,NSE shareholding summary,1.0,1.0,,,62.43,
+ADANIPORTS,66.03,,,,0.0,,,,2026-09-30,Adani Ports and Special Economic Zone Limited,NSE shareholding summary,1.0,1.0,,,66.03,
+ADANIPOWER,74.96,,,,0.0,,,,2026-09-30,Adani Power Limited,NSE shareholding summary,1.0,1.0,,,74.96,
+AIAENG,58.5,,,,0.0,,,,2026-09-30,AIA Engineering Limited,NSE shareholding summary,1.0,1.0,,,58.5,
+AIIL,68.81,,,,0.0,,,,2026-09-30,Authum Investment & Infrastructure Limited,NSE shareholding summary,1.0,1.0,,,68.81,
+AJANTPHARM,63.47,,,,-0.01,,,,2026-09-30,Ajanta Pharma Limited,NSE shareholding summary,1.0,1.0,,,63.47,
+ALKEM,49.7,,,,-1.5,,,,2026-06-30,Alkem Laboratories Limited,NSE shareholding summary,0.0,1.0,,,49.7,
+AMBUJACEM,67.33,,,,0.0,,,,2026-09-30,Ambuja Cements Limited,NSE shareholding summary,1.0,1.0,,,67.33,
+ANTHEM,71.4,,,,-0.02,,,,2026-09-30,Anthem Biosciences Limited,NSE shareholding summary,1.0,1.0,,,71.4,
+APARINDS,55.42,,,,0.0,,,,2026-09-30,Apar Industries Limited,NSE shareholding summary,1.0,1.0,,,55.42,
+APLAPOLLO,28.18,,,,-0.07,,,,2026-09-30,APL Apollo Tubes Limited,NSE shareholding summary,1.0,1.0,,,28.18,
+APOLLOHOSP,28.02,,,,0.0,,,,2026-09-30,Apollo Hospitals Enterprise Limited,NSE shareholding summary,1.0,1.0,,,28.02,
+ASHOKLEY,51.51,,,,0.0,,,,2026-09-30,Ashok Leyland Limited,NSE shareholding summary,1.0,1.0,,,51.51,
+ASIANPAINT,52.65,13.76,20.5,13.02,0.02,,,,2026-09-30,Asian Paints Limited,NSE shareholding,1.0,1.0,0.0,0.0,52.65,
+ASTERDM,53.79,,,,0.07,,,,2026-09-30,Aster DM Quality Care Limited,NSE shareholding summary,1.0,1.0,,,53.79,
+ASTRAL,54.22,,,,0.0,,,,2026-09-30,Astral Limited,NSE shareholding summary,1.0,1.0,,,54.22,
+ATGL,74.8,,,,0.0,,,,2026-09-30,Adani Total Gas Limited,NSE shareholding summary,1.0,1.0,,,74.8,
+AUBANK,22.67,,,,-0.07,,,,2026-09-30,AU Small Finance Bank Limited,NSE shareholding summary,1.0,1.0,,,22.67,
+AUROPHARMA,51.88,,,,0.0,,,,2026-09-30,Aurobindo Pharma Limited,NSE shareholding summary,1.0,1.0,,,51.88,
+AXISBANK,7.86,,,,-0.01,,,,2026-09-30,Axis Bank Limited,NSE shareholding summary,1.0,1.0,,,7.86,
+BAJAJ-AUTO,55.95,,,,0.94,,,,2026-09-30,Bajaj Auto Limited,NSE shareholding summary,1.0,0.0,,,55.95,
+BAJAJFINSV,58.65,,,,-0.06,,,,2026-09-30,Bajaj Finserv Limited,NSE shareholding summary,1.0,1.0,,,58.65,
+BAJAJHFL,86.7,,,,0.0,,,,2026-09-30,Bajaj Housing Finance Limited,NSE shareholding summary,1.0,1.0,,,86.7,
+BAJAJHLDNG,51.46,,,,0.0,,,,2026-09-30,Bajaj Holdings & Investment Limited,NSE shareholding summary,1.0,1.0,,,51.46,
+BAJFINANCE,54.67,,,,0.0,,,,2026-09-30,Bajaj Finance Limited,NSE shareholding summary,1.0,1.0,,,54.67,
+BALKRISIND,58.29,,,,0.0,,,,2026-09-30,Balkrishna Industries Limited,NSE shareholding summary,1.0,1.0,,,58.29,
+BANKBARODA,63.97,,,,0.0,,,,2026-09-30,Bank of Baroda,NSE shareholding summary,1.0,1.0,,,63.97,
+BANKINDIA,73.38,,,,0.0,,,,2026-09-30,Bank of India,NSE shareholding summary,1.0,1.0,,,73.38,
+BDL,74.93,,,,0.0,,,,2026-09-30,Bharat Dynamics Limited,NSE shareholding summary,1.0,1.0,,,74.93,
+BEL,51.14,,,,0.0,,,,2026-09-30,Bharat Electronics Limited,NSE shareholding summary,1.0,1.0,,,51.14,
+BERGEPAINT,74.99,,,,0.01,,,,2026-09-30,Berger Paints (I) Limited,NSE shareholding summary,1.0,1.0,,,74.99,
+BHARATFORG,43.12,,,,0.0,,,,2026-09-30,Bharat Forge Limited,NSE shareholding summary,1.0,1.0,,,43.12,
+BHARTIARTL,50.07,25.45,21.74,2.72,0.0,,,,2026-09-30,Bharti Airtel Limited,NSE shareholding,1.0,1.0,0.0,0.0,50.07,
+BHARTIHEXA,70.0,,,,0.0,,,,2026-09-30,Bharti Hexacom Limited,NSE shareholding summary,1.0,1.0,,,70.0,
+BHEL,58.17,,,,0.0,,,,2026-09-30,Bharat Heavy Electricals Limited,NSE shareholding summary,1.0,1.0,,,58.17,
+BIOCON,44.68,,,,0.0,,,,2026-09-30,Biocon Limited,NSE shareholding summary,1.0,1.0,,,44.68,
+BLUESTARCO,36.5,,,,0.0,,,,2026-09-30,Blue Star Limited,NSE shareholding summary,1.0,1.0,,,36.5,
+BOSCHLTD,70.54,,,,0.0,,,,2026-09-30,Bosch Limited,NSE shareholding summary,1.0,1.0,,,70.54,
+BPCL,52.98,,,,0.0,,,,2026-09-30,Bharat Petroleum Corporation Limited,NSE shareholding summary,1.0,1.0,,,52.98,
+BRITANNIA,50.55,,,,0.0,,,,2026-09-30,Britannia Industries Limited,NSE shareholding summary,1.0,1.0,,,50.55,
+BSE,0.0,,,,0.0,,,,2026-09-30,BSE Limited,NSE shareholding summary,1.0,1.0,,,0.0,
+CANBK,62.93,,,,0.0,,,,2026-09-30,Canara Bank,NSE shareholding summary,1.0,1.0,,,62.93,
+CGPOWER,56.34,,,,-0.02,,,,2026-09-30,CG Power and Industrial Solutions Limited,NSE shareholding summary,1.0,1.0,,,56.34,
+CHOLAFIN,48.93,,,,-0.29,,,,2026-09-30,Cholamandalam Investment and Finance Company Limited,NSE shareholding summary,0.0,1.0,,,48.93,
+CIPLA,29.21,,,,0.0,,,,2026-09-30,Cipla Limited,NSE shareholding summary,1.0,1.0,,,29.21,
+COALINDIA,61.13,,,,0.0,,,,2026-09-30,Coal India Limited,NSE shareholding summary,1.0,1.0,,,61.13,
+COCHINSHIP,63.33,,,,-4.58,,,,2026-09-30,Cochin Shipyard Limited,NSE shareholding summary,0.0,1.0,,,63.33,
+COFORGE,0.0,,,,0.0,,,,2026-09-30,Coforge Limited,NSE shareholding summary,1.0,1.0,,,0.0,
+COLPAL,51.0,,,,0.0,,,,2026-09-30,Colgate Palmolive (India) Limited,NSE shareholding summary,1.0,1.0,,,51.0,
+CONCOR,54.8,,,,0.0,,,,2026-09-30,Container Corporation of India Limited,NSE shareholding summary,1.0,1.0,,,54.8,
+COROMANDEL,56.34,,,,-0.01,,,,2026-09-30,Coromandel International Limited,NSE shareholding summary,1.0,1.0,,,56.34,
+CRISIL,66.64,,,,0.0,,,,2026-09-30,Crisil Limited,NSE shareholding summary,1.0,1.0,,,66.64,
+CUMMINSIND,51.0,,,,0.0,,,,2026-09-30,Cummins India Limited,NSE shareholding summary,1.0,1.0,,,51.0,
+DABUR,66.25,,,,0.01,,,,2026-09-30,Dabur India Limited,NSE shareholding summary,1.0,1.0,,,66.25,
+DALBHARAT,55.84,,,,0.0,,,,2026-09-30,Dalmia Bharat Limited,NSE shareholding summary,1.0,1.0,,,55.84,
+DIVISLAB,51.88,,,,0.0,,,,2026-09-30,Divi's Laboratories Limited,NSE shareholding summary,1.0,1.0,,,51.88,
+DIXON,28.5,,,,-0.05,,,,2026-09-30,Dixon Technologies (India) Limited,NSE shareholding summary,1.0,1.0,,,28.5,
+DLF,74.08,,,,0.0,,,,2026-09-30,DLF Limited,NSE shareholding summary,1.0,1.0,,,74.08,
+DMART,74.48,,,,0.0,,,,2026-09-30,Avenue Supermarts Limited,NSE shareholding summary,1.0,1.0,,,74.48,
+DRREDDY,26.63,,,,-0.01,,,,2026-09-30,Dr. Reddy's Laboratories Limited,NSE shareholding summary,1.0,1.0,,,26.63,
+EICHERMOT,49.02,,,,0.0,,,,2026-09-30,Eicher Motors Limited,NSE shareholding summary,1.0,1.0,,,49.02,
+ENDURANCE,75.0,,,,0.0,,,,2026-09-30,Endurance Technologies Limited,NSE shareholding summary,1.0,1.0,,,75.0,
+ENRIN,75.0,,,,0.0,,,,2026-09-30,Siemens Energy India Limited,NSE shareholding summary,1.0,1.0,,,75.0,
+ESCORTS,68.04,,,,0.0,,,,2026-09-30,Escorts Kubota Limited,NSE shareholding summary,1.0,1.0,,,68.04,
+ETERNAL,0.0,,,,0.0,,,,2026-09-30,ETERNAL LIMITED,NSE shareholding summary,1.0,1.0,,,0.0,
+EXIDEIND,45.99,,,,0.0,,,,2026-09-30,Exide Industries Limited,NSE shareholding summary,1.0,1.0,,,45.99,
+FACT,90.0,,,,0.0,,,,2026-09-30,Fertilizers and Chemicals Travancore Limited,NSE shareholding summary,1.0,1.0,,,90.0,
+FEDERALBNK,0.0,,,,0.0,,,,2026-09-30,The Federal Bank  Limited,NSE shareholding summary,1.0,1.0,,,0.0,
+FLUOROCHEM,61.39,,,,0.0,,,,2026-09-30,Gujarat Fluorochemicals Limited,NSE shareholding summary,1.0,1.0,,,61.39,
+FORTIS,31.17,,,,0.0,,,,2026-09-30,Fortis Healthcare Limited,NSE shareholding summary,1.0,1.0,,,31.17,
+GAIL,51.85,,,,0.06,,,,2026-09-30,GAIL (India) Limited,NSE shareholding summary,1.0,1.0,,,51.85,
+GICRE,77.4,,,,0.0,,,,2026-09-30,General Insurance Corporation of India,NSE shareholding summary,1.0,1.0,,,77.4,
+GLAXO,75.0,,,,0.0,,,,2026-09-30,GlaxoSmithKline Pharmaceuticals Limited,NSE shareholding summary,1.0,1.0,,,75.0,
+GLENMARK,46.65,,,,0.0,,,,2026-09-30,Glenmark Pharmaceuticals Limited,NSE shareholding summary,1.0,1.0,,,46.65,
+GMRAIRPORT,67.48,,,,0.32,,,,2026-09-30,GMR AIRPORTS LIMITED,NSE shareholding summary,1.0,0.0,,,67.48,
+GODFRYPHLP,72.58,,,,0.0,,,,2026-09-30,Godfrey Phillips India Limited,NSE shareholding summary,1.0,1.0,,,72.58,
+GODREJCP,53.05,,,,0.0,,,,2026-09-30,Godrej Consumer Products Limited,NSE shareholding summary,1.0,1.0,,,53.05,
+GODREJIND,74.63,,,,-0.01,,,,2026-09-30,Godrej Industries Limited,NSE shareholding summary,1.0,1.0,,,74.63,
+GODREJPROP,51.66,,,,0.0,,,,2026-09-30,Godrej Properties Limited,NSE shareholding summary,1.0,1.0,,,51.66,
+GRASIM,45.2,,,,1.46,,,,2026-09-30,Grasim Industries Limited,NSE shareholding summary,1.0,0.0,,,45.2,
+GROWW,27.13,,,,-0.01,,,,2026-09-30,Billionbrains Garage Ventures Limited,NSE shareholding summary,1.0,1.0,,,27.13,
+GVT&D,51.0,,,,0.0,,,,2026-09-30,GE Vernova T&D India Limited,NSE shareholding summary,1.0,1.0,,,51.0,
+HAL,71.64,,,,0.0,,,,2026-09-30,Hindustan Aeronautics Limited,NSE shareholding summary,1.0,1.0,,,71.64,
+HAVELLS,59.35,,,,0.0,,,,2026-09-30,Havells India Limited,NSE shareholding summary,1.0,1.0,,,59.35,
+HCLTECH,60.88,,,,0.0,,,,2026-09-30,HCL Technologies Limited,NSE shareholding summary,1.0,1.0,,,60.88,
+HDBFS,74.08,,,,-0.04,,,,2026-09-30,HDB Financial Services Limited,NSE shareholding summary,1.0,1.0,,,74.08,
+HDFCAMC,52.29,,,,-0.05,,,,2026-09-30,HDFC Asset Management Company Limited,NSE shareholding summary,1.0,1.0,,,52.29,
+HDFCBANK,0.0,39.4,43.63,16.97,0.0,,,,2026-09-30,HDFC Bank Limited,NSE shareholding,1.0,1.0,0.0,0.0,0.0,
+HDFCLIFE,50.53,,,,-0.01,,,,2026-09-30,HDFC Life Insurance Company Limited,NSE shareholding summary,1.0,1.0,,,50.53,
+HEROMOTOCO,34.72,,,,-0.01,,,,2026-09-30,Hero MotoCorp Limited,NSE shareholding summary,1.0,1.0,,,34.72,
+HEXT,74.3,,,,0.0,,,,2026-09-30,Hexaware Technologies Limited,NSE shareholding summary,1.0,1.0,,,74.3,
+HINDALCO,34.66,,,,0.0,,,,2026-09-30,Hindalco Industries Limited,NSE shareholding summary,1.0,1.0,,,34.66,
+HINDCOPPER,60.14,,,,-6.0,,,,2026-09-30,Hindustan Copper Limited,NSE shareholding summary,0.0,1.0,,,60.14,
+HINDPETRO,54.9,,,,0.0,,,,2026-09-30,Hindustan Petroleum Corporation Limited,NSE shareholding summary,1.0,1.0,,,54.9,
+HINDUNILVR,61.9,,,,0.0,,,,2026-09-30,Hindustan Unilever Limited,NSE shareholding summary,1.0,1.0,,,61.9,
+HINDZINC,60.71,,,,0.0,,,,2026-09-30,Hindustan Zinc Limited,NSE shareholding summary,1.0,1.0,,,60.71,
+HUDCO,75.0,,,,0.0,,,,2026-09-30,Housing & Urban Development Corporation Limited,NSE shareholding summary,1.0,1.0,,,75.0,
+HYUNDAI,82.5,,,,0.0,,,,2026-09-30,Hyundai Motor India Limited,NSE shareholding summary,1.0,1.0,,,82.5,
+ICICIAMC,85.6,,,,-2.0,,,,2026-09-30,ICICI Prudential Asset Management Company Limited,NSE shareholding summary,0.0,1.0,,,85.6,
+ICICIBANK,0.0,50.44,41.78,7.56,0.0,,,,2026-09-30,ICICI Bank Limited,NSE shareholding,1.0,1.0,0.0,0.0,0.0,
+ICICIGI,51.28,,,,0.06,,,,2026-09-30,ICICI Lombard General Insurance Company Limited,NSE shareholding summary,1.0,1.0,,,51.28,
+ICICILIFE,74.7,,,,1.97,,,,2026-09-30,ICICI Life Insurance Limited,NSE shareholding summary,1.0,0.0,,,74.7,
+IDEA,25.64,,,,0.0,,,,2026-09-30,Vodafone Idea Limited,NSE shareholding summary,1.0,1.0,,,25.64,
+IDFCFIRSTB,0.0,,,,0.0,,,,2026-09-30,IDFC First Bank Limited,NSE shareholding summary,1.0,1.0,,,0.0,
+INDHOTEL,38.12,,,,0.0,,,,2026-09-30,The Indian Hotels Company Limited,NSE shareholding summary,1.0,1.0,,,38.12,
+INDIANB,73.84,,,,0.0,,,,2026-09-30,Indian Bank,NSE shareholding summary,1.0,1.0,,,73.84,
+INDIGO,41.57,,,,0.0,,,,2026-09-30,InterGlobe Aviation Limited,NSE shareholding summary,1.0,1.0,,,41.57,
+INDUSINDBK,15.82,,,,0.0,,,,2026-09-30,IndusInd Bank Limited,NSE shareholding summary,1.0,1.0,,,15.82,
+INDUSTOWER,51.26,,,,0.0,,,,2026-09-30,Indus Towers Limited,NSE shareholding summary,1.0,1.0,,,51.26,
+INFY,13.9,27.44,42.85,15.57,0.08,,,,2026-09-30,Infosys Limited,NSE shareholding,1.0,1.0,0.0,0.0,13.9,
+IOB,92.44,,,,0.0,,,,2026-09-30,Indian Overseas Bank,NSE shareholding summary,1.0,1.0,,,92.44,
+IOC,51.5,,,,0.0,,,,2026-09-30,Indian Oil Corporation Limited,NSE shareholding summary,1.0,1.0,,,51.5,
+IPCALAB,44.72,,,,0.0,,,,2026-09-30,IPCA Laboratories Limited,NSE shareholding summary,1.0,1.0,,,44.72,
+IRCTC,62.4,,,,0.0,,,,2026-09-30,Indian Railway Catering And Tourism Corporation Limited,NSE shareholding summary,1.0,1.0,,,62.4,
+IREDA,71.76,,,,0.0,,,,2026-09-30,Indian Renewable Energy Development Agency Limited,NSE shareholding summary,1.0,1.0,,,71.76,
+IRFC,82.9,,,,0.0,,,,2026-09-30,Indian Railway Finance Corporation Limited,NSE shareholding summary,1.0,1.0,,,82.9,
+ITC,0.0,33.22,49.82,16.93,0.0,,,,2026-09-30,ITC Limited,NSE shareholding,1.0,1.0,0.0,0.0,0.0,
+ITCHOTELS,39.85,,,,0.0,,,,2026-09-30,ITC Hotels Limited,NSE shareholding summary,1.0,1.0,,,39.85,
+JINDALSTEL,62.69,,,,0.0,,,,2026-09-30,JINDAL STEEL LIMITED,NSE shareholding summary,1.0,1.0,,,62.69,
+JIOFIN,49.13,,,,0.0,,,,2026-09-30,Jio Financial Services Limited,NSE shareholding summary,1.0,1.0,,,49.13,
+JKCEMENT,45.66,,,,0.0,,,,2026-09-30,JK Cement Limited,NSE shareholding summary,1.0,1.0,,,45.66,
+JSL,62.55,,,,0.5,,,,2026-09-30,Jindal Stainless Limited,NSE shareholding summary,1.0,0.0,,,62.55,
+JSWENERGY,66.53,,,,0.0,,,,2026-09-30,JSW Energy Limited,NSE shareholding summary,1.0,1.0,,,66.53,
+JSWINFRA,73.93,,,,0.0,,,,2026-09-30,JSW Infrastructure Limited,NSE shareholding summary,1.0,1.0,,,73.93,
+JSWSTEEL,44.3,,,,0.01,,,,2026-09-30,JSW Steel Limited,NSE shareholding summary,1.0,1.0,,,44.3,
+JUBLFOOD,40.27,,,,0.0,,,,2026-09-30,Jubilant Foodworks Limited,NSE shareholding summary,1.0,1.0,,,40.27,
+KALYANKJIL,62.85,,,,-0.01,,,,2026-09-30,Kalyan Jewellers India Limited,NSE shareholding summary,1.0,1.0,,,62.85,
+KEI,35.0,,,,0.0,,,,2026-09-30,KEI Industries Limited,NSE shareholding summary,1.0,1.0,,,35.0,
+KOTAKBANK,25.87,,,,0.0,,,,2026-09-30,Kotak Mahindra Bank Limited,NSE shareholding summary,1.0,1.0,,,25.87,
+KPRMILL,67.52,,,,0.0,,,,2026-09-30,K.P.R. Mill Limited,NSE shareholding summary,1.0,1.0,,,67.52,
+LAURUSLABS,27.47,,,,0.0,,,,2026-09-30,Laurus Labs Limited,NSE shareholding summary,1.0,1.0,,,27.47,
+LENSKART,17.52,,,,-0.01,,,,2026-09-30,Lenskart Solutions Limited,NSE shareholding summary,1.0,1.0,,,17.52,
+LGEINDIA,85.0,,,,0.0,,,,2026-09-30,LG Electronics India Limited,NSE shareholding summary,1.0,1.0,,,85.0,
+LICHSGFIN,45.24,,,,0.0,,,,2026-09-30,LIC Housing Finance Limited,NSE shareholding summary,1.0,1.0,,,45.24,
+LICI,90.0,,,,-6.5,,,,2026-09-30,Life Insurance Corporation Of India,NSE shareholding summary,0.0,1.0,,,90.0,
+LINDEINDIA,75.0,,,,0.0,,,,2026-09-30,Linde India Limited,NSE shareholding summary,1.0,1.0,,,75.0,
+LLOYDSME,61.61,,,,-0.02,,,,2026-09-30,Lloyds Metals And Energy Limited,NSE shareholding summary,1.0,1.0,,,61.61,
+LODHA,70.29,,,,-0.02,,,,2026-09-30,Lodha Developers Limited,NSE shareholding summary,1.0,1.0,,,70.29,
+LT,0.0,19.21,42.86,37.67,0.0,,,,2026-09-30,Larsen & Toubro Limited,NSE shareholding,1.0,1.0,0.0,0.0,0.0,
+LTF,65.93,,,,-0.03,,,,2026-09-30,L&T Finance Limited,NSE shareholding summary,1.0,1.0,,,65.93,
+LTM,69.01,,,,0.52,,,,2026-09-30,LTM Limited,NSE shareholding summary,1.0,0.0,,,69.01,
+LTTS,73.51,,,,-0.01,,,,2026-09-30,L&T Technology Services Limited,NSE shareholding summary,1.0,1.0,,,73.51,
+LUPIN,46.84,,,,-0.01,,,,2026-09-30,Lupin Limited,NSE shareholding summary,1.0,1.0,,,46.84,
+M&M,18.39,,,,-0.06,,,,2026-09-30,Mahindra & Mahindra Limited,NSE shareholding summary,1.0,1.0,,,18.39,
+M&MFIN,52.48,,,,-0.01,,,,2026-09-30,Mahindra & Mahindra Financial Services Limited,NSE shareholding summary,1.0,1.0,,,52.48,
+MAHABANK,73.6,,,,0.0,,,,2026-09-30,Bank of Maharashtra,NSE shareholding summary,1.0,1.0,,,73.6,
+MANKIND,72.62,,,,-0.01,,,,2026-09-30,Mankind Pharma Limited,NSE shareholding summary,1.0,1.0,,,72.62,
+MARICO,58.83,,,,-0.08,,,,2026-09-30,Marico Limited,NSE shareholding summary,1.0,1.0,,,58.83,
+MARUTI,58.72,,,,0.07,,,,2026-09-30,Maruti Suzuki India Limited,NSE shareholding summary,1.0,1.0,,,58.72,
+MAXHEALTH,23.71,,,,0.0,,,,2026-09-30,Max Healthcare Institute Limited,NSE shareholding summary,1.0,1.0,,,23.71,
+MAZDOCK,81.22,,,,0.0,,,,2026-09-30,Mazagon Dock Shipbuilders Limited,NSE shareholding summary,1.0,1.0,,,81.22,
+MEDANTA,33.0,,,,0.0,,,,2026-09-30,Global Health Limited,NSE shareholding summary,1.0,1.0,,,33.0,
+MEESHO,16.34,,,,-0.07,,,,2026-09-30,Meesho Limited,NSE shareholding summary,1.0,1.0,,,16.34,
+MFSL,1.25,,,,0.0,,,,2026-09-30,Max Financial Services Limited,NSE shareholding summary,1.0,1.0,,,1.25,
+MOTHERSON,48.6,,,,0.0,,,,2026-09-30,Samvardhana Motherson International Limited,NSE shareholding summary,1.0,1.0,,,48.6,
+MOTILALOFS,66.71,,,,-0.49,,,,2026-09-30,Motilal Oswal Financial Services Limited,NSE shareholding summary,0.0,1.0,,,66.71,
+MPHASIS,30.53,,,,-0.01,,,,2026-09-30,MphasiS Limited,NSE shareholding summary,1.0,1.0,,,30.53,
+MRF,27.61,,,,-0.16,,,,2026-09-30,MRF Limited,NSE shareholding summary,1.0,1.0,,,27.61,
+MUTHOOTFIN,73.35,,,,0.0,,,,2026-09-30,Muthoot Finance Limited,NSE shareholding summary,1.0,1.0,,,73.35,
+NAM-INDIA,71.72,,,,-0.08,,,,2026-09-30,Nippon Life India Asset Management Limited,NSE shareholding summary,1.0,1.0,,,71.72,
+NATIONALUM,51.28,,,,0.0,,,,2026-09-30,National Aluminium Company Limited,NSE shareholding summary,1.0,1.0,,,51.28,
+NAUKRI,37.19,,,,-0.28,,,,2026-09-30,Info Edge (India) Limited,NSE shareholding summary,0.0,1.0,,,37.19,
+NESTLEIND,62.76,,,,0.0,,,,2026-09-30,Nestle India Limited,NSE shareholding summary,1.0,1.0,,,62.76,
+NH,63.27,,,,0.0,,,,2026-09-30,Narayana Hrudayalaya Ltd.,NSE shareholding summary,1.0,1.0,,,63.27,
+NHPC,61.39,,,,0.0,,,,2026-09-30,NHPC Limited,NSE shareholding summary,1.0,1.0,,,61.39,
+NLCINDIA,69.47,,,,0.0,,,,2026-09-30,NLC India Limited,NSE shareholding summary,1.0,1.0,,,69.47,
+NMDC,60.79,,,,0.0,,,,2026-09-30,NMDC Limited,NSE shareholding summary,1.0,1.0,,,60.79,
+NTPC,51.1,,,,0.0,,,,2026-09-30,NTPC Limited,NSE shareholding summary,1.0,1.0,,,51.1,
+NTPCGREEN,89.01,,,,0.0,,,,2026-09-30,NTPC Green Energy Limited,NSE shareholding summary,1.0,1.0,,,89.01,
+NYKAA,52.07,,,,-0.01,,,,2026-09-30,FSN E-Commerce Ventures Limited,NSE shareholding summary,1.0,1.0,,,52.07,
+OBEROIRLTY,67.7,,,,0.0,,,,2026-09-30,Oberoi Realty Limited,NSE shareholding summary,1.0,1.0,,,67.7,
+OFSS,72.39,,,,-0.02,,,,2026-09-30,Oracle Financial Services Software Limited,NSE shareholding summary,1.0,1.0,,,72.39,
+OIL,56.66,,,,0.0,,,,2026-09-30,Oil India Limited,NSE shareholding summary,1.0,1.0,,,56.66,
+ONGC,58.89,,,,0.0,,,,2026-09-30,Oil & Natural Gas Corporation Limited,NSE shareholding summary,1.0,1.0,,,58.89,
+PAGEIND,42.89,,,,0.0,,,,2026-09-30,Page Industries Limited,NSE shareholding summary,1.0,1.0,,,42.89,
+PATANJALI,68.25,,,,0.0,,,,2026-09-30,Patanjali Foods Limited,NSE shareholding summary,1.0,1.0,,,68.25,
+PAYTM,0.0,,,,0.0,,,,2026-09-30,One 97 Communications Limited,NSE shareholding summary,1.0,1.0,,,0.0,
+PERSISTENT,30.29,,,,0.0,,,,2026-09-30,Persistent Systems Limited,NSE shareholding summary,1.0,1.0,,,30.29,
+PETRONET,50.0,,,,0.0,,,,2026-09-30,Petronet LNG Limited,NSE shareholding summary,1.0,1.0,,,50.0,
+PFC,55.99,,,,0.0,,,,2026-09-30,Power Finance Corporation Limited,NSE shareholding summary,1.0,1.0,,,55.99,
+PHOENIXLTD,47.24,,,,-0.01,,,,2026-09-30,The Phoenix Mills Limited,NSE shareholding summary,1.0,1.0,,,47.24,
+PIDILITIND,69.18,,,,-0.06,,,,2026-09-30,Pidilite Industries Limited,NSE shareholding summary,1.0,1.0,,,69.18,
+PIIND,46.09,,,,0.0,,,,2026-09-30,PI Industries Limited,NSE shareholding summary,1.0,1.0,,,46.09,
+PIRAMALFIN,44.22,,,,0.0,,,,2026-09-30,Piramal Finance Limited,NSE shareholding summary,1.0,1.0,,,44.22,
+PNB,70.08,,,,0.0,,,,2026-09-30,Punjab National Bank,NSE shareholding summary,1.0,1.0,,,70.08,
+POLICYBZR,0.0,,,,0.0,,,,2026-09-30,PB Fintech Limited,NSE shareholding summary,1.0,1.0,,,0.0,
+POLYCAB,61.44,,,,-0.02,,,,2026-09-30,Polycab India Limited,NSE shareholding summary,1.0,1.0,,,61.44,
+POWERGRID,51.34,,,,0.0,,,,2026-09-30,Power Grid Corporation of India Limited,NSE shareholding summary,1.0,1.0,,,51.34,
+POWERINDIA,71.31,,,,0.0,,,,2026-09-30,Hitachi Energy India Limited,NSE shareholding summary,1.0,1.0,,,71.31,
+PREMIERENE,58.49,,,,0.0,,,,2026-09-30,Premier Energies Limited,NSE shareholding summary,1.0,1.0,,,58.49,
+PRESTIGE,60.94,,,,0.0,,,,2026-09-30,Prestige Estates Projects Limited,NSE shareholding summary,1.0,1.0,,,60.94,
+RADICO,40.17,,,,-0.02,,,,2026-09-30,Radico Khaitan Limited,NSE shareholding summary,1.0,1.0,,,40.17,
+RECLTD,52.63,,,,0.0,,,,2026-09-30,REC Limited,NSE shareholding summary,1.0,1.0,,,52.63,
+RELIANCE,50.44,16.67,21.72,11.07,-0.04,,,,2026-09-30,Reliance Industries Limited,NSE shareholding,1.0,1.0,0.0,0.0,50.44,
+RVNL,72.84,,,,0.0,,,,2026-09-30,Rail Vikas Nigam Limited,NSE shareholding summary,1.0,1.0,,,72.84,
+SAIL,65.0,,,,0.0,,,,2026-09-30,Steel Authority of India Limited,NSE shareholding summary,1.0,1.0,,,65.0,
+SBICARD,68.86,,,,0.0,,,,2026-09-30,SBI Cards and Payment Services Limited,NSE shareholding summary,1.0,1.0,,,68.86,
+SBILIFE,55.31,,,,-0.01,,,,2026-09-30,SBI Life Insurance Company Limited,NSE shareholding summary,1.0,1.0,,,55.31,
+SBIN,55.45,11.07,26.34,7.12,-0.02,,,,2026-09-30,State Bank of India,NSE shareholding,1.0,1.0,0.0,0.0,55.45,
+SCHAEFFLER,74.13,,,,0.0,,,,2026-09-30,Schaeffler India Limited,NSE shareholding summary,1.0,1.0,,,74.13,
+SHREECEM,62.55,,,,0.0,,,,2026-09-30,SHREE CEMENT LIMITED,NSE shareholding summary,1.0,1.0,,,62.55,
+SHRIRAMFIN,20.3,,,,0.0,,,,2026-09-30,Shriram Finance Limited,NSE shareholding summary,1.0,1.0,,,20.3,
+SIEMENS,75.0,,,,0.0,,,,2026-09-30,Siemens Limited,NSE shareholding summary,1.0,1.0,,,75.0,
+SOLARINDS,73.15,,,,0.0,,,,2026-09-30,Solar Industries India Limited,NSE shareholding summary,1.0,1.0,,,73.15,
+SRF,50.26,,,,0.0,,,,2026-09-30,SRF Limited,NSE shareholding summary,1.0,1.0,,,50.26,
+SUNDARMFIN,37.19,,,,-0.02,,,,2026-09-30,Sundaram Finance Limited,NSE shareholding summary,1.0,1.0,,,37.19,
+SUNPHARMA,52.68,,,,-1.8,,,,2026-09-30,Sun Pharmaceutical Industries Limited,NSE shareholding summary,0.0,1.0,,,52.68,
+SUPREMEIND,48.96,,,,0.0,,,,2026-09-30,Supreme Industries Limited,NSE shareholding summary,1.0,1.0,,,48.96,
+SUZLON,11.7,,,,-0.01,,,,2026-09-30,Suzlon Energy Limited,NSE shareholding summary,1.0,1.0,,,11.7,
+SWIGGY,0.0,,,,0.0,,,,2026-09-30,Swiggy Limited,NSE shareholding summary,1.0,1.0,,,0.0,
+TATACAP,85.41,,,,0.0,,,,2026-09-30,Tata Capital Limited,NSE shareholding summary,1.0,1.0,,,85.41,
+TATACOMM,58.85,,,,-0.01,,,,2026-09-30,Tata Communications Limited,NSE shareholding summary,1.0,1.0,,,58.85,
+TATACONSUM,33.83,,,,0.0,,,,2026-09-30,TATA CONSUMER PRODUCTS LIMITED,NSE shareholding summary,1.0,1.0,,,33.83,
+TATAINVEST,73.38,,,,0.0,,,,2026-09-30,Tata Investment Corporation Limited,NSE shareholding summary,1.0,1.0,,,73.38,
+TATAPOWER,46.86,,,,0.0,,,,2026-09-30,Tata Power Company Limited,NSE shareholding summary,1.0,1.0,,,46.86,
+TATASTEEL,32.94,,,,0.0,,,,2026-09-30,Tata Steel Limited,NSE shareholding summary,1.0,1.0,,,32.94,
+TCS,71.77,9.01,13.57,5.65,0.0,,,,2026-09-30,Tata Consultancy Services Limited,NSE shareholding,1.0,1.0,0.0,0.0,71.77,
+TECHM,34.96,,,,-0.01,,,,2026-09-30,Tech Mahindra Limited,NSE shareholding summary,1.0,1.0,,,34.96,
+THERMAX,61.98,,,,0.0,,,,2026-09-30,Thermax Limited,NSE shareholding summary,1.0,1.0,,,61.98,
+TIINDIA,44.1,,,,0.0,,,,2026-09-30,Tube Investments of India Limited,NSE shareholding summary,1.0,1.0,,,44.1,
+TITAN,52.9,,,,0.0,,,,2026-09-30,Titan Company Limited,NSE shareholding summary,1.0,1.0,,,52.9,
+TMCV,42.51,,,,-0.05,,,,2026-09-30,Tata Motors Limited,NSE shareholding summary,1.0,1.0,,,42.51,
+TMPV,42.5,,,,-0.01,,,,2026-09-30,Tata Motors Passenger Vehicles Limited,NSE shareholding summary,1.0,1.0,,,42.5,
+TORNTPHARM,60.78,,,,0.0,,,,2026-09-30,Torrent Pharmaceuticals Limited,NSE shareholding summary,1.0,1.0,,,60.78,
+TORNTPOWER,51.09,,,,0.0,,,,2026-09-30,Torrent Power Limited,NSE shareholding summary,1.0,1.0,,,51.09,
+TRENT,37.01,,,,0.0,,,,2026-09-30,Trent Limited,NSE shareholding summary,1.0,1.0,,,37.01,
+TVSMOTOR,50.27,,,,0.0,,,,2026-09-30,TVS Motor Company Limited,NSE shareholding summary,1.0,1.0,,,50.27,
+UBL,70.83,,,,0.0,,,,2026-09-30,United Breweries Limited,NSE shareholding summary,1.0,1.0,,,70.83,
+ULTRACEMCO,58.48,,,,-0.85,,,,2026-09-30,UltraTech Cement Limited,NSE shareholding summary,0.0,1.0,,,58.48,
+UNIONBANK,74.76,,,,0.0,,,,2026-09-30,Union Bank of India,NSE shareholding summary,1.0,1.0,,,74.76,
+UNITDSPR,56.67,,,,0.0,,,,2026-09-30,United Spirits Limited,NSE shareholding summary,1.0,1.0,,,56.67,
+UNOMINDA,68.36,,,,0.0,,,,2026-09-30,UNO Minda Limited,NSE shareholding summary,1.0,1.0,,,68.36,
+UPL,33.51,,,,0.0,,,,2026-09-30,UPL Limited,NSE shareholding summary,1.0,1.0,,,33.51,
+VAML,56.38,,,,0.0,,,,2026-09-30,Vedanta Aluminium Metal Limited,NSE shareholding summary,1.0,1.0,,,56.38,
+VBL,59.43,,,,0.0,,,,2026-09-30,Varun Beverages Limited,NSE shareholding summary,1.0,1.0,,,59.43,
+VEDL,54.72,,,,0.0,,,,2026-09-30,Vedanta Limited,NSE shareholding summary,1.0,1.0,,,54.72,
+VMM,40.02,,,,-0.07,,,,2026-09-30,Vishal Mega Mart Limited,NSE shareholding summary,1.0,1.0,,,40.02,
+VOLTAS,30.3,,,,0.0,,,,2026-09-30,Voltas Limited,NSE shareholding summary,1.0,1.0,,,30.3,
+WAAREEENER,64.12,,,,0.0,,,,2026-09-30,Waaree Energies Limited,NSE shareholding summary,1.0,1.0,,,64.12,
+WIPRO,72.58,,,,-0.01,,,,2026-09-30,Wipro Limited,NSE shareholding summary,1.0,1.0,,,72.58,
+YESBANK,0.0,,,,0.0,,,,2026-09-30,Yes Bank Limited,NSE shareholding summary,1.0,1.0,,,0.0,
+ZYDUSLIFE,75.01,,,,0.0,,,,2026-09-30,Zydus Lifesciences Limited,NSE shareholding summary,1.0,1.0,,,75.01,
+20MICRONS,45.04,1.03,0.07,53.86,0.0,,,,2026-09-30,20 Microns Limited,NSE shareholding,1.0,1.0,,,45.04,2026-10-25

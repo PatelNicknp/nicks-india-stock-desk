@@ -1,0 +1,50 @@
+name: Financials and shareholding backfill
+
+on:
+  schedule:
+    # Every 30 minutes, all week. Continues from cache/backfill_cursor.json.
+    - cron: "*/30 * * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nick-india-fundamentals-backfill
+  cancel-in-progress: false
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install pinned dependencies
+        run: pip install -r requirements.txt
+      - name: Download the next batch
+        run: python fundamentals_backfill.py
+      - name: Save the batch
+        run: |
+          git config user.name "india-stock-desk-bot"
+          git config user.email "india-stock-desk-bot@users.noreply.github.com"
+          git add \
+            cache/annual.csv \
+            cache/quarters.csv \
+            cache/yahoo_info.csv \
+            cache/earnings.csv \
+            cache/holders.csv \
+            cache/backfill_cursor.json \
+            data/backfill_progress.csv
+          if git diff --cached --quiet; then
+            echo "No financials changes."
+            exit 0
+          fi
+          git commit -m "Backfill financials and shareholding $(date -u +%Y-%m-%dT%H:%MZ)"
+          for i in 1 2 3 4; do
+            git pull --rebase origin "${GITHUB_REF_NAME}" && git push && break
+            sleep $((i * 5))
+          done

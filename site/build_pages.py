@@ -3,7 +3,9 @@ import os
 
 PAGES = [
     ("index.html", "today", "Today"),
+    ("flows.html", "flows", "FII and DII"),
     ("top-stocks.html", "top", "Top stocks"),
+    ("buy-setups.html", "buysetups", "Buy setups"),
     ("scorecard.html", "scorecard", "Stock scorecard"),
     ("watchlist.html", "watchlist", "Watchlist and portfolio"),
     ("alerts.html", "alerts", "Alerts"),
@@ -17,6 +19,7 @@ PAGES = [
     ("box.html", "box", "Box breakout"),
     ("flag.html", "flag", "Flag breakout"),
     ("leaders.html", "leaders", "Leaders"),
+    ("52-week.html", "week52", "52-week"),
     ("earnings-calendar.html", "calendar", "Calendar"),
     ("earnings-heatmap.html", "heatmap", "Strength heatmap"),
     ("earnings-cards.html", "cards", "Report cards"),
@@ -32,6 +35,7 @@ PAGES = [
     ("earnings-tracker.html", "tracker", "Earnings tracker"),
     ("company-financials.html", "company", "Company financials"),
     ("dividend-fundamentals.html", "divfund", "Dividend fundamentals"),
+    ("sector-rotation.html", "rotation", "Sector rotation"),
     ("macro.html", "macro", "Macro screener"),
     ("sector-macro.html", "secmacro", "Sector macro scores"),
     ("historical-pe.html", "histpe", "Historical P/E"),

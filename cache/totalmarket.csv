@@ -1,0 +1,756 @@
+ticker,company,sector,in_totalmarket,in_nifty50,in_next50,in_midcap150,in_smallcap250,in_microcap250,in_other_nse,in_sme,in_bse_only,in_my_picks
+360ONE,360 ONE WAM Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+ABB,ABB India Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+ACC,ACC Ltd.,Construction Materials,yes,no,no,no,no,no,no,no,no,no
+ACMESOLAR,ACME Solar Holdings Ltd.,Power,yes,no,no,no,no,no,no,no,no,no
+AIAENG,AIA Engineering Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+APLAPOLLO,APL Apollo Tubes Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+AUBANK,AU Small Finance Bank Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+AWL,AWL Agri Business Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+AXISCADES,AXISCADES Technologies Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+AADHARHFC,Aadhar Housing Finance Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+AARTIIND,Aarti Industries Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+AARTIPHARM,Aarti Pharmalabs Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+AAVAS,Aavas Financiers Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+ABBOTINDIA,Abbott India Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+ACE,Action Construction Equipment Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+ACUTAAS,Acutaas Chemicals Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+ADANIENSOL,Adani Energy Solutions Ltd.,Power,yes,no,no,no,no,no,no,no,no,no
+ADANIENT,Adani Enterprises Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+ADANIGREEN,Adani Green Energy Ltd.,Power,yes,no,no,no,no,no,no,no,no,no
+ADANIPORTS,Adani Ports and Special Economic Zone Ltd.,Services,yes,no,no,no,no,no,no,no,no,no
+ADANIPOWER,Adani Power Ltd.,Power,yes,no,no,no,no,no,no,no,no,no
+ATGL,Adani Total Gas Ltd.,Oil Gas & Consumable Fuels,yes,no,no,no,no,no,no,no,no,no
+ABCAPITAL,Aditya Birla Capital Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+ABFRL,Aditya Birla Fashion and Retail Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+ABLBL,Aditya Birla Lifestyle Brands Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+ABREL,Aditya Birla Real Estate Ltd.,Realty,yes,no,no,no,no,no,no,no,no,no
+ABSLAMC,Aditya Birla Sun Life AMC Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+CPPLUS,Aditya Infotech Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+AVL,Aditya Vision Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+ADVENZYMES,Advanced Enzyme Tech Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+AEGISLOG,Aegis Logistics Ltd.,Oil Gas & Consumable Fuels,yes,no,no,no,no,no,no,no,no,no
+AEGISVOPAK,Aegis Vopak Terminals Ltd.,Oil Gas & Consumable Fuels,yes,no,no,no,no,no,no,no,no,no
+AEQUS,Aequs Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+AEROFLEX,Aeroflex Industries Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+AETHER,Aether Industries Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+AFCONS,Afcons Infrastructure Ltd.,Construction,yes,no,no,no,no,no,no,no,no,no
+AFFLE,Affle 3i Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+AJANTPHARM,Ajanta Pharmaceuticals Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+AKUMS,Akums Drugs and Pharmaceuticals Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+ALKEM,Alkem Laboratories Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+ALKYLAMINE,Alkyl Amines Chemicals Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+ABDL,Allied Blenders and Distillers Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+AMAGI,Amagi Media Labs Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+ARE&M,Amara Raja Energy & Mobility Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+AMBER,Amber Enterprises India Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+AMBUJACEM,Ambuja Cements Ltd.,Construction Materials,yes,no,no,no,no,no,no,no,no,no
+ANANDRATHI,Anand Rathi Wealth Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+ANANTRAJ,Anant Raj Ltd.,Realty,yes,no,no,no,no,no,no,no,no,no
+ANGELONE,Angel One Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+ANTHEM,Anthem Biosciences Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+ANURAS,Anupam Rasayan India Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+APARINDS,Apar Industries Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+APOLLOHOSP,Apollo Hospitals Enterprise Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+APOLLO,Apollo Micro Systems Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+APOLLOTYRE,Apollo Tyres Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+APTUS,Aptus Value Housing Finance India Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+ACI,Archean Chemical Industries Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+ARVINDFASN,Arvind Fashions Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+ARVIND,Arvind Ltd.,Textiles,yes,no,no,no,no,no,no,no,no,no
+ASAHIINDIA,Asahi India Glass Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+ASHAPURMIN,Ashapura Minechem Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+ASHOKLEY,Ashok Leyland Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+ASHOKA,Ashoka Buildcon Ltd.,Construction,yes,no,no,no,no,no,no,no,no,no
+ASIANPAINT,Asian Paints Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+ASTERDM,Aster DM Quality Care Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+ASTRAMICRO,Astra Microwave Products Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+ASTRAL,Astral Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+ATHERENERG,Ather Energy Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+ATLANTAELE,Atlanta Electricals Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+ATUL,Atul Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+AURIONPRO,Aurionpro Solution Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+AUROPHARMA,Aurobindo Pharma Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+AIIL,Authum Investment & Infrastructure Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+AVALON,Avalon Technologies Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+AVANTIFEED,Avanti Feeds Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+DMART,Avenue Supermarts Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+AXISBANK,Axis Bank Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+AZAD,Azad Engineering Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+BEML,BEML Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+BLS,BLS International Services Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+BSE,BSE Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+BAGMANE,Bagmane Prime Office REIT,Realty,yes,no,no,no,no,no,no,no,no,no
+BAJAJ-AUTO,Bajaj Auto Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+BAJAJCON,Bajaj Consumer Care Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+BAJFINANCE,Bajaj Finance Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+BAJAJFINSV,Bajaj Finserv Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+BAJAJHLDNG,Bajaj Holdings & Investment Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+BAJAJHFL,Bajaj Housing Finance Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+BALAMINES,Balaji Amines Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+BALKRISIND,Balkrishna Industries Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+BALRAMCHIN,Balrampur Chini Mills Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+BALUFORGE,Balu Forge Industries Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+BANCOINDIA,Banco Products (India) Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+BANDHANBNK,Bandhan Bank Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+BANKBARODA,Bank of Baroda,Financial Services,yes,no,no,no,no,no,no,no,no,no
+BANKINDIA,Bank of India,Financial Services,yes,no,no,no,no,no,no,no,no,no
+MAHABANK,Bank of Maharashtra,Financial Services,yes,no,no,no,no,no,no,no,no,no
+BATAINDIA,Bata India Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+BELRISE,Belrise Industries Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+BERGEPAINT,Berger Paints India Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+BHARATCOAL,Bharat Coking Coal Ltd.,Oil Gas & Consumable Fuels,yes,no,no,no,no,no,no,no,no,no
+BDL,Bharat Dynamics Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+BEL,Bharat Electronics Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+BHARATFORG,Bharat Forge Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+BHEL,Bharat Heavy Electricals Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+BPCL,Bharat Petroleum Corporation Ltd.,Oil Gas & Consumable Fuels,yes,no,no,no,no,no,no,no,no,no
+BHARTIARTL,Bharti Airtel Ltd.,Telecommunication,yes,no,no,no,no,no,no,no,no,no
+BHARTIHEXA,Bharti Hexacom Ltd.,Telecommunication,yes,no,no,no,no,no,no,no,no,no
+GROWW,Billionbrains Garage Ventures Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+BIOCON,Biocon Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+BIRLACORPN,Birla Corporation Ltd.,Construction Materials,yes,no,no,no,no,no,no,no,no,no
+BSOFT,Birlasoft Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+BBOX,Black Box Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+BLACKBUCK,Blackbuck Ltd.,Services,yes,no,no,no,no,no,no,no,no,no
+BLUEJET,Blue Jet Healthcare Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+BLUESTARCO,Blue Star Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+BLUESTONE,BlueStone Jewellery and Lifestyle Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+BORORENEW,Borosil Renewables Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+BOSCHLTD,Bosch Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+FIRSTCRY,Brainbees Solutions Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+BRIGADE,Brigade Enterprises Ltd.,Realty,yes,no,no,no,no,no,no,no,no,no
+BRITANNIA,Britannia Industries Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+BIRET,Brookfield India Real Estate Trust,Realty,yes,no,no,no,no,no,no,no,no,no
+MAPMYINDIA,C.E. Info Systems Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+CCL,CCL Products (I) Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+CESC,CESC Ltd.,Power,yes,no,no,no,no,no,no,no,no,no
+CGPOWER,CG Power and Industrial Solutions Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+CIEINDIA,CIE Automotive India Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+CMRGREEN,CMR Green Technologies Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+CMSINFO,CMS Info Systems Ltd.,Services,yes,no,no,no,no,no,no,no,no,no
+CRISIL,CRISIL Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+CSBBANK,CSB Bank Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+CAMPUS,Campus Activewear Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+CANFINHOME,Can Fin Homes Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+CANBK,Canara Bank,Financial Services,yes,no,no,no,no,no,no,no,no,no
+CANHLIFE,Canara HSBC Life Insurance Company Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+CRAMC,Canara Robeco Asset Management Company Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+CAPILLARY,Capillary Technologies India Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+CAPLIPOINT,Caplin Point Laboratories Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+CGCL,Capri Global Capital Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+CARBORUNIV,Carborundum Universal Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+CARTRADE,Cartrade Tech Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+CASTROLIND,Castrol India Ltd.,Oil Gas & Consumable Fuels,yes,no,no,no,no,no,no,no,no,no
+CEATLTD,Ceat Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+CEIGALL,Ceigall India Ltd.,Construction,yes,no,no,no,no,no,no,no,no,no
+CELLO,Cello World Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+CEMPRO,Cemindia Projects Ltd.,Construction,yes,no,no,no,no,no,no,no,no,no
+CENTRALBK,Central Bank of India,Financial Services,yes,no,no,no,no,no,no,no,no,no
+CDSL,Central Depository Services (India) Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+CMPDI,Central Mine Planning & Design Institute Ltd.,Services,yes,no,no,no,no,no,no,no,no,no
+CENTUM,Centum Electronics Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+CERA,Cera Sanitaryware Ltd,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+CHALET,Chalet Hotels Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+CHAMBLFERT,Chambal Fertilizers & Chemicals Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+CHENNPETRO,Chennai Petroleum Corporation Ltd.,Oil Gas & Consumable Fuels,yes,no,no,no,no,no,no,no,no,no
+CHOICEIN,Choice International Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+CHOLAHLDNG,Cholamandalam Financial Holdings Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+CHOLAFIN,Cholamandalam Investment and Finance Company Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+CIPLA,Cipla Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+CUB,City Union Bank Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+CLEANMAX,Clean Max Enviro Energy Solutions Ltd.,Power,yes,no,no,no,no,no,no,no,no,no
+CLEAN,Clean Science and Technology Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+COALINDIA,Coal India Ltd.,Oil Gas & Consumable Fuels,yes,no,no,no,no,no,no,no,no,no
+COCHINSHIP,Cochin Shipyard Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+COFORGE,Coforge Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+COHANCE,Cohance Lifesciences Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+COLPAL,Colgate Palmolive (India) Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+CAMS,Computer Age Management Services Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+CONCORDBIO,Concord Biotech Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+CONCOR,Container Corporation of India Ltd.,Services,yes,no,no,no,no,no,no,no,no,no
+COROMANDEL,Coromandel International Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+CRAFTSMAN,Craftsman Automation Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+CREDITACC,CreditAccess Grameen Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+CROMPTON,Crompton Greaves Consumer Electricals Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+CUMMINSIND,Cummins India Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+CUPID,Cupid Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+CYIENT,Cyient Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+DCBBANK,DCB Bank Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+DLF,DLF Ltd.,Realty,yes,no,no,no,no,no,no,no,no,no
+DOMS,DOMS Industries Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+DABUR,Dabur India Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+DALBHARAT,Dalmia Bharat Ltd.,Construction Materials,yes,no,no,no,no,no,no,no,no,no
+DATAPATTNS,Data Patterns (India) Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+DATAMATICS,Datamatics Global Services Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+DEEPAKFERT,Deepak Fertilisers & Petrochemicals Corp. Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+DEEPAKNTR,Deepak Nitrite Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+DELHIVERY,Delhivery Ltd.,Services,yes,no,no,no,no,no,no,no,no,no
+DEVYANI,Devyani International Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+DIACABS,Diamond Power Infrastructure Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+DBL,Dilip Buildcon Ltd.,Construction,yes,no,no,no,no,no,no,no,no,no
+DIVISLAB,Divi's Laboratories Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+DIXON,Dixon Technologies (India) Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+LALPATHLAB,Dr. Lal Path Labs Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+DRREDDY,Dr. Reddy's Laboratories Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+DUMMYHEG,Dummy HEG Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+DUMMYINGL1,Dummy India Glycols ltd. 1,Healthcare,yes,no,no,no,no,no,no,no,no,no
+DUMMYINGL2,Dummy India Glycols ltd. 2,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+DUMMYINXGN,Dummy Inox Green Ltd.,Construction,yes,no,no,no,no,no,no,no,no,no
+DYNAMATECH,Dynamatic Technologies Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+EIDPARRY,E.I.D. Parry (India) Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+E2E,E2E NETWORKS Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+EIHOTEL,EIH Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+EMBASSY,EMBASSY OFFICE PARKS REIT,Realty,yes,no,no,no,no,no,no,no,no,no
+EPL,EPL Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+EDELWEISS,Edelweiss Financial Services Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+EICHERMOT,Eicher Motors Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+ELECON,Elecon Engineering Co. Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+EMIL,Electronics Mart India Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+ELECTCAST,Electrosteel Castings Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+ELGIEQUIP,Elgi Equipments Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+ELLEN,Ellenbarrie Industrial Gases Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+EMAMILTD,Emami Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+EMBDL,Embassy Developments Ltd.,Realty,yes,no,no,no,no,no,no,no,no,no
+EMCURE,Emcure Pharmaceuticals Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+EMMVEE,Emmvee Photovoltaic Power Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+ENDURANCE,Endurance Technologies Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+ENGINERSIN,Engineers India Ltd.,Construction,yes,no,no,no,no,no,no,no,no,no
+ENTERO,Entero Healthcare Solutions Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+EIEL,Enviro Infra Engineers Ltd.,Utilities,yes,no,no,no,no,no,no,no,no,no
+EQUITASBNK,Equitas Small Finance Bank Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+ERIS,Eris Lifesciences Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+ESCORTS,Escorts Kubota Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+ETERNAL,Eternal Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+EXIDEIND,Exide Industries Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+NYKAA,FSN E-Commerce Ventures Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+FEDFINA,Fedbank Financial Services Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+FEDERALBNK,Federal Bank Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+FACT,Fertilisers and Chemicals Travancore Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+FIEMIND,Fiem Industries Ltd,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+FINCABLES,Finolex Cables Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+FINPIPE,Finolex Industries Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+FSL,Firstsource Solutions Ltd.,Services,yes,no,no,no,no,no,no,no,no,no
+FIVESTAR,Five-Star Business Finance Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+FORCEMOT,Force Motors Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+FORTIS,Fortis Healthcare Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+FRACTAL,Fractal Analytics Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+UTLSOLAR,Fujiyama Power Systems Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+GAIL,GAIL (India) Ltd.,Oil Gas & Consumable Fuels,yes,no,no,no,no,no,no,no,no,no
+GVT&D,GE Vernova T&D India Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+GMRAIRPORT,GMR Airports Ltd.,Services,yes,no,no,no,no,no,no,no,no,no
+GMRP&UI,GMR Power and Urban Infra Ltd.,Power,yes,no,no,no,no,no,no,no,no,no
+EBGNG,GNG Electronics Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+GABRIEL,Gabriel India Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+GALLANTT,Gallantt Ispat Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+GRSE,Garden Reach Shipbuilders & Engineers Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+GRWRHITECH,Garware Hi-Tech Films Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+GICRE,General Insurance Corporation of India,Financial Services,yes,no,no,no,no,no,no,no,no,no
+GENUSPOWER,Genus Power Infrastructures Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+GILLETTE,Gillette India Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+GLAND,Gland Pharma Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+GLAXO,Glaxosmithkline Pharmaceuticals Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+GLENMARK,Glenmark Pharmaceuticals Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+MEDANTA,Global Health Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+GPIL,Godawari Power & Ispat Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+GODFRYPHLP,Godfrey Phillips India Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+GODREJAGRO,Godrej Agrovet Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+GODREJCP,Godrej Consumer Products Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+GODREJIND,Godrej Industries Ltd.,Diversified,yes,no,no,no,no,no,no,no,no,no
+GODREJPROP,Godrej Properties Ltd.,Realty,yes,no,no,no,no,no,no,no,no,no
+GOKEX,Gokaldas Exports Ltd.,Textiles,yes,no,no,no,no,no,no,no,no,no
+GOKULAGRO,Gokul Agro Resources Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+GOLDIAM,Goldiam International Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+GRANULES,Granules India Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+GRAPHITE,Graphite India Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+GRASIM,Grasim Industries Ltd.,Construction Materials,yes,no,no,no,no,no,no,no,no,no
+GRAVITA,Gravita India Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+GESHIP,Great Eastern Shipping Co. Ltd.,Services,yes,no,no,no,no,no,no,no,no,no
+GREAVESCOT,Greaves Cotton Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+GRINDWELL,Grindwell Norton Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+GUJALKALI,Gujarat Alkalies & Chemicals Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+GAEL,Gujarat Ambuja Exports Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+FLUOROCHEM,Gujarat Fluorochemicals Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+GMDCLTD,Gujarat Mineral Development Corporation Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+GNFC,Gujarat Narmada Valley Fertilizers and Chemicals Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+GPPL,Gujarat Pipavav Port Ltd.,Services,yes,no,no,no,no,no,no,no,no,no
+GSFC,Gujarat State Fertilizers & Chemicals Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+HGINFRA,H.G. Infra Engineering Ltd.,Construction,yes,no,no,no,no,no,no,no,no,no
+HBLENGINE,HBL Engineering Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+HCLTECH,HCL Technologies Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+HDBFS,HDB Financial Services Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+HDFCAMC,HDFC Asset Management Company Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+HDFCBANK,HDFC Bank Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+HDFCLIFE,HDFC Life Insurance Company Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+HEGAM,HEG Advanced Materials Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+HFCL,HFCL Ltd.,Telecommunication,yes,no,no,no,no,no,no,no,no,no
+HAPPSTMNDS,Happiest Minds Technologies Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+HAPPYFORGE,Happy Forgings Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+HAVELLS,Havells India Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+HCG,Healthcare Global Enterprises Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+HERITGFOOD,Heritage Foods Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+HEROMOTOCO,Hero MotoCorp Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+HEXT,Hexaware Technologies Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+HSCL,Himadri Speciality Chemical Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+HINDALCO,Hindalco Industries Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+HAL,Hindustan Aeronautics Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+HCC,Hindustan Construction Co. Ltd.,Construction,yes,no,no,no,no,no,no,no,no,no
+HINDCOPPER,Hindustan Copper Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+HINDPETRO,Hindustan Petroleum Corporation Ltd.,Oil Gas & Consumable Fuels,yes,no,no,no,no,no,no,no,no,no
+HINDUNILVR,Hindustan Unilever Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+HINDZINC,Hindustan Zinc Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+POWERINDIA,Hitachi Energy India Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+HOMEFIRST,Home First Finance Company India Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+HONASA,Honasa Consumer Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+HONAUT,Honeywell Automation India Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+HUDCO,Housing & Urban Development Corporation Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+HYUNDAI,Hyundai Motor India Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+ICICIBANK,ICICI Bank Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+ICICILIFE,ICICI Life Insurance Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+ICICIGI,ICICI Lombard General Insurance Company Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+ICICIAMC,ICICI Prudential Asset Management Company Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+IDBI,IDBI Bank Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+IDFCFIRSTB,IDFC First Bank Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+IFBIND,IFB Industries Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+IFCI,IFCI Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+IIFLCAPS,IIFL Capital Services Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+IIFL,IIFL Finance Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+INOXINDIA,INOX India Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+IRB,IRB Infrastructure Developers Ltd.,Construction,yes,no,no,no,no,no,no,no,no,no
+IRCON,IRCON International Ltd.,Construction,yes,no,no,no,no,no,no,no,no,no
+ITCHOTELS,ITC Hotels Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+ITC,ITC Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+ITI,ITI Ltd.,Telecommunication,yes,no,no,no,no,no,no,no,no,no
+INDGN,Indegene Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+INDIACEM,India Cements Ltd.,Construction Materials,yes,no,no,no,no,no,no,no,no,no
+INDIAGLYCO,India Glycols Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+INDIAMART,Indiamart Intermesh Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+INDIANB,Indian Bank,Financial Services,yes,no,no,no,no,no,no,no,no,no
+IEX,Indian Energy Exchange Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+INDHOTEL,Indian Hotels Co. Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+IMFA,Indian Metals & Ferro Alloys Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+IOC,Indian Oil Corporation Ltd.,Oil Gas & Consumable Fuels,yes,no,no,no,no,no,no,no,no,no
+IOB,Indian Overseas Bank,Financial Services,yes,no,no,no,no,no,no,no,no,no
+IRCTC,Indian Railway Catering And Tourism Corporation Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+IRFC,Indian Railway Finance Corporation Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+IREDA,Indian Renewable Energy Development Agency Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+INDIGOPNTS,Indigo Paints Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+ICIL,Indo Count Industries Ltd.,Textiles,yes,no,no,no,no,no,no,no,no,no
+IGL,Indraprastha Gas Ltd.,Oil Gas & Consumable Fuels,yes,no,no,no,no,no,no,no,no,no
+INDUSTOWER,Indus Towers Ltd.,Telecommunication,yes,no,no,no,no,no,no,no,no,no
+INDUSINDBK,IndusInd Bank Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+NAUKRI,Info Edge (India) Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+INFY,Infosys Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+INOXWIND,Inox Wind Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+INTELLECT,Intellect Design Arena Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+INDIGO,InterGlobe Aviation Ltd.,Services,yes,no,no,no,no,no,no,no,no,no
+IGIL,International Gemological Institute Ltd.,Services,yes,no,no,no,no,no,no,no,no,no
+IKS,Inventurus Knowledge Solutions Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+IONEXCHANG,Ion Exchange (India) Ltd.,Utilities,yes,no,no,no,no,no,no,no,no,no
+IPCALAB,Ipca Laboratories Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+JKCEMENT,J.K. Cement Ltd.,Construction Materials,yes,no,no,no,no,no,no,no,no,no
+JAIBALAJI,JAI BALAJI INDUSTRIES Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+JBMA,JBM Auto Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+JKPAPER,JK Paper Ltd.,Forest Materials,yes,no,no,no,no,no,no,no,no,no
+JKTYRE,JK Tyre & Industries Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+JMFINANCIL,JM Financial Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+JSWCEMENT,JSW Cement Ltd.,Construction Materials,yes,no,no,no,no,no,no,no,no,no
+JSWENERGY,JSW Energy Ltd.,Power,yes,no,no,no,no,no,no,no,no,no
+JSWINFRA,JSW Infrastructure Ltd.,Services,yes,no,no,no,no,no,no,no,no,no
+JSWSTEEL,JSW Steel Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+JAINREC,Jain Resource Recycling Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+JPPOWER,Jaiprakash Power Ventures Ltd.,Power,yes,no,no,no,no,no,no,no,no,no
+J&KBANK,Jammu & Kashmir Bank Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+JAMNAAUTO,Jamna Auto Industries Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+JSFB,Jana Small Finance Bank Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+JAYNECOIND,Jayaswal Neco Industries Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+JSLL,Jeena Sikho Lifecare Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+JINDALSAW,Jindal Saw Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+JSL,Jindal Stainless Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+JINDALSTEL,Jindal Steel Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+JIOFIN,Jio Financial Services Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+JUBLFOOD,Jubilant Foodworks Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+JUBLINGREA,Jubilant Ingrevia Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+JUBLPHARMA,Jubilant Pharmova Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+JWL,Jupiter Wagons Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+JUSTDIAL,Justdial Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+JYOTHYLAB,Jyothy Labs Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+JYOTICNC,Jyoti CNC Automation Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+KPRMILL,K.P.R. Mill Ltd.,Textiles,yes,no,no,no,no,no,no,no,no,no
+KEI,KEI Industries Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+KNRCON,KNR Constructions Ltd.,Construction,yes,no,no,no,no,no,no,no,no,no
+KPIGREEN,KPI Green Energy Ltd.,Power,yes,no,no,no,no,no,no,no,no,no
+KPITTECH,KPIT Technologies Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+KRBL,KRBL Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+KRN,KRN HEAT EXCHANGER AND REFRIGERATION Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+KSB,KSB Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+KAJARIACER,Kajaria Ceramics Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+KPIL,Kalpataru Projects International Ltd.,Construction,yes,no,no,no,no,no,no,no,no,no
+KALYANKJIL,Kalyan Jewellers India Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+KANSAINER,Kansai Nerolac Paints Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+KTKBANK,Karnataka Bank Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+KARURVYSYA,Karur Vysya Bank Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+KSCL,Kaveri Seed Company Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+KAYNES,Kaynes Technology India Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+KEC,Kec International Ltd.,Construction,yes,no,no,no,no,no,no,no,no,no
+KFINTECH,Kfin Technologies Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+KIRLOSBROS,Kirloskar Brothers Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+KIRLOSENG,Kirloskar Oil Eng Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+KIRLPNU,Kirloskar Pneumatic Company Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+KITEX,Kitex Garments Ltd.,Textiles,yes,no,no,no,no,no,no,no,no,no
+KMEW,Knowledge Marine & Engineering Works Ltd.,Services,yes,no,no,no,no,no,no,no,no,no
+KOTAKBANK,Kotak Mahindra Bank Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+KIMS,Krishna Institute of Medical Sciences Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+KWIL,Kwality Wall's (India) Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+LTF,L&T Finance Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+LTTS,L&T Technology Services Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+LGEINDIA,LG Electronics India Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+LICHSGFIN,LIC Housing Finance Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+LTFOODS,LT Foods Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+LTM,LTM Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+LT,Larsen & Toubro Ltd.,Construction,yes,no,no,no,no,no,no,no,no,no
+LATENTVIEW,Latent View Analytics Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+LAURUSLABS,Laurus Labs Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+LXCHEM,Laxmi Organic Industries Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+IXIGO,Le Travenues Technology Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+THELEELA,Leela Palaces Hotels & Resorts Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+LEMONTREE,Lemon Tree Hotels Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+LENSKART,Lenskart Solutions Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+LICI,Life Insurance Corporation of India,Financial Services,yes,no,no,no,no,no,no,no,no,no
+LINDEINDIA,Linde India Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+LLOYDSENGG,Lloyds Engineering Works Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+LLOYDSENT,Lloyds Enterprises Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+LLOYDSME,Lloyds Metals And Energy Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+LODHA,Lodha Developers Ltd.,Realty,yes,no,no,no,no,no,no,no,no,no
+LUMAXTECH,Lumax Auto Technologies Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+LUMAXIND,Lumax Industries Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+LUPIN,Lupin Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+MMTC,MMTC Ltd.,Services,yes,no,no,no,no,no,no,no,no,no
+MOIL,MOIL Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+MRF,MRF Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+MSTCLTD,MSTC Ltd.,Services,yes,no,no,no,no,no,no,no,no,no
+MTARTECH,MTAR Technologies Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+MBAPL,Madhya Bharat Agro Products Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+MGL,Mahanagar Gas Ltd.,Oil Gas & Consumable Fuels,yes,no,no,no,no,no,no,no,no,no
+M&MFIN,Mahindra & Mahindra Financial Services Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+M&M,Mahindra & Mahindra Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+MANAPPURAM,Manappuram Finance Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+MRPL,Mangalore Refinery & Petrochemicals Ltd.,Oil Gas & Consumable Fuels,yes,no,no,no,no,no,no,no,no,no
+MANKIND,Mankind Pharma Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+MANORAMA,Manorama Industries Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+MARICO,Marico Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+MARKSANS,Marksans Pharma Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+MARUTI,Maruti Suzuki India Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+MASTEK,Mastek Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+MFSL,Max Financial Services Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+MAXHEALTH,Max Healthcare Institute Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+MAZDOCK,Mazagoan Dock Shipbuilders Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+MEDPLUS,Medplus Health Services Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+MEESHO,Meesho Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+METROPOLIS,Metropolis Healthcare Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+MINDACORP,Minda Corporation Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+MIDHANI,Mishra Dhatu Nigam Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+MSUMI,Motherson Sumi Wiring India Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+MOTILALOFS,Motilal Oswal Financial Services Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+MPHASIS,MphasiS Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+BECTORFOOD,Mrs. Bectors Food Specialities Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+MCX,Multi Commodity Exchange of India Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+MUTHOOTFIN,Muthoot Finance Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+NATCOPHARM,NATCO Pharma Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+NBCC,NBCC (India) Ltd.,Construction,yes,no,no,no,no,no,no,no,no,no
+NCC,NCC Ltd.,Construction,yes,no,no,no,no,no,no,no,no,no
+NEOGEN,NEOGEN CHEMICALS LTD.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+NHPC,NHPC Ltd.,Power,yes,no,no,no,no,no,no,no,no,no
+NLCINDIA,NLC India Ltd.,Power,yes,no,no,no,no,no,no,no,no,no
+NMDC,NMDC Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+NSLNISP,NMDC Steel Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+NTPCGREEN,NTPC Green Energy Ltd.,Power,yes,no,no,no,no,no,no,no,no,no
+NTPC,NTPC Ltd.,Power,yes,no,no,no,no,no,no,no,no,no
+NH,Narayana Hrudayalaya Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+NATIONALUM,National Aluminium Co. Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+NFL,National Fertilizers Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+NAVA,Nava Ltd.,Power,yes,no,no,no,no,no,no,no,no,no
+NAVINFLUOR,Navin Fluorine International Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+NAZARA,Nazara Technologies Ltd.,Media Entertainment & Publication,yes,no,no,no,no,no,no,no,no,no
+NEPHROPLUS,Nephrocare Health Services Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+NESTLEIND,Nestle India Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+NETWEB,Netweb Technologies India Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+NETWORK18,Network18 Media & Investments Ltd.,Media Entertainment & Publication,yes,no,no,no,no,no,no,no,no,no
+NEULANDLAB,Neuland Laboratories Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+NEWGEN,Newgen Software Technologies Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+NAM-INDIA,Nippon Life India Asset Management Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+NIVABUPA,Niva Bupa Health Insurance Company Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+NORTHARC,Northern Arc Capital Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+NUVAMA,Nuvama Wealth Management Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+NUVOCO,Nuvoco Vistas Corporation Ltd.,Construction Materials,yes,no,no,no,no,no,no,no,no,no
+OBEROIRLTY,Oberoi Realty Ltd.,Realty,yes,no,no,no,no,no,no,no,no,no
+ONGC,Oil & Natural Gas Corporation Ltd.,Oil Gas & Consumable Fuels,yes,no,no,no,no,no,no,no,no,no
+OIL,Oil India Ltd.,Oil Gas & Consumable Fuels,yes,no,no,no,no,no,no,no,no,no
+OLAELEC,Ola Electric Mobility Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+OLECTRA,Olectra Greentech Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+OMNI,Omnitech Engineering Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+KISSHT,OnEMI Technology Solutions Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+PAYTM,One 97 Communications Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+ONESOURCE,Onesource Specialty Pharma Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+OFSS,Oracle Financial Services Software Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+OSWALPUMPS,Oswal Pumps Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+PNGJL,P N Gadgil Jewellers Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+POLICYBZR,PB Fintech Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+PCJEWELLER,PC Jeweller Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+PCBL,PCBL Chemical Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+PDSL,PDS Ltd.,Textiles,yes,no,no,no,no,no,no,no,no,no
+PGEL,PG Electroplast Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+PIIND,PI Industries Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+PNBHOUSING,PNB Housing Finance Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+PNCINFRA,PNC Infratech Ltd.,Construction,yes,no,no,no,no,no,no,no,no,no
+PTC,PTC India Ltd.,Power,yes,no,no,no,no,no,no,no,no,no
+PTCIL,PTC Industries Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+PVRINOX,PVR INOX Ltd.,Media Entertainment & Publication,yes,no,no,no,no,no,no,no,no,no
+PAGEIND,Page Industries Ltd.,Textiles,yes,no,no,no,no,no,no,no,no,no
+PAISALO,Paisalo Digital Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+PARADEEP,Paradeep Phosphates Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+PARAS,Paras Defence and Space Technologies Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+PARKHOSPS,Park Medi World Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+PATANJALI,Patanjali Foods Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+PGIL,Pearl Global Industries Ltd.,Textiles,yes,no,no,no,no,no,no,no,no,no
+PERSISTENT,Persistent Systems Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+PETRONET,Petronet LNG Ltd.,Oil Gas & Consumable Fuels,yes,no,no,no,no,no,no,no,no,no
+PFIZER,Pfizer Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+PHOENIXLTD,Phoenix Mills Ltd.,Realty,yes,no,no,no,no,no,no,no,no,no
+PWL,Physicswallah Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+PICCADIL,Piccadily Agro Industries Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+PIDILITIND,Pidilite Industries Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+PINELABS,Pine Labs Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+PIRAMALFIN,Piramal Finance Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+PPLPHARMA,Piramal Pharma Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+POLYMED,Poly Medicure Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+POLYCAB,Polycab India Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+POONAWALLA,Poonawalla Fincorp Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+PFC,Power Finance Corporation Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+POWERGRID,Power Grid Corporation of India Ltd.,Power,yes,no,no,no,no,no,no,no,no,no
+POWERMECH,Power Mech Projects Ltd.,Construction,yes,no,no,no,no,no,no,no,no,no
+POWERICA,Powerica Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+PRAJIND,Praj Industries Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+PRECWIRE,Precision Wires India Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+PREMIERENE,Premier Energies Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+PRESTIGE,Prestige Estates Projects Ltd.,Realty,yes,no,no,no,no,no,no,no,no,no
+PRICOLLTD,Pricol Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+PFOCUS,Prime Focus Ltd.,Media Entertainment & Publication,yes,no,no,no,no,no,no,no,no,no
+PRIVISCL,Privi Speciality Chemicals Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+PGHL,Procter & Gamble Health Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+PNB,Punjab National Bank,Financial Services,yes,no,no,no,no,no,no,no,no,no
+PURVA,Puravankara Ltd.,Realty,yes,no,no,no,no,no,no,no,no,no
+QPOWER,QUALITY POWER ELECTRICAL EQUIPMENTS Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+QUESS,Quess Corp Ltd.,Services,yes,no,no,no,no,no,no,no,no,no
+RRKABEL,R R Kabel Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+RBLBANK,RBL Bank Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+RECLTD,REC Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+RHIM,RHI MAGNESITA INDIA LTD.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+RITES,RITES Ltd.,Construction,yes,no,no,no,no,no,no,no,no,no
+RADICO,Radico Khaitan Ltd,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+RVNL,Rail Vikas Nigam Ltd.,Construction,yes,no,no,no,no,no,no,no,no,no
+RAILTEL,Railtel Corporation Of India Ltd.,Telecommunication,yes,no,no,no,no,no,no,no,no,no
+RAIN,Rain Industries Ltd,Chemicals,yes,no,no,no,no,no,no,no,no,no
+RAINBOW,Rainbow Childrens Medicare Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+RALLIS,Rallis India Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+RKFORGE,Ramkrishna Forgings Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+RCF,Rashtriya Chemicals & Fertilizers Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+RATEGAIN,Rategain Travel Technologies Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+RATNAMANI,Ratnamani Metals & Tubes Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+RTNPOWER,RattanIndia Power Ltd.,Power,yes,no,no,no,no,no,no,no,no,no
+RAYMONDLSL,Raymond Lifestyle Ltd.,Textiles,yes,no,no,no,no,no,no,no,no,no
+REDINGTON,Redington Ltd.,Services,yes,no,no,no,no,no,no,no,no,no
+REFEX,Refex Industries Ltd.,Utilities,yes,no,no,no,no,no,no,no,no,no
+RELAXO,Relaxo Footwears Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+RELIANCE,Reliance Industries Ltd.,Oil Gas & Consumable Fuels,yes,no,no,no,no,no,no,no,no,no
+RPOWER,Reliance Power Ltd.,Power,yes,no,no,no,no,no,no,no,no,no
+RELIGARE,Religare Enterprises Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+RESPONIND,Responsive Industries Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+RBA,Restaurant Brands Asia Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+ROUTE,Route Mobile Ltd.,Telecommunication,yes,no,no,no,no,no,no,no,no,no
+RUBICON,Rubicon Research Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+SJS,S.J.S. Enterprises Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+SBFC,SBFC Finance Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+SBICARD,SBI Cards and Payment Services Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+SBILIFE,SBI Life Insurance Company Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+SEDEMAC,SEDEMAC Mechatronics Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+SGMART,SG Mart Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+SIGMAADV,SIGMA ADVANCED SYSTEMS LTD.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+SJVN,SJVN Ltd.,Power,yes,no,no,no,no,no,no,no,no,no
+SKYGOLD,SKY GOLD AND DIAMONDS Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+SMLMAH,SML Mahindra Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+SHRIPISTON,SPR Auto Technologies Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+SRF,SRF Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+LOTUSDEV,SRI LOTUS DEVELOPERS AND REALTY Ltd.,Realty,yes,no,no,no,no,no,no,no,no,no
+SAFARI,Safari Industries (India) Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+SAGILITY,Sagility Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+SAILIFE,Sai Life Sciences Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+SAMHI,Samhi Hotels Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+SAMMAANCAP,Sammaan Capital Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+MOTHERSON,Samvardhana Motherson International Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+SANDUMA,Sandur Manganese & Iron Ores Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+SANSERA,Sansera Engineering Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+SAPPHIRE,Sapphire Foods India Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+SARDAEN,Sarda Energy and Minerals Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+SAREGAMA,Saregama India Ltd,Media Entertainment & Publication,yes,no,no,no,no,no,no,no,no,no
+SCHAEFFLER,Schaeffler India Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+SCHNEIDER,Schneider Electric Infrastructure Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+SENCO,Senco Gold Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+SENORES,Senores Pharmaceuticals Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+SHADOWFAX,Shadowfax Technologies Ltd.,Services,yes,no,no,no,no,no,no,no,no,no
+SHAILY,Shaily Engineering Plastics Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+SHAKTIPUMP,Shakti Pumps (India) Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+SHARDACROP,Sharda Cropchem Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+SHAREINDIA,Share India Securities Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+SFL,Sheela Foam Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+SHILCTECH,Shilchar Technologies Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+SHILPAMED,Shilpa Medicare Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+SCI,Shipping Corporation of India Ltd.,Services,yes,no,no,no,no,no,no,no,no,no
+SHREECEM,Shree Cement Ltd.,Construction Materials,yes,no,no,no,no,no,no,no,no,no
+RENUKA,Shree Renuka Sugars Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+SHREEJISPG,Shreeji Shipping Global Ltd.,Services,yes,no,no,no,no,no,no,no,no,no
+SHRIRAMFIN,Shriram Finance Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+SHYAMMETL,Shyam Metalics and Energy Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+ENRIN,Siemens Energy India Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+SIEMENS,Siemens Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+SIGNATURE,Signatureglobal (India) Ltd.,Realty,yes,no,no,no,no,no,no,no,no,no
+SKIPPER,Skipper Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+SOBHA,Sobha Ltd.,Realty,yes,no,no,no,no,no,no,no,no,no
+SOLARINDS,Solar Industries India Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+SONACOMS,Sona BLW Precision Forgings Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+SONATSOFTW,Sonata Software Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+SOUTHBANK,South Indian Bank Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+STARHEALTH,Star Health and Allied Insurance Company Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+SBIN,State Bank of India,Financial Services,yes,no,no,no,no,no,no,no,no,no
+SAIL,Steel Authority of India Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+SWSOLAR,Sterling and Wilson Renewable Energy Ltd.,Construction,yes,no,no,no,no,no,no,no,no,no
+STLTECH,Sterlite Technologies Ltd.,Telecommunication,yes,no,no,no,no,no,no,no,no,no
+STAR,Strides Pharma Science Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+STYLAMIND,Stylam Industries Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+SUBROS,Subros Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+SUDARSCHEM,Sudarshan Chemical Industries Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+SUDEEPPHRM,Sudeep Pharma Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+SUMICHEM,Sumitomo Chemical India Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+SPARC,Sun Pharma Advanced Research Company Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+SUNPHARMA,Sun Pharmaceutical Industries Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+SUNTV,Sun TV Network Ltd.,Media Entertainment & Publication,yes,no,no,no,no,no,no,no,no,no
+SUNDARMFIN,Sundaram Finance Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+SUNDRMFAST,Sundram Fasteners Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+SUNFLAG,Sunflag Iron & Steel Company Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+SUNTECK,Sunteck Realty Ltd.,Realty,yes,no,no,no,no,no,no,no,no,no
+SUPREMEIND,Supreme Industries Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+SPLPETRO,Supreme Petrochem Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+SUPRIYA,Supriya Lifescience Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+SURYAROSNI,Surya Roshni Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+SUVEN,Suven Life Sciences Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+SUZLON,Suzlon Energy Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+SWANCORP,Swan Corp Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+SWIGGY,Swiggy Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+SYNGENE,Syngene International Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+SYRMA,Syrma SGS Technology Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+TARC,TARC Ltd.,Realty,yes,no,no,no,no,no,no,no,no,no
+TBOTEK,TBO Tek Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+TDPOWERSYS,TD Power Systems Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+TTKPRESTIG,TTK Prestige Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+TVSMOTOR,TVS Motor Company Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+TVSSCS,TVS Supply Chain Solutions Ltd.,Services,yes,no,no,no,no,no,no,no,no,no
+TMB,Tamilnad Mercantile Bank Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+TANLA,Tanla Platforms Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+TATACAP,Tata Capital Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+TATACHEM,Tata Chemicals Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+TATACOMM,Tata Communications Ltd.,Telecommunication,yes,no,no,no,no,no,no,no,no,no
+TCS,Tata Consultancy Services Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+TATACONSUM,Tata Consumer Products Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+TATAELXSI,Tata Elxsi Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+TATAINVEST,Tata Investment Corporation Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+TMCV,Tata Motors Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+TMPV,Tata Motors Passenger Vehicles Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+TATAPOWER,Tata Power Co. Ltd.,Power,yes,no,no,no,no,no,no,no,no,no
+TATASTEEL,Tata Steel Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+TATATECH,Tata Technologies Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+TTML,Tata Teleservices (Maharashtra) Ltd.,Telecommunication,yes,no,no,no,no,no,no,no,no,no
+TECHM,Tech Mahindra Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+TECHNOE,Techno Electric & Engineering Company Ltd.,Construction,yes,no,no,no,no,no,no,no,no,no
+TEGA,Tega Industries Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+TEJASNET,Tejas Networks Ltd.,Telecommunication,yes,no,no,no,no,no,no,no,no,no
+TENNIND,Tenneco Clean Air India Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+TEXRAIL,Texmaco Rail & Eng. Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+THANGAMAYL,Thangamayil Jewellery Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+NIACL,The New India Assurance Company Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+RAMCOCEM,The Ramco Cements Ltd.,Construction Materials,yes,no,no,no,no,no,no,no,no,no
+THERMAX,Thermax Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+THOMASCOOK,Thomas Cook (India) Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+THYROCARE,Thyrocare Technologies Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+TI,Tilaknagar Industries Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+TIMETECHNO,Time Technoplast Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+TIMEX,Timex Group India Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+TIMKEN,Timken India Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+TIPSMUSIC,Tips Music Ltd.,Media Entertainment & Publication,yes,no,no,no,no,no,no,no,no,no
+TITAGARH,Titagarh Rail Systems Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+TITAN,Titan Company Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+TORNTPHARM,Torrent Pharmaceuticals Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+TORNTPOWER,Torrent Power Ltd.,Power,yes,no,no,no,no,no,no,no,no,no
+TARIL,Transformers And Rectifiers (India) Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+TRANSRAILL,Transrail Lighting Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+TRENT,Trent Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+TRIDENT,Trident Ltd.,Textiles,yes,no,no,no,no,no,no,no,no,no
+TRIVENIPT,Triveni Power Transmission Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+TRITURBINE,Triveni Turbine Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+TIINDIA,Tube Investments of India Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+UCOBANK,UCO Bank,Financial Services,yes,no,no,no,no,no,no,no,no,no
+UNOMINDA,UNO Minda Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+UPL,UPL Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+UTIAMC,UTI Asset Management Company Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+UJJIVANSFB,Ujjivan Small Finance Bank Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+ULTRACEMCO,UltraTech Cement Ltd.,Construction Materials,yes,no,no,no,no,no,no,no,no,no
+UNIMECH,Unimech Aerospace and Manufacturing Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+UNIONBANK,Union Bank of India,Financial Services,yes,no,no,no,no,no,no,no,no,no
+UBL,United Breweries Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+UNITDSPR,United Spirits Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+URBANCO,Urban Company Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+USHAMART,Usha Martin Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+VGUARD,V-Guard Industries Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+VMART,V-Mart Retail Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+VIPIND,V.I.P. Industries Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+V2RETAIL,V2 Retail Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+DBREALTY,VALOR ESTATE Ltd.,Realty,yes,no,no,no,no,no,no,no,no,no
+WABAG,Va Tech Wabag Ltd.,Utilities,yes,no,no,no,no,no,no,no,no,no
+VAIBHAVGBL,Vaibhav Global Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+VTL,Vardhman Textiles Ltd.,Textiles,yes,no,no,no,no,no,no,no,no,no
+VBL,Varun Beverages Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+MANYAVAR,Vedant Fashions Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+VAML,Vedanta Aluminium Metal Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+VISL,Vedanta Iron and Steel Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+VEDL,Vedanta Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+VOGL,Vedanta Oil and Gas Ltd.,Oil Gas & Consumable Fuels,yes,no,no,no,no,no,no,no,no,no
+VEDPOWER,Vedanta Power Ltd.,Power,yes,no,no,no,no,no,no,no,no,no
+VESUVIUS,Vesuvius India Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+VIJAYA,Vijaya Diagnostic Centre Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+VIKRAMSOLR,Vikram Solar Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+VMM,Vishal Mega Mart Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+VIYASH,Viyash Scientific Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+IDEA,Vodafone Idea Ltd.,Telecommunication,yes,no,no,no,no,no,no,no,no,no
+VOLTAMP,Voltamp Transformers Ltd,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+VOLTAS,Voltas Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+WAAREEENER,Waaree Energies Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+WAAREERTL,Waaree Renewable Technologies Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+WAKEFIT,Wakefit Innovations Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+WEWORK,WeWork India Management Ltd.,Services,yes,no,no,no,no,no,no,no,no,no
+WEBELSOLAR,Websol Energy System Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+WELCORP,Welspun Corp Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+WELENT,Welspun Enterprises Ltd.,Construction,yes,no,no,no,no,no,no,no,no,no
+WELSPUNLIV,Welspun Living Ltd.,Textiles,yes,no,no,no,no,no,no,no,no,no
+WESTLIFE,Westlife Foodworld Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+WHIRLPOOL,Whirlpool of India Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+WIPRO,Wipro Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+WOCKPHARMA,Wockhardt Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+YATHARTH,Yatharth Hospital & Trauma Care Services Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+YESBANK,Yes Bank Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+ZFCVINDIA,ZF Commercial Vehicle Control Systems India Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+ZAGGLE,Zaggle Prepaid Ocean Services Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+ZEEL,Zee Entertainment Enterprises Ltd.,Media Entertainment & Publication,yes,no,no,no,no,no,no,no,no,no
+ZENTEC,Zen Technologies Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+ZENSARTECH,Zensar Technolgies Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+ZYDUSLIFE,Zydus Lifesciences Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+ZYDUSWELL,Zydus Wellness Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+ECLERX,eClerx Services Ltd.,Services,yes,no,no,no,no,no,no,no,no,no
