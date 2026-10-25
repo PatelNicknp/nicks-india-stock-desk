@@ -468,6 +468,32 @@ def _bars(close, high, low, vol, ticker, spy):
     return frame, spy_aligned
 
 
+def _stock_benchmark(close, ticker, universe, cfg=None):
+    """NSE names use the Nifty 50. BSE-only names use SENSEX when that switch is on."""
+    bench_col, _bank, bench_word, _bank_word = _benchmarks(close)
+    cols = set()
+    if close is not None:
+        try:
+            cols = set(map(str, close.columns))
+        except Exception:
+            cols = set()
+    use_sensex = True
+    if cfg is not None:
+        use_sensex = bool(((cfg.get("benchmark") or {}).get("bse_only_uses_sensex", True)))
+        if not bool((cfg.get("features") or {}).get("sensex", True)):
+            use_sensex = False
+    exchange = ""
+    if universe is not None and len(universe) and "ticker" in universe.columns:
+        hit = universe[universe["ticker"].astype(str) == str(ticker)]
+        if len(hit):
+            exchange = str(hit.iloc[0].get("exchange") or "")
+    if use_sensex and exchange.strip().upper() == "BSE" and "^BSESN" in cols:
+        return "^BSESN", "SENSEX"
+    if bench_col == "^NSEI":
+        return bench_col, "Nifty 50"
+    return bench_col, bench_word
+
+
 def _benchmarks(close):
     """Nifty when the India cache is loaded. SPY when a test panel still uses it."""
     cols = set()
@@ -497,13 +523,13 @@ def _panel_date(close):
     return pd.Timestamp(eligible.index.max())
 
 
-def scan_vcp(close, high, low, vol, universe):
+def scan_vcp(close, high, low, vol, universe, cfg=None):
     rows = []
     panel = _panel_date(close)
-    bench_col, _, bench_word, _ = _benchmarks(close)
-    spy = close[bench_col] if close is not None and bench_col in close.columns else None
     names = list(universe["ticker"]) if universe is not None and len(universe) else []
     for ticker in names:
+        bench_col, bench_word = _stock_benchmark(close, ticker, universe, cfg)
+        spy = close[bench_col] if close is not None and bench_col in close.columns else None
         got = _bars(close, high, low, vol, ticker, spy)
         if got is None:
             continue
@@ -522,6 +548,10 @@ def scan_vcp(close, high, low, vol, universe):
         last = frame.index[-1]
         strength = round(state["score"] / 8.0 * 80.0 + min(state["cnt"], 4) * 5.0, 1)
         note = VCP_NOTE
+        if bench_word == "SENSEX":
+            note += " Rule 8 compares this stock with SENSEX."
+        elif bench_word in ("Nifty 50", "Nifty"):
+            note += " Rule 8 compares this stock with the Nifty 50."
         if spy is None:
             note += " %s was not in the price cache, so rule 8 cannot pass." % bench_word
         row = {
@@ -635,6 +665,125 @@ def _combine_market(spy_m, qqq_m, bench_word="SPY", bank_word="QQQ"):
     return {"label": label, "spy": spy_m["label"], "qqq": qqq_m["label"], "text": spy_txt + ". " + qqq_txt + "."}
 
 
+def _trend_sentence(state, word):
+    if state is None:
+        return "%s is not on file" % word
+    return "%s is %s (price %s, EMA21 %s, EMA50 %s, EMA200 %s)" % (
+        word, state["label"], _round(state["last"]), _round(state["e21"]), _round(state["e50"]), _round(state["e200"]),
+    )
+
+
+def _last_move(series):
+    if series is None:
+        return None, None
+    values = series.dropna()
+    if len(values) == 0:
+        return None, None
+    price = float(values.iloc[-1])
+    day = None
+    if len(values) > 1 and float(values.iloc[-2]) != 0:
+        day = (price / float(values.iloc[-2]) - 1.0) * 100.0
+    return price, day
+
+
+def market_snapshot(close, cfg=None):
+    """Nifty 50, SENSEX, and Bank Nifty trends, plus whether the market check passes.
+
+    On the India cache the check passes when the Nifty 50 or SENSEX is in an uptrend.
+    market.require_both_uptrends asks for both. Bank Nifty is shown and does not decide.
+    A saved SPY panel keeps the old SPY check so the offline tests still pass.
+    """
+    cols = set()
+    if close is not None:
+        try:
+            cols = set(map(str, close.columns))
+        except Exception:
+            cols = set()
+    require_both = bool(((cfg or {}).get("market") or {}).get("require_both_uptrends", False))
+    sensex_on = bool(((cfg or {}).get("features") or {}).get("sensex", True))
+    if "^NSEI" not in cols:
+        bench, bank, bench_word, bank_word = _benchmarks(close)
+        spy_s = close[bench].dropna() if close is not None and bench in cols else None
+        bank_s = close[bank].dropna() if close is not None and bank in cols else None
+        spy_m = _market_one(spy_s, bench_word) if spy_s is not None else None
+        bank_m = _market_one(bank_s, bank_word) if bank_s is not None else None
+        combined = _combine_market(spy_m, bank_m, bench_word, bank_word)
+        spy_up = uptrend(close[bench]) if close is not None and bench in cols else False
+        bank_up = uptrend(close[bank]) if close is not None and bank in cols else False
+        return {
+            "label": combined["label"],
+            "spy": combined["spy"],
+            "qqq": combined["qqq"],
+            "sensex": "",
+            "text": combined["text"],
+            "market_ok": "yes" if spy_up else "no",
+            "spy_uptrend": "yes" if spy_up else "no",
+            "qqq_uptrend": "yes" if bank_up else "no",
+            "sensex_uptrend": "",
+            "nifty_trend": combined["spy"],
+            "sensex_trend": "",
+            "bank_trend": combined["qqq"],
+            "market_rule": "benchmark",
+        }
+    nifty_s = close["^NSEI"].dropna()
+    bank_s = close["^NSEBANK"].dropna() if "^NSEBANK" in cols else None
+    sensex_s = close["^BSESN"].dropna() if sensex_on and "^BSESN" in cols else None
+    nifty_m = _market_one(nifty_s, "Nifty 50") if len(nifty_s) else None
+    bank_m = _market_one(bank_s, "Bank Nifty") if bank_s is not None else None
+    sensex_m = _market_one(sensex_s, "SENSEX") if sensex_s is not None else None
+    nifty_up = bool(nifty_m and nifty_m["label"] == "Uptrend")
+    sensex_up = bool(sensex_m and sensex_m["label"] == "Uptrend")
+    bank_up = bool(bank_m and bank_m["label"] == "Uptrend")
+    if sensex_m is None:
+        ok = nifty_up
+        if nifty_m is None:
+            label = NOT_VERIFIED
+        else:
+            label = nifty_m["label"]
+    elif require_both:
+        ok = nifty_up and sensex_up
+        if nifty_up and sensex_up:
+            label = "Uptrend"
+        elif (nifty_m and nifty_m["label"] == "Correction") or sensex_m["label"] == "Correction":
+            label = "Correction"
+        else:
+            label = "Under pressure"
+    else:
+        ok = nifty_up or sensex_up
+        if nifty_up or sensex_up:
+            label = "Uptrend"
+        elif (nifty_m and nifty_m["label"] == "Under pressure") or sensex_m["label"] == "Under pressure":
+            label = "Under pressure"
+        else:
+            label = "Correction"
+    rule = "both" if require_both else "either"
+    if rule == "both":
+        rule_txt = "The market check passes only when both the Nifty 50 and SENSEX are in an uptrend."
+    else:
+        rule_txt = "The market check passes when the Nifty 50 or SENSEX is in an uptrend."
+    text = ". ".join([
+        _trend_sentence(nifty_m, "Nifty 50"),
+        _trend_sentence(sensex_m, "SENSEX"),
+        _trend_sentence(bank_m, "Bank Nifty"),
+        rule_txt + " Bank Nifty is shown beside them and does not decide.",
+    ])
+    return {
+        "label": label,
+        "spy": nifty_m["label"] if nifty_m else NOT_VERIFIED,
+        "qqq": bank_m["label"] if bank_m else NOT_VERIFIED,
+        "sensex": sensex_m["label"] if sensex_m else NOT_VERIFIED,
+        "text": text,
+        "market_ok": "yes" if ok else "no",
+        "spy_uptrend": "yes" if nifty_up else "no",
+        "qqq_uptrend": "yes" if bank_up else "no",
+        "sensex_uptrend": "yes" if sensex_up else ("no" if sensex_m else ""),
+        "nifty_trend": nifty_m["label"] if nifty_m else NOT_VERIFIED,
+        "sensex_trend": sensex_m["label"] if sensex_m else NOT_VERIFIED,
+        "bank_trend": bank_m["label"] if bank_m else NOT_VERIFIED,
+        "market_rule": rule,
+    }
+
+
 def _frame_key(frame):
     text = str(frame)
     if len(text) == 6 and text.startswith("CY") and text[2:].isdigit():
@@ -731,23 +880,27 @@ def _range_pct(close, win):
     return (float(seg.max()) - float(seg.min())) / mean * 100.0
 
 
-def scan_canslim(close, high, low, vol, universe, quarters, annual, holders):
+def scan_canslim(close, high, low, vol, universe, quarters, annual, holders, cfg=None):
     rows = []
     if close is None or len(close) == 0 or universe is None or len(universe) == 0:
         return pd.DataFrame(), {}
     panel = _panel_date(close)
-    bench_col, bank_col, bench_word, bank_word = _benchmarks(close)
-    spy = close[bench_col].dropna() if bench_col in close.columns else None
-    qqq = close[bank_col].dropna() if bank_col in close.columns else None
-    spy_m = _market_one(spy, bench_word) if spy is not None else None
-    qqq_m = _market_one(qqq, bank_word) if qqq is not None else None
-    market = _combine_market(spy_m, qqq_m, bench_word, bank_word)
-    bench = spy if spy is not None else None
-    bench_r63 = _ret(bench, NSE_RS_SHORT) if bench is not None else None
-    bench_r126 = _ret(bench, NSE_RS_LONG) if bench is not None else None
+    snap = market_snapshot(close, cfg)
+    market = {
+        "label": snap["label"],
+        "spy": snap["spy"],
+        "qqq": snap["qqq"],
+        "sensex": snap.get("sensex") or "",
+        "text": snap["text"],
+    }
+    _bench_col, _bank_col, bench_word, bank_word = _benchmarks(close)
 
     screened = []
     for ticker in list(universe["ticker"]):
+        stock_col, stock_word = _stock_benchmark(close, ticker, universe, cfg)
+        bench = close[stock_col].dropna() if close is not None and stock_col in close.columns else None
+        bench_r63 = _ret(bench, NSE_RS_SHORT) if bench is not None else None
+        bench_r126 = _ret(bench, NSE_RS_LONG) if bench is not None else None
         got = _bars(close, high, low, vol, ticker, bench)
         if got is None:
             continue
@@ -816,6 +969,7 @@ def scan_canslim(close, high, low, vol, universe, quarters, annual, holders):
         big_vol = bool(np.isfinite(vol_s.iloc[-1]) and np.isfinite(avg50.iloc[-1]) and float(vol_s.iloc[-1]) > float(avg50.iloc[-1]) * VOL_MULT)
         screened.append({
             "ticker": ticker, "last": last, "liquid": liquid, "adv": adv,
+            "bench_word": stock_word,
             "rs63": (r63 - bench_r63) * 100.0, "rs126": (r126 - bench_r126) * 100.0,
             "rs_rel": (0.6 * (r126 - bench_r126) + 0.4 * (r63 - bench_r63)) * 100.0,
             "pct_from_high": pct_from_high, "hi52": hi52, "near": near,
@@ -867,7 +1021,8 @@ def scan_canslim(close, high, low, vol, universe, quarters, annual, holders):
             % rec["pct_from_high"]
         )
         s_txt = "20-day average volume %s shares. Float tightness is not verified." % "{:,.0f}".format(round(rec["adv"]))
-        l_txt = "RS percentile %.0f in this liquid universe versus %s. Industry group rank is not verified." % (rs_p, bench_word)
+        rs_word = rec.get("bench_word") or bench_word
+        l_txt = "RS percentile %.0f in this liquid universe versus %s. Industry group rank is not verified." % (rs_p, rs_word)
         if rec["contracting"]:
             vcp_txt = "20/40/60 day ranges %.1f%% / %.1f%% / %.1f%%, contracting." % (rec["r20"], rec["r40"], rec["r60"])
         elif rec["mild"]:
@@ -888,7 +1043,7 @@ def scan_canslim(close, high, low, vol, universe, quarters, annual, holders):
             "A close under EMA50 (%s) would fail its trend rule."
             % (
                 "Strict qualify" if strict else "Soft watch, not a full qualify",
-                bench_word,
+                rs_word,
                 "C %s." % c_txt, "A %s." % a_txt, "N %s" % n_txt, "S %s" % s_txt, "L %s" % l_txt,
                 market["text"], _round(rec["e50"]),
             )
@@ -942,6 +1097,7 @@ def scan_canslim(close, high, low, vol, universe, quarters, annual, holders):
             "i_status": i_text,
             "m_market": market["label"],
             "m_spy": market["spy"],
+            "m_sensex": market.get("sensex") or "",
             "m_qqq": market["qqq"],
             "m_status": market["text"],
             "qualify": qualify,
@@ -1621,8 +1777,18 @@ def buy_rows_visible(df, market_filter):
     return rows.iloc[0:0]
 
 
-def build_buy_setups(vcp, box, flag, canslim, scores, close=None, week=None, sma_ok=None, market=None):
-    """Names that pass the stock rules. market_ok is SPY's uptrend, for the page filter.
+def _pending_verdict(verdict):
+    return str(verdict or "").strip() == "Not scored yet"
+
+
+def _buy_allowed(verdict):
+    """Chart setups keep BUY and names whose financials are still downloading. A scored AVOID stays off."""
+    text = str(verdict or "").strip()
+    return text == "BUY" or text == "Not scored yet"
+
+
+def build_buy_setups(vcp, box, flag, canslim, scores, close=None, week=None, sma_ok=None, market=None, cfg=None):
+    """Names that pass the chart rules. The page can hide unscored names when coverage is high.
 
     No network. Scanners, scores, the 52-week file, and the cached closes are the inputs.
     The market switch does not delete rows, so the page can show them greyed.
@@ -1638,19 +1804,20 @@ def build_buy_setups(vcp, box, flag, canslim, scores, close=None, week=None, sma
     if week is not None and len(week) and "ticker" in getattr(week, "columns", []):
         week_idx = week.drop_duplicates("ticker", keep="last").set_index("ticker")
     if market is None:
-        bench, bank, _, _ = _benchmarks(close if close is not None else pd.DataFrame())
-        spy_ok = uptrend(close[bench]) if close is not None and bench in getattr(close, "columns", []) else False
-        qqq_ok = uptrend(close[bank]) if close is not None and bank in getattr(close, "columns", []) else False
+        snap = market_snapshot(close if close is not None else pd.DataFrame(), cfg)
     else:
-        spy_ok = bool(market.get("spy"))
-        qqq_ok = bool(market.get("qqq"))
-    market_ok = _yn_flag(spy_ok)
-    qqq_flag = _yn_flag(qqq_ok)
+        snap = market_snapshot(close if close is not None else pd.DataFrame(), cfg)
+        if "spy" in market or "qqq" in market:
+            snap["spy_uptrend"] = _yn_flag(bool(market.get("spy")))
+            snap["qqq_uptrend"] = _yn_flag(bool(market.get("qqq")))
+            snap["market_ok"] = snap["spy_uptrend"]
+    market_ok = snap.get("market_ok") or "no"
+    qqq_flag = snap.get("qqq_uptrend") or "no"
     order = {name: i for i, name in enumerate(BUY_SETUP_ORDER)}
     rows = []
     for ticker, setups_for in grouped.items():
         verdict = _w52_text(_w52_lookup(score_idx, ticker, "verdict"))
-        if verdict != "BUY":
+        if not _buy_allowed(verdict):
             continue
         if sma_ok is not None:
             if not sma_ok.get(ticker):
@@ -1712,14 +1879,21 @@ def build_buy_setups(vcp, box, flag, canslim, scores, close=None, week=None, sma
             "pct_from_high_52w": _round(from_high) if from_high is not None else None,
             "reason": _buy_reason(sources, best, best["pivot"], broken),
             "market_ok": market_ok,
-            "spy_uptrend": market_ok,
+            "spy_uptrend": snap.get("spy_uptrend") or "no",
             "qqq_uptrend": qqq_flag,
+            "sensex_uptrend": snap.get("sensex_uptrend") or "",
+            "nifty_trend": snap.get("nifty_trend") or "",
+            "sensex_trend": snap.get("sensex_trend") or "",
+            "bank_trend": snap.get("bank_trend") or "",
+            "market_rule": snap.get("market_rule") or "either",
+            "financials_pending": "yes" if _pending_verdict(verdict) else "no",
+            "rs_benchmark": _w52_text(_w52_lookup(score_idx, ticker, "rs_benchmark")),
             "data_status": "OK",
-            "note": "Research list, not a recommendation. This desk never places trades. The market check uses the Nifty 50.",
+            "note": "Research list, not a recommendation. This desk never places trades. The market check uses the Nifty 50 and SENSEX.",
         })
     out = pd.DataFrame(rows)
     if len(out) == 0:
-        return _buy_market_row(market_ok, qqq_flag)
+        return _buy_market_row(snap)
     out["_status"] = out["best_status"].map(lambda s: 0 if s == "BROKEN OUT today" else 1)
     out["_dist"] = pd.to_numeric(out["dist_to_entry_pct"], errors="coerce").abs()
     out["_score"] = pd.to_numeric(out["score"], errors="coerce")
@@ -1743,8 +1917,9 @@ def _close_last(close, ticker):
     return float(s.iloc[-1]), dt.strftime("%Y-%m-%d")
 
 
-def _buy_market_row(market_ok, qqq_flag):
-    """One row so the page can show SPY and QQQ when no stock passed."""
+def _buy_market_row(snap):
+    """One row so the page can show the indexes when no stock passed."""
+    snap = snap or {}
     return pd.DataFrame([{
         "ticker": "",
         "company": "",
@@ -1767,16 +1942,23 @@ def _buy_market_row(market_ok, qqq_flag):
         "range_position_52w": None,
         "pct_from_high_52w": None,
         "reason": "",
-        "market_ok": market_ok,
-        "spy_uptrend": market_ok,
-        "qqq_uptrend": qqq_flag,
+        "market_ok": snap.get("market_ok") or "no",
+        "spy_uptrend": snap.get("spy_uptrend") or "no",
+        "qqq_uptrend": snap.get("qqq_uptrend") or "no",
+        "sensex_uptrend": snap.get("sensex_uptrend") or "",
+        "nifty_trend": snap.get("nifty_trend") or "",
+        "sensex_trend": snap.get("sensex_trend") or "",
+        "bank_trend": snap.get("bank_trend") or "",
+        "market_rule": snap.get("market_rule") or "either",
+        "financials_pending": "",
+        "rs_benchmark": "",
         "data_status": "OK",
-        "note": "No names passed the buy-setup rules. Research list, not a recommendation. This desk never places trades. The market check uses the Nifty 50.",
+        "note": "No names passed the buy-setup rules. Research list, not a recommendation. This desk never places trades. The market check uses the Nifty 50 and SENSEX.",
     }])
 
 
 
-def build_setups(close, high, low, vol, universe, quarters, annual, holders, features, scores=None):
+def build_setups(close, high, low, vol, universe, quarters, annual, holders, features, scores=None, cfg=None):
     """Return the scanner frames. Each is empty when that switch is off."""
     features = features or {}
     want_v = features.get("scanner_vcp", True)
@@ -1785,8 +1967,8 @@ def build_setups(close, high, low, vol, universe, quarters, annual, holders, fea
     want_f = features.get("scanner_flag", True)
     want_l = features.get("scanner_leaders", True)
     want_w = features.get("scanner_52w", True)
-    vcp = scan_vcp(close, high, low, vol, universe) if (want_v or want_l) else pd.DataFrame()
-    canslim, _market = scan_canslim(close, high, low, vol, universe, quarters, annual, holders) if (want_c or want_l) else (pd.DataFrame(), {})
+    vcp = scan_vcp(close, high, low, vol, universe, cfg) if (want_v or want_l) else pd.DataFrame()
+    canslim, _market = scan_canslim(close, high, low, vol, universe, quarters, annual, holders, cfg) if (want_c or want_l) else (pd.DataFrame(), {})
     box = scan_box(close, high, low, vol, universe) if want_b else pd.DataFrame()
     flag = scan_flag(close, high, low, vol, universe) if want_f else pd.DataFrame()
     leaders = combine_leaders(vcp, canslim) if want_l else pd.DataFrame()

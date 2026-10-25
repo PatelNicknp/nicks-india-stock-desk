@@ -298,7 +298,7 @@
     return '<span class="pill' + (lite ? " lite" : "") + '" style="color:' + color + '">' + esc(text) + "</span>";
   }
   function verdictHtml(v) {
-    const map = { BUY: UP, HOLD: AM, AVOID: DN };
+    const map = { BUY: UP, HOLD: AM, AVOID: DN, "Not scored yet": MU };
     return colored(v, map[v] || TX);
   }
   function trendHtml(v) {
@@ -429,6 +429,10 @@
         return a + " → " + b;
       }
       case "verdict": return verdictHtml(v);
+      case "pending": {
+        if (String(v || "").toLowerCase() !== "yes") return "";
+        return '<span class="pill" style="color:#8B96AD">Financials pending</span>';
+      }
       case "trend": return trendHtml(v);
       case "quad": {
         const map = { Leading: "#22C55E", Weakening: "#F59E0B", Lagging: "#EF4444", Improving: "#7C9CFF" };
@@ -741,7 +745,9 @@
   }
   function expandHtml(row, opts, parked) {
     const custom = typeof opts.detail === "function" ? (opts.detail(row) || "") : "";
-    const sub = typeof opts.priceSub === "function" ? opts.priceSub(row) : (opts.priceSub || "Daily candles in rupees. Turn the averages on or off above the chart.");
+    const benchName = row && row.rs_benchmark ? String(row.rs_benchmark) : "";
+    const benchLine = benchName ? " Relative strength uses " + benchName + "." : "";
+    const sub = (typeof opts.priceSub === "function" ? opts.priceSub(row) : (opts.priceSub || "Daily candles in rupees. Turn the averages on or off above the chart.")) + benchLine;
     const company = isBlank(row.company) ? "" : ' <span class="mut">' + esc(row.company) + "</span>";
     return '<div class="buydrop"><div class="buyid">' + tickerHtml(row.ticker) + company + "</div>" +
       expandNotes(row, parked) + expandStory(row, opts, parked) + custom + pricePanel(sub) + "</div>";
@@ -1821,7 +1827,7 @@
       }
       if (active >= hits.length) active = 0;
       pop.innerHTML = hits.map((row, i) => {
-        const color = row.verdict === "BUY" ? UP : row.verdict === "HOLD" ? AM : row.verdict === "AVOID" ? DN : TX;
+        const color = row.verdict === "BUY" ? UP : row.verdict === "HOLD" ? AM : row.verdict === "AVOID" ? DN : row.verdict === "Not scored yet" ? MU : TX;
         const score = num(row.score);
         const scoreText = score == null ? "–" : (Number.isInteger(score) ? String(score) : fmt(score, 1));
         return '<button type="button" class="qrow' + (i === active ? " on" : "") + '" role="option" id="qopt' + i + '" data-t="' + esc(row.ticker) + '" aria-selected="' + (i === active ? "true" : "false") + '">' +

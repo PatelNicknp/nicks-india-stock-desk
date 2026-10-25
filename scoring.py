@@ -246,8 +246,15 @@ def valuation_targets(fin, target_median, target_mean, price=None):
 
 
 def decide_verdict(score, timing, n_fin, price, stop, cfg):
-    if score is None:
+    if score is None or (isinstance(score, float) and not np.isfinite(score)) or pd.isna(score):
         return None
+    try:
+        filled = 0 if n_fin is None or pd.isna(n_fin) else int(n_fin)
+    except (TypeError, ValueError):
+        filled = 0
+    # No statement points yet. A low technical score must not become AVOID while the backfill is still running.
+    if filled <= 0:
+        return "Not scored yet"
     if score >= cfg["buy_at"]:
         verdict = "BUY"
     elif score >= cfg["hold_at"]:
@@ -277,6 +284,8 @@ def _phrase(points, good, bad):
 
 def plain_reason(row):
     """One plain-English line. Research label, not an order."""
+    if row.get("verdict") == "Not scored yet":
+        return "Financials are still downloading, so this stock is not scored yet."
     bits = []
     mapping = [
         ("pts_rev_growth", "revenue is growing faster than this company's own history", "revenue is growing slower than this company's own history"),
@@ -513,6 +522,9 @@ def apply_sector_point_fallback(df, cfg=None):
             n_fin = row.get("n_fin")
             verdicts.append(decide_verdict(score, row.get("timing"), n_fin, _f(row.get("price")), _f(row.get("stop")), cfg))
         out["verdict"] = verdicts
+        if "reason" in out.columns:
+            pending = out["verdict"].eq("Not scored yet")
+            out.loc[pending, "reason"] = "Financials are still downloading, so this stock is not scored yet."
         if "verdict" in out.columns:
             avoid = out["verdict"].eq("AVOID")
             for col in ("entry_low", "entry_high", "trade_target"):

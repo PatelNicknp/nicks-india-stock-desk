@@ -90,6 +90,25 @@ def test_extended_downgrade_and_avoid():
     assert scoring.decide_verdict(3, "Sideways", 7, 100, 80, CFG) == "AVOID"
 
 
+def test_no_financials_is_not_scored_yet():
+    assert scoring.decide_verdict(2, "Uptrend", 0, 100, 80, CFG) == "Not scored yet"
+    assert scoring.decide_verdict(-3, "Downtrend", None, 40, 50, CFG) == "Not scored yet"
+    assert scoring.decide_verdict(3, "Sideways", 7, 100, 80, CFG) == "AVOID"
+    fin = {}
+    mkt = {"price": 40, "sma20": 38, "sma50": 35, "sma100": 30, "sma200": 28,
+           "rsi": 58, "rsi_prev": 50, "atr": 1.0, "high252": 50}
+    extra = {"forward_pe": None, "analyst_mean": None, "analyst_n": None,
+             "target_median": None, "target_mean": None,
+             "inst_up": None, "inst_down": None, "insider_buys": None, "insider_sells": None,
+             "eps_flag": None, "rev_flag": None, "sector_excess": None}
+    row = scoring.score_components(fin, mkt, extra, CFG)
+    assert row["n_fin"] == 0
+    assert row["pts_fin"] is None
+    assert row["verdict"] == "Not scored yet"
+    assert row["reason"] == "Financials are still downloading, so this stock is not scored yet."
+    assert row["entry_low"] is not None
+
+
 def test_industry_excludes_self_and_needs_peers():
     df = pd.DataFrame({
         "sector": ["Tech"] * 5,
@@ -247,6 +266,7 @@ if __name__ == "__main__":
     test_score_is_sum_of_parts_and_targets()
     test_missing_pfcf_is_not_zero()
     test_extended_downgrade_and_avoid()
+    test_no_financials_is_not_scored_yet()
     test_industry_excludes_self_and_needs_peers()
     test_grade_and_headline_and_tone()
     test_alerts_and_wheel_columns_live_in_tables()
