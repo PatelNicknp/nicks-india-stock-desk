@@ -47,12 +47,59 @@
     "sector_performance": true,
     "heatmaps": true,
     "updates_log": true,
-    "help": true
+    "help": true,
+    "fii_dii_flows": true,
+    "fii_dii_derivatives": true,
+    "fii_dii_today_strip": true,
+    "fii_shareholding_highlight": true,
+    "row_charts": true,
+    "canslim_guide": true,
+    "scanner_52w": true,
+    "buy_setups": true,
+    "sector_rotation": true,
+    "fundamentals_backfill": true
+  },
+  "fundamentals_backfill": {
+    "statements_per_run": 40,
+    "shareholding_per_run": 40,
+    "pause_seconds": 0.45,
+    "max_minutes": 18,
+    "statements_refresh_days": 90,
+    "shareholding_refresh_days": 90
+  },
+  "buy_setups": {
+    "market_filter": true
+  },
+  "sector_rotation": {
+    "near_high_pct": 5,
+    "w52_bars": 252,
+    "tail_keep": 12,
+    "windows": {
+      "D": {"smooth": 10, "ratio_window": 40, "roc_span": 5, "mom_window": 40},
+      "W": {"smooth": 6, "ratio_window": 26, "roc_span": 4, "mom_window": 26},
+      "M": {"smooth": 3, "ratio_window": 12, "roc_span": 2, "mom_window": 12}
+    }
   },
   "indexes": {
     "nifty50": true,
     "next50": true,
-    "midcap150": true
+    "midcap150": true,
+    "smallcap250": true,
+    "microcap250": true,
+    "totalmarket": true,
+    "other_nse": true,
+    "sme": false,
+    "bse_only": true
+  },
+  "my_picks": [],
+  "liquidity": {
+    "enabled": true,
+    "median_days": 20,
+    "min_median_traded_value": 10000000
+  },
+  "last_known": {
+    "repo_rate": {"value": "", "date": "", "note": "Used only when every live source fails."},
+    "india_10y": {"value": "", "date": ""}
   },
   "scoring": {
     "flat_band_pct": 0.05,
@@ -80,6 +127,11 @@
     "sec_requests_per_second": 8,
     "yahoo_batch_size": 40,
     "yahoo_batch_pause_seconds": 1.5,
+    "yahoo_statements_per_run": 160,
+    "fundamentals_refresh_days": 5,
+    "shareholding_per_run": 50,
+    "gap_fill_per_run": 25,
+    "bhav_pause_seconds": 0.15,
     "yahoo_profile_per_second": 1,
     "nasdaq_requests_per_second": 3,
     "option_chain_per_second": 1,

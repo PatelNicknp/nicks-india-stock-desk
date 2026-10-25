@@ -2,10 +2,12 @@ name: Update Nick's India Stock Desk
 
 on:
   schedule:
-    # Hourly while the NSE cash market is open (09:15 to 15:15 IST). Prices refresh. Slow sources stay on today's cache.
-    - cron: "45 3-9 * * 1-5"
-    # Once after the close (16:15 IST). This run refreshes statements, shareholding, and option chains.
-    - cron: "45 10 * * 1-5"
+    # Light morning run, 08:00 IST. News and FII/DII only. No prices.
+    - cron: "30 2 * * 1-5"
+    # Main run after the NSE close, 16:30 IST. Daily bhavcopy and the slow facts.
+    - cron: "0 11 * * 1-5"
+    # Retry if the bhavcopy file is late, 18:30 IST. Last few sessions only.
+    - cron: "0 13 * * 1-5"
   workflow_dispatch: {}
 
 permissions:
@@ -38,10 +40,13 @@ jobs:
       - name: Update the desk
         run: |
           set -e
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "${{ github.event.schedule }}" = "45 10 * * 1-5" ]; then
-            python stock_desk.py --full
+          sched="${{ github.event.schedule }}"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "$sched" = "0 11 * * 1-5" ]; then
+            python stock_desk.py --close
+          elif [ "$sched" = "0 13 * * 1-5" ]; then
+            python stock_desk.py --retry
           else
-            python stock_desk.py --hourly
+            python stock_desk.py --morning
           fi
       - name: Save the new numbers
         run: |

@@ -143,6 +143,8 @@ COLS["scores"] = [
     "above_sma20", "above_sma50", "above_sma100", "above_sma200",
     "next_earnings", "missing_fields", "missing_count",
     "price_status", "fundamentals_status", "analyst_status", "holders_status",
+    "exchange", "nse_symbol", "bse_symbol", "liquid", "median_traded_value",
+    "fii_pct", "dii_pct", "fii_chg", "dii_chg",
     "data_status", "note", "disclaimer",
 ]
 
@@ -154,6 +156,7 @@ COLS["market_today"] = [
     "breadth_sma50_week_ago", "advancers", "decliners", "universe_n", "highs_52w", "lows_52w",
     "put_call", "put_call_ma5", "put_call_zone", "put_call_name", "vix",
     "fred_dgs10", "fred_t10y2y", "inr_usd", "xly_xlp", "updated_pt", "price_as_of",
+    "listed_n", "liquid_n",
     "data_status", "note", "disclaimer",
 ]
 COLS["sectors"] = ["ticker", "name", "group_name", "day_pct", "week_pct", "month_pct", "month3_pct", "ytd_pct", "rs_3m_pct", "score_avg", "n_stocks", "pct_above_sma50", "macro_growth", "macro_inflation", "macro_jobs", "macro_score", "data_status", "note", "disclaimer"]
@@ -189,6 +192,49 @@ COLS["scanner_leaders"] = _SETUP + [
     "vcp_status", "canslim_status", "vcp_strength", "canslim_strength", "on_vcp", "on_canslim",
     "data_status", "note", "disclaimer",
 ]
+# high_52w and low_52w are the high and low. new_high_today and new_low_today use the close.
+COLS["scanner_52w"] = [
+    "ticker", "company", "sector", "index_membership", "price", "price_as_of",
+    "high_52w", "low_52w", "pct_from_high", "pct_above_low", "range_position_pct",
+    "new_high_today", "new_low_today", "near_high", "high_on_volume", "volume_ratio",
+    "days_since_high", "score", "verdict", "data_status", "note", "disclaimer",
+]
+COLS["highs_lows_history"] = [
+    "date", "new_highs", "new_lows", "near_high_count", "net", "data_status", "note", "disclaimer",
+]
+COLS["buy_setups"] = [
+    "ticker", "company", "sector", "index_membership", "price", "price_as_of",
+    "setup_sources", "sources_count", "best_status", "entry", "stop", "target1", "target2",
+    "risk_pct", "reward_risk", "dist_to_entry_pct", "score", "verdict",
+    "range_position_52w", "pct_from_high_52w", "reason", "market_ok", "spy_uptrend", "qqq_uptrend",
+    "data_status", "note", "disclaimer",
+]
+COLS["sector_rotation"] = [
+    "ticker", "name", "sector", "score", "rank",
+    "quadrant_d", "quadrant_w", "quadrant_m",
+    "rs_ratio_w", "rs_momentum_w",
+    "rs_1m", "rs_3m", "rs_6m",
+    "breadth_sma50", "breadth_sma200", "n_stocks",
+    "near_high_count", "near_high_share",
+    "buy_setup_count", "buy_setup_share",
+    "score_avg", "buy_share", "rrg_points",
+    "change_daily", "change_weekly",
+    "dgs10_last", "dgs10_prev", "dgs10_trend",
+    "t10y2y_last", "t10y2y_prev", "t10y2y_trend",
+    "reason", "data_status", "note", "disclaimer",
+]
+COLS["sector_rotation_tails"] = [
+    "timeframe", "ticker", "name", "date", "rs_ratio", "rs_momentum", "quadrant", "tail_index",
+    "data_status", "note", "disclaimer",
+]
+COLS["sector_rotation_history"] = [
+    "date", "timeframe", "ticker", "name", "rs_ratio", "rs_momentum", "quadrant",
+    "data_status", "note", "disclaimer",
+]
+COLS["backfill_progress"] = [
+    "kind", "covered", "total", "pct", "last_batch_at", "last_ok", "last_fail",
+    "next_name", "cycle_note", "data_status", "note", "disclaimer",
+]
 COLS["earnings_calendar"] = ["ticker", "company", "next_earnings", "when_hint", "days_away", "last_eps_actual", "last_eps_estimate", "last_surprise_pct", "last_1d_move_pct", "avg_1d_move_pct", "n_past", "owns", "data_status", "note", "disclaimer"]
 COLS["earnings_heatmap"] = ["ticker", "quarter", "eps_flag", "rev_flag", "label", "heat", "data_status", "note", "disclaimer"]
 COLS["earnings_cards"] = ["ticker", "company", "grade", "summary", "sources", "data_status", "note", "disclaimer"]
@@ -209,7 +255,7 @@ COLS["financials_summary"] = ["ticker", "sector", "metric", "direction", "now_va
 COLS["earnings_tracker"] = ["ticker", "earnings_date", "eps_estimate", "eps_actual", "surprise_pct", "result", "data_status", "note", "disclaimer"]
 COLS["company_financials"] = ["ticker", "fy_end", "filed", "revenue", "gross_profit", "op_income", "net_income", "eps", "gross_margin", "operating_margin", "net_margin", "fcf", "pe", "ps", "pfcf", "data_status", "note", "disclaimer"]
 COLS["dividend_scanner"] = ["ticker", "company", "sector", "price", "div_yield", "div_yield_avg", "dps", "pts_div_yield", "verdict", "data_status", "note", "disclaimer"]
-COLS["macro_screener"] = ["country", "category", "indicator", "date", "actual", "forecast", "surprise", "signal", "data_status", "note", "disclaimer"]
+COLS["macro_screener"] = ["country", "category", "indicator", "date", "actual", "forecast", "surprise", "signal", "source", "data_status", "note", "disclaimer"]
 COLS["sector_macro"] = ["ticker", "name", "macro_growth", "macro_inflation", "macro_jobs", "macro_score", "plain_english", "data_status", "note", "disclaimer"]
 COLS["historical_pe"] = ["date", "desk_median_trailing_pe", "n", "official_sp500_pe", "official_status", "data_status", "note", "disclaimer"]
 COLS["breakouts"] = ["ticker", "company", "sector", "price", "dist_52w_high_pct", "volume_ratio", "score", "verdict", "data_status", "note", "disclaimer"]
@@ -222,7 +268,9 @@ COLS["freshness"] = ["field", "n_missing", "n_present", "data_status", "note", "
 COLS["updates_log"] = ["source", "status", "latest", "note", "checked_pt"]
 COLS["help"] = ["topic", "plain_english"]
 COLS["settings"] = ["setting", "value"]
-COLS["universe"] = ["ticker", "company", "sector", "index_membership", "in_nifty50", "in_next50", "in_midcap150", "data_status", "note", "disclaimer"]
+COLS["universe"] = ["ticker", "company", "sector", "index_membership", "exchange", "nse_symbol", "bse_symbol", "isin", "in_nifty50", "in_next50", "in_midcap150", "in_smallcap250", "in_microcap250", "in_totalmarket", "in_other_nse", "in_sme", "in_bse_only", "in_my_picks", "data_status", "note", "disclaimer"]
+COLS["fii_flows"] = ["date", "fii_buy", "fii_sell", "fii_net", "dii_buy", "dii_sell", "dii_net", "nifty", "source", "data_status", "note", "disclaimer"]
+COLS["participant_oi"] = ["date", "participant", "index_fut_long", "index_fut_short", "index_fut_net", "source", "data_status", "note", "disclaimer"]
 COLS["backtest_summary"] = ["window", "start", "end", "months", "top20_cagr_pct", "spy_cagr_pct", "bottom20_cagr_pct", "top20_total_pct", "spy_total_pct", "bottom20_total_pct", "top20_max_drawdown_pct", "spy_max_drawdown_pct", "hit_rate_12w_pct", "top_bucket_excess_12w_pct", "headline", "is_headline", "data_status", "note", "disclaimer"]
 COLS["backtest_buckets"] = ["horizon", "bucket", "bucket_order", "n", "avg_return_pct", "avg_spy_pct", "excess_pct", "hit_rate_pct", "data_status", "note", "disclaimer"]
 COLS["backtest_equity"] = ["date", "top20", "spy", "bottom20", "data_status", "note", "disclaimer"]
@@ -758,6 +806,12 @@ def etf_sectors(close, scores, sector_etfs, macro_df):
             rec["score_avg"] = _mean(members, "score")
             rec["n_stocks"] = int(len(members))
             rec["pct_above_sma50"] = round(float((members["above_sma50"] == 1).mean()) * 100, 1)
+        series = close[t].dropna() if close is not None and t in getattr(close, "columns", []) else pd.Series(dtype=float)
+        if len(series) <= 5 and len(members):
+            # The index file had no history, so use the average of the stocks in the group.
+            for src, dest in (("day_pct", "day_pct"), ("ret_1w", "week_pct"), ("ret_1m", "month_pct"), ("ret_3m", "month3_pct"), ("ret_ytd", "ytd_pct")):
+                if src in members.columns and rec.get(dest) in (None, ""):
+                    rec[dest] = _mean(members, src)
         if macro is not None and t in macro.index:
             m = macro.loc[t]
             for k in ("macro_growth", "macro_inflation", "macro_jobs", "macro_score"):
@@ -916,7 +970,7 @@ def help_rows():
     return [
         ("What this is", "Nick's India Stock Desk is a research screen for NSE stocks. It does not place trades and it does not connect to a broker. Nothing here is a recommendation to buy or sell."),
         ("Stocks only", "There are no option contract picks. The liquid stocks page is a stock screen. The put and call walls page is market mood only. Indian options use fixed lot sizes, so this desk does not pick a contract."),
-        ("Prices", "Prices are in rupees. They come from Yahoo Finance using the .NS ticker. The benchmark is the Nifty 50. Bank Nifty is shown next to it."),
+        ("Prices", "Prices are in rupees. The daily bars come from the NSE bhavcopy. If that file is missing, the desk tries the BSE bhavcopy, then Stooq, then Yahoo. The benchmark is the Nifty 50. Bank Nifty is shown next to it."),
         ("The score", "Each money measure is plus 1, 0, or minus 1 versus that company's own recent history. Lower is better for forward P/E, trailing P/E, price/sales, debt/equity, and price/free cash flow. Higher is better for revenue growth, EPS growth, return on equity, and dividend yield. Analyst rating can be plus 2 to minus 2. Shareholding, insiders, the price trend, the oscillator, the latest result, and the sector each add a small point. The score is the sum of the points we actually have."),
         ("Missing data", "A missing number is left blank and marked n/a. It is not stored as zero and it does not add or subtract a point. If a free source is blocked, the page says not available."),
         ("Forward P/E history", "Free data does not include a history of forward estimates. The baseline for forward P/E is the 3-year average of year-end trailing P/E."),
@@ -931,11 +985,18 @@ def help_rows():
         ("Nifty P/E", "There is no free official daily Nifty 50 P/E this desk can rely on. The chart is the median trailing P/E of the stocks on this desk. The official column stays blank."),
         ("Macro", "The macro page shows India CPI, GDP, and industry growth from the World Bank when that feed answers, plus the rupee from Yahoo. A forecast is often missing, so the surprise stays blank. It is a sketch, not a forecast. The rate column on the sector map is a simple rule of thumb."),
         ("Auto versus FMCG", "This is the Nifty Auto index divided by the Nifty FMCG index. It stands in for the old discretionary versus staples chart. Above the 50-day average of the ratio is labeled risk on."),
-        ("Rate limits", "Prices are downloaded in batches. Hourly runs only fetch the latest bars and keep the saved history. Statements, ratings, shareholding, insider counts, and option chains refresh at most once a day. If a source fails, the previous file is kept and the updates log says CACHED."),
-        ("The lists", "The desk scores the Nifty 50, the Nifty Next 50, and the Nifty Midcap 150. A stock in more than one list appears once. Each list has an on/off switch in config.json. Your holdings and watchlist are always included."),
+        ("Rate limits", "The after-close run reads that day's bhavcopy and a slice of statements and shareholding. It does not download every company from Yahoo. A light morning run only refreshes headlines and FII or DII cash. If a source fails, the previous file is kept and the updates log says CACHED."),
+        ("The lists", "The desk covers NSE shares and BSE-only shares. Tags are Nifty 50, Next 50, Midcap 150, Smallcap 250, Microcap 250, Total Market, Other NSE, and BSE only. Each tag has a switch. SME is off unless you turn it on. Your holdings, watchlist, and my picks are always included. A company on both exchanges is shown once, under the NSE symbol."),
+        ("Liquidity", "Scanners hide names whose 20-day median traded value is under the rupee line in config.json. The line is 1 crore rupees unless you change it. Top stocks can still show the quieter names if you turn the liquid filter off."),
+        ("FII and DII", "The FII and DII page shows cash-market buy and sell in crore rupees. Green is net buying. Red is net selling. The history grows each day. A second block shows index-futures positioning when the NSE participant file answers."),
         ("Times", "Times are shown in India time (IST) and Pacific time (PT)."),
         ("VCP scanner", "This page follows the same 8-point trend template and contraction count as Nick's indicator, with the Nifty 50 as the benchmark. READY means 8 of 8 and price is still under the buy point. BROKEN OUT today means today's close crossed that point on big volume."),
-        ("CANSLIM scanner", "C and A are the year-ago EPS change from the saved statements. N is how close the price is to its 52-week closing high. S is the 20-day average volume. L is the relative-strength percentile versus the Nifty inside this universe. I is the shareholding change when we have it. M is the Nifty, and Bank Nifty when that price is already on file. A blank that says not verified was not in the cache. It is not a guess."),
+        ("CANSLIM scanner", "C and A are the year-ago EPS change from the saved statements. N is how close the price is to its 52-week closing high. S is the 20-day average volume. L is the relative-strength percentile versus the Nifty inside this universe. I is the shareholding change when we have it. M is Uptrend, Under pressure, or Correction from the Nifty and Bank Nifty versus their averages. The What CANSLIM means box explains each letter. A blank that says not verified was not in the cache. It is not a guess."),
+        ("Row charts", "On a stock list, the button at the left of a row opens that stock's daily price chart under the row. Only one chart stays open. Turn it off with feature.row_charts in config.json."),
+        ("52-week highs and lows", "The 52-week high is the highest price of the last 252 trading sessions, and the 52-week low is the lowest. A new high today means the close is at or above the prior 252-session high. A new low today means the close is at or below the prior 252-session low. Near the high means the close is within 5% of that high. A high on volume also needs volume at least 1.5 times the 50-day average. This page is separate from the 52-week breakouts list, which only keeps names within 1% of the high. Research only. Turn it off with feature.scanner_52w."),
+        ("Buy setups", "Research list, not a recommendation. This desk never places trades. A stock is listed when VCP, Box, Flag, or CANSLIM is ready or broke out today, the verdict is BUY, the close is above the 50-day and the 200-day averages, and the risk from the entry to the stop is 8% or less. The market filter, on by default, also asks the Nifty 50 to be in an uptrend: the close above its 50-day and 200-day, and the 50-day above the 200-day. Bank Nifty is shown the same way and does not decide the list. When the Nifty is not in an uptrend the list is empty until you press Show anyway. The stop is the tighter of 7% under the entry or the setup's own stop. Target 1 is 20% above the entry, or 20% above the breakout close. Target 2 is the entry plus three times the risk. Turn it off with feature.buy_setups."),
+        ("Sector rotation", "The graph compares Nifty sector indexes with the Nifty 50 using daily closes already in the cache. No new download. RS is the sector index close divided by the Nifty 50. RS-Ratio is 100 plus the z-score of that ratio, after a moving average, versus its own rolling mean. RS-Momentum is 100 plus the z-score of the change in RS-Ratio. 100 is the center. Leading is top right, Weakening is bottom right, Lagging is bottom left, Improving is top left. Weekly and monthly points are built from those same daily bars. The score blends relative strength, how many of the sector's stocks are above their averages, how many are near a 52-week high, how many are on a buy setup, and the average desk score. A missing factor is left out. It is not stored as zero. Oil and gold are not on file. Turn it off with feature.sector_rotation."),
+        ("Financials backfill", "A separate job downloads company statements, ratios, analyst numbers, and promoter, FII, DII, and public shareholding. It runs about every 30 minutes, including weekends, and continues from a saved cursor. Liquid stocks come first, then the rest of the NSE list, then BSE-only names. After every name has a saved row, it refreshes the oldest shareholding about every 90 days and refreshes results after the next earnings date, or every 90 days. At 40 names a run, the first pass of the full list is about 2 to 3 days when the free sources answer. Turn it off with feature.fundamentals_backfill. The price schedule does not change."),
         ("Box and flag", "A box is a tight sideways range that closes out the top on above-average volume. A flag is a sharp rise, a short pause, then a close above the pause on volume. These two are desk rules."),
         ("Leaders", "Leaders puts a VCP that is ready or broken out today together with a strict CANSLIM qualify. One row per stock."),
         ("Your list", "Edit input/holdings.csv and input/my_watchlist.csv to change the portfolio and the watchlist. Example rows are marked example=yes. Replace them with your own shares and cost. The desk still will not place a trade."),
@@ -947,9 +1008,28 @@ def help_rows():
 
 def settings_rows(cfg):
     rows = [{"setting": "feature." + k, "value": v} for k, v in cfg["features"].items()]
+    buy_cfg = cfg.get("buy_setups") or {}
+    rows.append({"setting": "buy_setups.market_filter", "value": buy_cfg.get("market_filter", True)})
     for k, v in (cfg.get("indexes") or {}).items():
         rows.append({"setting": "index." + k, "value": v})
     for k, v in cfg.get("scoring", {}).items():
         rows.append({"setting": "scoring." + k, "value": v})
+    rot = cfg.get("sector_rotation") or {}
+    for tf, spec in (rot.get("windows") or {}).items():
+        if isinstance(spec, dict):
+            for key, value in spec.items():
+                rows.append({"setting": "sector_rotation.windows.%s.%s" % (tf, key), "value": value})
+    for key, value in (rot.get("weights") or {}).items():
+        rows.append({"setting": "sector_rotation.weight." + str(key), "value": value})
+    for key in ("near_high_pct", "w52_bars", "tail_keep", "macro_lookback", "yield_flat_band"):
+        if key in rot:
+            rows.append({"setting": "sector_rotation." + key, "value": rot[key]})
+    backfill = cfg.get("fundamentals_backfill") or {}
+    for key in (
+        "statements_per_run", "shareholding_per_run", "pause_seconds", "max_minutes",
+        "statements_refresh_days", "shareholding_refresh_days",
+    ):
+        if key in backfill:
+            rows.append({"setting": "fundamentals_backfill." + key, "value": backfill[key]})
     rows.append({"setting": "label", "value": DISCLAIMER})
     return pd.DataFrame(rows)

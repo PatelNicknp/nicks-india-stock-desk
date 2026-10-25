@@ -2,14 +2,16 @@
 
 Research screen for NSE stocks. It never places a trade and it never calls a broker.
 
-    python stock_desk.py --full      # prices plus the once-a-day slow sources
-    python stock_desk.py --hourly    # recent price bars only; slow sources stay cached
-    python stock_desk.py --offline   # cache only, for tests
+    python stock_desk.py --close    # after the NSE close: bhavcopy plus a slice of slow sources
+    python stock_desk.py --retry    # same, but only the last few sessions (late bhavcopy)
+    python stock_desk.py --morning  # news and FII/DII only
+    python stock_desk.py --offline  # cache only, for tests
 
-Slow sources (Yahoo statements, shareholding, insiders, option chains) refresh at
-most once per NSE session, on the after-close run. Prices use one batched Yahoo
-download. Hourly runs only ask for the latest bars and merge them into the saved
-history. If a source fails, the previous file is kept and the updates log says CACHED.
+Daily prices come from the NSE bhavcopy. BSE, Stooq, and Yahoo are fallbacks.
+Yahoo is not used to price every stock. Statements and shareholding rotate
+through a slice each after-close run. A separate job, fundamentals_backfill.py,
+keeps filling those files all day. If a source fails, the previous file is
+kept and the updates log says CACHED.
 """
 import os, sys, io, json, time, html, re, datetime as dt
 import numpy as np
@@ -21,7 +23,9 @@ import fundamentals as fund
 import scoring
 import tables
 import setups
+import sector_rotation
 import india_data
+import fundamentals_backfill
 
 ROOT = None  # set in main so tests can point DESK_ROOT at a temp folder
 PT = "America/Los_Angeles"
@@ -273,82 +277,65 @@ def wide_from_long(df, col):
     return w
 
 
-def load_prices(tickers, cfg, cache, mode):
-    """Hourly runs fetch only recent bars and merge them into the saved history."""
+def load_prices(tickers, cfg, cache, mode, universe=None):
+    """After the close, append NSE bhavcopy sessions. Morning and offline stay on the cache."""
     path = os.path.join(cache, "ohlcv.csv.gz")
     cached = read_csv(path) if os.path.exists(path) else pd.DataFrame()
-    if mode == "offline":
+    if mode in ("offline", "morning", "hourly"):
         if len(cached):
-            log("Prices (Yahoo Finance)", "OK", cached["date"].max() if "date" in cached else "", "offline mode, used cache")
+            note = "offline mode, used cache" if mode == "offline" else "morning run does not download prices"
+            log("Prices (NSE bhavcopy)", "OK", cached["date"].max() if "date" in cached else "", note)
             return cached
-        log("Prices (Yahoo Finance)", "MISSING", "", "offline and no price cache")
+        log("Prices (NSE bhavcopy)", "MISSING", "", "no price cache and this run does not download")
         return pd.DataFrame()
-    start = None
-    period = "3y"
-    have = set(cached["ticker"].astype(str).str.upper()) if len(cached) and "ticker" in cached.columns else set()
-    missing = [t for t in tickers if str(t).upper() not in have]
-    if mode == "hourly" and len(cached) and "date" in cached.columns and not missing:
-        last = pd.to_datetime(cached["date"], errors="coerce").max()
-        if pd.notna(last):
-            start = (last - pd.Timedelta(days=10)).strftime("%Y-%m-%d")
-            period = None
-    try:
-        if start:
-            c, h, l, v, opn = download_prices(tickers, cfg, start=start)
-            fresh = ohlcv_long(c, h, l, v, opn)
-            long = india_data.merge_price_history(cached, fresh)
-            note = "batched recent bars merged into the saved history"
-        else:
-            # A new name still needs a full window. Hourly does that only for names with no cache.
-            fetch = tickers if mode != "hourly" or not len(cached) else (missing or tickers)
-            if mode == "hourly" and len(cached) and missing:
-                c, h, l, v, opn = download_prices(missing, cfg, period="3y")
-                fresh = ohlcv_long(c, h, l, v, opn)
-                long = india_data.merge_price_history(cached, fresh)
-                note = "full history for %d new names, merged" % len(missing)
-            else:
-                c, h, l, v, opn = download_prices(fetch, cfg, period=period or "3y")
-                fresh = ohlcv_long(c, h, l, v, opn)
-                long = india_data.merge_price_history(cached, fresh) if len(cached) else fresh
-                note = "%d rows, batched" % len(long)
-        long.to_csv(path, index=False, compression="gzip")
-        last = str(pd.to_datetime(long["date"]).max().date()) if len(long) else ""
-        log("Prices (Yahoo Finance)", "OK", last, note)
-        return long
-    except Exception as exc:
-        if len(cached):
-            log("Prices (Yahoo Finance)", "CACHED", cached["date"].max(), str(exc)[:160])
-            return cached
-        log("Prices (Yahoo Finance)", "MISSING", "", str(exc)[:160])
-        return pd.DataFrame()
+    if mode in ("full", "retry"):
+        try:
+            import market_sources
+            long, notes = market_sources.sync_prices(tickers, universe, cfg, cache, cached, mode)
+            if len(long):
+                long.to_csv(path, index=False, compression="gzip")
+            for source, status, latest, note in notes:
+                log(source, status, latest, note)
+            return long
+        except Exception as exc:
+            if len(cached):
+                log("Prices (NSE bhavcopy)", "CACHED", cached["date"].max() if "date" in cached else "", str(exc)[:160])
+                return cached
+            log("Prices (NSE bhavcopy)", "MISSING", "", str(exc)[:160])
+            return pd.DataFrame()
+    log("Prices (NSE bhavcopy)", "CACHED" if len(cached) else "MISSING", "", "this run does not download prices")
+    return cached
 
 
 # ---------------------------------------------------------------- universe
 # One row per stock. A name in more than one list keeps every flag.
-FLAGS = ("in_nifty50", "in_next50", "in_midcap150")
-INDEX_LABELS = {"in_nifty50": "Nifty 50", "in_next50": "Next 50", "in_midcap150": "Midcap 150"}
+FLAGS = (
+    "in_nifty50", "in_next50", "in_midcap150", "in_smallcap250", "in_microcap250",
+    "in_totalmarket", "in_other_nse", "in_sme", "in_bse_only", "in_my_picks",
+)
+INDEX_LABELS = {
+    "in_nifty50": "Nifty 50",
+    "in_next50": "Next 50",
+    "in_midcap150": "Midcap 150",
+    "in_smallcap250": "Smallcap 250",
+    "in_microcap250": "Microcap 250",
+    "in_totalmarket": "Total Market",
+    "in_other_nse": "Other NSE",
+    "in_sme": "SME",
+    "in_bse_only": "BSE only",
+    "in_my_picks": "My picks",
+}
+SWITCH_DEFAULTS = {
+    "nifty50": True, "next50": True, "midcap150": True, "smallcap250": True,
+    "microcap250": True, "totalmarket": True, "other_nse": True, "sme": False, "bse_only": True,
+}
 INDEX_SOURCES = {
-    "nifty50": {
-        "flag": "in_nifty50",
-        "cache": "nifty50.csv",
-        "legacy": "universe.csv",
-        "log": "Universe (Nifty 50)",
-        "stamp": "universe_nifty50",
-    },
-    "next50": {
-        "flag": "in_next50",
-        "cache": "next50.csv",
-        "legacy": None,
-        "log": "Universe (Nifty Next 50)",
-        "stamp": "universe_next50",
-    },
-    "midcap150": {
-        "flag": "in_midcap150",
-        "cache": "midcap150.csv",
-        "legacy": None,
-        "log": "Universe (Nifty Midcap 150)",
-        "stamp": "universe_midcap150",
-    },
+    "nifty50": {"flag": "in_nifty50", "cache": "nifty50.csv", "legacy": "universe.csv", "log": "Universe (Nifty 50)", "stamp": "universe_nifty50"},
+    "next50": {"flag": "in_next50", "cache": "next50.csv", "legacy": None, "log": "Universe (Nifty Next 50)", "stamp": "universe_next50"},
+    "midcap150": {"flag": "in_midcap150", "cache": "midcap150.csv", "legacy": None, "log": "Universe (Nifty Midcap 150)", "stamp": "universe_midcap150"},
+    "smallcap250": {"flag": "in_smallcap250", "cache": "smallcap250.csv", "legacy": None, "log": "Universe (Smallcap 250)", "stamp": "universe_smallcap250"},
+    "microcap250": {"flag": "in_microcap250", "cache": "microcap250.csv", "legacy": None, "log": "Universe (Microcap 250)", "stamp": "universe_microcap250"},
+    "totalmarket": {"flag": "in_totalmarket", "cache": "totalmarket.csv", "legacy": None, "log": "Universe (Total Market)", "stamp": "universe_totalmarket"},
 }
 # Eleven GICS sectors. Wikipedia ICB names and Yahoo profile names both land here.
 # Industry is a separate column and is not renamed.
@@ -409,22 +396,19 @@ def gics_sector(name):
 
 def index_switches(cfg):
     raw = cfg.get("indexes") or {}
-    return {
-        "nifty50": bool(raw.get("nifty50", True)),
-        "next50": bool(raw.get("next50", True)),
-        "midcap150": bool(raw.get("midcap150", True)),
+    return {key: bool(raw.get(key, default)) for key, default in SWITCH_DEFAULTS.items()}
+
+
+def membership_label(in_nifty50, in_next50, in_midcap150, in_smallcap250="no", in_microcap250="no",
+                     in_totalmarket="no", in_other_nse="no", in_sme="no", in_bse_only="no", in_my_picks="no"):
+    """Stable tags. A holding outside the lists is Focus."""
+    flags = {
+        "in_nifty50": in_nifty50, "in_next50": in_next50, "in_midcap150": in_midcap150,
+        "in_smallcap250": in_smallcap250, "in_microcap250": in_microcap250,
+        "in_totalmarket": in_totalmarket, "in_other_nse": in_other_nse, "in_sme": in_sme,
+        "in_bse_only": in_bse_only, "in_my_picks": in_my_picks,
     }
-
-
-def membership_label(in_nifty50, in_next50, in_midcap150):
-    """Stable tag: Nifty 50 / Next 50 / Midcap 150. A holding outside those lists is Focus."""
-    parts = []
-    if in_nifty50 == "yes":
-        parts.append("Nifty 50")
-    if in_next50 == "yes":
-        parts.append("Next 50")
-    if in_midcap150 == "yes":
-        parts.append("Midcap 150")
+    parts = [INDEX_LABELS[flag] for flag in FLAGS if flags.get(flag) == "yes"]
     return " / ".join(parts) if parts else "Focus"
 
 
@@ -475,7 +459,7 @@ def load_index(key, cfg, cache, mode):
         return finish(cached, "OK", "switch is off, used the saved list for tags only", len(cached))
     if not switch_on:
         return finish(pd.DataFrame(), "OK", "switch is off and there is no saved list")
-    if mode in ("offline", "hourly"):
+    if mode in ("offline", "hourly", "morning", "retry"):
         if len(cached):
             note = "offline mode, used cache" if mode == "offline" else "reused cache (refreshes once a day)"
             return finish(cached, "OK", note, len(cached))
@@ -523,45 +507,97 @@ def growth_frame(cfg):
     return pd.DataFrame(rows)
 
 
-def combine_indexes(parts, holdings, watch, switches):
-    """Dedupe by ticker. Score a name if any enabled index contains it, or it is a holding or a watchlist name."""
+def _tag_listing(df):
+    """Mark each row as an NSE symbol or a BSE symbol before the ISIN merge."""
+    piece = _blank_flags(df)
+    for col in ("nse_symbol", "bse_symbol", "bse_code", "isin"):
+        if col not in piece.columns:
+            piece[col] = ""
+        piece[col] = piece[col].fillna("").astype(str).replace({"nan": ""})
+    nse_like = piece[[f for f in FLAGS if f not in ("in_bse_only", "in_my_picks")]].eq("yes").any(axis=1)
+    bse_like = piece["in_bse_only"].eq("yes") & ~nse_like
+    piece.loc[bse_like & piece["bse_symbol"].eq(""), "bse_symbol"] = piece.loc[bse_like, "ticker"]
+    piece.loc[~bse_like & piece["nse_symbol"].eq(""), "nse_symbol"] = piece.loc[~bse_like, "ticker"]
+    return piece
+
+
+def _first_text(series):
+    for value in series:
+        if isinstance(value, str) and value.strip() and value.lower() != "nan":
+            return value.strip()
+    return ""
+
+
+def combine_indexes(parts, holdings, watch, switches, my_picks=None):
+    """One row per company. The same ISIN on NSE and BSE keeps the NSE symbol."""
     frames = []
     for df in parts:
         if df is not None and len(df):
-            frames.append(_blank_flags(df))
-    always = {str(t).upper() for t in list(holdings) + list(watch)}
-    if always:
-        frames.append(pd.DataFrame([{
-            "ticker": t, "company": "", "sector": "",
-            "in_nifty50": "no", "in_next50": "no", "in_midcap150": "no",
-        } for t in always]))
-    cols = ["ticker", "company", "sector", *FLAGS, "index_membership"]
+            frames.append(_tag_listing(df))
+    picks = [str(t).upper().strip() for t in (my_picks or []) if str(t).strip()]
+    always = {str(t).upper() for t in list(holdings) + list(watch) + picks}
+    extra = []
+    for ticker in always:
+        extra.append({"ticker": ticker, "company": "", "sector": "", "in_my_picks": "yes" if ticker in picks else "no"})
+    if extra:
+        frames.append(_tag_listing(pd.DataFrame(extra)))
+    id_cols = ["nse_symbol", "bse_symbol", "bse_code", "isin", "exchange"]
+    cols = ["ticker", "company", "sector", *id_cols, *FLAGS, "index_membership"]
     if not frames:
         return pd.DataFrame(columns=cols)
     df = pd.concat(frames, ignore_index=True)
-    agg = {
-        "company": lambda s: next((x for x in s if isinstance(x, str) and str(x).strip() and str(x).lower() != "nan"), ""),
-        "sector": lambda s: next((x for x in s if isinstance(x, str) and str(x).strip() and str(x).lower() != "nan"), ""),
-    }
+    for col in id_cols:
+        if col not in df.columns:
+            df[col] = ""
+        df[col] = df[col].fillna("").astype(str).replace({"nan": ""})
+    df["isin"] = df["isin"].str.upper().str.strip()
+    df["ticker"] = df["ticker"].astype(str).str.upper().str.strip()
+    isin_owner = {}
+    for isin, symbol in zip(df["isin"], df["nse_symbol"]):
+        if len(str(isin)) == 12 and str(symbol).strip():
+            isin_owner[str(isin)] = str(symbol).strip().upper()
+    df["_key"] = [
+        "T" + isin_owner.get(isin, ticker)
+        for isin, ticker in zip(df["isin"], df["ticker"])
+    ]
+    agg = {"company": _first_text, "sector": _first_text, "isin": _first_text,
+           "nse_symbol": _first_text, "bse_symbol": _first_text, "bse_code": _first_text}
     for flag in FLAGS:
-        agg[flag] = lambda s, _f=flag: "yes" if (s == "yes").any() else "no"
-    df = df.groupby("ticker", as_index=False).agg(agg)
+        agg[flag] = lambda s, _f=flag: "yes" if (s.astype(str) == "yes").any() else "no"
+    # Ticker is the NSE symbol when we have one, else the BSE symbol.
+    agg["ticker"] = _first_text
+    df = df.groupby("_key", as_index=False).agg(agg)
+    nse_flags = [f for f in FLAGS if f not in ("in_bse_only", "in_my_picks")]
+    has_nse = df[nse_flags].eq("yes").any(axis=1)
+    df.loc[df["nse_symbol"].eq("") & has_nse, "nse_symbol"] = df["ticker"]
+    df.loc[df["nse_symbol"].ne(""), "ticker"] = df.loc[df["nse_symbol"].ne(""), "nse_symbol"]
+    only_bse = df["nse_symbol"].eq("") & df["bse_symbol"].ne("")
+    df.loc[only_bse, "ticker"] = df.loc[only_bse, "bse_symbol"]
+    both = df["nse_symbol"].ne("") & df["bse_symbol"].ne("")
+    bse_only = df["nse_symbol"].eq("") & (df["bse_symbol"].ne("") | df["in_bse_only"].eq("yes"))
+    df["exchange"] = "NSE"
+    df.loc[both, "exchange"] = "Both"
+    df.loc[bse_only, "exchange"] = "BSE"
     df["index_membership"] = [
-        membership_label(a, b, c) for a, b, c in zip(df["in_nifty50"], df["in_next50"], df["in_midcap150"])
+        membership_label(*row) for row in df[list(FLAGS)].itertuples(index=False, name=None)
     ]
 
     def keep(row):
-        if row["ticker"] in always:
+        if row["ticker"] in always or row["in_my_picks"] == "yes":
             return True
-        if switches.get("nifty50", True) and row["in_nifty50"] == "yes":
-            return True
-        if switches.get("next50", True) and row["in_next50"] == "yes":
-            return True
-        if switches.get("midcap150", True) and row["in_midcap150"] == "yes":
-            return True
+        for key, flag in (
+            ("nifty50", "in_nifty50"), ("next50", "in_next50"), ("midcap150", "in_midcap150"),
+            ("smallcap250", "in_smallcap250"), ("microcap250", "in_microcap250"),
+            ("totalmarket", "in_totalmarket"), ("other_nse", "in_other_nse"),
+            ("sme", "in_sme"), ("bse_only", "in_bse_only"),
+        ):
+            default = SWITCH_DEFAULTS.get(key, True)
+            if switches.get(key, default) and row[flag] == "yes":
+                return True
         return False
 
-    return df[df.apply(keep, axis=1)].reset_index(drop=True)
+    out = df[df.apply(keep, axis=1)].drop(columns=["_key"], errors="ignore").reset_index(drop=True)
+    return out
 
 
 # ---------------------------------------------------------------- slow SEC / yahoo / nasdaq
@@ -601,9 +637,14 @@ def cik_map(cfg, cache, mode):
     return out
 
 
-def _need_fetch(name, cache_file, mode):
+def _need_fetch(name, cache_file, mode, allow_morning=False):
     exists = os.path.exists(cache_file) and os.path.getsize(cache_file) > 0
-    return netutil.decide_slow(STAMPS.get(name), today_et(), exists, mode, force="--force-slow" in sys.argv)
+    use = mode
+    if mode == "morning" and not allow_morning:
+        use = "offline"
+    if mode == "retry":
+        use = "full"
+    return netutil.decide_slow(STAMPS.get(name), today_et(), exists, use, force="--force-slow" in sys.argv)
 
 
 def _missing_tickers(df, tickers):
@@ -1949,6 +1990,48 @@ def write_candle_files(frame, out_dir):
     return rewritten
 
 
+def candle_group(ticker):
+    text = str(ticker or "").upper()
+    if text.startswith("^"):
+        return "_indexes"
+    if text[:1] >= "A" and text[:1] <= "Z":
+        return text[:1]
+    return "0"
+
+
+def write_candle_groups(frame, out_dir):
+    """One gzipped CSV per letter. Rewrites a group only when its bytes changed."""
+    import gzip
+    os.makedirs(out_dir, exist_ok=True)
+    if frame is None or len(frame) == 0 or "ticker" not in frame.columns:
+        return 0
+    frame = frame.copy()
+    frame["_group"] = frame["ticker"].map(candle_group)
+    rewritten = 0
+    keep = set()
+    for group, part in frame.groupby("_group", sort=False):
+        name = "%s.csv.gz" % group
+        keep.add(name)
+        body = part.drop(columns="_group").to_csv(index=False, na_rep="").encode("utf-8")
+        path = os.path.join(out_dir, name)
+        old = b""
+        if os.path.exists(path):
+            with open(path, "rb") as fh:
+                old = fh.read()
+        packed = gzip.compress(body, mtime=0)
+        if old == packed:
+            continue
+        with open(path, "wb") as fh:
+            fh.write(packed)
+        rewritten += 1
+    for name in os.listdir(out_dir):
+        if name.endswith(".csv"):
+            os.remove(os.path.join(out_dir, name))
+        elif name.endswith(".csv.gz") and name not in keep:
+            os.remove(os.path.join(out_dir, name))
+    return rewritten
+
+
 def news_rows(news, scores):
     rows = []
     if news is None or len(news) == 0:
@@ -2048,13 +2131,45 @@ def load_statements(tickers, cfg, cache, mode):
 
     lim = netutil.RateLimiter(rl(cfg).get("yahoo_profile_per_second") or 1)
     done = progress_load(cache, "yahoo_statements")
+    cap = int((cfg.get("rate_limit") or {}).get("yahoo_statements_per_run") or 160)
+    days = int((cfg.get("rate_limit") or {}).get("fundamentals_refresh_days") or 5)
+    have = set()
+    fetched_on = {}
+    if len(info) and "ticker" in info.columns:
+        have = set(info["ticker"].astype(str))
+        if "fetched_on" in info.columns:
+            for ticker, stamp in zip(info["ticker"].astype(str), info["fetched_on"].astype(str)):
+                fetched_on[ticker] = stamp
+    if len(annual) and "ticker" in annual.columns:
+        have |= set(annual["ticker"].astype(str))
+    cutoff = (pd.Timestamp(today_et()) - pd.Timedelta(days=days)).strftime("%Y-%m-%d")
+    missing = [t for t in names if t not in have]
+    stale = [t for t in names if t in have and fetched_on.get(t, "0000") <= cutoff and t not in missing]
+    # A name with no fetched_on date is treated as due on its bucket day, not all at once.
+    day_num = pd.Timestamp(today_et()).toordinal()
+    rotating = []
+    for ticker in names:
+        if ticker in missing or ticker in stale:
+            continue
+        if fetched_on.get(ticker):
+            continue
+        if (day_num + (sum(ord(ch) for ch in ticker) % days)) % days == 0:
+            rotating.append(ticker)
+    pool = [t for t in missing + stale + rotating if t not in done]
     if gaps:
-        pool = gaps
-    else:
-        if STAMPS.get("yahoo_statements") != today_et():
-            done = set()
-        pool = [t for t in names if t not in done]
-    todo = list(pool)
+        pool = [t for t in gaps if t not in done] + [t for t in pool if t not in gaps]
+    todo = pool[:cap]
+    if not todo:
+        note = _slow_note(mode, len(annual) > 0)
+        stamp = STAMPS.get("yahoo_statements") or STAMPS.get("yahoo_slow") or ""
+        log("Fundamentals (Yahoo statements)", "OK" if len(annual) else "MISSING", stamp,
+            "every name is inside the refresh window" if len(annual) else note)
+        log("Analyst and profile (Yahoo Finance)", "OK" if len(info) else "MISSING", STAMPS.get("yahoo_slow", ""),
+            "same slice" if len(info) else "no cache")
+        log("Earnings dates (Yahoo Finance)", "OK" if len(earn) else "MISSING", STAMPS.get("yahoo_slow", ""),
+            "reused cache" if len(earn) else "no cache")
+        return annual, quarters, info, earn
+    print("Yahoo statements slice %d of %d due" % (len(todo), len(pool)))
     new_a, new_q, info_rows, earn_rows = [], [], [], []
     if len(info):
         info_rows.extend(info.to_dict("records"))
@@ -2066,6 +2181,8 @@ def load_statements(tickers, cfg, cache, mode):
         lim.wait()
         try:
             inf, a_rows, q_rows, e_rows = india_data.fetch_yahoo_bundle(t, cfg)
+            inf["fetched_on"] = today_et()
+            inf["source"] = "Yahoo"
             info_rows.append(inf)
             if a_rows:
                 new_a.append(pd.DataFrame(a_rows))
@@ -2139,15 +2256,37 @@ def load_shareholding(tickers, focus, cfg, cache, mode):
         return cached
 
     done = progress_load(cache, "shareholding")
-    if STAMPS.get("shareholding") != today_et():
-        done = set()
     by_t = {}
     if len(cached):
         for rec in cached.to_dict("records"):
             by_t[str(rec.get("ticker"))] = rec
     fails = 0
     streak = 0
-    todo = [t for t in names if t not in done]
+    cap = int((cfg.get("rate_limit") or {}).get("shareholding_per_run") or 50)
+    priority = ["ABBOTINDIA", "EMBASSY", "MCX"] + _stock_names(focus)
+
+    def _needs_split(ticker):
+        row = by_t.get(ticker) or {}
+        fii = row.get("fii_pct")
+        try:
+            blank = fii is None or fii == "" or (isinstance(fii, float) and pd.isna(fii))
+        except TypeError:
+            blank = True
+        return blank
+
+    ordered = []
+    for ticker in priority + names:
+        if ticker in done or ticker not in names and ticker not in priority:
+            continue
+        if ticker not in ordered:
+            ordered.append(ticker)
+    missing_split = [t for t in ordered if _needs_split(t)]
+    rest = [t for t in ordered if t not in missing_split]
+    todo = (missing_split + rest)[:cap]
+    if not todo:
+        log("Shareholding (NSE)", "OK" if len(cached) else "MISSING", STAMPS.get("shareholding", ""),
+            "slice already done today" if len(cached) else "no names to fetch")
+        return cached
     for i, t in enumerate(todo):
         try:
             history = india_data.fetch_shareholding_master(t, cfg)
@@ -2228,7 +2367,7 @@ def _clean_news(frame):
 def load_india_news(cfg, cache, mode):
     path = os.path.join(cache, "news.csv")
     cached = read_csv(path)
-    decision = _need_fetch("news", path, mode)
+    decision = _need_fetch("news", path, mode, allow_morning=True)
     if decision != "fetch":
         have = len(cached) > 0
         if have:
@@ -2311,19 +2450,24 @@ def load_option_mood(focus, cfg, cache, mode):
 def load_fii(cfg, cache, mode):
     path = os.path.join(cache, "fii_dii.csv")
     cached = read_csv(path)
-    decision = _need_fetch("fii_dii", path, mode)
+    decision = _need_fetch("fii_dii", path, mode, allow_morning=True)
     if decision != "fetch":
         log("FII and DII cash (NSE)", "OK" if len(cached) else "MISSING", "",
             _slow_note(mode, len(cached) > 0) if len(cached) else "not available")
         return cached
+    import market_sources
     try:
-        rows = india_data.fetch_fii_dii(cfg)
-        df = pd.DataFrame(rows)
-        if len(df):
-            df.to_csv(path, index=False)
+        rows, extra = market_sources.fetch_fii_archives(cfg)
+        fresh = pd.DataFrame(rows) if rows else pd.DataFrame()
+        merged = market_sources.merge_flow_rows(cached, fresh)
+        if len(merged):
+            merged.to_csv(path, index=False)
             STAMPS["fii_dii"] = today_et()
-            log("FII and DII cash (NSE)", "OK", today_et(), "%d rows" % len(df))
-            return df
+            note = "%d days kept" % merged["date"].nunique()
+            if extra:
+                note += ". " + extra
+            log("FII and DII cash (NSE)", "OK", today_et(), note)
+            return merged
     except Exception as exc:
         if len(cached):
             log("FII and DII cash (NSE)", "CACHED", "", str(exc)[:140])
@@ -2369,30 +2513,31 @@ def load_india_macro(cfg, cache, mode):
         log("Macro (World Bank and FRED)", "OK" if len(cached) else "MISSING", "",
             _slow_note(mode, len(cached) > 0) if len(cached) else "not available. No forecast in the free feed.")
         return cached, fred
-    rows = []
-    try:
-        rows = india_data.fetch_world_bank()
-    except Exception as exc:
-        print("world bank", str(exc)[:80])
-    y10 = _fred_last("IRLTLT01INM156N")
+    import market_sources
+    rows, notes, book = market_sources.macro_chain(cfg)
+    y10 = None
+    for row in rows:
+        if row.get("indicator") == "India 10-year yield" and row.get("actual") not in ("", None):
+            try:
+                y10 = float(row["actual"])
+            except (TypeError, ValueError):
+                y10 = None
     if y10 is not None:
         fred["DGS10"] = round(y10, 2)
-        rows.append({
-            "country": "India", "category": "Rates", "indicator": "India 10-year yield",
-            "date": today_et(), "actual": y10, "forecast": "", "surprise": "", "signal": "",
-            "note": "Level from FRED. No forecast, so there is no surprise score.",
-        })
     else:
         fred.pop("DGS10", None)
+    for item in book.rows:
+        if item["status"] != "OK":
+            log("Macro (%s)" % item["source"], "MISSING", "", item["detail"])
     if rows:
         cached = pd.DataFrame(rows)
         cached.to_csv(path, index=False)
         json.dump(fred, open(fred_p, "w"))
         STAMPS["econ"] = today_et()
-        note = "%d rows. No forecast, so surprise stays blank." % len(cached)
-        if y10 is None:
-            note += " India 10-year yield was not available."
-        log("Macro (World Bank and FRED)", "OK", today_et(), note)
+        note = "%d rows. Surprise stays blank when there is no forecast." % len(cached)
+        if notes:
+            note += " " + " ".join(notes)
+        log("Macro (RBI, FRED, World Bank)", "OK", today_et(), note[:300])
         return cached, fred
     if len(cached):
         log("Macro (World Bank and FRED)", "CACHED", "", "feeds failed; kept the saved copy")
@@ -2440,15 +2585,124 @@ def build_mood(close, fii):
     }
 
 
+def _listing_frames(cfg, cache, mode, parts, switches):
+    """NSE equity master, the leftover 'Other NSE' names, SME, and BSE-only names."""
+    import market_sources
+    frames = []
+    master_path = os.path.join(cache, "equity_master.csv")
+    master = read_csv(master_path) if os.path.exists(master_path) else pd.DataFrame()
+    fetch_lists = mode == "full" or (mode == "retry" and not len(master))
+    if fetch_lists:
+        try:
+            master, url = market_sources.fetch_nse_master(cfg)
+            master.to_csv(master_path, index=False)
+            log("Universe (NSE equity list)", "OK", len(master), "%d names from %s" % (len(master), url.split("/")[2]))
+        except Exception as exc:
+            if len(master):
+                log("Universe (NSE equity list)", "CACHED", len(master), str(exc)[:140])
+            else:
+                log("Universe (NSE equity list)", "MISSING", "", str(exc)[:140])
+    elif len(master):
+        log("Universe (NSE equity list)", "OK", len(master), "reused cache")
+    else:
+        log("Universe (NSE equity list)", "MISSING", "", "no cache and this run does not refresh the list")
+    tagged = set()
+    for part in parts:
+        if part is not None and len(part) and "ticker" in part.columns:
+            tagged |= set(part["ticker"].astype(str).str.upper())
+    if len(master):
+        keep_series = set(market_sources.NSE_EQUITY)
+        listed = master[master["series"].astype(str).str.upper().isin(keep_series)].copy()
+        other = listed[~listed["ticker"].astype(str).str.upper().isin(tagged)].copy()
+        if len(other):
+            other = other.rename(columns={}) 
+            other["sector"] = ""
+            other["in_other_nse"] = "yes"
+            other["nse_symbol"] = other["ticker"]
+            frames.append(other)
+            log("Universe (Other NSE)", "OK", len(other), "NSE shares that are not in the index lists above")
+        # Carry ISIN onto index rows by merging later inside combine. Attach isin via a thin frame.
+        isin_frame = listed[["ticker", "company", "isin"]].copy()
+        isin_frame["sector"] = ""
+        isin_frame["nse_symbol"] = isin_frame["ticker"]
+        frames.append(isin_frame)
+    if switches.get("sme", False):
+        sme_path = os.path.join(cache, "sme.csv")
+        sme = read_csv(sme_path) if os.path.exists(sme_path) else pd.DataFrame()
+        if fetch_lists:
+            try:
+                sme, url = market_sources.fetch_sme_master(cfg)
+                sme.to_csv(sme_path, index=False)
+                log("Universe (SME)", "OK", len(sme), "%d names" % len(sme))
+            except Exception as exc:
+                log("Universe (SME)", "CACHED" if len(sme) else "MISSING", len(sme) if len(sme) else "", str(exc)[:120])
+        if len(sme):
+            sme = sme.copy()
+            sme["sector"] = ""
+            sme["in_sme"] = "yes"
+            frames.append(sme)
+    elif True:
+        log("Universe (SME)", "OK", "", "switch is off")
+    if switches.get("bse_only", True):
+        bse_path = os.path.join(cache, "bse_only.csv")
+        bse = read_csv(bse_path) if os.path.exists(bse_path) else pd.DataFrame()
+        if fetch_lists:
+            try:
+                content = url = None
+                bars = pd.DataFrame()
+                today = pd.Timestamp.now(tz=IST).date()
+                last_error = "no BSE file"
+                for back in range(0, 8):
+                    day = today - dt.timedelta(days=back)
+                    try:
+                        content, url = market_sources._first_bytes(market_sources.bse_bhav_urls(day), cfg)
+                        bars = market_sources.parse_bse_bhav(content, sme=switches.get("sme", False))
+                        if len(bars):
+                            break
+                        last_error = "BSE file had no equity rows"
+                    except Exception as exc:
+                        last_error = str(exc)[:80]
+                        content = None
+                if content is None or not len(bars):
+                    raise RuntimeError(last_error)
+                nse_isins = set(master["isin"].astype(str).str.upper()) if len(master) and "isin" in master.columns else set()
+                nse_tickers = set(master["ticker"].astype(str).str.upper()) if len(master) else tagged
+                bse = market_sources.bse_only_names(bars, nse_isins, nse_tickers)
+                if len(bse):
+                    bse.to_csv(bse_path, index=False)
+                log("Universe (BSE only)", "OK" if len(bse) else "MISSING", len(bse),
+                    "%d names whose ISIN is not on the NSE list" % len(bse))
+                # Remember BSE symbols for dual-listed names.
+                if len(master) and len(bars):
+                    linked = market_sources.tag_bse_symbols(master, bars)
+                    link_path = os.path.join(cache, "bse_link.csv")
+                    linked.to_csv(link_path, index=False)
+                    frames.append(linked.assign(sector=""))
+            except Exception as exc:
+                if len(bse):
+                    log("Universe (BSE only)", "CACHED", len(bse), str(exc)[:140])
+                else:
+                    log("Universe (BSE only)", "MISSING", "", str(exc)[:140])
+        else:
+            log("Universe (BSE only)", "OK", len(bse), "reused cache")
+        if len(bse):
+            frames.append(bse)
+    else:
+        log("Universe (BSE only)", "OK", "", "switch is off")
+    return frames
+
+
 def main(argv=None):
     global ROOT
     argv = list(sys.argv[1:] if argv is None else argv)
     mode = "full"
     if "--offline" in argv:
         mode = "offline"
-    elif "--hourly" in argv:
-        mode = "hourly"
-    elif "--full" in argv:
+    elif "--morning" in argv or "--hourly" in argv:
+        mode = "morning"
+    elif "--retry" in argv:
+        mode = "retry"
+    elif "--full" in argv or "--close" in argv:
         mode = "full"
     ROOT = os.environ.get("DESK_ROOT") or os.path.dirname(os.path.abspath(__file__))
     LOG.clear()
@@ -2463,16 +2717,19 @@ def main(argv=None):
     watch_tickers = [str(t).upper() for t in watch["ticker"]] if len(watch) else []
 
     switches = index_switches(cfg)
+    picks = [str(t).upper().strip() for t in (cfg.get("my_picks") or []) if str(t).strip()]
     if features.get("universe", True):
-        parts = [load_index(key, cfg, cache, mode) for key in ("nifty50", "next50", "midcap150")]
-        universe = combine_indexes(parts, hold_tickers, watch_tickers, switches)
+        parts = [load_index(key, cfg, cache, mode) for key in (
+            "nifty50", "next50", "midcap150", "smallcap250", "microcap250", "totalmarket")]
+        parts.extend(_listing_frames(cfg, cache, mode, parts, switches))
+        universe = combine_indexes(parts, hold_tickers, watch_tickers, switches, my_picks=picks)
     else:
         universe = combine_indexes([], hold_tickers, watch_tickers, switches)
         log("Universe feature", "OK", "", "feature off: scoring the holdings and watchlist only")
     etfs = [e["ticker"] for e in cfg.get("sector_etfs", [])]
     extras = etfs + ["^NSEI", "^NSEBANK", "^INDIAVIX", "INR=X"]
     tickers = list(dict.fromkeys(list(universe["ticker"]) + extras))
-    long = load_prices(tickers, cfg, cache, mode)
+    long = load_prices(tickers, cfg, cache, mode, universe)
     close, high, low, vol = wide_from_long(long, "close"), wide_from_long(long, "high"), wide_from_long(long, "low"), wide_from_long(long, "volume")
     price_status = source_status("Prices (Yahoo Finance)")
 
@@ -2503,6 +2760,12 @@ def main(argv=None):
                     universe.at[i, "company"] = row.get("company")
     if len(universe) and "sector" in universe.columns:
         universe["sector"] = universe["sector"].map(gics_sector)
+        embassy = universe["ticker"].astype(str).str.upper().eq("EMBASSY")
+        if embassy.any():
+            universe.loc[embassy, "sector"] = "Real Estate"
+            if "industry" not in universe.columns:
+                universe["industry"] = ""
+            universe.loc[embassy, "industry"] = "REIT"
 
     scores, prepared = build_scores(universe, close, high, low, vol, annual, quarters, info, holders, earnings, cfg) if len(close) else (pd.DataFrame(), {})
     scores = apply_feature_blanks(scores, features)
@@ -2515,9 +2778,33 @@ def main(argv=None):
             if "Yahoo statements" in row["source"] and row["status"] == "OK":
                 row["status"] = "PARTIAL"
                 row["note"] = (row["note"] + " " if row["note"] else "") + "roe and de are blank on every scored row."
+    liquid_view = scores
     if len(scores):
         scores["in_holdings"] = np.where(scores["ticker"].isin(hold_tickers), "yes", "no")
+        if len(universe):
+            meta = universe.drop_duplicates("ticker").set_index("ticker")
+            for col in ("exchange", "nse_symbol", "bse_symbol", "index_membership", "industry"):
+                if col in meta.columns and (col not in scores.columns or col == "index_membership"):
+                    scores[col] = scores["ticker"].map(meta[col])
+        if len(holders):
+            hold_map = holders.drop_duplicates("ticker").set_index("ticker")
+            for col in ("fii_pct", "dii_pct", "fii_chg", "dii_chg", "promoter_pct"):
+                if col in hold_map.columns:
+                    scores[col] = scores["ticker"].map(hold_map[col])
+        liq_cfg = cfg.get("liquidity") or {}
+        minimum = float(liq_cfg.get("min_median_traded_value") or 10000000)
+        window = int(liq_cfg.get("median_days") or 20)
+        import market_sources
+        liq = market_sources.liquidity_table(long, list(scores["ticker"]), window, minimum)
+        if len(liq):
+            scores = scores.merge(liq, on="ticker", how="left")
+        if "liquid" not in scores.columns:
+            scores["liquid"] = "yes"
+        scores["liquid"] = scores["liquid"].fillna("no")
+        if not liq_cfg.get("enabled", True):
+            scores["liquid"] = "yes"
     scores = assign_ranks(scores)
+    liquid_view = scores[scores["liquid"].astype(str).eq("yes")] if len(scores) and "liquid" in scores.columns else scores
 
     # focus list for heavy sentiment feeds
     focus = list(focus_seed)
@@ -2534,7 +2821,29 @@ def main(argv=None):
     if not features.get("put_call", True):
         pcr = pd.DataFrame()
     pcr_df = tables.put_call_table(pcr, cfg["scoring"]["fear_line"], cfg["scoring"]["greed_line"]) if len(pcr) else pd.DataFrame()
-    fii = load_fii(cfg, cache, mode) if features.get("aaii_sentiment", True) else pd.DataFrame()
+    want_flows = features.get("aaii_sentiment", True) or features.get("fii_dii_flows", True) or features.get("fii_dii_today_strip", True)
+    fii = load_fii(cfg, cache, mode) if want_flows else pd.DataFrame()
+    import market_sources
+    flows = market_sources.flows_from_history(fii, close) if want_flows else pd.DataFrame()
+    participants = pd.DataFrame()
+    if features.get("fii_dii_derivatives", True) and mode in ("full", "retry"):
+        try:
+            participants, url = market_sources.fetch_participant_oi(cfg)
+            log("FII derivatives (NSE participant OI)", "OK", participants["date"].iloc[0] if len(participants) else "",
+                "%d rows from the participant file" % len(participants))
+        except Exception as exc:
+            cached_oi = read_csv(os.path.join(cache, "participant_oi.csv"))
+            if len(cached_oi):
+                participants = cached_oi
+                log("FII derivatives (NSE participant OI)", "CACHED", "", str(exc)[:140])
+            else:
+                log("FII derivatives (NSE participant OI)", "MISSING", "", str(exc)[:140])
+    elif features.get("fii_dii_derivatives", True):
+        participants = read_csv(os.path.join(cache, "participant_oi.csv"))
+        log("FII derivatives (NSE participant OI)", "OK" if len(participants) else "MISSING", "",
+            "reused cache" if len(participants) else "not loaded on this run")
+    if len(participants):
+        participants.to_csv(os.path.join(cache, "participant_oi.csv"), index=False)
     econ, fred = load_india_macro(cfg, cache, mode) if features.get("macro_screener", True) else (pd.DataFrame(), {})
 
     # history and alerts
@@ -2600,18 +2909,25 @@ def main(argv=None):
     elif len(close):
         asof = str(close.dropna(how="all").index.max().date())
     market = tables.market_row(close, breadth, pcr_df, fred, xratio, updated, asof, len(scores), scores)
+    if len(market):
+        market["listed_n"] = int(len(universe))
+        market["liquid_n"] = int((scores["liquid"].astype(str) == "yes").sum()) if len(scores) and "liquid" in scores.columns else 0
     earn_pages, _hist = tables.earnings_pages(scores, earnings, close, hold_tickers) if len(scores) else ({}, pd.DataFrame())
-    g, q, d, w = tables.scanners(scores, cfg["scoring"]) if len(scores) else (pd.DataFrame(),) * 4
+    scan_scores = liquid_view if len(liquid_view) else scores
+    g, q, d, w = tables.scanners(scan_scores, cfg["scoring"]) if len(scan_scores) else (pd.DataFrame(),) * 4
     br, tr, pb, gl, heat = tables.technical_pages(scores) if len(scores) else (pd.DataFrame(),) * 5
     port, port_sum = build_portfolio(holds, scores, history) if features.get("watchlist_portfolio", True) else (pd.DataFrame(), pd.DataFrame())
     watch_out = build_watch(watch, scores) if features.get("watchlist_portfolio", True) else pd.DataFrame()
     prices = price_file(close, scores) if features.get("scorecard", True) else pd.DataFrame()
     if len(scores) and long is not None and len(long):
-        candle_frame = candle_file(long, list(scores["ticker"]))
-        n_candles = write_candle_files(candle_frame, os.path.join(data, "ohlc"))
+        candle_names = list(scores["ticker"])
+        if "^NSEI" in set(long["ticker"].astype(str)):
+            candle_names.append("^NSEI")
+        candle_frame = candle_file(long, candle_names)
+        n_candles = write_candle_groups(candle_frame, os.path.join(data, "ohlc"))
         span = int(candle_frame.groupby("ticker").size().max()) if len(candle_frame) else 0
         n_names = int(candle_frame["ticker"].nunique()) if len(candle_frame) else 0
-        note = "%d tickers, %d rewritten, up to %d cached sessions." % (n_names, n_candles, span)
+        note = "%d tickers in letter files, %d groups rewritten, up to %d sessions." % (n_names, n_candles, span)
         if "open" not in long.columns or not pd.to_numeric(long["open"], errors="coerce").notna().any():
             note += " Open is blank until the next full price download."
         log("Price candles", "OK", asof, note)
@@ -2648,18 +2964,62 @@ def main(argv=None):
                 "note": note,
             })
     inst = pd.DataFrame(inst_rows)
-    if len(close) and len(universe):
-        setup_frames = setups.build_setups(close, high, low, vol, universe, quarters, annual, holders, features)
+    setup_universe = universe
+    if len(universe) and len(scores) and "liquid" in scores.columns and (cfg.get("liquidity") or {}).get("enabled", True):
+        allowed = set(scores.loc[scores["liquid"].astype(str).eq("yes"), "ticker"].astype(str))
+        setup_universe = universe[universe["ticker"].astype(str).isin(allowed)]
+    if len(close) and len(setup_universe):
+        setup_frames = setups.build_setups(close, high, low, vol, setup_universe, quarters, annual, holders, features, scores=scores)
     else:
-        setup_frames = {k: pd.DataFrame() for k in ("scanner_vcp", "scanner_canslim", "scanner_box", "scanner_flag", "scanner_leaders")}
+        setup_frames = {k: pd.DataFrame() for k in (
+            "scanner_vcp", "scanner_canslim", "scanner_box", "scanner_flag", "scanner_leaders",
+            "scanner_52w", "highs_lows_history",
+        )}
     def _n(frame):
         if frame is None or len(frame) == 0 or "ticker" not in getattr(frame, "columns", []):
             return 0
         return int((frame["ticker"].astype(str) != "").sum())
-    log("Pattern scanners", "OK", asof, "VCP %d, CANSLIM %d, box %d, flag %d, leaders %d. No new downloads." % (
-        _n(setup_frames["scanner_vcp"]), _n(setup_frames["scanner_canslim"]),
-        _n(setup_frames["scanner_box"]), _n(setup_frames["scanner_flag"]), _n(setup_frames["scanner_leaders"]),
+    log("Pattern scanners", "OK", asof, "VCP %d, CANSLIM %d, box %d, flag %d, leaders %d, 52-week %d. No new downloads." % (
+        _n(setup_frames.get("scanner_vcp")), _n(setup_frames.get("scanner_canslim")),
+        _n(setup_frames.get("scanner_box")), _n(setup_frames.get("scanner_flag")),
+        _n(setup_frames.get("scanner_leaders")), _n(setup_frames.get("scanner_52w")),
     ))
+    buy_on = features.get("buy_setups", True)
+    if buy_on and len(close):
+        buy = setups.build_buy_setups(
+            setup_frames.get("scanner_vcp"), setup_frames.get("scanner_box"),
+            setup_frames.get("scanner_flag"), setup_frames.get("scanner_canslim"),
+            scores, close, setup_frames.get("scanner_52w"),
+        )
+    else:
+        buy = pd.DataFrame()
+    log("Buy setups", "OK" if _n(buy) else "MISSING", asof,
+        "%d names. The market check uses the Nifty 50. This desk never places trades." % _n(buy))
+    rot_scores = scores
+    if len(scores) and (cfg.get("liquidity") or {}).get("enabled", True) and "liquid" in scores.columns:
+        rot_scores = scores[scores["liquid"].astype(str).str.lower().eq("yes")]
+    if features.get("sector_rotation", True) and len(close):
+        rot = sector_rotation.build(
+            close, high, rot_scores, cfg.get("sector_etfs"),
+            scanners=setup_frames,
+            buy_setups=buy if _n(buy) else None,
+            fred=sector_rotation.read_fred_cache(cache),
+            cfg=cfg.get("sector_rotation"),
+        )
+    else:
+        rot = {
+            "sector_rotation": pd.DataFrame(),
+            "sector_rotation_tails": pd.DataFrame(),
+            "sector_rotation_history": pd.DataFrame(),
+            "log": "Sector rotation is off." if not features.get("sector_rotation", True) else "No prices for sector indexes.",
+        }
+    log("Sector rotation", "OK" if len(rot.get("sector_rotation", [])) else "MISSING", asof, rot.get("log") or "")
+    backfill_on = features.get("fundamentals_backfill", True)
+    progress = fundamentals_backfill.progress_frame(ROOT) if backfill_on else pd.DataFrame()
+    if backfill_on and len(progress):
+        log("Financials backfill", "OK", progress.iloc[0].get("last_batch_at") or "", str(progress.iloc[0].get("note") or ""))
+    elif backfill_on:
+        log("Financials backfill", "MISSING", "", "No progress file yet. This run does not call the backfill sources.")
 
     insider = pd.DataFrame()
     if len(holders) and "ticker" in holders.columns:
@@ -2700,7 +3060,13 @@ def main(argv=None):
         "scanner_canslim": gated(setup_frames["scanner_canslim"], "scanner_canslim", features.get("scanner_canslim", True), "No CANSLIM setups. Missing letters stay not verified. No new downloads."),
         "scanner_box": gated(setup_frames["scanner_box"], "scanner_box", features.get("scanner_box", True), "No box setups in the cached prices."),
         "scanner_flag": gated(setup_frames["scanner_flag"], "scanner_flag", features.get("scanner_flag", True), "No flag setups in the cached prices."),
-        "scanner_leaders": gated(setup_frames["scanner_leaders"], "scanner_leaders", features.get("scanner_leaders", True), "No leaders. A leader is a ready or just-broken VCP, a strict CANSLIM qualify, or both."),
+        "scanner_leaders": gated(setup_frames.get("scanner_leaders"), "scanner_leaders", features.get("scanner_leaders", True), "No leaders. A leader is a ready or just-broken VCP, a strict CANSLIM qualify, or both."),
+        "scanner_52w": gated(setup_frames.get("scanner_52w"), "scanner_52w", features.get("scanner_52w", True), "No 52-week rows. The scan used cached prices only."),
+        "highs_lows_history": gated(setup_frames.get("highs_lows_history"), "highs_lows_history", features.get("scanner_52w", True), "No 52-week history in the cached prices."),
+        "buy_setups": gated(buy, "buy_setups", buy_on, "No buy setups. The list is built from the scanners already on the desk. This desk never places trades."),
+        "sector_rotation": gated(rot.get("sector_rotation"), "sector_rotation", features.get("sector_rotation", True), "No sector rotation. The Nifty 50 or the sector indexes were missing from the price cache."),
+        "sector_rotation_tails": gated(rot.get("sector_rotation_tails"), "sector_rotation_tails", features.get("sector_rotation", True), "No relative-rotation tails."),
+        "sector_rotation_history": gated(rot.get("sector_rotation_history"), "sector_rotation_history", features.get("sector_rotation", True), "No relative-rotation history."),
         "earnings_calendar": gated(earn_pages.get("calendar"), "earnings_calendar", features.get("earnings_calendar", True), "No earnings dates."),
         "earnings_heatmap": gated(earn_pages.get("heatmap"), "earnings_heatmap", features.get("earnings_heatmap", True), "No earnings history. Revenue vs estimate is not in the free feed."),
         "earnings_cards": gated(earn_pages.get("cards"), "earnings_cards", features.get("earnings_cards", True), "No earnings history to grade."),
@@ -2710,6 +3076,8 @@ def main(argv=None):
         "analyst_ratings": gated(scores, "analyst_ratings", features.get("analyst_ratings", True), "No analyst data."),
         "institutional_13f": gated(inst, "institutional_13f", features.get("institutional_13f", True), "No shareholding summary. FII and DII stay blank until the filing split is on file."),
         "aaii_sentiment": gated(pd.DataFrame([mood]) if mood else pd.DataFrame(), "aaii_sentiment", features.get("aaii_sentiment", True), aaii_note) if features.get("aaii_sentiment", True) else pd.DataFrame(columns=tables.COLS["aaii_sentiment"]),
+        "fii_flows": gated(flows, "fii_flows", features.get("fii_dii_flows", True) or features.get("fii_dii_today_strip", True), "FII and DII cash history was not available."),
+        "participant_oi": gated(participants, "participant_oi", features.get("fii_dii_derivatives", True), "NSE participant open interest was not available."),
         "insider_trading": gated(insider, "insider_trading", features.get("insider_trading", True), "Insider counts are not available for free."),
         "headline_sentiment": gated(headlines, "headline_sentiment", features.get("headline_sentiment", True), "No headlines for the focus list."),
         "xly_xlp": gated(xratio, "xly_xlp", features.get("xly_xlp", True), "Nifty Auto or Nifty FMCG price was missing."),
@@ -2728,6 +3096,7 @@ def main(argv=None):
         "heatmaps": gated(heat, "heatmaps", features.get("heatmaps", True), "No heatmap."),
         "freshness": gated(fresh, "freshness", features.get("freshness_flags", True), "Freshness flags are off."),
         "updates_log": pd.DataFrame(LOG),
+        "backfill_progress": gated(progress, "backfill_progress", backfill_on, "The financials backfill has not written a progress row yet."),
         "help": pd.DataFrame(tables.help_rows(), columns=["topic", "plain_english"]),
         "settings": tables.settings_rows(cfg),
         "universe": gated(universe, "universe", True, "Universe is empty."),

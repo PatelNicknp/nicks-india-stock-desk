@@ -38,11 +38,13 @@ BUY, HOLD, and AVOID are research labels. They are not orders.
 
 ## What is fetched, and how often
 
-Yahoo prices use one batched download for many tickers. The full history stays in `cache/ohlcv.csv.gz` (about 3 years). An hourly run only asks for the last few sessions and merges them in. Statements, profiles, shareholding, news, and option chains refresh at most once a day, on the after-close run.
+Daily prices come from the NSE bhavcopy. BSE bhavcopy, then Stooq, then a small Yahoo gap fill are the backups. The history stays in `cache/ohlcv.csv.gz` (about 3 years) and the site reads letter files in `data/ohlc/`. There is no hourly price download.
 
-If Yahoo or NSE fails, the job keeps the saved file and the Data updates page says CACHED.
+The main run is after the NSE close, weekdays at 16:30 IST. A retry at 18:30 IST picks up a late bhavcopy. A light morning run at 08:00 IST refreshes news and FII/DII only. Prices are not downloaded every hour.
 
-Published candle files are about 3 years and are rewritten only when the text changed.
+Company statements, ratios, analyst numbers, and shareholding keep filling in a separate job, about every 30 minutes all week. It continues from `cache/backfill_cursor.json`. Liquid names come first, then the rest of the NSE list, then BSE-only names. At 40 names a run, the first pass of the full list is about 2 to 3 days when the free sources answer. After that it refreshes the oldest shareholding about every 90 days, and results after the next earnings date or every 90 days. Turn it off with `feature.fundamentals_backfill`. The price schedule does not change.
+
+If a source fails, the job keeps the saved file and the Data updates page says CACHED.
 
 ## Pages that can say "not available"
 
@@ -64,9 +66,9 @@ python tests/test_fundamentals.py
 python tests/test_universe.py
 python tests/test_job.py
 python tests/test_setups.py
-python stock_desk.py --full
+python stock_desk.py --close
 ```
 
-`--hourly` refreshes recent prices only. `--offline` rebuilds the pages from the cache and does not call the network.
+`--morning` refreshes news and FII/DII and does not download prices. `--retry` refreshes the last few bhavcopy sessions. `--offline` rebuilds the pages from the cache and does not call the network.
 
 Edit example holdings in `input/holdings.csv` and the watchlist in `input/my_watchlist.csv`. Switches live in `config.json`.

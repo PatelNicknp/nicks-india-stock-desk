@@ -129,6 +129,15 @@ input::placeholder{color:#5B6680;opacity:1}
 .cards.col{display:flex;flex-direction:column}
 .cards.col .card .v{font-size:20px;line-height:24px}
 .chart-box.h300{height:300px}
+.flowstrip{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;align-items:end;margin-bottom:16px;padding:14px 16px;background:#121826;border:1px solid #243049;border-radius:10px;text-decoration:none;color:inherit}
+.flowstrip .lab{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#8B96AD}
+.flowstrip .val{font-size:28px;font-weight:700;font-variant-numeric:tabular-nums;line-height:34px;margin-top:4px}
+.flowstrip .sub{font-size:12px;color:#8B96AD;margin-top:2px;line-height:16px}
+.flowstrip .sub.streak{font-size:15px;font-weight:700;color:#E6EBF5;margin-top:8px}
+.flowstrip .go{font-size:13px;font-weight:700;color:#7C9CFF}
+.holdrow{display:flex;flex-wrap:wrap;gap:22px;align-items:flex-end;margin-top:12px}
+.holdrow .v{font-size:26px}
+.holdrow .s{font-size:13px;margin-top:4px}
 .marketstrip{display:flex;gap:32px;align-items:center;height:56px;padding:0 16px;margin-bottom:12px}
 .marketstrip .l{font-size:11px;color:#8B96AD}
 .marketstrip .v{font-size:13px;font-weight:400;margin-top:2px}
@@ -258,6 +267,8 @@ input::placeholder{color:#5B6680;opacity:1}
   .seg button{min-width:44px;min-height:44px;font-size:14px;padding:0 14px}
   .pg button{width:44px;height:44px}
   .card .v{font-size:22px;line-height:28px}
+  .flowstrip .val{font-size:22px;line-height:28px}
+  .holdrow .v{font-size:22px}
   .card .l,.card .s{font-size:12px}
   .card .s{white-space:normal}
   h1{font-size:24px;line-height:30px}
@@ -285,4 +296,85 @@ input::placeholder{color:#5B6680;opacity:1}
   .px-host{height:220px}
   .main{padding-top:max(10px, env(safe-area-inset-top));padding-bottom:max(10px, env(safe-area-inset-bottom))}
   h1{font-size:22px;line-height:26px}
+}
+.buy-scroll{container-type:inline-size;max-width:100%}
+.buy-scroll tr.datarow{cursor:pointer}
+.buy-scroll tr.datarow td,.buy-scroll th.ellip{overflow:hidden;text-overflow:ellipsis}
+.buy-scroll tr.datarow td{height:44px}
+.buy-scroll tr.datarow td.exp,.buy-scroll th.exp{overflow:visible}
+.buy-scroll th.exp,.buy-scroll td.exp{width:44px;min-width:44px;padding:0;text-align:center;overflow:visible;cursor:default}
+.buy-scroll td.score .scorefill{height:44px}
+.rowexp{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;min-width:44px;min-height:44px;padding:0;border:0;border-radius:6px;background:transparent;color:#8B96AD;cursor:pointer}
+.rowexp:hover,.rowexp:focus-visible{background:#1A2236;color:#E6EBF5;outline:none}
+tr.selrow .rowexp{color:#7C9CFF}
+.rowchev{display:block;width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg);margin-left:-2px}
+.rowchev.open{transform:rotate(45deg);margin-left:0;margin-top:-3px}
+.buy-scroll tr.datarow.z0 td{background:#0F1420}
+.buy-scroll tr.datarow.z1 td{background:#121826}
+.buy-scroll tr.datarow:hover td,.buy-scroll tr.datarow.selrow td{background:#1A2236 !important}
+.buy-scroll tr.datarow.selrow td:first-child{box-shadow:inset 3px 0 0 #7C9CFF}
+.buy-scroll tr.detailrow td,.buy-scroll tr.detailrow td:first-child{position:static;left:auto;z-index:auto;height:auto;padding:0;white-space:normal;overflow:visible;text-overflow:clip;background:#0F1420 !important;border-bottom:1px solid #1E293B}
+.buydrop{position:sticky;left:0;box-sizing:border-box;max-width:100%;padding:14px 14px 12px;background:#0F1420;overflow-x:auto}
+.buyid{font-size:15px;font-weight:700;margin-bottom:6px}
+.buyid .mut{font-weight:400}
+.whytext{font-size:14px;line-height:21px;color:#E6EBF5;margin:0 0 12px;white-space:normal}
+.tradeplan{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-bottom:12px}
+.tp{background:#121826;border:1px solid #1E293B;border-radius:8px;padding:8px 10px;min-width:0}
+.tp .l{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#8B96AD}
+.tp .v{font-size:16px;font-weight:700;margin-top:2px;font-variant-numeric:tabular-nums;color:#E6EBF5}
+.tp .s{display:block;margin-top:2px;font-size:12px;font-weight:700;color:#8B96AD}
+.tp.stop .v,.tp.stop .s{color:#EF4444}
+.tp.tgt .v,.tp.tgt .s{color:#22C55E}
+.buyfacts{display:flex;flex-wrap:wrap;gap:10px 16px;margin-bottom:12px}
+.fact{min-width:88px;max-width:100%}
+.fact .l{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#8B96AD}
+.fact .v{font-size:13px;margin-top:2px;color:#E6EBF5}
+.buydrop .px-host{touch-action:none}
+.droplab{display:block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#8B96AD;margin-bottom:2px}
+.buydrop .panel{margin:0}
+.buydrop .px-host{height:320px}
+.buydrop .cap{margin-bottom:0}
+.canslim-key{background:#121826;border:1px solid #1E293B;border-radius:10px;padding:12px 14px;margin-bottom:16px}
+.canslim-key summary{font-size:16px;font-weight:700;cursor:pointer;min-height:44px;display:flex;align-items:center}
+.ckeys{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.ckey{display:grid;grid-template-columns:28px 1fr;gap:8px;align-items:start;background:#0F1420;border:1px solid #1E293B;border-radius:8px;padding:10px}
+.ckey b{color:#7C9CFF;font-size:18px}
+.ckey .t{font-weight:700;font-size:14px}
+.ckey .d{font-size:13px;line-height:18px;color:#C3CBDB;margin-top:2px}
+.letterwrap .lettertable td.wrap{min-width:160px;font-size:13px;line-height:18px}
+.letters{display:none;padding:12px;gap:10px}
+.lettercard{background:#0F1420;border:1px solid #1E293B;border-radius:8px;padding:12px}
+.lrow{display:grid;grid-template-columns:22px 1fr;gap:8px;margin-top:8px;font-size:14px;line-height:20px}
+.lrow b{color:#7C9CFF}
+@media (max-width:1100px){
+  .letterwrap .lettertable{display:none}
+  .letters{display:grid}
+  .ckeys{grid-template-columns:1fr}
+  .buydrop .px-host{height:260px}
+}
+.buybanner{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:12px}
+.buybanner span{min-width:0;flex:1 1 220px}
+.buybanner button{min-height:44px;padding:0 14px;background:#121826;border:1px solid #F59E0B;border-radius:6px;color:#F59E0B;cursor:pointer;font:inherit;font-size:13px;font-weight:700}
+.dimmed{opacity:.62}
+.w52tabs,.rrgtabs{display:flex;flex-wrap:wrap;gap:8px;align-items:center;width:100%;grid-column:1 / -1}
+.w52tabs button,.rrgtabs button{min-height:44px;height:44px;padding:0 12px;background:#121826;border:1px solid #1E293B;border-radius:6px;color:#8B96AD;cursor:pointer;font:inherit;font-size:13px}
+.w52tabs button.on,.rrgtabs button.on{background:#1A2236;color:#E6EBF5;font-weight:700}
+.rrgtabs .lab{font-size:11px;color:#8B96AD}
+.chart-box.rrg-box{height:420px}
+.rrglegend{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:10px}
+.rrglegend span{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#8B96AD}
+.rrgdot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}
+.changed{margin:8px 0 0;padding-left:18px}
+.changed li{margin:4px 0;font-size:13px;line-height:18px}
+@media (max-width:1100px){
+  .chart-box.rrg-box{height:320px}
+  .tradeplan{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:699px){
+  .buydrop{padding:12px 12px 8px}
+  .buydrop .px-host{height:220px}
+  .whytext{font-size:15px;line-height:22px}
+  .chart-box.rrg-box{height:260px}
+  .tradeplan{grid-template-columns:1fr 1fr}
+  .tradeplan .tp:last-child{grid-column:1 / -1}
 }

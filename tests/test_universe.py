@@ -74,10 +74,66 @@ def test_wiki_tables_for_nifty_lists():
 
 
 def test_switches_default_on():
-    assert desk.index_switches({}) == {"nifty50": True, "next50": True, "midcap150": True}
+    switches = desk.index_switches({})
+    assert switches["nifty50"] is True and switches["next50"] is True and switches["midcap150"] is True
+    assert switches["smallcap250"] is True and switches["microcap250"] is True
+    assert switches["totalmarket"] is True and switches["other_nse"] is True
+    assert switches["bse_only"] is True
+    assert switches["sme"] is False
     assert desk.index_switches({"indexes": {"next50": False}})["next50"] is False
     assert desk.membership_label("yes", "yes", "yes") == "Nifty 50 / Next 50 / Midcap 150"
     assert desk.membership_label("no", "no", "no") == "Focus"
+
+
+def test_isin_prefers_nse_symbol_and_my_picks_stay():
+    nse = desk._blank_flags(pd.DataFrame([
+        {"ticker": "RELIANCE", "company": "Reliance", "sector": "Energy", "isin": "INE002A01018"},
+    ]), "in_nifty50")
+    bse = desk._blank_flags(pd.DataFrame([
+        {"ticker": "RELIANCE", "company": "Reliance", "sector": "", "isin": "INE002A01018", "in_bse_only": "yes", "bse_symbol": "RELIANCE"},
+    ]))
+    only = desk._blank_flags(pd.DataFrame([
+        {"ticker": "ZZZ", "company": "Only BSE", "sector": "", "isin": "INE000000001", "in_bse_only": "yes", "bse_symbol": "ZZZ"},
+    ]))
+    out = desk.combine_indexes([nse, bse, only], [], [], {"nifty50": True, "bse_only": True, "sme": False}, my_picks=["MYSTOCK"])
+    rel = out[out.ticker == "RELIANCE"].iloc[0]
+    assert rel["exchange"] == "Both"
+    assert rel["nse_symbol"] == "RELIANCE"
+    assert list(out["ticker"]).count("RELIANCE") == 1
+    assert "MYSTOCK" in set(out["ticker"])
+    assert out[out.ticker == "MYSTOCK"].iloc[0]["in_my_picks"] == "yes"
+    assert "ZZZ" in set(out["ticker"])
+    assert out[out.ticker == "ZZZ"].iloc[0]["exchange"] == "BSE"
+
+
+def test_bhav_parser_keeps_equity_series():
+    import io
+    import market_sources
+    text = (
+        "TradDt,SctySrs,FinInstrmTp,ISIN,TckrSymb,OpnPric,HghPric,LwPric,ClsPric,TtlTradgVol,TtlTrfVal\n"
+        "2026-10-23,EQ,STK,INE002A01018,RELIANCE,100,110,90,105,1000,500000\n"
+        "2026-10-23,F,STK,INE000000099,LIQUID,1,1,1,1,10,10\n"
+    )
+    out = market_sources.parse_nse_bhav(text.encode())
+    assert list(out["ticker"]) == ["RELIANCE"]
+    assert float(out["close"].iloc[0]) == 105
+    assert float(out["turnover"].iloc[0]) == 500000
+
+
+def test_fallback_keeps_second_source():
+    import fallback
+    book = fallback.SourceBook()
+
+    def boom():
+        raise RuntimeError("down")
+
+    def fine():
+        return 6.5
+
+    value, source, note = fallback.run_chain("repo", [("RBI", boom), ("Other", fine)], None, book)
+    assert value == 6.5 and source == "Other"
+    value, source, note = fallback.run_chain("repo", [("RBI", boom)], 5.5, fallback.SourceBook())
+    assert value == 5.5 and source == "cache"
 
 
 if __name__ == "__main__":
@@ -85,4 +141,5 @@ if __name__ == "__main__":
     test_switch_drops_only_that_list()
     test_wiki_tables_for_nifty_lists()
     test_switches_default_on()
+    test_isin_prefers_nse_symbol_and_my_picks_stay()
     print("universe ok")

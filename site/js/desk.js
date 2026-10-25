@@ -10,7 +10,9 @@
   const NAV = [
     ["Overview", [
       ["Today", "index.html", "today"],
+      ["FII and DII", "flows.html", "flows"],
       ["Top stocks", "top-stocks.html", "top"],
+      ["Buy setups", "buy-setups.html", "buysetups"],
       ["Stock scorecard", "scorecard.html", "scorecard"],
       ["Watchlist and portfolio", "watchlist.html", "watchlist"],
       ["Alerts", "alerts.html", "alerts"],
@@ -26,6 +28,7 @@
       ["Box breakout", "box.html", "box"],
       ["Flag breakout", "flag.html", "flag"],
       ["Leaders", "leaders.html", "leaders"],
+      ["52-week", "52-week.html", "week52"],
     ]],
     ["Earnings", [
       ["Calendar", "earnings-calendar.html", "calendar"],
@@ -49,6 +52,7 @@
       ["Dividend fundamentals", "dividend-fundamentals.html", "divfund"],
     ]],
     ["Macro", [
+      ["Sector rotation", "sector-rotation.html", "rotation"],
       ["Macro screener", "macro.html", "macro"],
       ["Sector macro scores", "sector-macro.html", "secmacro"],
       ["Historical P/E", "historical-pe.html", "histpe"],
@@ -107,6 +111,54 @@
       }));
     }
     return cache.get(name);
+  }
+
+  function candleGroup(ticker) {
+    const text = String(ticker || "").toUpperCase();
+    if (text.charAt(0) === "^") return "_indexes";
+    const c = text.charAt(0);
+    if (c >= "A" && c <= "Z") return c;
+    return "0";
+  }
+
+  function gunzipResponse(res) {
+    if (!res.body || typeof DecompressionStream === "undefined") {
+      throw new Error("gzip");
+    }
+    return new Response(res.body.pipeThrough(new DecompressionStream("gzip"))).text();
+  }
+
+  function parseCsvText(text) {
+    return new Promise((resolve, reject) => {
+      Papa.parse(text, {
+        header: true,
+        skipEmptyLines: "greedy",
+        complete: (res) => resolve((res.data || []).map(cleanRow)),
+        error: (err) => reject(err instanceof Error ? err : new Error(String(err))),
+      });
+    });
+  }
+
+  function loadLetterBars(group) {
+    const key = "ohlc/" + group + ".csv.gz";
+    if (!cache.has(key)) {
+      const job = fetch(csvUrl(key)).then((res) => {
+        if (!res.ok) throw new Error(String(res.status));
+        return gunzipResponse(res);
+      }).then(parseCsvText).catch((err) => {
+        cache.delete(key);
+        throw err;
+      });
+      cache.set(key, job);
+    }
+    return cache.get(key);
+  }
+
+  function loadTickerBars(ticker) {
+    const want = String(ticker || "").trim().toUpperCase();
+    return loadLetterBars(candleGroup(want)).then((rows) =>
+      rows.filter((r) => String(r.ticker || "").trim().toUpperCase() === want)
+    ).catch(() => loadCsv("ohlc/" + want + ".csv"));
   }
 
   function cleanRow(row) {
@@ -378,6 +430,10 @@
       }
       case "verdict": return verdictHtml(v);
       case "trend": return trendHtml(v);
+      case "quad": {
+        const map = { Leading: "#22C55E", Weakening: "#F59E0B", Lagging: "#EF4444", Improving: "#7C9CFF" };
+        return colored(v, map[v] || TX, true);
+      }
       case "setup": return setupHtml(v);
       case "fresh": return freshHtml(v);
       case "pass": return passHtml(v);
@@ -433,6 +489,14 @@
         const w = Math.max(4, Math.min(72, n * 0.72));
         return '<span class="bar" style="width:' + w + 'px"></span>' + esc(fmt(n, 0));
       }
+      case "rangepos": {
+        const n = num(v);
+        if (n == null) return na();
+        const clamped = Math.max(0, Math.min(100, n));
+        const w = Math.max(0, Math.round(clamped / 100 * 88));
+        const color = clamped >= 95 ? UP : clamped <= 15 ? DN : AC;
+        return '<span class="track" title="' + esc(fmt(n, 0)) + '"><span class="fill" style="width:' + w + 'px;background:' + color + '"></span></span> ' + esc(fmt(n, 0));
+      }
       case "daybar": {
         const n = num(v);
         if (n == null) return na();
@@ -460,6 +524,16 @@
         if (!s) return na();
         const color = s === "up" ? UP : s === "down" ? DN : MU;
         return '<span style="color:' + color + '">' + esc(v) + "</span>";
+      }
+      case "market": {
+        const word = marketWord(v);
+        if (!word) return na();
+        return '<span style="color:' + marketColor(word) + ';font-weight:700">' + esc(word) + "</span>";
+      }
+      case "shares": {
+        const sn = num(v);
+        if (sn == null) return na();
+        return esc(Math.round(sn).toLocaleString("en-US"));
       }
       case "heatpct": return heatPct(v, d);
       case "dist": return distHtml(v);
@@ -552,7 +626,7 @@
 
   function align(col) {
     if (col.align) return col.align;
-    if (["num", "pct", "money", "compact", "dist", "heatpct"].indexOf(col.kind) >= 0) return "num";
+    if (["num", "pct", "money", "compact", "dist", "heatpct", "shares"].indexOf(col.kind) >= 0) return "num";
     if (["score", "points", "plabel", "grade", "flag", "tone", "signal"].indexOf(col.kind) >= 0) return "c";
     return "";
   }
@@ -560,7 +634,7 @@
   function compare(a, b, col, dir) {
     const va = a[col.key];
     const vb = b[col.key];
-    const numeric = ["num", "pct", "money", "compact", "dollars", "dist", "score", "points", "tone", "signal", "flag", "heatpct", "delta", "multiple", "volx", "retrace", "strengthbar", "daybar", "scorejump", "count", "signedcompact", "of8", "owncap"].indexOf(col.kind) >= 0;
+    const numeric = ["num", "pct", "money", "compact", "dollars", "dist", "score", "points", "tone", "signal", "flag", "heatpct", "delta", "multiple", "volx", "retrace", "strengthbar", "daybar", "rangepos", "scorejump", "count", "signedcompact", "of8", "owncap"].indexOf(col.kind) >= 0;
     let c = 0;
     if (numeric) {
       const pull = (value) => {
@@ -592,11 +666,109 @@
     return dir === "asc" ? c : -c;
   }
 
+  function marketWord(text) {
+    const s = String(text || "").trim();
+    if (!s || s.toLowerCase() === "not verified") return "";
+    const u = s.toUpperCase();
+    if (u.indexOf("UPTREND") === 0 || u.indexOf("CONFIRM") === 0 || u.indexOf("UP") === 0) return "Uptrend";
+    if (u.indexOf("UNDER") === 0 || u.indexOf("MIXED") === 0) return "Under pressure";
+    if (u.indexOf("CORRECT") === 0 || u.indexOf("DOWN") === 0) return "Correction";
+    return "";
+  }
+  function marketColor(word) {
+    if (word === "Uptrend") return "#22C55E";
+    if (word === "Under pressure") return "#F59E0B";
+    if (word === "Correction") return "#EF4444";
+    return "#8B96AD";
+  }
+
+  let expandSlot = null;
+  function pricePanel(sub) {
+    return '<div class="panel pad" data-px-panel><div class="rowhead wrap"><div><div class="ptitle">Price</div><div class="psub">' +
+      esc(sub || "Daily bars") + '</div></div><div class="pxtools" data-px-tools></div></div><div class="pxmas" data-px-mas></div><div class="chart-box pxchart"><div class="px-host" data-px-host><div class="px-legend" data-px-legend></div></div></div><p class="cap" data-px-cap></p></div>';
+  }
+  function expandKeyOf(row, opts) {
+    if (opts.expandKey) return String(opts.expandKey(row) || "");
+    return [row.ticker || "", row.kind || "", row.published || "", row.quarter || "", row.owner || "", row.earnings_date || "",
+      String(row.headline || "").slice(0, 80), String(row.text || "").slice(0, 80)].join("|");
+  }
+  function fitOpenDrop(host) {
+    const sc = host.querySelector(".buy-scroll");
+    const drop = host.querySelector(".buydrop");
+    if (sc && drop) drop.style.width = sc.clientWidth + "px";
+  }
+  function autoLines(row, opts) {
+    if (typeof opts.lines === "function") return opts.lines(row) || [];
+    if (opts.lines) return opts.lines;
+    const lines = [];
+    const lo = num(row.entry_low);
+    const hi = num(row.entry_high);
+    if (lo != null && hi != null) lines.push({ zone: [lo, hi], color: "rgba(124,156,255,.10)", labelColor: "#F59E0B", label: "Entry" });
+    if (num(row.pivot) != null) lines.push({ value: num(row.pivot), color: "#F59E0B", label: "Buy point" });
+    if (num(row.stop) != null) lines.push({ value: num(row.stop), color: "#EF4444", label: "Stop" });
+    const tgt = num(row.trade_target != null && row.trade_target !== "" ? row.trade_target : row.target);
+    if (tgt != null) lines.push({ value: tgt, color: "#22C55E", label: "Target" });
+    if (num(row.high_52w) != null) lines.push({ value: num(row.high_52w), color: "#22C55E", label: "52w high" });
+    if (num(row.low_52w) != null) lines.push({ value: num(row.low_52w), color: "#EF4444", label: "52w low" });
+    return lines;
+  }
+  function paintOpenChart(host, row, opts) {
+    const panel = host.querySelector("[data-px-panel]");
+    if (!panel || !row || !row.ticker) return;
+    fitOpenDrop(host);
+    const lines = autoLines(row, opts);
+    requestAnimationFrame(() => {
+      if (!panel.isConnected) return;
+      fitOpenDrop(host);
+      drawPriceChart(panel, { ticker: row.ticker, lines: lines });
+    });
+  }
+  function expandNotes(row, parked) {
+    return parked.map((c) => {
+      const v = row[c.key];
+      if (isBlank(v)) return "";
+      return '<p class="whytext"><span class="droplab">' + esc(c.label) + "</span> " + esc(v) + "</p>";
+    }).join("");
+  }
+  function expandStory(row, opts, parked) {
+    if (typeof opts.detail === "function") return "";
+    const parkedKeys = {};
+    parked.forEach((c) => { parkedKeys[c.key] = true; });
+    return ["why", "reason"].map((key) => {
+      if (parkedKeys[key] || isBlank(row[key])) return "";
+      return '<p class="whytext">' + esc(row[key]) + "</p>";
+    }).join("");
+  }
+  function expandHtml(row, opts, parked) {
+    const custom = typeof opts.detail === "function" ? (opts.detail(row) || "") : "";
+    const sub = typeof opts.priceSub === "function" ? opts.priceSub(row) : (opts.priceSub || "Daily candles in rupees. Turn the averages on or off above the chart.");
+    const company = isBlank(row.company) ? "" : ' <span class="mut">' + esc(row.company) + "</span>";
+    return '<div class="buydrop"><div class="buyid">' + tickerHtml(row.ticker) + company + "</div>" +
+      expandNotes(row, parked) + expandStory(row, opts, parked) + custom + pricePanel(sub) + "</div>";
+  }
+  if (typeof window !== "undefined" && !window.__rowDropFit) {
+    window.__rowDropFit = true;
+    window.addEventListener("resize", () => {
+      document.querySelectorAll(".buydrop").forEach((drop) => {
+        const sc = drop.closest(".buy-scroll");
+        if (sc) drop.style.width = sc.clientWidth + "px";
+      });
+    });
+  }
+
   function drawTable(host, opts) {
     const rows = opts.rows || [];
     const columns = opts.columns;
     const state = opts.state;
     const pageSize = opts.pageSize || 25;
+    const expandable = opts.expandable !== false && featureOn("feature.row_charts") &&
+      (columns || []).some((c) => c.key === "ticker" && !c.hidden);
+    const hasDetail = expandable || typeof opts.detail === "function";
+    host._tableOpts = opts;
+    if (expandSlot && !expandSlot.host.isConnected) expandSlot = null;
+    if (typeof opts.beforeDraw === "function") opts.beforeDraw();
+    const oldPanel = host.querySelector("[data-px-panel]");
+    if (oldPanel) dropTv(oldPanel);
     const sorted = rows.slice().sort((a, b) => {
       const col = columns.find((c) => c.key === state.sort) || columns[0];
       let c = compare(a, b, col, state.dir);
@@ -611,20 +783,38 @@
     if (state.page < 0) state.page = 0;
     const start = state.page * pageSize;
     const view = sorted.slice(start, start + pageSize);
-    const shown = columns.filter((c) => !c.hidden);
-    const head = shown.map((c) => {
+    const parked = expandable ? columns.filter((c) => !c.hidden && (c.wrap || c.inDetail)) : [];
+    const shown = columns.filter((c) => !c.hidden && parked.indexOf(c) < 0);
+    if (expandable && expandSlot && expandSlot.host === host && !rows.some((r) => expandKeyOf(r, opts) === expandSlot.key)) expandSlot = null;
+    const liveKey = expandable && expandSlot && expandSlot.host === host ? expandSlot.key : "";
+    const head = (hasDetail ? '<th class="exp"></th>' : "") + shown.map((c) => {
       const mark = state.sort === c.key ? '<span class="sort">' + (state.dir === "asc" ? "▲" : "▼") + "</span>" : "";
-      const cls = [align(c), c.hide === "md" ? "hide-md" : ""].filter(Boolean).join(" ");
+      const cls = [align(c), c.hide === "md" ? "hide-md" : "", c.ellipsis ? "ellip" : ""].filter(Boolean).join(" ");
       return '<th class="' + cls + '" data-k="' + esc(c.key) + '">' + esc(c.label) + mark + "</th>";
     }).join("");
     const body = view.map((r, i) => {
       const tds = shown.map((c) => {
-        const cls = [align(c), c.wrap ? "wrap" : "", c.kind === "score" ? "score" : "", c.hide === "md" ? "hide-md" : ""].filter(Boolean).join(" ");
+        const cls = [align(c), c.wrap ? "wrap" : "", c.kind === "score" ? "score" : "", c.hide === "md" ? "hide-md" : "", c.ellipsis ? "ellip" : ""].filter(Boolean).join(" ");
         const width = c.width ? " style=\"width:" + c.width + "\"" : "";
-        return "<td class=\"" + cls + "\"" + width + ">" + cell(r, c) + "</td>";
+        const raw = r[c.key];
+        const tip = c.ellipsis && raw != null && String(raw).trim() !== "" ? ' title="' + esc(String(raw)) + '"' : "";
+        return "<td class=\"" + cls + "\"" + width + tip + ">" + cell(r, c) + "</td>";
       }).join("");
-      const on = opts.pick && opts.pick === (r.ticker || "") && opts.pick !== "" ? " selrow" : "";
-      return '<tr data-i="' + (start + i) + '" class="' + on + '">' + tds + "</tr>";
+      const picked = opts.pick && opts.pick === (r.ticker || "") && opts.pick !== "";
+      const mine = expandKeyOf(r, opts);
+      const opened = expandable ? (!!liveKey && mine === liveKey) : (hasDetail && opts.open && opts.open === (r.ticker || "") && opts.open !== "");
+      const on = (picked || opened) ? " selrow" : "";
+      if (!hasDetail) return '<tr data-i="' + (start + i) + '" class="' + on + '">' + tds + "</tr>";
+      const zebra = i % 2 === 0 ? "z0" : "z1";
+      const name = r.ticker || "details";
+      const exp = '<td class="exp"><button type="button" class="rowexp" aria-expanded="' + (opened ? "true" : "false") +
+        '" aria-label="' + esc((opened ? "Hide " : "Show ") + name) + '"><span class="rowchev' + (opened ? " open" : "") + '"></span></button></td>';
+      let html = '<tr data-i="' + (start + i) + '" class="datarow ' + zebra + on + '">' + exp + tds + "</tr>";
+      if (opened) {
+        const inner = expandable ? expandHtml(r, opts, parked) : opts.detail(r);
+        html += '<tr class="detailrow"><td colspan="' + (shown.length + 1) + '">' + inner + "</td></tr>";
+      }
+      return html;
     }).join("");
     const empty = rows.length ? "" : '<div class="empty">' + esc(opts.empty || "No rows match these filters.") + "</div>";
     const from = rows.length ? start + 1 : 0;
@@ -633,14 +823,15 @@
     host.innerHTML =
       (opts.title ? '<div class="pad headrow" style="padding-bottom:0"><div class="ptitle">' + esc(opts.title) + "</div>" +
         (opts.sub ? '<div class="psub">' + esc(opts.sub) + "</div>" : "") + "</div>" : "") +
-      '<div class="scroll"><table><thead><tr>' + head + "</tr></thead><tbody>" + body + "</tbody></table></div>" +
+      '<div class="scroll' + (hasDetail ? " buy-scroll" : "") + '"><table' + (hasDetail ? (' class="buys' + (opts.fit ? " buyfit" : "") + '"') : "") + '><thead><tr>' + head + "</tr></thead><tbody>" + body + "</tbody></table></div>" +
       empty +
       (showFoot ? '<div class="foot"><span>' + from + "–" + to + " of " + rows.length + '</span><div class="pg">' +
       '<button type="button" data-pg="prev"' + (state.page <= 0 ? " disabled" : "") + ">‹</button>" +
       '<button type="button" data-pg="next"' + (state.page >= pages - 1 ? " disabled" : "") + ">›</button></div></div>" : "");
-    host.querySelectorAll("th").forEach((th) => {
+    host.querySelectorAll("th[data-k]").forEach((th) => {
       th.addEventListener("click", () => {
         const k = th.getAttribute("data-k");
+        if (!k) return;
         if (state.sort === k) state.dir = state.dir === "asc" ? "desc" : "asc";
         else { state.sort = k; state.dir = "desc"; }
         drawTable(host, opts);
@@ -652,8 +843,24 @@
         drawTable(host, opts);
       });
     });
-    if (opts.onPick) {
-      host.querySelectorAll("tbody tr").forEach((tr) => {
+    if (expandable) {
+      host.querySelectorAll("tbody tr.datarow").forEach((tr) => {
+        tr.addEventListener("click", (ev) => {
+          const link = ev.target.closest("a");
+          if (link) ev.preventDefault();
+          const row = sorted[Number(tr.getAttribute("data-i"))];
+          if (!row) return;
+          const key = expandKeyOf(row, opts);
+          const next = liveKey === key ? "" : key;
+          const prev = expandSlot && expandSlot.host;
+          expandSlot = next ? { host: host, key: next } : null;
+          if (prev && prev !== host && prev.isConnected && prev._tableOpts) drawTable(prev, prev._tableOpts);
+          if (typeof opts.onPick === "function") opts.onPick(row);
+          else drawTable(host, opts);
+        });
+      });
+    } else if (opts.onPick) {
+      host.querySelectorAll(hasDetail ? "tbody tr.datarow" : "tbody tr").forEach((tr) => {
         tr.addEventListener("click", (ev) => {
           if (ev.target.closest("a")) return;
           const i = Number(tr.getAttribute("data-i"));
@@ -662,6 +869,11 @@
       });
     }
     host._sorted = sorted;
+    if (typeof opts.afterDraw === "function") opts.afterDraw(host);
+    if (expandable && liveKey) {
+      const row = view.find((r) => expandKeyOf(r, opts) === liveKey);
+      if (row) paintOpenChart(host, row, opts);
+    }
   }
 
   function uniq(rows, key) {
@@ -798,13 +1010,24 @@
   }
 
   const tvCharts = [];
+  function tvStillOnScreen(chart) {
+    try {
+      if (typeof chart.chartElement !== "function") return false;
+      const el = chart.chartElement();
+      return !!(el && el.isConnected);
+    } catch (e) {
+      return false;
+    }
+  }
   function destroyCharts() {
     while (charts.length) {
       const c = charts.pop();
       try { c.destroy(); } catch (e) { /* already gone */ }
     }
-    while (tvCharts.length) {
-      const c = tvCharts.pop();
+    for (let i = tvCharts.length - 1; i >= 0; i--) {
+      const c = tvCharts[i];
+      if (tvStillOnScreen(c)) continue;
+      tvCharts.splice(i, 1);
       try { c.remove(); } catch (e) { /* already gone */ }
     }
   }
@@ -934,6 +1157,44 @@
         scales: horizontal
           ? { x: Object.assign(valueAxis, xExtra), y: catAxis }
           : { x: Object.assign(catAxis, extra.x || {}), y: valueAxis },
+      },
+    });
+  }
+  function comboChart(canvas, labels, bars, line) {
+    const datasets = (bars || []).map((b) => ({
+      type: "bar",
+      label: b.label,
+      data: b.data,
+      backgroundColor: b.color,
+      borderWidth: 0,
+      order: 2,
+      maxBarThickness: 8,
+    }));
+    if (line) {
+      datasets.push({
+        type: "line",
+        label: line.label,
+        data: line.data,
+        borderColor: line.color,
+        backgroundColor: line.color,
+        borderWidth: 2,
+        pointRadius: 0,
+        tension: 0,
+        order: 1,
+      });
+    }
+    makeChart(canvas, {
+      type: "bar",
+      data: { labels: labels, datasets: datasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: "index", intersect: false },
+        plugins: { legend: lineLegend(), tooltip: { intersect: false } },
+        scales: {
+          x: Object.assign(axis(), { ticks: dateTicks(labels) }),
+          y: axis(),
+        },
       },
     });
   }
@@ -1460,7 +1721,7 @@
       if (cap) cap.textContent = "No saved daily bars for this name.";
       return;
     }
-    loadCsv("ohlc/" + ticker + ".csv").then((rows) => {
+    loadTickerBars(ticker).then((rows) => {
       if (panel._token !== token) return;
       panel._ticker = ticker;
       panel._rows = rows || [];
@@ -1733,6 +1994,7 @@
   }
 
   const FEATURE = {
+    flows: "feature.fii_dii_flows",
     top: "feature.top_stocks",
     scorecard: "feature.scorecard",
     watchlist: "feature.watchlist_portfolio",
@@ -1747,6 +2009,9 @@
     box: "feature.scanner_box",
     flag: "feature.scanner_flag",
     leaders: "feature.scanner_leaders",
+    week52: "feature.scanner_52w",
+    buysetups: "feature.buy_setups",
+    rotation: "feature.sector_rotation",
     calendar: "feature.earnings_calendar",
     heatmap: "feature.earnings_heatmap",
     cards: "feature.earnings_cards",
@@ -1831,10 +2096,10 @@
     selectedMulti: selectedMulti, fieldVal: fieldVal,
     multiHtml: multiHtml, selectHtml: selectHtml, searchHtml: searchHtml, rangeHtml: rangeHtml,
     pairHtml: pairHtml, dateHtml: dateHtml, feedHtml: feedHtml, placeFeed: placeFeed,
-    featureOn: featureOn, monthLabel: monthLabel, ptsColor: ptsColor,
+    featureOn: featureOn, marketWord: marketWord, marketColor: marketColor, monthLabel: monthLabel, dateTicks: dateTicks, ptsColor: ptsColor,
     wireFilters: wireFilters, matchMulti: matchMulti, matchContains: matchContains,
     matchText: matchText, matchMin: matchMin,
-    destroyCharts: destroyCharts, lineChart: lineChart, barChart: barChart, makeChart: makeChart,
+    destroyCharts: destroyCharts, lineChart: lineChart, barChart: barChart, comboChart: comboChart, makeChart: makeChart,
     lastNDays: lastNDays, seriesNum: seriesNum, retColor: retColor, band: band,
     boot: boot,
   };

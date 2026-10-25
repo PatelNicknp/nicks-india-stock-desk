@@ -1,0 +1,11 @@
+{
+ "statements_retry_after": {},
+ "shareholding_retry_after": {
+  "3BBLACKBIO": "2026-10-26"
+ },
+ "last_batch_at": "2026-10-25T02:19Z",
+ "last_statements_ok": 2,
+ "last_statements_fail": 0,
+ "last_shareholding_ok": 1,
+ "last_shareholding_fail": 1
+}

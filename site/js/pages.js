@@ -68,9 +68,14 @@
     if (opts.verdict) bag.verdict = D.multiHtml("verdict", "Verdict", D.uniq(all, "verdict"));
     if (opts.confidence) bag.confidence = D.multiHtml("confidence", "Confidence", D.uniq(all, "confidence"));
     if (opts.index) bag.index = D.multiHtml("index", "Index", D.indexTokens(all));
+    const exchanges = D.uniq(all, "exchange").filter(Boolean);
+    if (exchanges.length) bag.exchange = D.multiHtml("exchange", "Exchange", exchanges);
+    if (opts.liquid) {
+      bag.liquid = D.selectHtml("liquid", "Liquid", [{ value: "yes", label: "Yes" }, { value: "no", label: "No" }], opts.liquid === true ? "yes" : String(opts.liquid));
+    }
     if (opts.trend) bag.timing = D.multiHtml("timing", "Trend", D.uniq(all, "timing"));
     if (opts.ticker) bag.ticker = D.searchHtml("ticker", "Ticker", "tick-list-" + (opts.list || "a"), D.uniq(all, "ticker"));
-    const order = opts.order || ["ticker", "passes", "status", "verdict", "sector", "confidence", "index", "timing"];
+    const order = opts.order || ["ticker", "passes", "status", "verdict", "sector", "confidence", "index", "exchange", "liquid", "timing"];
     const parts = [];
     order.forEach((k) => { if (bag[k]) parts.push(bag[k]); });
     Object.keys(bag).forEach((k) => { if (order.indexOf(k) < 0) parts.push(bag[k]); });
@@ -85,6 +90,7 @@
     const verdict = D.selectedMulti(box, "verdict");
     const confidence = D.selectedMulti(box, "confidence");
     const index = D.selectedMulti(box, "index");
+    const exchange = D.selectedMulti(box, "exchange");
     const timing = D.selectedMulti(box, "timing");
     const ticker = (D.fieldVal(box, "ticker") || "").trim();
     if (passes && row.passes !== passes) return false;
@@ -93,6 +99,7 @@
     if (!D.matchMulti(row, "verdict", verdict)) return false;
     if (!D.matchMulti(row, "confidence", confidence)) return false;
     if (!D.matchContains(row, "index_membership", index)) return false;
+    if (!D.matchMulti(row, "exchange", exchange)) return false;
     if (!D.matchMulti(row, "timing", timing)) return false;
     if (!D.matchText(row, "ticker", ticker)) return false;
     const nodes = box.querySelectorAll("select[data-filter]");
@@ -147,7 +154,9 @@
       render(ctx) {
         const raw = ctx.files[cfg.file];
         const all = D.realRows(raw);
-        ctx.page.innerHTML = (cfg.strip ? '<div id="strip"></div>' : "") +
+        const chartsOn = D.featureOn("feature.row_charts");
+        ctx.page.innerHTML = (cfg.guide ? cfg.guide() : "") +
+          (cfg.strip ? '<div id="strip"></div>' : "") +
           '<div class="ctrls" id="ctrls"></div><div class="cards" id="cards"></div>' +
           '<div class="panel" id="tbl"></div><div id="detail"></div><p class="cap"></p>';
         if (cfg.strip) document.getElementById("strip").innerHTML = cfg.strip(all);
@@ -163,8 +172,9 @@
           const host = document.getElementById("detail");
           D.destroyCharts();
           if (!row && !(cfg.detailRows)) { host.innerHTML = ""; return; }
-          host.innerHTML = (cfg.price ? priceShell(cfg.priceSub || "Daily bars for the selected name") : "") + (cfg.detail ? cfg.detail(row, rows || []) : "");
-          if (cfg.price && row) D.drawPriceChart(host.querySelector("[data-px-panel]"), { ticker: row.ticker, lines: cfg.price(row) });
+          const showPrice = cfg.price && !chartsOn;
+          host.innerHTML = (showPrice ? priceShell(cfg.priceSub || "Daily bars for the selected name") : "") + (cfg.detail ? cfg.detail(row, rows || []) : "");
+          if (showPrice && row) D.drawPriceChart(host.querySelector("[data-px-panel]"), { ticker: row.ticker, lines: cfg.price(row) });
         };
         const strongest = (rows) => rows.slice().sort((a, b) => (D.num(b.strength) || 0) - (D.num(a.strength) || 0))[0] || null;
         const draw = () => {
@@ -174,6 +184,8 @@
           pick = selected ? selected.ticker : null;
           D.drawTable(document.getElementById("tbl"), {
             rows: rows, columns: cfg.columns, state: state, pageSize: 12, pick: pick,
+            lines: chartsOn ? (cfg.price || setupLines) : null,
+            priceSub: cfg.priceSub || "Buy point, stop, and target when the scan has them",
             empty: "No names match. Open Status and tick WATCHING to see names still forming.",
             onPick: (row) => { pick = row.ticker; draw(); },
           });
@@ -244,7 +256,10 @@
     const dec = D.isBlank(mt.decliners) ? D.na() : '<span style="color:#EF4444">' + D.esc(mt.decliners) + "</span>";
     const pc = D.num(mt.put_call);
     const pc5 = D.num(mt.put_call_ma5);
+    const covered = D.isBlank(mt.listed_n) ? nStocks : mt.listed_n;
+    const liquidNote = D.isBlank(mt.liquid_n) ? "names with a score" : D.esc(String(mt.liquid_n)) + " pass the liquidity filter";
     ctx.page.innerHTML =
+      flowStrip(ctx.files) +
       '<div class="cards seven">' +
       card("Nifty 50", D.num(mt.spy_price) == null ? D.na() : D.esc(D.fmt(mt.spy_price, 2)), "day move " + (day == null ? D.na() : '<span style="color:' + D.retColor(day) + '">' + (day < 0 ? "▼" : "▲") + D.fmt(Math.abs(day), 2) + "%</span>")) +
       card("% above 50-day", b == null ? D.na() : D.esc(D.fmt(b, 1) + "%"), deltaHtml) +
@@ -254,6 +269,7 @@
         (pc == null ? D.na() : D.fmt(pc, 2)) + " today · 5-day " + (pc5 == null ? D.na() : D.fmt(pc5, 2))) +
       card("India VIX", D.num(mt.vix) == null ? D.na() : D.esc(D.fmt(mt.vix, 2)), "fear gauge") +
       card("India 10Y", y10 == null ? D.na() : D.esc(D.fmt(y10, 2) + "%"), D.num(mt.inr_usd) == null ? "Rupee per dollar " + D.na() : "Rupee per dollar " + D.fmt(D.num(mt.inr_usd), 2)) +
+      card("Stocks covered", D.esc(String(covered)), liquidNote) +
       "</div>" +
       '<div class="split today-top">' +
       (panelOff("feature.breadth") ? offBox() :
@@ -298,14 +314,71 @@
     }
   }
 
+  function flowRows(files) {
+    return D.realRows(files["fii_flows.csv"] || []).slice().sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
+  }
+  function sumFlow(rows, key) {
+    let total = 0;
+    let any = false;
+    rows.forEach((r) => {
+      const n = D.num(r[key]);
+      if (n != null) { total += n; any = true; }
+    });
+    return any ? total : null;
+  }
+  function flowWindow(rows, key, n) {
+    return sumFlow(rows.slice(-n), key);
+  }
+  function flowPrefix(rows, key, size) {
+    if (!rows.length) return null;
+    const stamp = String(rows[rows.length - 1].date || "");
+    const prefix = stamp.slice(0, size);
+    if (!prefix) return null;
+    return sumFlow(rows.filter((r) => String(r.date || "").slice(0, size) === prefix), key);
+  }
+  function croreHtml(n) {
+    if (n == null) return D.na();
+    const color = n > 0 ? "#22C55E" : n < 0 ? "#EF4444" : "#E6EBF5";
+    const sign = n > 0 ? "+" : "";
+    return '<span style="color:' + color + '">' + D.esc(sign + D.fmt(n, 0)) + "</span>";
+  }
+  function streakLine(rows, key, who) {
+    if (!rows.length) return who + " history is still growing";
+    const last = D.num(rows[rows.length - 1][key]);
+    if (last == null || last === 0) return who + " was flat on the last session";
+    const bought = last > 0;
+    let n = 0;
+    for (let i = rows.length - 1; i >= 0; i--) {
+      const v = D.num(rows[i][key]);
+      if (v == null || v === 0 || (v > 0) !== bought) break;
+      n += 1;
+    }
+    const days = n === 1 ? "day" : "days";
+    return who + " " + (bought ? "bought" : "sold") + " " + n + " " + days + " in a row";
+  }
+  function flowStrip(files) {
+    if (panelOff("feature.fii_dii_today_strip")) return "";
+    const rows = flowRows(files);
+    const last = rows[rows.length - 1] || {};
+    const fii = D.num(last.fii_net);
+    const dii = D.num(last.dii_net);
+    const when = last.date ? "Session " + last.date : "Latest session";
+    return '<a class="flowstrip" href="flows.html">' +
+      '<div><div class="lab">FII net, crore</div><div class="val">' + croreHtml(fii) + '</div><div class="sub">' + D.esc(when) + "</div></div>" +
+      '<div><div class="lab">DII net, crore</div><div class="val">' + croreHtml(dii) + '</div><div class="sub">' + D.esc(streakLine(rows, "dii_net", "DII")) + "</div></div>" +
+      '<div><div class="lab">FII streak</div><div class="sub streak">' + D.esc(streakLine(rows, "fii_net", "FII")) + "</div></div>" +
+      '<div class="go">FII and DII flows ›</div></a>';
+  }
   function renderTop(ctx) {
     const raw = ctx.files["scores.csv"];
     const all = D.realRows(raw);
-    ctx.page.innerHTML = D.banner(raw) + '<div class="ctrls" id="ctrls"></div><div class="panel" id="tbl"></div>';
+    const liquidYes = all.filter((r) => String(r.liquid || "").toLowerCase() === "yes").length;
+    const cover = all.some((r) => r.liquid) ? '<p class="cap">' + D.esc(String(all.length)) + " scored. " + D.esc(String(liquidYes)) + " pass the liquidity filter. Liquid starts on Yes. Choose All to see every name.</p>" : "";
+    ctx.page.innerHTML = D.banner(raw) + cover + '<div class="ctrls" id="ctrls"></div><div class="panel" id="tbl"></div>';
     const box = document.getElementById("ctrls");
-    standardFilters(box, all, { verdict: true, sector: true, confidence: true, index: true, ticker: true, order: ["verdict", "sector", "confidence", "index", "ticker"] });
+    standardFilters(box, all, { verdict: true, sector: true, confidence: true, index: true, ticker: true, liquid: "yes", order: ["verdict", "sector", "confidence", "index", "exchange", "liquid", "ticker"] });
     const state = { sort: "score", dir: "desc", page: 0 };
-    const cols = [T("rank", "#", "num", { dec: 0, width: "40px" }), TK, CO, T("sector", "Sector", "text", { hide: "md" }), SC, VE, PR, T("day_pct", "Day %", "pct", Object.assign({ dec: 2 }, RET)),
+    const cols = [T("rank", "#", "num", { dec: 0, width: "40px" }), TK, CO, T("exchange", "Exchange", "text", { hide: "md" }), T("sector", "Sector", "text", { hide: "md" }), SC, VE, PR, T("day_pct", "Day %", "pct", Object.assign({ dec: 2 }, RET)),
       T("timing", "Trend", "trend"), T("entry_low", "Entry low", "num", { dec: 2 }), T("entry_high", "Entry high", "num", { dec: 2, hide: "md" }),
       T("stop", "Stop", "num", { dec: 2 }), T("trade_target", "Target", "num", { dec: 2 })];
     const draw = () => {
@@ -352,6 +425,26 @@
   function blendCount(row) {
     const n = blendParts(row).length;
     return n ? D.esc(String(n)) : D.na();
+  }
+  function holdArrow(chg) {
+    const n = D.num(chg);
+    if (n == null) return '<span class="m2">quarter change n/a</span>';
+    if (n > 0) return '<span style="color:#22C55E">▲ ' + D.esc(D.fmt(n, 2)) + " pts</span>";
+    if (n < 0) return '<span style="color:#EF4444">▼ ' + D.esc(D.fmt(Math.abs(n), 2)) + " pts</span>";
+    return '<span class="m2">flat vs last quarter</span>';
+  }
+  function holdStat(label, pct, chg) {
+    const n = D.num(pct);
+    const shown = n == null ? D.na() : D.esc(D.fmt(n, 2) + "%");
+    return '<div class="stat"><div class="l">' + D.esc(label) + '</div><div class="v">' + shown + '</div><div class="s">' + holdArrow(chg) + "</div></div>";
+  }
+  function holdRow(row) {
+    if (panelOff("feature.fii_shareholding_highlight")) return "";
+    return '<div class="panel pad holdrow">' +
+      holdStat("FII %", row.fii_pct, row.fii_chg) +
+      holdStat("DII %", row.dii_pct, row.dii_chg) +
+      holdStat("Promoter %", row.promoter_pct, row.promoter_chg) +
+      "</div>";
   }
   function ptsCard(label, v) {
     const n = D.num(v);
@@ -410,6 +503,7 @@
         '<div class="stat"><div class="l">Day %</div><div class="v" style="color:' + D.retColor(day) + '">' + (day == null ? D.na() : D.esc((day > 0 ? "+" : "") + D.fmt(day, 2) + "%")) + "</div></div>" +
         '<div class="stat"><div class="l">Confidence</div><div class="v" style="font-size:16px">' + (D.isBlank(row.confidence) ? D.na() : D.esc(row.confidence)) + '</div><div class="l" style="margin-top:8px">Verdict</div><div class="vpill">' + D.verdictHtml(row.verdict) + "</div></div>" +
         '<div class="stat"><div class="l">Desk score</div><div class="v"><span class="scorepill deskscore" style="background:' + D.band(scoreN || 0) + '">' + D.esc(scoreN == null ? "–" : String(scoreN)) + "</span></div></div></div>" +
+        holdRow(row) +
         '<div class="panel pad"><p style="font-size:13px;line-height:20px">' + D.esc(row.reason || "") + "</p></div>" +
         '<div class="cards">' +
         ptsCard("Technical", row.pts_tech) + ptsCard("Financials", row.pts_fin) + ptsCard("Sentiment", row.pts_sent) +
@@ -505,6 +599,57 @@
     if (s.toUpperCase() === "PASS") return '<span class="pill" style="color:#22C55E">PASS</span>';
     if (s.toUpperCase() === "FAIL") return '<span class="pill" style="color:#EF4444">FAIL</span>';
     return D.esc(s);
+  }
+  function prettyNums(text) {
+    return String(text == null ? "" : text).replace(/-?\d[\d,]*(?:\.\d+)?/g, (m) => {
+      const n = Number(m.replace(/,/g, ""));
+      if (!Number.isFinite(n) || Math.abs(n) < 1000) return m;
+      if (Math.abs(n - Math.round(n)) > 0.05) return m;
+      return Math.round(n).toLocaleString("en-US");
+    });
+  }
+  function letterHtml(row, key) {
+    if (key === "m_status") {
+      const word = D.marketWord(row.m_market);
+      const note = prettyNums(row.m_status || "");
+      const head = word ? '<b style="color:' + D.marketColor(word) + '">' + D.esc(word) + "</b>" : "";
+      if (!head && D.isBlank(note)) return D.na();
+      return head + (note ? " " + D.esc(note) : "");
+    }
+    if (D.isBlank(row[key])) return D.na();
+    return D.esc(prettyNums(row[key]));
+  }
+  function letterBlock(list, row) {
+    const cols = [
+      ["c_status", "C"], ["a_status", "A"], ["n_status", "N"], ["s_status", "S"],
+      ["l_status", "L"], ["i_status", "I"], ["m_status", "M"],
+    ];
+    const head = "<th>Ticker</th>" + cols.map((c) => "<th>" + c[1] + "</th>").join("");
+    const body = list.map((r) => "<tr><td>" + D.tickerHtml(r.ticker) + "</td>" + cols.map((c) =>
+      '<td class="wrap">' + letterHtml(r, c[0]) + "</td>").join("") + "</tr>").join("");
+    const cards = list.map((r) => '<article class="lettercard"><div class="buyid">' + D.tickerHtml(r.ticker) + "</div>" +
+      cols.map((c) => '<div class="lrow"><b>' + c[1] + "</b><div>" + letterHtml(r, c[0]) + "</div></div>").join("") +
+      "</article>").join("");
+    return '<div class="letterwrap"><div class="panel"><div class="pad" style="padding-bottom:0"><div class="ptitle">Letter details</div><div class="psub">M is the market. Nifty and Bank Nifty versus their 21, 50, and 200 day averages.</div></div>' +
+      '<div class="scroll lettertable"><table><thead><tr>' + head + "</tr></thead><tbody>" + body + "</tbody></table></div>" +
+      '<div class="letters">' + cards + "</div></div>" +
+      '<div class="panel pad"><div class="ptitle">Why this name</div><p class="cap">' + D.esc((row && row.reason) || "") + "</p></div>";
+  }
+  function canslimGuide() {
+    if (!D.featureOn("feature.canslim_guide")) return "";
+    const rows = [
+      ["C", "Current quarterly earnings", "Profit this quarter versus the same quarter last year. The scan wants +25% or more."],
+      ["A", "Annual earnings growth", "Yearly profit growth. The scan wants +25% for 3 years."],
+      ["N", "New", "A new product, new management, or a new 52-week high."],
+      ["S", "Supply and demand", "Shares available, and big volume on up days."],
+      ["L", "Leader or laggard", "A top stock in its group. The scan wants an RS rank of 80 or higher."],
+      ["I", "Institutional sponsorship", "Are big funds buying? That means FII, DII, and mutual funds."],
+      ["M", "Market direction", "Is the overall market in an uptrend? This desk checks the Nifty, and Bank Nifty too."],
+    ];
+    const narrow = window.matchMedia("(max-width: 900px)").matches;
+    const body = rows.map((r) => '<div class="ckey"><b>' + r[0] + '</b><div><div class="t">' + D.esc(r[1]) +
+      '</div><div class="d">' + D.esc(r[2]) + "</div></div></div>").join("");
+    return '<details class="canslim-key"' + (narrow ? "" : " open") + "><summary>What CANSLIM means</summary><div class=\"ckeys\">" + body + "</div></details>";
   }
   function moodColor(text) {
     const s = String(text || "");
@@ -838,16 +983,20 @@
       order: ["status", "qualify", "index", "ticker"],
       single: [{ key: "qualify", label: "Qualify", value: "strict" }],
     },
+    guide: canslimGuide,
     chips(all) {
       const row = all[0] || {};
-      return '<span class="moodchip">Market: ' + D.esc(moodShort(row.m_market)) + '</span>' +
-        '<span class="moodchip">QQQ: ' + D.esc(moodShort(row.m_qqq)) + "</span>";
+      const nifty = D.marketWord(row.m_market) || "n/a";
+      const bank = D.marketWord(row.m_qqq) || "n/a";
+      return '<span class="moodchip" style="border-color:' + D.marketColor(nifty) + ";color:" + D.marketColor(nifty) + '">Nifty: ' + D.esc(nifty) + "</span>" +
+        '<span class="moodchip" style="border-color:' + D.marketColor(bank) + ";color:" + D.marketColor(bank) + '">Bank Nifty: ' + D.esc(bank) + "</span>";
     },
     columns: [TK, T("index_membership", "Index"), T("status", "Status", "setup"), T("pivot", "Buy point", "num", { dec: 2 }),
       T("strength", "CANSLIM strength (raw)", "num", { dec: 0 }), T("qualify", "Qualify", "pass"),
       T("c_quarterly_eps", "C: quarter EPS vs yr ago %", "pct", { dec: 1 }), T("a_annual_eps", "A: annual EPS %", "pct", { dec: 1 }),
-      T("n_pct_from_high", "N: % from 52w high", "pct", { dec: 1 }), T("s_adv", "S: avg daily volume", "compact"),
-      T("l_rs_percentile", "L: RS percentile", "num", { dec: 0 }), T("i_trend", "I: holders trend", "itrend"), T("freshness", "Data", "fresh")],
+      T("n_pct_from_high", "N: % from 52w high", "pct", { dec: 1 }), T("s_adv", "S: avg daily volume", "shares"),
+      T("l_rs_percentile", "L: RS percentile", "num", { dec: 0 }), T("i_trend", "I: holders trend", "itrend"),
+      T("m_market", "M: market", "market"), T("freshness", "Data", "fresh")],
     cards(all) {
       return card("Ready", String(countWhere(all, (r) => r.status === "READY"))) +
         card("Broken out today", String(countWhere(all, (r) => r.status === "BROKEN OUT today"))) +
@@ -855,14 +1004,7 @@
         card("Watching", String(countWhere(all, (r) => r.status === "WATCHING")));
     },
     detail(row, rows) {
-      const list = byStatus(rows).slice(0, 8);
-      const cols = [["c_status", "C"], ["a_status", "A"], ["n_status", "N"], ["s_status", "S"], ["l_status", "L"], ["i_status", "I"]];
-      const head = "<th>Ticker</th>" + cols.map((c) => "<th>" + c[1] + "</th>").join("");
-      const body = list.map((r) => "<tr><td>" + D.tickerHtml(r.ticker) + "</td>" + cols.map((c) =>
-        '<td class="wrap">' + (D.isBlank(r[c[0]]) ? D.na() : D.esc(r[c[0]])) + "</td>").join("") + "</tr>").join("");
-      return '<div class="split r21"><div class="panel"><div class="pad" style="padding-bottom:0"><div class="ptitle">Letter details</div></div><div class="scroll"><table><thead><tr>' +
-        head + "</tr></thead><tbody>" + body + "</tbody></table></div></div><div class=\"panel pad\"><div class=\"ptitle\">Why this name</div><p class=\"cap\">" +
-        D.esc((row && row.reason) || "") + "</p></div></div>";
+      return letterBlock(byStatus(rows).slice(0, 8), row);
     },
   });
 
@@ -1199,9 +1341,11 @@
     const raw = ctx.files["institutional_13f.csv"];
     const all = D.realRows(raw);
     const summary = all.filter((r) => !r.row_type || r.row_type === "summary");
+    const buying = panelOff("feature.fii_shareholding_highlight") ? "" :
+      '<div class="split top" style="margin-top:16px"><div class="panel" id="fiibuy"></div><div class="panel" id="diibuy"></div></div>';
     ctx.page.innerHTML = '<div class="ctrls" id="ctrls"></div>' +
       '<p class="cap">Promoter, foreign institutions (FII), Indian institutions (DII), and other public. The change is versus the prior quarter, in percentage points. A blank cell is not verified. This is not a buy or sell list.</p>' +
-      '<div class="panel" id="sum"></div>';
+      '<div class="panel" id="sum"></div>' + buying;
     const box = document.getElementById("ctrls");
     box.innerHTML = D.searchHtml("ticker", "Ticker", "f-tk", D.uniq(summary, "ticker")) +
       D.multiHtml("pts", "Shareholding points", D.uniq(summary, "pts_institutional"));
@@ -1215,9 +1359,26 @@
         columns: [TK, T("promoter_pct", "Promoter %", "num", { dec: 2 }), T("fii_pct", "FII %", "num", { dec: 2 }),
           T("dii_pct", "DII %", "num", { dec: 2 }), T("public_pct", "Other public %", "num", { dec: 2 }),
           T("promoter_chg", "Promoter chg", "num", { dec: 2 }), T("fii_chg", "FII chg", "num", { dec: 2 }),
+          T("dii_chg", "DII chg", "num", { dec: 2 }),
           T("as_of", "As of", "date"), T("pts_institutional", "Points", "points")],
         state: s1, pageSize: 25,
       });
+      if (!panelOff("feature.fii_shareholding_highlight")) {
+        const fiiBuy = sums.filter((r) => (D.num(r.fii_chg) || 0) > 0).slice().sort((a, b) => (D.num(b.fii_chg) || 0) - (D.num(a.fii_chg) || 0)).slice(0, 15);
+        const diiBuy = sums.filter((r) => (D.num(r.dii_chg) || 0) > 0).slice().sort((a, b) => (D.num(b.dii_chg) || 0) - (D.num(a.dii_chg) || 0)).slice(0, 15);
+        const buyCols = [TK, T("fii_pct", "FII %", "num", { dec: 2 }), T("fii_chg", "FII chg, pts", "num", { dec: 2 })];
+        const diiCols = [TK, T("dii_pct", "DII %", "num", { dec: 2 }), T("dii_chg", "DII chg, pts", "num", { dec: 2 })];
+        D.drawTable(document.getElementById("fiibuy"), {
+          title: "FII buying", sub: "Biggest rise in FII % versus the prior quarter",
+          rows: fiiBuy, columns: buyCols, state: { sort: "fii_chg", dir: "desc", page: 0 }, pageSize: 15, foot: false,
+          empty: "No quarter-over-quarter FII increase is on file yet.",
+        });
+        D.drawTable(document.getElementById("diibuy"), {
+          title: "DII buying", sub: "Biggest rise in DII % versus the prior quarter",
+          rows: diiBuy, columns: diiCols, state: { sort: "dii_chg", dir: "desc", page: 0 }, pageSize: 15, foot: false,
+          empty: "No quarter-over-quarter DII increase is on file yet.",
+        });
+      }
     };
     hook(box, s1, draw);
     draw();
@@ -1856,6 +2017,7 @@
       "freshness flags": "Freshness",
       "news earnings summaries": "News",
       "momentum timing": "Timing",
+      "fundamentals backfill": "Financials backfill",
     };
     const features = (ctx.settings || []).filter((r) => String(r.setting || "").indexOf("feature.") === 0).map((r) => {
       const key = String(r.setting).replace(/^feature\./, "").replace(/_/g, " ");
@@ -1863,7 +2025,23 @@
       const live = on === "true" || on === "yes" || on === "1";
       return { name: featureName[key] || key, on: live };
     });
-    ctx.page.innerHTML = '<div class="ctrls" id="ctrls"></div><div class="panel pad"><div class="ptitle">Feature switches</div><div class="featgrid">' +
+    const prog = D.realRows(ctx.files["backfill_progress.csv"] || []);
+    const byKind = {};
+    prog.forEach((r) => { byKind[String(r.kind || "")] = r; });
+    const stat = byKind.statements || {};
+    const hold = byKind.shareholding || {};
+    const countText = (row) => {
+      if (!row || D.isBlank(row.covered)) return D.na();
+      return D.esc(String(row.covered)) + " of " + D.esc(String(row.total || ""));
+    };
+    const when = stat.last_batch_at || hold.last_batch_at || "not yet";
+    const backfillCards = '<div class="cards">' +
+      card("Financials on file", countText(stat), stat.pct != null && stat.pct !== "" ? D.esc(String(stat.pct)) + "% of the list" : "") +
+      card("Shareholding on file", countText(hold), hold.pct != null && hold.pct !== "" ? D.esc(String(hold.pct)) + "% of the list" : "") +
+      card("Last batch", D.esc(String(when)), "Statements saved " + D.esc(String(stat.last_ok || "0")) + ", shareholding saved " + D.esc(String(hold.last_ok || "0"))) +
+      "</div>" +
+      (prog[0] && prog[0].cycle_note ? '<p class="cap">' + D.esc(prog[0].cycle_note) + "</p>" : "");
+    ctx.page.innerHTML = backfillCards + '<div class="ctrls" id="ctrls"></div><div class="panel pad"><div class="ptitle">Feature switches</div><div class="featgrid">' +
       features.map((f) => '<div><span>' + D.esc(f.name) + '</span><span style="color:' + (f.on ? "#22C55E" : "#8B96AD") + '">' + (f.on ? "On" : "Off") + "</span></div>").join("") +
       '</div></div><div class="split r21"><div class="panel" id="log"></div><div class="panel" id="fr"></div></div>';
     const box = document.getElementById("ctrls");
@@ -1887,6 +2065,119 @@
     };
     hook(box, { page: 0 }, draw);
     draw();
+  }
+
+  function renderFlows(ctx) {
+    if (panelOff("feature.fii_dii_flows")) {
+      ctx.page.innerHTML = offBox();
+      return;
+    }
+    const rows = flowRows(ctx.files);
+    const last = rows[rows.length - 1] || {};
+    const fii = D.num(last.fii_net);
+    const dii = D.num(last.dii_net);
+    const when = last.date ? "Session " + last.date + ". Figures are in crore." : "No session is on file yet. The history grows after each close.";
+    const windowRows = rows.slice(-90);
+    ctx.page.innerHTML =
+      '<p class="cap">' + D.esc(when) + " Green is net buying. Red is net selling. This is cash-market flow, not a trade.</p>" +
+      '<div class="cards">' +
+      card("FII net", croreHtml(fii), "crore · " + (D.isBlank(last.date) ? "n/a" : D.esc(last.date))) +
+      card("DII net", croreHtml(dii), "crore · " + (D.isBlank(last.date) ? "n/a" : D.esc(last.date))) +
+      card("FII gross buy", D.num(last.fii_buy) == null ? D.na() : D.esc(D.fmt(last.fii_buy, 0)), "crore") +
+      card("FII gross sell", D.num(last.fii_sell) == null ? D.na() : D.esc(D.fmt(last.fii_sell, 0)), "crore") +
+      card("DII gross buy", D.num(last.dii_buy) == null ? D.na() : D.esc(D.fmt(last.dii_buy, 0)), "crore") +
+      card("DII gross sell", D.num(last.dii_sell) == null ? D.na() : D.esc(D.fmt(last.dii_sell, 0)), "crore") +
+      "</div>" +
+      '<div class="panel pad"><div class="ptitle">Streak</div><p style="font-size:18px;font-weight:700;margin:8px 0 4px">' + D.esc(streakLine(rows, "fii_net", "FII")) + "</p>" +
+      '<p style="font-size:18px;font-weight:700;margin:0">' + D.esc(streakLine(rows, "dii_net", "DII")) + "</p></div>" +
+      '<div class="cards" style="margin-top:16px">' +
+      card("FII 5-day", croreHtml(flowWindow(rows, "fii_net", 5)), "DII " + (flowWindow(rows, "dii_net", 5) == null ? "n/a" : D.fmt(flowWindow(rows, "dii_net", 5), 0))) +
+      card("FII 20-day", croreHtml(flowWindow(rows, "fii_net", 20)), "DII " + (flowWindow(rows, "dii_net", 20) == null ? "n/a" : D.fmt(flowWindow(rows, "dii_net", 20), 0))) +
+      card("FII month to date", croreHtml(flowPrefix(rows, "fii_net", 7)), "DII " + (flowPrefix(rows, "dii_net", 7) == null ? "n/a" : D.fmt(flowPrefix(rows, "dii_net", 7), 0))) +
+      card("FII year to date", croreHtml(flowPrefix(rows, "fii_net", 4)), "DII " + (flowPrefix(rows, "dii_net", 4) == null ? "n/a" : D.fmt(flowPrefix(rows, "dii_net", 4), 0))) +
+      "</div>" +
+      '<div class="panel pad"><div class="ptitle">FII and DII, last 90 sessions</div><div class="psub">Bars are the daily net in crore. The line is the running FII total.</div><div class="chart-box tall"><canvas id="flowbars"></canvas></div></div>' +
+      '<div class="panel pad"><div class="ptitle">FII net and the Nifty</div><div class="psub">Same sessions. Nifty is the line on the right scale.</div><div class="chart-box tall"><canvas id="flownifty"></canvas></div></div>' +
+      '<div id="oi"></div>' +
+      '<p class="cap">History is kept and grows each run. A short chart means the free files only answered for those days.</p>';
+    if (windowRows.length) {
+      let run = 0;
+      const cumAll = rows.map((r) => {
+        const n = D.num(r.fii_net);
+        if (n != null) run += n;
+        return run;
+      });
+      const cum = cumAll.slice(-90);
+      const labels = windowRows.map((r) => r.date);
+      const fiiBars = windowRows.map((r) => D.num(r.fii_net));
+      const diiBars = windowRows.map((r) => D.num(r.dii_net));
+      const fiiColors = fiiBars.map((n) => (n == null || n >= 0) ? "#22C55E" : "#EF4444");
+      const diiColors = diiBars.map((n) => (n == null || n >= 0) ? "rgba(124,156,255,.85)" : "rgba(245,158,11,.9)");
+      D.makeChart(document.getElementById("flowbars"), {
+        type: "bar",
+        data: {
+          labels: labels,
+          datasets: [
+            { label: "FII net", data: fiiBars, backgroundColor: fiiColors, yAxisID: "y" },
+            { label: "DII net", data: diiBars, backgroundColor: diiColors, yAxisID: "y" },
+            { type: "line", label: "FII cumulative", data: cum, borderColor: "#E6EBF5", backgroundColor: "#E6EBF5", yAxisID: "y1", pointRadius: 0, borderWidth: 2, spanGaps: true },
+          ],
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { labels: { color: "#8B96AD", boxWidth: 12 } } },
+          scales: {
+            x: { ticks: D.dateTicks(labels), grid: { color: "#1E293B" } },
+            y: { position: "left", ticks: { color: "#8B96AD" }, grid: { color: "#1E293B" } },
+            y1: { position: "right", ticks: { color: "#C3CBDB" }, grid: { display: false } },
+          },
+        },
+      });
+      D.makeChart(document.getElementById("flownifty"), {
+        type: "bar",
+        data: {
+          labels: labels,
+          datasets: [
+            { label: "FII net", data: fiiBars, backgroundColor: fiiColors, yAxisID: "y" },
+            { type: "line", label: "Nifty", data: windowRows.map((r) => D.num(r.nifty)), borderColor: "#7C9CFF", backgroundColor: "#7C9CFF", yAxisID: "y1", pointRadius: 0, borderWidth: 2, spanGaps: true },
+          ],
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { labels: { color: "#8B96AD", boxWidth: 12 } } },
+          scales: {
+            x: { ticks: D.dateTicks(labels), grid: { color: "#1E293B" } },
+            y: { position: "left", title: { display: true, text: "FII net, crore", color: "#8B96AD" }, ticks: { color: "#8B96AD" }, grid: { color: "#1E293B" } },
+            y1: { position: "right", title: { display: true, text: "Nifty", color: "#7C9CFF" }, ticks: { color: "#7C9CFF" }, grid: { display: false } },
+          },
+        },
+      });
+    }
+    const oiHost = document.getElementById("oi");
+    if (panelOff("feature.fii_dii_derivatives")) {
+      oiHost.innerHTML = offBox();
+      return;
+    }
+    const oi = D.realRows(ctx.files["participant_oi.csv"] || []);
+    if (!oi.length) {
+      oiHost.innerHTML = '<div class="panel pad"><div class="ptitle">Index futures positioning</div><p class="cap">Not available from the free NSE file today.</p></div>';
+      return;
+    }
+    const latestDay = oi.map((r) => r.date).sort().slice(-1)[0];
+    const latest = oi.filter((r) => r.date === latestDay);
+    oiHost.innerHTML = '<div class="panel" id="oitbl"></div>';
+    D.drawTable(document.getElementById("oitbl"), {
+      title: "Index futures, long and short",
+      sub: "NSE participant file for " + latestDay + ". Contracts, not a trade.",
+      rows: latest,
+      columns: [
+        T("participant", "Who"),
+        T("index_fut_long", "Index futures long", "num", { dec: 0 }),
+        T("index_fut_short", "Index futures short", "num", { dec: 0 }),
+        T("index_fut_net", "Net long", "num", { dec: 0 }),
+      ],
+      state: { sort: "participant", dir: "asc", page: 0 }, pageSize: 8, foot: false,
+    });
   }
 
   function renderHelp(ctx) {
@@ -1916,8 +2207,561 @@
     draw();
   }
 
+  function zoneLines(row) {
+    const lines = [];
+    if (!row) return lines;
+    const lo = D.num(row.entry_low);
+    const hi = D.num(row.entry_high);
+    if (lo != null && hi != null) lines.push({ zone: [lo, hi], labelColor: "#F59E0B" });
+    if (D.num(row.stop) != null) lines.push({ value: D.num(row.stop), color: "#EF4444", label: "Stop" });
+    const tgt = D.num(row.trade_target != null && row.trade_target !== "" ? row.trade_target : row.target);
+    if (tgt != null) lines.push({ value: tgt, color: "#22C55E", label: "Target" });
+    return lines;
+  }
+
+  function weekLines(row) {
+    const lines = [];
+    if (!row) return lines;
+    if (D.num(row.high_52w) != null) lines.push({ value: D.num(row.high_52w), color: "#22C55E", label: "52w high" });
+    if (D.num(row.low_52w) != null) lines.push({ value: D.num(row.low_52w), color: "#EF4444", label: "52w low" });
+    return lines;
+  }
+  function renderWeek52(ctx) {
+    const raw = ctx.files["scanner_52w.csv"];
+    const all = D.realRows(raw);
+    const hist = D.realRows(ctx.files["highs_lows_history.csv"]).slice().sort((a, b) => a.date < b.date ? -1 : 1);
+    const yes = (r, key) => String(r[key] || "").toLowerCase() === "yes";
+    const nHigh = countWhere(all, (r) => yes(r, "new_high_today"));
+    const nLow = countWhere(all, (r) => yes(r, "new_low_today"));
+    const nNear = countWhere(all, (r) => yes(r, "near_high"));
+    const nVol = countWhere(all, (r) => yes(r, "high_on_volume"));
+    const net = nHigh - nLow;
+    const netText = net < 0 ? "−" + Math.abs(net) : String(net);
+    const netColor = net > 0 ? "#22C55E" : net < 0 ? "#EF4444" : "#8B96AD";
+    ctx.page.innerHTML =
+      '<p class="cap">A 52-week high is the highest price of the last 252 trading days, and a 52-week low is the lowest. New highs and new lows on this page use the close, so a name can touch a new high during the day and still not count if it does not close there. Near the high means the close is within 5% of that high. A high on big volume also needs volume at least 1.5 times the 50-day average. This list is separate from 52-week breakouts. Research only. This page does not place trades.</p>' +
+      '<div class="cards" id="cards"></div>' +
+      '<div class="panel pad"><div class="rowhead wrap"><div style="min-width:0;flex:1"><div class="ptitle">Highs and lows</div><div class="psub">Green bars are new highs. Red bars are new lows. The line is highs minus lows.</div></div>' +
+      '<div class="seg" id="hlrange"><button type="button" data-d="92">3M</button><button type="button" data-d="183" class="on">6M</button><button type="button" data-d="365">1Y</button></div></div>' +
+      '<div class="chart-box tall"><canvas id="hl"></canvas></div></div>' +
+      '<div class="ctrls" id="ctrls"></div><div class="panel" id="tbl"></div>';
+    document.getElementById("cards").innerHTML =
+      card("New 52w highs today", '<span style="color:#22C55E">' + nHigh + "</span>") +
+      card("New 52w lows today", '<span style="color:#EF4444">' + nLow + "</span>") +
+      card("Near high (within 5%)", '<span style="color:#F59E0B">' + nNear + "</span>") +
+      card("New highs on big volume", '<span style="color:#22C55E">' + nVol + "</span>", "At least 1.5 times the 50-day average") +
+      card("Net highs minus lows", '<span style="color:' + netColor + '">' + netText + "</span>");
+    const tabs = [["highs", "New highs"], ["lows", "New lows"], ["near", "Near high"], ["vol", "On volume"], ["all", "All"]];
+    const titles = {
+      highs: "New highs today", lows: "New lows today", near: "Near the high",
+      vol: "New high on big volume", all: "All stocks",
+    };
+    const box = document.getElementById("ctrls");
+    standardFilters(box, all, { index: true, sector: true, verdict: true, ticker: true, order: ["index", "sector", "verdict", "ticker"], list: "w52" });
+    box.insertAdjacentHTML("afterbegin", '<div class="w52tabs" id="w52tabs">' + tabs.map((t, i) =>
+      '<button type="button" data-tab="' + t[0] + '"' + (i === 0 ? ' class="on"' : "") + ">" + t[1] + "</button>").join("") + "</div>");
+    D.placeFeed(box, raw);
+    let tab = "highs";
+    let days = 183;
+    const state = { sort: "range_position_pct", dir: "desc", sort2: "score", dir2: "desc", page: 0 };
+    const columns = [TK, CO, SE, PR,
+      T("high_52w", "52w high", "num", { dec: 2 }), T("low_52w", "52w low", "num", { dec: 2 }),
+      T("pct_from_high", "% from high", "pct", { dec: 1, color: true }),
+      T("pct_above_low", "% above low", "pct", { dec: 1, color: true }),
+      T("range_position_pct", "Range", "rangepos"),
+      T("volume_ratio", "Vol x", "volx", { dec: 2 }), SC, VE];
+    const inTab = (r) => {
+      if (tab === "highs") return yes(r, "new_high_today");
+      if (tab === "lows") return yes(r, "new_low_today");
+      if (tab === "near") return yes(r, "near_high");
+      if (tab === "vol") return yes(r, "high_on_volume");
+      return true;
+    };
+    const applySort = () => {
+      if (tab === "lows") {
+        state.sort = "pct_from_high"; state.dir = "asc"; state.sort2 = "score"; state.dir2 = "desc";
+      } else {
+        state.sort = "range_position_pct"; state.dir = "desc"; state.sort2 = "score"; state.dir2 = "desc";
+      }
+      state.page = 0;
+    };
+    const paint = () => {
+      const rows = D.lastNDays(hist, "date", days).slice().sort((a, b) => a.date < b.date ? -1 : 1);
+      D.destroyCharts();
+      if (!rows.length) return;
+      D.comboChart(document.getElementById("hl"), rows.map((r) => r.date), [
+        { label: "New highs", data: D.seriesNum(rows, "new_highs"), color: "#22C55E" },
+        { label: "New lows", data: D.seriesNum(rows, "new_lows"), color: "#EF4444" },
+      ], { label: "Net", data: D.seriesNum(rows, "net"), color: "#7C9CFF" });
+    };
+    const draw = () => {
+      D.drawTable(document.getElementById("tbl"), {
+        title: titles[tab],
+        rows: all.filter((r) => inTab(r) && readCommon(box, r)),
+        columns: columns,
+        state: state,
+        pageSize: 25,
+        lines: weekLines,
+        priceSub: "52-week high and 52-week low",
+        empty: "No names in this group.",
+      });
+    };
+    box.querySelectorAll("#w52tabs button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        tab = btn.getAttribute("data-tab");
+        box.querySelectorAll("#w52tabs button").forEach((b) => b.classList.toggle("on", b === btn));
+        applySort();
+        draw();
+      });
+    });
+    document.getElementById("hlrange").addEventListener("click", (ev) => {
+      const btn = ev.target.closest("button");
+      if (!btn) return;
+      days = Number(btn.getAttribute("data-d"));
+      document.querySelectorAll("#hlrange button").forEach((b) => b.classList.toggle("on", b === btn));
+      paint();
+    });
+    hook(box, state, draw);
+    paint();
+    draw();
+  }
+
+  function buyDetailHtml(row) {
+    const px = (key) => {
+      const n = D.num(row[key]);
+      return n == null ? D.na() : D.esc(D.fmt(n, 2));
+    };
+    const gain = (key) => {
+      const entry = D.num(row.entry);
+      const value = D.num(row[key]);
+      if (entry == null || value == null || entry === 0) return "";
+      const pct = (value - entry) / entry * 100;
+      const sign = pct > 0 ? "+" : pct < 0 ? "−" : "";
+      return D.esc(sign + D.fmt(Math.abs(pct), 1) + "%");
+    };
+    const risk = D.num(row.risk_pct);
+    const riskText = risk == null ? "" : D.esc(D.fmt(Math.abs(risk), 1) + "% risk");
+    const rr = D.num(row.reward_risk);
+    const rrText = rr == null || Math.abs(rr) > 500 ? D.na() : D.esc(D.fmt(rr, 2));
+    const plan = (label, value, sub, tone) =>
+      '<div class="tp' + (tone ? " " + tone : "") + '"><div class="l">' + D.esc(label) +
+      '</div><div class="v">' + value + "</div>" + (sub ? '<div class="s">' + sub + "</div>" : "") + "</div>";
+    const fact = (label, value) =>
+      '<div class="fact"><div class="l">' + D.esc(label) + '</div><div class="v">' + value + "</div></div>";
+    const rangeN = D.num(row.range_position_52w);
+    let range = D.na();
+    if (rangeN != null) {
+      const clamped = Math.max(0, Math.min(100, rangeN));
+      const w = Math.max(0, Math.round(clamped / 100 * 88));
+      const color = clamped >= 95 ? "#22C55E" : clamped <= 15 ? "#EF4444" : "#7C9CFF";
+      range = '<span class="track" title="' + D.esc(D.fmt(rangeN, 0)) + '"><span class="fill" style="width:' + w +
+        'px;background:' + color + '"></span></span> ' + D.esc(D.fmt(rangeN, 0));
+    }
+    const asOfMatch = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(row.price_as_of || ""));
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const asOf = asOfMatch ? D.esc(months[Number(asOfMatch[2]) - 1] + " " + Number(asOfMatch[3]) + ", " + asOfMatch[1]) :
+      (D.isBlank(row.price_as_of) ? D.na() : D.esc(row.price_as_of));
+    const mkt = String(row.market_ok || "").toLowerCase();
+    const mktHtml = mkt === "yes" ? '<span style="color:#22C55E">yes</span>' :
+      mkt === "no" ? '<span style="color:#EF4444">no</span>' :
+      (D.isBlank(row.market_ok) ? D.na() : D.esc(row.market_ok));
+    const count = D.num(row.sources_count);
+    const why = String(row.reason || "").trim();
+    return '<p class="whytext">' + (why ? D.esc(why) : '<span class="m2">No reason was saved for this name.</span>') + "</p>" +
+      '<div class="tradeplan">' +
+        plan("Entry", px("entry"), "", "") +
+        plan("Stop", px("stop"), riskText, "stop") +
+        plan("Target 1", px("target1"), gain("target1"), "tgt") +
+        plan("Target 2", px("target2"), gain("target2"), "tgt") +
+        plan("Reward/risk", rrText, "", "") +
+      "</div>" +
+      '<div class="buyfacts">' +
+        fact("Sector", D.isBlank(row.sector) ? D.na() : D.esc(row.sector)) +
+        fact("Index", D.isBlank(row.index_membership) ? D.na() : D.esc(row.index_membership)) +
+        fact("Price", px("price")) +
+        fact("As of", asOf) +
+        fact("Count", count == null ? D.na() : D.esc(D.fmt(count, 0))) +
+        fact("52w range", range) +
+        fact("% from 52w high", D.pctHtml(row.pct_from_high_52w, 1, true)) +
+        fact("Nifty uptrend", mktHtml) +
+      "</div>";
+  }
+  function buyLines(row) {
+    const lines = [];
+    if (!row) return lines;
+    const add = (key, color, label) => {
+      const n = D.num(row[key]);
+      if (n != null) lines.push({ value: n, color: color, label: label });
+    };
+    add("entry", "#F59E0B", "Entry");
+    add("stop", "#EF4444", "Stop");
+    add("target1", "#22C55E", "Target 1");
+    add("target2", "#7C9CFF", "Target 2");
+    return lines;
+  }
+  function renderBuySetups(ctx) {
+    const raw = ctx.files["buy_setups.csv"];
+    const fileRows = D.realRows(raw);
+    const missing = (raw || []).some((r) => r.data_status === "MISSING");
+    const named = fileRows.filter((r) => String(r.ticker || "").trim()).map((r) => {
+      r.status = r.best_status;
+      return r;
+    });
+    const market = fileRows[0] || {};
+    const yes = (v) => String(v || "").toLowerCase() === "yes";
+    const niftyUp = yes(market.spy_uptrend || market.market_ok);
+    const bankUp = yes(market.qqq_uptrend);
+    const filterOn = D.featureOn("buy_setups.market_filter");
+    const marketDown = !missing && filterOn && !niftyUp;
+    const yn = (on) => on ? '<span style="color:#22C55E">yes</span>' : '<span style="color:#EF4444">no</span>';
+    ctx.page.innerHTML =
+      '<p class="cap">Research list, not a recommendation. This desk never places trades.</p>' +
+      '<div id="buybanner" class="buybanner" hidden></div>' +
+      '<div class="cards" id="cards"></div>' +
+      '<div class="ctrls" id="ctrls"></div>' +
+      '<div class="panel" id="tbl"></div>' +
+      '<p class="cap">A name is listed when at least one of VCP, Box, Flag, and CANSLIM is ready or broke out today, the desk verdict is BUY, the close is above the 50-day and 200-day averages, and the risk from the entry to the stop is 8% or less. Setup is which of those scanners agree. Count is how many agree. Status is the strongest one. Entry is that scanner\'s buy point. Stop is the tighter of 7% under the entry or the setup\'s own stop, and it is never above the entry. Target 1 is 20% above the entry, or 20% above today\'s close after a breakout. Target 2 is the entry plus three times the rupee risk. The 52-week columns match the 52-week page. Tap a row for the reason, the trade plan, and the daily price chart. Many breakouts fail, which is why the stop is always shown. Nothing here is an alert.</p>';
+    const box = document.getElementById("ctrls");
+    box.innerHTML =
+      D.multiHtml("index", "Index", D.indexTokens(named)) +
+      D.multiHtml("sector", "Sector", D.uniq(named, "sector")) +
+      D.multiHtml("source", "Setup", ["VCP", "Box", "Flag", "CANSLIM"]) +
+      D.multiHtml("status", "Status", D.uniq(named, "status")) +
+      D.searchHtml("ticker", "Ticker", "tick-list-buy", D.uniq(named, "ticker"));
+    D.placeFeed(box, raw);
+    let showAnyway = false;
+    const state = { sort: "_ord", dir: "asc", page: 0 };
+    const columns = [
+      T("_ord", "", "num", { hidden: true }),
+      TK, T("company", "Company", "text", { ellipsis: true }),
+      T("setup_sources", "Setup", "text", { ellipsis: true }),
+      T("best_status", "Status", "setup", { ellipsis: true }),
+      T("entry", "Entry", "num", { dec: 2 }),
+      T("stop", "Stop", "num", { dec: 2, tone: "stop" }),
+      T("target1", "Target 1", "num", { dec: 2, tone: "target" }),
+      T("target2", "Target 2", "num", { dec: 2, tone: "target" }),
+      T("risk_pct", "Risk %", "pct", { dec: 1 }),
+      T("reward_risk", "Reward/risk", "multiple", { dec: 2 }),
+      T("dist_to_entry_pct", "Dist. to entry", "pct", { dec: 1, color: true }),
+      SC, VE,
+    ];
+    const sourceOk = (row) => {
+      const picked = D.selectedMulti(box, "source");
+      if (!picked) return true;
+      const parts = String(row.setup_sources || "").split("+").map((s) => s.trim());
+      return picked.some((p) => parts.indexOf(p) >= 0);
+    };
+    const specOrder = (rows) => {
+      const ranked = rows.slice().sort((a, b) => {
+        const status = (r) => r.best_status === "BROKEN OUT today" ? 0 : 1;
+        if (status(a) !== status(b)) return status(a) - status(b);
+        const count = (r) => D.num(r.sources_count) || 0;
+        if (count(a) !== count(b)) return count(b) - count(a);
+        const dist = (r) => {
+          const n = D.num(r.dist_to_entry_pct);
+          return n == null ? Infinity : Math.abs(n);
+        };
+        if (dist(a) !== dist(b)) return dist(a) - dist(b);
+        const score = (r) => {
+          const n = D.num(r.score);
+          return n == null ? -Infinity : n;
+        };
+        if (score(a) !== score(b)) return score(b) - score(a);
+        return String(a.ticker || "").localeCompare(String(b.ticker || ""));
+      });
+      ranked.forEach((r, i) => { r._ord = i; });
+      return ranked;
+    };
+    const draw = () => {
+      const grey = marketDown && showAnyway;
+      const pool = (marketDown && !showAnyway) ? [] : named.filter((r) => readCommon(box, r) && sourceOk(r));
+      const rows = specOrder(pool);
+      const kpis = (marketDown && !showAnyway) ? [] : named;
+      const broken = countWhere(kpis, (r) => r.best_status === "BROKEN OUT today");
+      const multi = countWhere(kpis, (r) => (D.num(r.sources_count) || 0) >= 2);
+      const rr = avg(kpis, "reward_risk");
+      document.getElementById("cards").innerHTML =
+        card("Setups today", String(kpis.length)) +
+        card("Broken out today", String(broken)) +
+        card("Multi-scanner setups", String(multi), "At least two scanners agree") +
+        card("Market status", missing ? D.na() : "Nifty " + yn(niftyUp), missing ? "" : "Bank Nifty " + yn(bankUp)) +
+        card("Average reward-to-risk", rr == null ? D.na() : D.esc(D.fmt(rr, 2)), "Target 1 versus the stop");
+      const banner = document.getElementById("buybanner");
+      if (marketDown) {
+        banner.hidden = false;
+        banner.innerHTML = '<span>The Nifty is not in an uptrend today, so no buy setups are listed</span>' +
+          '<button type="button" id="showanyway">' + (showAnyway ? "Hide greyed names" : "Show anyway") + "</button>";
+        banner.querySelector("#showanyway").addEventListener("click", () => { showAnyway = !showAnyway; draw(); });
+      } else {
+        banner.hidden = true;
+        banner.innerHTML = "";
+      }
+      const host = document.getElementById("tbl");
+      host.classList.toggle("dimmed", grey);
+      D.drawTable(host, {
+        rows: rows,
+        columns: columns,
+        state: state,
+        pageSize: 25,
+        fit: true,
+        lines: buyLines,
+        priceSub: "Entry, stop, and both targets. The stop stays on the chart because many breakouts fail.",
+        detail: buyDetailHtml,
+        empty: marketDown && !showAnyway ? "No buy setups are listed." : (named.length ? "No names match these filters." : "No stock passed the buy-setup rules today."),
+      });
+    };
+    hook(box, state, draw);
+    draw();
+  }
+
+  function renderRotation(ctx) {
+    const raw = ctx.files["sector_rotation.csv"] || [];
+    const rows = D.realRows(raw);
+    const tails = D.realRows(ctx.files["sector_rotation_tails.csv"] || []);
+    const scores = D.realRows(ctx.files["scores.csv"] || []);
+    const colors = {
+      "^CNXIT": "#7C9CFF", "^NSEBANK": "#F59E0B", "^CNXAUTO": "#FB7185", "^CNXPHARMA": "#22C55E",
+      "^CNXFMCG": "#FBBF24", "^CNXMETAL": "#94A3B8", "^CNXREALTY": "#C084FC", "^CNXENERGY": "#EF4444",
+      "^CNXMEDIA": "#A78BFA", "^CNXPSUBANK": "#38BDF8", "^CNXFIN": "#2DD4BF", "^CNXINFRA": "#E6EBF5",
+    };
+    const ranked = rows.slice().sort((a, b) => (D.num(a.rank) || 99) - (D.num(b.rank) || 99) || String(a.name).localeCompare(String(b.name)));
+    let tf = "W";
+    let tailN = 8;
+    let pick = ranked[0] ? ranked[0].ticker : "";
+    const head = ranked[0] || {};
+    const weeklyChanges = rows.filter((r) => String(r.change_weekly || "").indexOf("moved from") >= 0);
+    const dailyChanges = rows.filter((r) => String(r.change_daily || "").indexOf("moved from") >= 0);
+    const sample = rows[0] || {};
+    ctx.page.innerHTML =
+      '<div class="ctrls" id="ctrls"></div>' +
+      '<p class="cap">RS is the sector index divided by the Nifty 50, using daily closes already saved. RS-Ratio is 100 plus the z-score of that ratio, smoothed, versus its rolling mean. RS-Momentum is 100 plus the z-score of how fast RS-Ratio is changing. 100 is the center. Weekly and monthly points are built from those same daily bars. This is a desk calculation, not a commercial indicator. Research only. This desk never places trades.</p>' +
+      '<div class="cards" id="cards"></div>' +
+      '<div class="panel pad"><div class="ptitle">Relative rotation</div><div class="chart-box rrg-box"><canvas id="rrg"></canvas></div><div class="rrglegend" id="rrglegend"></div><div class="rrgread" id="rrgread">Tap a point to read RS-Ratio and RS-Momentum.</div></div>' +
+      '<div class="split"><div class="panel pad" id="macro"></div><div class="panel pad" id="changed"></div></div>' +
+      '<div class="panel" id="tbl"></div><div class="panel" id="names"></div>';
+    document.getElementById("ctrls").innerHTML =
+      '<div class="rrgtabs" id="rrgtf">' +
+      '<button type="button" data-tf="D">Daily</button><button type="button" data-tf="W" class="on">Weekly</button><button type="button" data-tf="M">Monthly</button></div>' +
+      '<div class="rrgtabs" id="rrgtail"><span class="lab">Tail</span>' +
+      '<button type="button" data-n="4">4</button><button type="button" data-n="8" class="on">8</button><button type="button" data-n="12">12</button></div>';
+    D.placeFeed(document.getElementById("ctrls"), raw);
+    const leadN = countWhere(rows, (r) => r.quadrant_w === "Leading");
+    const lagN = countWhere(rows, (r) => r.quadrant_w === "Lagging");
+    document.getElementById("cards").innerHTML =
+      card("Top sector", D.esc(head.name || "n/a"), head.score != null && head.score !== "" ? "Score " + D.fmt(D.num(head.score), 1) : "") +
+      card("Leading", String(leadN), "Weekly") +
+      card("Lagging", String(lagN), "Weekly") +
+      card("Quadrant changes", String(weeklyChanges.length), "Versus last week") +
+      card("India 10-year", D.esc(sample.dgs10_trend || "not on file"), "About 3 months, when a history is saved");
+    function tendency(trend, downText, upText, flatText, missingText) {
+      if (trend === "down") return downText;
+      if (trend === "up") return upText;
+      if (trend === "flat") return flatText;
+      return missingText;
+    }
+    const yTrend = sample.dgs10_trend || "missing";
+    const yLast = D.num(sample.dgs10_last);
+    document.getElementById("macro").innerHTML =
+      '<div class="ptitle">Macro backdrop</div>' +
+      '<p class="cap">General tendencies, not a forecast. The India 10-year is shown only when a saved history has more than one reading. Oil and gold are not in this cache.</p>' +
+      '<p><strong>India 10-year yield</strong> ' + D.esc(yTrend === "missing" ? "not on file" : yTrend) + (yLast == null ? "" : " · " + D.fmt(yLast, 2)) + ". " +
+      D.esc(tendency(yTrend,
+        "Falling rates have often favored banks' bond books and rate-sensitive groups such as realty and autos. That is history, not a forecast.",
+        "Rising rates have often favored lenders' loan yields. That is history, not a forecast.",
+        "A flat yield has no strong historical lean on this page.",
+        "The India 10-year history is not on file, so this line stays blank.")) + "</p>";
+    const lines = [];
+    dailyChanges.forEach((r) => lines.push(r.change_daily + " since the prior session."));
+    weeklyChanges.forEach((r) => lines.push(r.change_weekly + " since last week."));
+    document.getElementById("changed").innerHTML = '<div class="ptitle">What changed</div>' +
+      (lines.length ? '<ul class="changed">' + lines.map((t) => "<li>" + D.esc(t) + "</li>").join("") + "</ul>"
+        : '<p class="cap">No sector changed quadrant versus the prior session or last week.</p>');
+    document.getElementById("rrglegend").innerHTML = ranked.map((r) =>
+      '<span><i class="rrgdot" style="background:' + (colors[r.ticker] || "#8B96AD") + '"></i>' + D.esc(r.name || r.ticker) + "</span>").join("") +
+      '<span><i class="rrgdot" style="background:#22C55E"></i>Leading</span>' +
+      '<span><i class="rrgdot" style="background:#F59E0B"></i>Weakening</span>' +
+      '<span><i class="rrgdot" style="background:#EF4444"></i>Lagging</span>' +
+      '<span><i class="rrgdot" style="background:#7C9CFF"></i>Improving</span>';
+    const state = { sort: "rank", dir: "asc", page: 0 };
+    function pointsFor(ticker) {
+      return tails.filter((r) => r.timeframe === tf && r.ticker === ticker)
+        .sort((a, b) => (D.num(a.tail_index) || 0) - (D.num(b.tail_index) || 0))
+        .slice(-tailN)
+        .map((r) => ({ x: D.num(r.rs_ratio), y: D.num(r.rs_momentum), date: r.date, name: r.name, ticker: r.ticker }))
+        .filter((p) => p.x != null && p.y != null);
+    }
+    function showReadout(p) {
+      const q = p.x >= 100 && p.y >= 100 ? "Leading" : p.x >= 100 ? "Weakening" : p.y >= 100 ? "Improving" : "Lagging";
+      document.getElementById("rrgread").textContent =
+        (p.name || p.ticker) + " · " + p.date + " · RS-Ratio " + D.fmt(p.x, 2) + " · RS-Momentum " + D.fmt(p.y, 2) + " · " + q;
+    }
+    function drawChart() {
+      D.destroyCharts();
+      const canvas = document.getElementById("rrg");
+      const sets = ranked.map((r) => {
+        const data = pointsFor(r.ticker);
+        const color = colors[r.ticker] || "#8B96AD";
+        return { label: r.name || r.ticker, data: data, color: color, name: r.name };
+      }).filter((s) => s.data.length);
+      let minX = 100, maxX = 100, minY = 100, maxY = 100;
+      sets.forEach((s) => s.data.forEach((p) => {
+        minX = Math.min(minX, p.x); maxX = Math.max(maxX, p.x);
+        minY = Math.min(minY, p.y); maxY = Math.max(maxY, p.y);
+      }));
+      const padX = Math.max(2, (maxX - minX) * 0.14);
+      const padY = Math.max(2, (maxY - minY) * 0.14);
+      const quadPlugin = {
+        id: "rrgQuad",
+        beforeDatasetsDraw(chart) {
+          const area = chart.chartArea;
+          const xs = chart.scales.x;
+          const ys = chart.scales.y;
+          if (!area || !xs || !ys) return;
+          const x0 = xs.getPixelForValue(100);
+          const y0 = ys.getPixelForValue(100);
+          const ctx2 = chart.ctx;
+          ctx2.save();
+          function fill(x1, y1, x2, y2, color) {
+            ctx2.fillStyle = color;
+            ctx2.globalAlpha = 0.28;
+            ctx2.fillRect(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
+          }
+          fill(x0, area.top, area.right, y0, "#22C55E");
+          fill(x0, y0, area.right, area.bottom, "#F59E0B");
+          fill(area.left, y0, x0, area.bottom, "#EF4444");
+          fill(area.left, area.top, x0, y0, "#7C9CFF");
+          ctx2.globalAlpha = 1;
+          ctx2.strokeStyle = "#94A3B8";
+          ctx2.lineWidth = 1.25;
+          ctx2.beginPath();
+          ctx2.moveTo(x0, area.top); ctx2.lineTo(x0, area.bottom);
+          ctx2.moveTo(area.left, y0); ctx2.lineTo(area.right, y0);
+          ctx2.stroke();
+          ctx2.font = "11px Roboto, Arial, sans-serif";
+          ctx2.fillStyle = "#8B96AD";
+          ctx2.textAlign = "left";
+          ctx2.fillText("Improving", area.left + 6, area.top + 14);
+          ctx2.textAlign = "right";
+          ctx2.fillText("Leading", area.right - 6, area.top + 14);
+          ctx2.fillText("Weakening", area.right - 6, area.bottom - 6);
+          ctx2.textAlign = "left";
+          ctx2.fillText("Lagging", area.left + 6, area.bottom - 6);
+          ctx2.restore();
+        },
+      };
+      D.makeChart(canvas, {
+        type: "scatter",
+        data: {
+          datasets: sets.map((s) => ({
+            label: s.label,
+            data: s.data,
+            showLine: true,
+            borderColor: s.color,
+            backgroundColor: s.color,
+            borderWidth: 1.5,
+            pointRadius: s.data.map((_, i) => i === s.data.length - 1 ? 6 : 2.5),
+            pointHoverRadius: 8,
+            pointHitRadius: 16,
+            tension: 0,
+          })),
+        },
+        plugins: [quadPlugin],
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: false,
+          interaction: { mode: "nearest", intersect: false },
+          plugins: { legend: { display: false }, tooltip: { enabled: false } },
+          layout: { padding: { top: 16, right: 8, bottom: 4, left: 4 } },
+          scales: {
+            x: { min: minX - padX, max: maxX + padX, ticks: { color: "#8B96AD", maxTicksLimit: 6 }, grid: { color: "#1E293B" }, title: { display: true, text: "RS-Ratio", color: "#8B96AD" } },
+            y: { min: minY - padY, max: maxY + padY, ticks: { color: "#8B96AD", maxTicksLimit: 6 }, grid: { color: "#1E293B" }, title: { display: true, text: "RS-Momentum", color: "#8B96AD" } },
+          },
+          onClick(evt, els, chart) {
+            if (!els.length || !chart) return;
+            const ds = chart.data.datasets[els[0].datasetIndex];
+            showReadout(ds.data[els[0].index]);
+          },
+        },
+      });
+      if (!sets.length) {
+        document.getElementById("rrgread").textContent = "No rotation points for this bar size yet.";
+      }
+    }
+    function drawNames() {
+      const row = ranked.find((r) => r.ticker === pick) || ranked[0];
+      const host = document.getElementById("names");
+      if (!row) { host.innerHTML = ""; return; }
+      const names = scores.filter((r) => r.sector === row.sector)
+        .sort((a, b) => (D.num(b.score) || -999) - (D.num(a.score) || -999))
+        .slice(0, 12);
+      D.drawTable(host, {
+        title: "Top stocks in " + row.name,
+        sub: row.reason || "",
+        rows: names,
+        columns: [T("ticker", "Ticker", "ticker"), T("company", "Company", "text"), T("score", "Score", "num", { dec: 0 }), T("verdict", "Verdict", "verdict")],
+        state: { sort: "score", dir: "desc", page: 0 },
+        pageSize: 12,
+        foot: false,
+        lines: zoneLines,
+        priceSub: "Daily candles in rupees. Entry zone, stop, and target when the score has them.",
+        empty: "No scored stocks in this sector.",
+      });
+    }
+    function drawTable() {
+      D.drawTable(document.getElementById("tbl"), {
+        title: "Sector indexes",
+        rows: ranked,
+        columns: [
+          T("rank", "Rank", "num", { dec: 0 }),
+          T("name", "Index"),
+          T("score", "Score", "num", { dec: 1 }),
+          T("quadrant_d", "D", "quad"),
+          T("quadrant_w", "W", "quad"),
+          T("quadrant_m", "M", "quad"),
+          T("rs_1m", "RS 1m", "pct", { dec: 1, color: true }),
+          T("rs_3m", "RS 3m", "pct", { dec: 1, color: true }),
+          T("rs_6m", "RS 6m", "pct", { dec: 1, color: true }),
+          T("breadth_sma50", "Above 50d", "pct", { dec: 0 }),
+          T("breadth_sma200", "Above 200d", "pct", { dec: 0 }),
+          T("near_high_count", "Near high", "num", { dec: 0 }),
+          T("buy_setup_count", "Buy setups", "num", { dec: 0 }),
+          T("score_avg", "Desk avg", "num", { dec: 1 }),
+          T("buy_share", "BUY %", "pct", { dec: 0 }),
+          T("reason", "Reason", "text", { ellipsis: true, inDetail: true }),
+        ],
+        state: state,
+        pageSize: 15,
+        foot: false,
+        expandable: false,
+        pick: pick,
+        onPick(row) { pick = row.ticker; drawTable(); drawNames(); },
+        empty: "No sector rotation on file.",
+      });
+    }
+    document.getElementById("rrgtf").querySelectorAll("button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        tf = btn.getAttribute("data-tf");
+        document.querySelectorAll("#rrgtf button").forEach((b) => b.classList.toggle("on", b === btn));
+        drawChart();
+      });
+    });
+    document.getElementById("rrgtail").querySelectorAll("button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        tailN = Number(btn.getAttribute("data-n"));
+        document.querySelectorAll("#rrgtail button").forEach((b) => b.classList.toggle("on", b === btn));
+        drawChart();
+      });
+    });
+    drawChart();
+    drawTable();
+    drawNames();
+  }
+
+
   window.DESK_PAGES = {
-    today: { files: ["market_today.csv", "breadth_history.csv", "sectors.csv", "alerts.csv"], render: renderToday },
+    today: { files: ["market_today.csv", "breadth_history.csv", "sectors.csv", "alerts.csv", "fii_flows.csv"], render: renderToday },
+    flows: { files: ["fii_flows.csv", "participant_oi.csv"], render: renderFlows },
     top: { files: ["scores.csv"], render: renderTop },
     scorecard: { files: ["scores.csv", "score_details.csv", "news.csv", "earnings_history.csv"], render: renderScorecard },
     watchlist: { files: ["portfolio.csv", "portfolio_summary.csv", "watchlist.csv"], render: renderWatch },
@@ -1957,7 +2801,10 @@
     breadth: { files: ["breadth_history.csv", "market_today.csv"], render: renderBreadth },
     secperf: { files: ["sector_performance.csv"], render: renderSecPerf },
     heatmaps: { files: ["heatmaps.csv"], render: renderHeatmaps },
-    updates: { files: ["updates_log.csv", "freshness.csv"], render: renderUpdates },
+    updates: { files: ["updates_log.csv", "freshness.csv", "backfill_progress.csv"], render: renderUpdates },
+    buysetups: { files: ["buy_setups.csv"], render: renderBuySetups },
+    week52: { files: ["scanner_52w.csv", "highs_lows_history.csv"], render: renderWeek52 },
+    rotation: { files: ["sector_rotation.csv", "sector_rotation_tails.csv", "sector_rotation_history.csv", "scores.csv"], render: renderRotation },
     help: { files: ["help.csv", "settings.csv"], render: renderHelp },
   };
 

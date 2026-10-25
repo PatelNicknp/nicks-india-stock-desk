@@ -48,6 +48,18 @@ INDEX_URLS = {
         "https://nsearchives.nseindia.com/content/indices/ind_niftymidcap150list.csv",
         "https://archives.nseindia.com/content/indices/ind_niftymidcap150list.csv",
     ],
+    "smallcap250": [
+        "https://nsearchives.nseindia.com/content/indices/ind_niftysmallcap250list.csv",
+        "https://archives.nseindia.com/content/indices/ind_niftysmallcap250list.csv",
+    ],
+    "microcap250": [
+        "https://nsearchives.nseindia.com/content/indices/ind_niftymicrocap250_list.csv",
+        "https://archives.nseindia.com/content/indices/ind_niftymicrocap250_list.csv",
+    ],
+    "totalmarket": [
+        "https://nsearchives.nseindia.com/content/indices/ind_niftytotalmarket_list.csv",
+        "https://archives.nseindia.com/content/indices/ind_niftytotalmarket_list.csv",
+    ],
 }
 
 WIKI_URLS = {
@@ -76,6 +88,10 @@ RSS_FEEDS = [
     ("Economic Times", "https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms"),
     ("LiveMint", "https://www.livemint.com/rss/markets"),
     ("Business Standard", "https://www.business-standard.com/rss/markets-106.rss"),
+    ("Google News", "https://news.google.com/rss/search?q=India+stock+market&hl=en-IN&gl=IN&ceid=IN:en"),
+    ("NDTV Profit", "https://feeds.feedburner.com/ndtvprofit-latest"),
+    ("Reuters India", "https://www.reuters.com/arc/outboundfeeds/rss/category/business/india/?outputType=xml"),
+    ("Moneycontrol", "https://www.moneycontrol.com/rss/MCtopnews.xml"),
 ]
 
 WORLD_BANK = [
@@ -238,10 +254,10 @@ def _frames_to_rows(ticker, income, balance, cash, quarterly):
     return rows
 
 
-def fetch_yahoo_bundle(ticker, cfg):
+def fetch_yahoo_bundle(ticker, cfg, symbol=None):
     """One name: profile, earnings dates, and annual plus quarterly statements."""
     import yfinance as yf
-    symbol = yahoo_symbol(ticker)
+    symbol = symbol or yahoo_symbol(ticker)
     delays = tuple((cfg.get("rate_limit") or {}).get("backoff_seconds") or (1.5, 3, 6, 12))
     tries = int((cfg.get("rate_limit") or {}).get("max_retries") or 4)
 
@@ -424,13 +440,18 @@ def parse_shareholding_xbrl(text):
         # The filing stores 0.5044 for 50.44 percent.
         if 0 <= val <= 1.5:
             val = val * 100.0
-        prev = found.get(key)
-        if prev is None or instant >= prev[0]:
-            found[key] = (instant, round(val, 2))
+        found.setdefault(key, {})[instant[:10]] = round(val, 2)
     if not found:
         return {}
-    out = {key: pair[1] for key, pair in found.items()}
-    out["as_of"] = max(pair[0] for pair in found.values())
+    out = {}
+    dates = []
+    for key, by_day in found.items():
+        ordered = sorted(by_day.items())
+        out[key] = ordered[-1][1]
+        dates.append(ordered[-1][0])
+        if len(ordered) >= 2:
+            out[key.replace("_pct", "_chg")] = round(ordered[-1][1] - ordered[-2][1], 2)
+    out["as_of"] = max(dates) if dates else ""
     return out
 
 
@@ -463,6 +484,8 @@ def shareholding_row(symbol, history, split):
     fii = split.get("fii_pct")
     dii = split.get("dii_pct")
     promoter_chg = _chg(latest.get("promoter_pct"), prior.get("promoter_pct"))
+    if promoter_chg is None:
+        promoter_chg = split.get("promoter_chg")
     row = {
         "ticker": symbol,
         "promoter_pct": promoter,
@@ -470,9 +493,9 @@ def shareholding_row(symbol, history, split):
         "dii_pct": dii,
         "public_pct": public,
         "promoter_chg": promoter_chg,
-        "fii_chg": None,
-        "dii_chg": None,
-        "public_chg": None,
+        "fii_chg": split.get("fii_chg"),
+        "dii_chg": split.get("dii_chg"),
+        "public_chg": split.get("public_chg"),
         "as_of": split.get("as_of") or latest.get("as_of") or "",
         "company": latest.get("name") or "",
         "source": "NSE shareholding" if split else "NSE shareholding summary",
@@ -629,7 +652,15 @@ def fetch_rss(cfg):
                 "published": published,
             })
         time.sleep(0.3)
-    return rows
+    seen = set()
+    unique = []
+    for row in rows:
+        key = re.sub(r"[^a-z0-9]+", " ", row["headline"].lower()).strip()
+        if key in seen:
+            continue
+        seen.add(key)
+        unique.append(row)
+    return unique
 
 
 def fetch_world_bank():
@@ -658,6 +689,7 @@ def fetch_world_bank():
             "forecast": "",
             "surprise": "",
             "signal": "",
+            "source": "World Bank",
             "note": note + " No forecast in this free feed, so there is no surprise score.",
         })
     return rows
