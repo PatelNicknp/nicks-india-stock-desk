@@ -117,10 +117,86 @@ def test_first_good_stops_after_the_first_answer():
         return {"promoter_pct": 99}
 
     book = __import__("fallback").SourceBook()
-    value, name = bf.first_good("shareholding", [("NSE shareholding", ok), ("Screener shareholding", later)], book)
+    value, name, outcome = bf.first_good("shareholding", [("NSE shareholding", ok), ("Screener shareholding", later)], book)
+    assert outcome == "ok"
     assert name == "NSE shareholding"
     assert value["promoter_pct"] == 10
     assert calls == ["ok"]
+
+
+def test_screener_reads_the_table_not_the_tab_button():
+    html = """
+    <button data-tab-id="quarterly-shp" class="active">Quarterly</button>
+    <button data-tab-id="yearly-shp">Yearly</button>
+    <div id="quarterly-shp">
+      <table>
+        <tr><th class="text"></th><th>Jun 2026</th><th>Sep 2026</th></tr>
+        <tr><td class="text"><button>Promoters&nbsp;<span class="blue-icon">+</span></button></td><td>74.00%</td><td>74.99%</td></tr>
+        <tr><td class="text"><button>FIIs&nbsp;<span>+</span></button></td><td>0.50%</td><td>0.40%</td></tr>
+        <tr><td class="text"><button>DIIs&nbsp;<span>+</span></button></td><td>8.00%</td><td>8.99%</td></tr>
+        <tr><td class="text"><button>Public&nbsp;<span>+</span></button></td><td>17.50%</td><td>15.62%</td></tr>
+      </table>
+    </div>
+    <div id="yearly-shp"><table><tr><td class="text">Promoters</td><td>1%</td></tr></table></div>
+    """
+    row = bf.parse_screener_shareholding(html)
+    assert row["promoter_pct"] == 74.99
+    assert row["fii_pct"] == 0.40
+    assert row["dii_pct"] == 8.99
+    assert row["public_pct"] == 15.62
+    assert row["as_of"] == "2026-09-01"
+    assert row["source"] == "Screener"
+
+
+def test_empty_filing_does_not_retire_the_source():
+    book = __import__("fallback").SourceBook(give_up_after=3)
+
+    def empty():
+        return None
+
+    streak = 0
+    for _ in range(6):
+        value, name, outcome = bf.first_good(
+            "shareholding",
+            [("NSE shareholding", empty), ("Screener shareholding", empty)],
+            book,
+        )
+        assert value is None and name == "" and outcome == "empty"
+        streak = bf.next_streak(streak, outcome)
+    assert streak == 0
+    assert "NSE shareholding" not in book.dead
+    assert "Screener shareholding" not in book.dead
+
+
+def test_source_errors_still_pause_after_six():
+    book = __import__("fallback").SourceBook(give_up_after=3)
+
+    def boom():
+        raise RuntimeError("HTTP 403")
+
+    streak = 0
+    for _ in range(6):
+        value, _name, outcome = bf.first_good("shareholding", [("BSE shareholding", boom)], book)
+        assert value is None and outcome == "down"
+        streak = bf.next_streak(streak, outcome)
+    assert streak == 6
+    assert "BSE shareholding" in book.dead
+
+
+def test_empty_filing_waits_behind_names_that_have_not_been_tried():
+    info = pd.DataFrame(columns=["ticker", "fetched_on"])
+    annual = pd.DataFrame(columns=["ticker"])
+    holders = pd.DataFrame(columns=["ticker"])
+    earn = pd.DataFrame(columns=["ticker", "earnings_dt"])
+    cursor = {"shareholding_empty_on": {"LIQMISS": "2026-10-25"}}
+    queue = bf.build_queue(
+        _universe(), _scores(), info, annual, holders, earn, cursor, "2026-10-25",
+        {"statements": 90, "shareholding": 90}, "shareholding",
+    )
+    due = [r["ticker"] for r in bf.take_batch(queue, 10)]
+    assert due[0] == "LIQNEW"
+    assert "LIQMISS" in due
+    assert due.index("LIQMISS") > due.index("NSEMISS")
 
 
 def test_switch_off_does_not_download():
@@ -137,5 +213,9 @@ if __name__ == "__main__":
     test_bse_only_uses_the_bo_symbol_first()
     test_screener_table_reads_the_latest_quarter()
     test_first_good_stops_after_the_first_answer()
+    test_screener_reads_the_table_not_the_tab_button()
+    test_empty_filing_does_not_retire_the_source()
+    test_source_errors_still_pause_after_six()
+    test_empty_filing_waits_behind_names_that_have_not_been_tried()
     test_switch_off_does_not_download()
     print("backfill ok")
