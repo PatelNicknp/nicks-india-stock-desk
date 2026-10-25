@@ -57,7 +57,14 @@
     "scanner_52w": true,
     "buy_setups": true,
     "sector_rotation": true,
-    "fundamentals_backfill": true
+    "fundamentals_backfill": true,
+    "sensex": true
+  },
+  "market": {
+    "require_both_uptrends": false
+  },
+  "benchmark": {
+    "bse_only_uses_sensex": true
   },
   "fundamentals_backfill": {
     "statements_per_run": 40,
@@ -68,9 +75,12 @@
     "shareholding_refresh_days": 90
   },
   "buy_setups": {
-    "market_filter": true
+    "market_filter": true,
+    "chart_setups_only": true,
+    "full_rules_at_coverage_pct": 80
   },
   "sector_rotation": {
+    "benchmark": "^NSEI",
     "near_high_pct": 5,
     "w52_bars": 252,
     "tail_keep": 12,

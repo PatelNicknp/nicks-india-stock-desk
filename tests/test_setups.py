@@ -342,6 +342,83 @@ def test_freshness_follows_spy_not_a_later_vix_bar():
     assert setups._freshness(idx[-1], setups._panel_date(close), 300, 252) == "FRESH"
 
 
+def _climb_index(n=230, drift=1.002):
+    idx = _dates(n)
+    values = 10000 * (drift ** np.arange(n))
+    return pd.Series(values, index=idx)
+
+
+def test_market_check_uses_nifty_or_sensex():
+    close = pd.DataFrame({
+        "^NSEI": _climb_index(230, 1.002),
+        "^BSESN": _climb_index(230, 0.998),
+        "^NSEBANK": _climb_index(230, 1.001),
+    })
+    either = setups.market_snapshot(close, {"features": {"sensex": True}, "market": {"require_both_uptrends": False}})
+    assert either["nifty_trend"] == "Uptrend"
+    assert either["sensex_trend"] == "Correction"
+    assert either["market_ok"] == "yes"
+    assert either["market_rule"] == "either"
+    assert either["label"] == "Uptrend"
+    assert "Nifty 50 is Uptrend" in either["text"]
+    assert "SENSEX is Correction" in either["text"]
+    both = setups.market_snapshot(close, {"features": {"sensex": True}, "market": {"require_both_uptrends": True}})
+    assert both["market_ok"] == "no"
+    assert both["market_rule"] == "both"
+    assert both["label"] == "Correction"
+    nifty_only = close.drop(columns=["^BSESN"])
+    lone = setups.market_snapshot(nifty_only, {})
+    assert lone["market_ok"] == "yes"
+    assert lone["sensex_trend"] == "not verified"
+
+
+def test_bse_only_names_use_sensex():
+    idx = _dates(5)
+    close = pd.DataFrame({"^NSEI": range(5), "^BSESN": range(5)}, index=idx, dtype=float)
+    uni = pd.DataFrame([
+        {"ticker": "AAA", "exchange": "NSE"},
+        {"ticker": "BBB", "exchange": "BSE"},
+        {"ticker": "CCC", "exchange": "Both"},
+    ])
+    cfg = {"features": {"sensex": True}, "benchmark": {"bse_only_uses_sensex": True}}
+    assert setups._stock_benchmark(close, "AAA", uni, cfg) == ("^NSEI", "Nifty 50")
+    assert setups._stock_benchmark(close, "BBB", uni, cfg) == ("^BSESN", "SENSEX")
+    assert setups._stock_benchmark(close, "CCC", uni, cfg) == ("^NSEI", "Nifty 50")
+    off = {"features": {"sensex": True}, "benchmark": {"bse_only_uses_sensex": False}}
+    assert setups._stock_benchmark(close, "BBB", uni, off) == ("^NSEI", "Nifty 50")
+
+
+def _ready(ticker):
+    return {
+        "ticker": ticker, "company": ticker, "sector": "Tech", "index_membership": "Other NSE",
+        "status": "READY", "pivot": 100, "stop": 95, "strength": 80,
+        "price": 101, "price_as_of": "2026-10-23",
+    }
+
+
+def test_buy_setups_keep_unscored_and_drop_avoid():
+    vcp = pd.DataFrame([_ready("PEND"), _ready("NOPE"), _ready("OKBUY"), _ready("HOLDME")])
+    empty = pd.DataFrame()
+    scores = pd.DataFrame([
+        {"ticker": "PEND", "verdict": "Not scored yet", "company": "Pend Co", "sector": "Tech", "rs_benchmark": "Nifty 50", "score": 2},
+        {"ticker": "NOPE", "verdict": "AVOID", "company": "Nope Co", "sector": "Tech", "rs_benchmark": "SENSEX", "score": -4},
+        {"ticker": "OKBUY", "verdict": "BUY", "company": "Buy Co", "sector": "Tech", "rs_benchmark": "Nifty 50", "score": 9},
+        {"ticker": "HOLDME", "verdict": "HOLD", "company": "Hold Co", "sector": "Tech", "rs_benchmark": "Nifty 50", "score": 5},
+    ])
+    out = setups.build_buy_setups(
+        vcp, empty, empty, empty, scores,
+        sma_ok={"PEND": True, "NOPE": True, "OKBUY": True, "HOLDME": True},
+        market={"spy": True, "qqq": False},
+    )
+    names = set(out["ticker"].astype(str))
+    assert names == {"PEND", "OKBUY"}
+    pend = out[out["ticker"] == "PEND"].iloc[0]
+    assert pend["financials_pending"] == "yes"
+    assert pend["verdict"] == "Not scored yet"
+    assert pend["rs_benchmark"] == "Nifty 50"
+    assert out[out["ticker"] == "OKBUY"].iloc[0]["financials_pending"] == "no"
+
+
 def test_switches_skip_the_work():
     out = setups.build_setups(
         pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), pd.DataFrame(),
@@ -362,5 +439,8 @@ if __name__ == "__main__":
     test_flag_breakout_levels()
     test_leaders_prefers_the_vcp_plan()
     test_freshness_follows_spy_not_a_later_vix_bar()
+    test_market_check_uses_nifty_or_sensex()
+    test_bse_only_names_use_sensex()
+    test_buy_setups_keep_unscored_and_drop_avoid()
     test_switches_skip_the_work()
     print("setups ok")

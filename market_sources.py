@@ -230,6 +230,214 @@ def index_urls(day):
     ]
 
 
+SENSEX_TICKER = "^BSESN"
+
+
+def bse_index_summary_urls(day):
+    """One day of BSE index levels. The date is in the file name."""
+    stamp = day.strftime("%d%m%Y")
+    return [
+        "https://www.bseindia.com/bsedata/Index_Bhavcopy/INDEXSummary_%s.csv" % stamp,
+    ]
+
+
+def parse_bse_index_summary(content, day):
+    """The SENSEX row from a BSE index summary. Other indexes in that file are left out."""
+    frame = _read_table(content)
+    if frame is None or len(frame) == 0:
+        return pd.DataFrame()
+    cols = {str(c).strip().lower(): c for c in frame.columns}
+    id_col = cols.get("indexid") or cols.get("index code") or cols.get("indexcode")
+    name_col = cols.get("indexname") or cols.get("index name")
+    if id_col is None and name_col is None:
+        return pd.DataFrame()
+    use = frame.iloc[0:0]
+    if id_col is not None:
+        use = frame[frame[id_col].astype(str).str.strip().str.upper().eq("SENSEX")]
+    if not len(use) and name_col is not None:
+        names = frame[name_col].astype(str).str.strip().str.upper()
+        use = frame[names.eq("BSE SENSEX") | names.eq("SENSEX")]
+    if not len(use):
+        return pd.DataFrame()
+    row = use.iloc[0]
+    open_col = cols.get("openprice") or cols.get("open") or cols.get("open index value")
+    high_col = cols.get("highprice") or cols.get("high") or cols.get("high index value")
+    low_col = cols.get("lowprice") or cols.get("low") or cols.get("low index value")
+    close_col = cols.get("closeprice") or cols.get("close") or cols.get("closing index value")
+    if close_col is None:
+        return pd.DataFrame()
+    close = _as_float(row.get(close_col))
+    if not np.isfinite(close):
+        return pd.DataFrame()
+    stamp = pd.Timestamp(day).strftime("%Y-%m-%d")
+    return pd.DataFrame([{
+        "date": stamp,
+        "ticker": SENSEX_TICKER,
+        "isin": "",
+        "series": "INDEX",
+        "open": _as_float(row.get(open_col)) if open_col else np.nan,
+        "high": _as_float(row.get(high_col)) if high_col else np.nan,
+        "low": _as_float(row.get(low_col)) if low_col else np.nan,
+        "close": close,
+        "volume": np.nan,
+        "turnover": np.nan,
+        "source": "BSE index file",
+    }])
+
+
+def _yahoo_index(symbol, cfg, start=None):
+    bars = _yahoo_daily(symbol, cfg, start=start)
+    if not len(bars):
+        return bars
+    out = bars.copy()
+    out["ticker"] = str(symbol).upper()
+    out["source"] = "Yahoo"
+    return out
+
+
+def _stooq_index(symbol):
+    """Stooq daily bars for an index. The stock helper appends .in, which is wrong here."""
+    url = "https://stooq.com/q/d/l/?s=%s&i=d" % quote(str(symbol).lower())
+    try:
+        if not fallback.robots_allows(url):
+            return pd.DataFrame()
+        response = requests.get(
+            url,
+            headers={"User-Agent": india_data.BROWSER["User-Agent"], "Accept": "text/csv"},
+            timeout=15,
+        )
+        text = response.text or ""
+        if response.status_code != 200 or "Date" not in text[:80] or "<html" in text[:200].lower():
+            return pd.DataFrame()
+        frame = pd.read_csv(io.StringIO(text))
+    except Exception:
+        return pd.DataFrame()
+    if "Close" not in frame.columns:
+        return pd.DataFrame()
+    out = pd.DataFrame({
+        "date": pd.to_datetime(frame["Date"], errors="coerce").dt.strftime("%Y-%m-%d"),
+        "ticker": str(symbol).upper(),
+        "open": pd.to_numeric(frame.get("Open"), errors="coerce"),
+        "high": pd.to_numeric(frame.get("High"), errors="coerce"),
+        "low": pd.to_numeric(frame.get("Low"), errors="coerce"),
+        "close": pd.to_numeric(frame["Close"], errors="coerce"),
+        "volume": pd.to_numeric(frame.get("Volume"), errors="coerce"),
+        "source": "Stooq",
+    })
+    return out.dropna(subset=["date", "close"])
+
+
+def _sensex_dates(frame):
+    if frame is None or len(frame) == 0 or "ticker" not in frame.columns:
+        return set()
+    sub = frame[frame["ticker"].astype(str).str.upper().eq(SENSEX_TICKER)]
+    if not len(sub) or "date" not in sub.columns:
+        return set()
+    return set(pd.to_datetime(sub["date"], errors="coerce").dt.strftime("%Y-%m-%d").dropna())
+
+
+def update_sensex(frame, cfg, session_dates):
+    """SENSEX daily bars. BSE index file, then Yahoo ^BSESN, then Stooq.
+
+    session_dates are the sessions already in the price cache, newest last.
+    A run walks backward through missing sessions and stops after a run of
+    misses, so an old gap does not hammer the BSE site. Yahoo fills the older
+    years when the BSE file does not go back that far.
+    """
+    logs = []
+    if not ((cfg or {}).get("features") or {}).get("sensex", True):
+        logs.append(("Prices (SENSEX)", "OK", "", "SENSEX switch is off"))
+        return frame, logs
+    pause = _pause(cfg)
+    have = _sensex_dates(frame)
+    wanted = []
+    for day in session_dates or []:
+        stamp = pd.Timestamp(day).strftime("%Y-%m-%d")
+        if stamp not in have:
+            wanted.append(pd.Timestamp(day).date())
+    wanted = sorted(set(wanted), reverse=True)
+    parts = []
+    misses = 0
+    bse_n = 0
+    for day in wanted:
+        if bse_n and misses >= 12:
+            break
+        try:
+            content, _url = _first_bytes(bse_index_summary_urls(day), cfg)
+            bars = parse_bse_index_summary(content, day)
+            if len(bars):
+                parts.append(bars)
+                bse_n += 1
+                misses = 0
+            else:
+                misses += 1
+        except Exception:
+            misses += 1
+        time.sleep(pause)
+    bse = pd.concat(parts, ignore_index=True) if parts else pd.DataFrame()
+    yahoo_n = 0
+    stooq_n = 0
+    covered = set(have)
+    if len(bse):
+        covered |= set(bse["date"].astype(str))
+    wanted_stamps = [pd.Timestamp(day).strftime("%Y-%m-%d") for day in (session_dates or [])]
+    need_yahoo = any(stamp not in covered for stamp in wanted_stamps) or not covered
+    yahoo = pd.DataFrame()
+    if need_yahoo:
+        start = None
+        if session_dates:
+            start = pd.Timestamp(min(pd.Timestamp(day) for day in session_dates)).strftime("%Y-%m-%d")
+        yahoo = _yahoo_index(SENSEX_TICKER, cfg, start=start)
+        if len(yahoo):
+            yahoo = yahoo[~yahoo["date"].astype(str).isin(covered)]
+            yahoo_n = int(yahoo["date"].nunique()) if len(yahoo) else 0
+            if len(yahoo):
+                covered |= set(yahoo["date"].astype(str))
+        time.sleep(pause)
+    stooq = pd.DataFrame()
+    still_open = any(stamp not in covered for stamp in wanted_stamps) or not covered
+    if still_open:
+        stooq = _stooq_index("^bsesn")
+        if len(stooq):
+            stooq["ticker"] = SENSEX_TICKER
+            stooq = stooq[~stooq["date"].astype(str).isin(covered)]
+            stooq_n = int(stooq["date"].nunique()) if len(stooq) else 0
+    fresh = pd.concat([df for df in (bse, yahoo, stooq) if len(df)], ignore_index=True) if (len(bse) or len(yahoo) or len(stooq)) else pd.DataFrame()
+    if len(fresh):
+        fresh = fresh.drop(columns=[c for c in ("source",) if c in fresh.columns], errors="ignore")
+        # Keep the columns the price cache already uses. A new column would land on every row.
+        keep = [c for c in frame.columns if c in fresh.columns] if frame is not None and len(frame) else list(fresh.columns)
+        if frame is not None and len(frame):
+            for col in frame.columns:
+                if col not in fresh.columns:
+                    fresh[col] = np.nan if col not in ("isin", "series") else ""
+            fresh = fresh[list(frame.columns)]
+        elif keep:
+            fresh = fresh[keep]
+        frame = india_data.merge_price_history(frame, fresh)
+    last = ""
+    if frame is not None and len(frame) and "ticker" in frame.columns:
+        sub = frame[frame["ticker"].astype(str).str.upper().eq(SENSEX_TICKER)]
+        if len(sub):
+            last = str(pd.to_datetime(sub["date"]).max().date())
+    if bse_n or yahoo_n or stooq_n or last:
+        status = "OK" if (bse_n or yahoo_n or stooq_n or last) else "MISSING"
+        if stooq_n:
+            stooq_txt = "Stooq filled %d." % stooq_n
+        elif still_open:
+            stooq_txt = "Stooq returned nothing for the remaining sessions."
+        else:
+            stooq_txt = "Stooq was not needed."
+        note = "BSE index file %d sessions. Yahoo ^BSESN filled %d older sessions. %s" % (bse_n, yahoo_n, stooq_txt)
+        if not (bse_n or yahoo_n or stooq_n) and last:
+            note = "SENSEX already in the price cache through %s." % last
+            status = "CACHED"
+        logs.append(("Prices (SENSEX)", status, last, note))
+    else:
+        logs.append(("Prices (SENSEX)", "MISSING", "", "BSE index file, Yahoo, and Stooq did not return SENSEX bars. The saved cache has none."))
+    return frame if frame is not None else pd.DataFrame(), logs
+
+
 def _first_bytes(urls, cfg):
     errors = []
     for url in urls:
@@ -493,6 +701,13 @@ def sync_prices(tickers, universe, cfg, cache, cached, mode):
     logs.append(("Index levels (NSE ind_close_all)", idx_status, str(end.date()),
                  "%d sessions. niftyindices is the second try. %d dates failed." % (index_days, index_fail)))
     logs.extend(gap_notes["logs"])
+    session_dates = []
+    if len(cached) and "ticker" in cached.columns:
+        nifty = cached[cached["ticker"].astype(str).str.upper().eq("^NSEI")]
+        if len(nifty):
+            session_dates = list(pd.to_datetime(nifty["date"], errors="coerce").dropna().dt.date.unique())
+    cached, sensex_logs = update_sensex(cached, cfg, session_dates)
+    logs.extend(sensex_logs)
     if len(cached):
         last = str(pd.to_datetime(cached["date"]).max().date())
         logs.append(("Prices", "OK", last, "%d rows after the fallback chain" % len(cached)))
@@ -584,13 +799,16 @@ def _stooq_daily(symbol):
     return out.dropna(subset=["date", "close"])
 
 
-def _yahoo_daily(symbol, cfg):
+def _yahoo_daily(symbol, cfg, start=None):
     try:
         import yfinance as yf
         yahoo = india_data.yahoo_symbol(symbol)
         if str(symbol).upper() == "INR=X":
             yahoo = "INR=X"
-        raw = yf.download(yahoo, period="3y", interval="1d", auto_adjust=True, progress=False, threads=False)
+        if start:
+            raw = yf.download(yahoo, start=start, interval="1d", auto_adjust=True, progress=False, threads=False)
+        else:
+            raw = yf.download(yahoo, period="3y", interval="1d", auto_adjust=True, progress=False, threads=False)
     except Exception:
         return pd.DataFrame()
     if raw is None or len(raw) == 0:
@@ -641,7 +859,7 @@ def liquidity_table(long_df, tickers, days, minimum):
 
 def flows_from_history(history, close):
     """One row per day: FII and DII buy, sell, net, plus the Nifty close."""
-    cols = ["date", "fii_buy", "fii_sell", "fii_net", "dii_buy", "dii_sell", "dii_net", "nifty", "source"]
+    cols = ["date", "fii_buy", "fii_sell", "fii_net", "dii_buy", "dii_sell", "dii_net", "nifty", "sensex", "source"]
     if history is None or len(history) == 0 or "category" not in history.columns:
         return pd.DataFrame(columns=cols)
     frame = history.copy()
@@ -677,6 +895,12 @@ def flows_from_history(history, close):
         for stamp, value in series.items():
             key = str(pd.Timestamp(stamp).date())
             nifty[key] = round(float(value), 2)
+    sensex = {}
+    if close is not None and "^BSESN" in getattr(close, "columns", []):
+        series = close["^BSESN"].dropna()
+        for stamp, value in series.items():
+            key = str(pd.Timestamp(stamp).date())
+            sensex[key] = round(float(value), 2)
     rows = []
     for day in dates:
         def cell(table, col):
@@ -698,6 +922,7 @@ def flows_from_history(history, close):
             "dii_sell": cell(dii_map, "sell"),
             "dii_net": cell(dii_map, "net"),
             "nifty": nifty.get(day, np.nan),
+            "sensex": sensex.get(day, np.nan),
             "source": source or "NSE",
         })
     return pd.DataFrame(rows)

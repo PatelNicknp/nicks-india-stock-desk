@@ -436,9 +436,16 @@ def _sector_list(sector_etfs):
     return out
 
 
-def benchmark_series(close):
-    """Nifty 50 when it is in the cache. SPY only when a saved test panel still uses it."""
+def benchmark_series(close, prefer=None):
+    """Nifty 50 by default. SENSEX when the page asks for it. SPY only for a saved test panel."""
     cols = set(map(str, getattr(close, "columns", [])))
+    choice = str(prefer or "").strip()
+    if choice in cols:
+        if choice == "^BSESN":
+            return choice, "the SENSEX"
+        if choice == "^NSEI":
+            return choice, "the Nifty"
+        return choice, choice
     if "^NSEI" in cols:
         return "^NSEI", "the Nifty"
     if "SPY" in cols:
@@ -465,19 +472,19 @@ def _share(mask, n):
     return 100.0 * float(mask) / float(n)
 
 
-def _reason(name, quad_w, rs_3m, breadth200, near_n, buy_n, n_stocks):
+def _reason(name, quad_w, rs_3m, breadth200, near_n, buy_n, n_stocks, bench_word="the Nifty"):
     if quad_w:
         lead = "%s is %s on the weekly graph." % (name, quad_w)
     else:
         lead = "%s does not have a weekly quadrant yet." % name
     if rs_3m is None:
-        rs_bit = "3-month relative strength versus the Nifty is not available."
+        rs_bit = "3-month relative strength versus %s is not available." % bench_word
     elif rs_3m > 0.05:
-        rs_bit = "It has beaten the Nifty by %.1f points over 3 months." % rs_3m
+        rs_bit = "It has beaten %s by %.1f points over 3 months." % (bench_word, rs_3m)
     elif rs_3m < -0.05:
-        rs_bit = "It has trailed the Nifty by %.1f points over 3 months." % abs(rs_3m)
+        rs_bit = "It has trailed %s by %.1f points over 3 months." % (bench_word, abs(rs_3m))
     else:
-        rs_bit = "It has matched the Nifty over 3 months."
+        rs_bit = "It has matched %s over 3 months." % bench_word
     if n_stocks:
         breadth = breadth200 if breadth200 is not None else 0.0
         book = "%.0f%% of its %d stocks are above the 200-day average. %d are within 5%% of a 52-week high and %d are on a buy setup." % (
@@ -519,7 +526,7 @@ def build(close, high, scores, sector_etfs, scanners=None, buy_setups=None, fred
         "sector_rotation_history": pd.DataFrame(),
         "log": "Nifty 50 or the sector indexes were not in the price cache.",
     }
-    bench_name, bench_word = benchmark_series(close)
+    bench_name, bench_word = benchmark_series(close, (cfg or {}).get("benchmark"))
     if close is None or len(close) == 0 or not bench_name:
         return empty
     windows = windows_from(cfg)
@@ -610,6 +617,7 @@ def build(close, high, scores, sector_etfs, scanners=None, buy_setups=None, fred
                     "timeframe": tf,
                     "ticker": ticker,
                     "name": spec["name"],
+                    "benchmark": bench_name,
                     "date": pd.Timestamp(dt).strftime("%Y-%m-%d"),
                     "rs_ratio": round(float(point["rs_ratio"]), 4),
                     "rs_momentum": round(float(point["rs_momentum"]), 4),
@@ -624,6 +632,7 @@ def build(close, high, scores, sector_etfs, scanners=None, buy_setups=None, fred
                     "timeframe": tf,
                     "ticker": ticker,
                     "name": spec["name"],
+                    "benchmark": bench_name,
                     "rs_ratio": round(float(point["rs_ratio"]), 4),
                     "rs_momentum": round(float(point["rs_momentum"]), 4),
                     "quadrant": point["quadrant"],
@@ -672,7 +681,8 @@ def build(close, high, scores, sector_etfs, scanners=None, buy_setups=None, fred
             "rrg_points": _num_or_blank(rrg_pts, 1),
             "change_daily": describe_change(spec["name"], prev_d, quad["D"]),
             "change_weekly": describe_change(spec["name"], prev_w, quad["W"]),
-            "reason": _reason(spec["name"], quad["W"], rs_3m, b200, 0 if near is None else near, buy_n, n_stocks),
+            "benchmark": bench_name,
+            "reason": _reason(spec["name"], quad["W"], rs_3m, b200, 0 if near is None else near, buy_n, n_stocks, bench_word),
             "data_status": "OK",
             "note": NOTE,
         }
@@ -685,7 +695,7 @@ def build(close, high, scores, sector_etfs, scanners=None, buy_setups=None, fred
     snap = snap.sort_values(["score", "ticker"], ascending=[False, True], na_position="last")
     snap["rank"] = np.arange(1, len(snap) + 1)
     order = [
-        "ticker", "name", "sector", "score", "rank",
+        "ticker", "name", "benchmark", "sector", "score", "rank",
         "quadrant_d", "quadrant_w", "quadrant_m",
         "rs_ratio_w", "rs_momentum_w",
         "rs_1m", "rs_3m", "rs_6m",

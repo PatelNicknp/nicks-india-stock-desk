@@ -1464,6 +1464,22 @@ def _last(series, n=None):
     return float(s.iloc[-1])
 
 
+def _score_benchmark(row, close, cfg, nifty):
+    """NSE names stay on the Nifty 50. BSE-only names use SENSEX when the switch is on and the bars are saved."""
+    use = bool(((cfg or {}).get("benchmark") or {}).get("bse_only_uses_sensex", True))
+    if not bool(((cfg or {}).get("features") or {}).get("sensex", True)):
+        use = False
+    exchange = str(row.get("exchange") or "").strip().upper()
+    if use and exchange == "BSE" and close is not None and "^BSESN" in close.columns:
+        series = close["^BSESN"].dropna()
+        if len(series) > 63:
+            return close["^BSESN"], "SENSEX"
+    if nifty is not None:
+        name = india_data.bench_column(close)
+        return nifty, ("Nifty 50" if name == "^NSEI" else (name or "Nifty 50"))
+    return None, "Nifty 50"
+
+
 def market_features(close, high, low, vol, ticker, spy):
     if ticker not in close.columns:
         return None
@@ -1543,7 +1559,8 @@ def build_scores(universe, close, high, low, vol, annual, quarters, info, holder
         group_etf.setdefault(etf.get("group"), etf["ticker"])
     for _, u in universe.iterrows():
         t = u["ticker"]
-        mkt = market_features(close, high, low, vol, t, spy)
+        bench_series, bench_label = _score_benchmark(u, close, cfg, spy)
+        mkt = market_features(close, high, low, vol, t, bench_series)
         if not mkt:
             continue
         if t not in prepared:
@@ -1591,6 +1608,7 @@ def build_scores(universe, close, high, low, vol, annual, quarters, info, holder
         rec["ret_3m"] = _pct(mkt["ret_3m"])
         rec["ret_ytd"] = _pct(mkt["ret_ytd"])
         rec["rs_spy_3m"] = _pct(mkt["rs_spy"])
+        rec["rs_benchmark"] = bench_label
         rec["dist_52w_high_pct"] = _pct(mkt["dist_52w"])
         for key in ("rev_growth", "eps_growth", "roe", "div_yield"):
             rec[key] = _pct(rec.get(key))
@@ -2685,6 +2703,11 @@ def _listing_frames(cfg, cache, mode, parts, switches):
                     log("Universe (BSE only)", "MISSING", "", str(exc)[:140])
         else:
             log("Universe (BSE only)", "OK", len(bse), "reused cache")
+            link_path = os.path.join(cache, "bse_link.csv")
+            if os.path.exists(link_path):
+                linked = read_csv(link_path)
+                if len(linked):
+                    frames.append(linked.assign(sector=""))
         if len(bse):
             frames.append(bse)
     else:
@@ -2728,6 +2751,8 @@ def main(argv=None):
         log("Universe feature", "OK", "", "feature off: scoring the holdings and watchlist only")
     etfs = [e["ticker"] for e in cfg.get("sector_etfs", [])]
     extras = etfs + ["^NSEI", "^NSEBANK", "^INDIAVIX", "INR=X"]
+    if features.get("sensex", True):
+        extras.append("^BSESN")
     tickers = list(dict.fromkeys(list(universe["ticker"]) + extras))
     long = load_prices(tickers, cfg, cache, mode, universe)
     close, high, low, vol = wide_from_long(long, "close"), wide_from_long(long, "high"), wide_from_long(long, "low"), wide_from_long(long, "volume")
@@ -2912,6 +2937,14 @@ def main(argv=None):
     if len(market):
         market["listed_n"] = int(len(universe))
         market["liquid_n"] = int((scores["liquid"].astype(str) == "yes").sum()) if len(scores) and "liquid" in scores.columns else 0
+        snap = setups.market_snapshot(close, cfg)
+        for key in (
+            "nifty_trend", "sensex_trend", "bank_trend", "market_ok", "market_rule",
+            "spy_uptrend", "sensex_uptrend", "qqq_uptrend",
+        ):
+            if key in ("spy_uptrend", "sensex_uptrend", "qqq_uptrend"):
+                continue
+            market[key] = snap.get(key, "")
     earn_pages, _hist = tables.earnings_pages(scores, earnings, close, hold_tickers) if len(scores) else ({}, pd.DataFrame())
     scan_scores = liquid_view if len(liquid_view) else scores
     g, q, d, w = tables.scanners(scan_scores, cfg["scoring"]) if len(scan_scores) else (pd.DataFrame(),) * 4
@@ -2923,6 +2956,8 @@ def main(argv=None):
         candle_names = list(scores["ticker"])
         if "^NSEI" in set(long["ticker"].astype(str)):
             candle_names.append("^NSEI")
+        if "^BSESN" in set(long["ticker"].astype(str)):
+            candle_names.append("^BSESN")
         candle_frame = candle_file(long, candle_names)
         n_candles = write_candle_groups(candle_frame, os.path.join(data, "ohlc"))
         span = int(candle_frame.groupby("ticker").size().max()) if len(candle_frame) else 0
@@ -2969,7 +3004,7 @@ def main(argv=None):
         allowed = set(scores.loc[scores["liquid"].astype(str).eq("yes"), "ticker"].astype(str))
         setup_universe = universe[universe["ticker"].astype(str).isin(allowed)]
     if len(close) and len(setup_universe):
-        setup_frames = setups.build_setups(close, high, low, vol, setup_universe, quarters, annual, holders, features, scores=scores)
+        setup_frames = setups.build_setups(close, high, low, vol, setup_universe, quarters, annual, holders, features, scores=scores, cfg=cfg)
     else:
         setup_frames = {k: pd.DataFrame() for k in (
             "scanner_vcp", "scanner_canslim", "scanner_box", "scanner_flag", "scanner_leaders",
@@ -2989,23 +3024,43 @@ def main(argv=None):
         buy = setups.build_buy_setups(
             setup_frames.get("scanner_vcp"), setup_frames.get("scanner_box"),
             setup_frames.get("scanner_flag"), setup_frames.get("scanner_canslim"),
-            scores, close, setup_frames.get("scanner_52w"),
+            scores, close, setup_frames.get("scanner_52w"), cfg=cfg,
         )
     else:
         buy = pd.DataFrame()
     log("Buy setups", "OK" if _n(buy) else "MISSING", asof,
-        "%d names. The market check uses the Nifty 50. This desk never places trades." % _n(buy))
+        "%d names. The market check passes when the Nifty 50 or SENSEX is in an uptrend. This desk never places trades." % _n(buy))
     rot_scores = scores
     if len(scores) and (cfg.get("liquidity") or {}).get("enabled", True) and "liquid" in scores.columns:
         rot_scores = scores[scores["liquid"].astype(str).str.lower().eq("yes")]
     if features.get("sector_rotation", True) and len(close):
-        rot = sector_rotation.build(
-            close, high, rot_scores, cfg.get("sector_etfs"),
-            scanners=setup_frames,
-            buy_setups=buy if _n(buy) else None,
-            fred=sector_rotation.read_fred_cache(cache),
-            cfg=cfg.get("sector_rotation"),
-        )
+        rot_cfg = dict(cfg.get("sector_rotation") or {})
+        choices = [str(rot_cfg.get("benchmark") or "^NSEI")]
+        if features.get("sensex", True) and "^BSESN" in close.columns and "^BSESN" not in choices:
+            choices.append("^BSESN")
+        if "^NSEI" not in choices and "^NSEI" in close.columns:
+            choices.insert(0, "^NSEI")
+        pieces = []
+        logs_rot = []
+        for bench_code in choices:
+            one_cfg = dict(rot_cfg)
+            one_cfg["benchmark"] = bench_code
+            one = sector_rotation.build(
+                close, high, rot_scores, cfg.get("sector_etfs"),
+                scanners=setup_frames,
+                buy_setups=buy if _n(buy) else None,
+                fred=sector_rotation.read_fred_cache(cache),
+                cfg=one_cfg,
+            )
+            pieces.append(one)
+            if one.get("log"):
+                logs_rot.append(one["log"])
+        rot = {
+            "sector_rotation": pd.concat([p["sector_rotation"] for p in pieces if len(p.get("sector_rotation", []))], ignore_index=True) if any(len(p.get("sector_rotation", [])) for p in pieces) else pd.DataFrame(),
+            "sector_rotation_tails": pd.concat([p["sector_rotation_tails"] for p in pieces if len(p.get("sector_rotation_tails", []))], ignore_index=True) if any(len(p.get("sector_rotation_tails", [])) for p in pieces) else pd.DataFrame(),
+            "sector_rotation_history": pd.concat([p["sector_rotation_history"] for p in pieces if len(p.get("sector_rotation_history", []))], ignore_index=True) if any(len(p.get("sector_rotation_history", [])) for p in pieces) else pd.DataFrame(),
+            "log": " ".join(logs_rot),
+        }
     else:
         rot = {
             "sector_rotation": pd.DataFrame(),

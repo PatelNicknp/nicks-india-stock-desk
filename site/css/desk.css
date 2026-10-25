@@ -112,6 +112,11 @@ td.num,th.num{font-variant-numeric:tabular-nums}
 .rowhead.stack{flex-direction:column;align-items:flex-start}
 .chips.nowrap{flex-wrap:nowrap;gap:6px}
 .moodchip{height:36px;padding:0 12px;display:inline-flex;align-items:center;border:1px solid #F59E0B;border-radius:6px;color:#F59E0B;font-size:13px;font-weight:700;margin-right:8px}
+.mktstrip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 16px}
+.mktcard{background:#121826;border:1px solid #1E293B;border-radius:10px;padding:12px 14px;min-height:92px;min-width:0}
+.mktcard .name{font-size:12px;font-weight:700;color:#8B96AD;letter-spacing:.02em}
+.mktcard .trend{font-size:18px;line-height:24px;font-weight:700;margin-top:4px}
+.mktcard .px{font-size:13px;line-height:18px;color:#C3CBDB;margin-top:4px}
 .tag{display:inline-block;margin-left:6px;color:#8B96AD;font-size:11px}
 .featgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 18px;margin-top:8px}
 .featgrid div{height:28px;display:flex;align-items:center;justify-content:space-between;gap:8px;border-bottom:1px solid #1E293B;font-size:13px}
@@ -249,6 +254,14 @@ input::placeholder{color:#5B6680;opacity:1}
   .chart-box.tall,.chart-box.htall{height:280px}
   .chart-box.h300{height:240px}
   .pxtools{justify-content:flex-start}
+}
+@media (max-width:900px){
+  .mktstrip{grid-template-columns:1fr;gap:10px}
+  .mktcard{min-height:72px}
+  .mktcard .trend{font-size:20px;line-height:26px}
+}
+@media (min-width:701px) and (max-width:1179px){
+  .mktstrip{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 @media (max-width:699px), (max-width:900px) and (max-height:500px){
   .cards,.cards.seven{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}

@@ -56,7 +56,13 @@ feature.scanner_52w,True
 feature.buy_setups,True
 feature.sector_rotation,True
 feature.fundamentals_backfill,True
+feature.sensex,True
 buy_setups.market_filter,True
+buy_setups.chart_setups_only,True
+buy_setups.full_rules_at_coverage_pct,80
+market.require_both_uptrends,False
+benchmark.bse_only_uses_sensex,True
+sector_rotation.benchmark,^NSEI
 index.nifty50,True
 index.next50,True
 index.midcap150,True

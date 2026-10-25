@@ -14,6 +14,26 @@
       D.esc(label) + '</div><div class="v">' + valueHtml + "</div>" +
       (subHtml ? '<div class="s">' + subHtml + "</div>" : "") + "</div>";
   }
+  function trendCard(name, word, price, day) {
+    const label = D.marketWord(word) || (D.isBlank(word) ? "Not on file" : String(word));
+    const color = D.marketColor(D.marketWord(word));
+    const px = D.num(price);
+    const move = D.num(day);
+    const moveHtml = move == null ? "" : ' <span style="color:' + D.retColor(move) + '">' + (move < 0 ? "▼" : "▲") + D.fmt(Math.abs(move), 2) + "%</span>";
+    const pxHtml = px == null ? D.na() : D.esc(D.fmt(px, 2));
+    return '<div class="mktcard"><div class="name">' + D.esc(name) + '</div><div class="trend" style="color:' + color + '">' +
+      D.esc(label) + '</div><div class="px">' + pxHtml + moveHtml + "</div></div>";
+  }
+  function trendStrip(mt) {
+    const row = mt || {};
+    const items = [
+      trendCard("Nifty 50", row.nifty_trend, row.spy_price, row.spy_day_pct),
+      trendCard("SENSEX", row.sensex_trend, row.sensex_price, row.sensex_day_pct),
+      trendCard("Bank Nifty", row.bank_trend, row.bank_price, row.qqq_day_pct),
+    ];
+    if (!D.featureOn("feature.sensex")) items.splice(1, 1);
+    return '<div class="mktstrip">' + items.join("") + "</div>";
+  }
   function avg(rows, key) {
     const xs = [];
     rows.forEach((r) => { const n = D.num(r[key]); if (n != null) xs.push(n); });
@@ -159,11 +179,11 @@
           (cfg.strip ? '<div id="strip"></div>' : "") +
           '<div class="ctrls" id="ctrls"></div><div class="cards" id="cards"></div>' +
           '<div class="panel" id="tbl"></div><div id="detail"></div><p class="cap"></p>';
-        if (cfg.strip) document.getElementById("strip").innerHTML = cfg.strip(all);
+        if (cfg.strip) document.getElementById("strip").innerHTML = cfg.strip(all, ctx);
         ctx.page.querySelector(".cap").textContent = cfg.caption || D.noteOf(raw);
         const box = document.getElementById("ctrls");
         standardFilters(box, all, cfg.filters);
-        if (cfg.chips) box.insertAdjacentHTML("afterbegin", cfg.chips(all));
+        if (cfg.chips) box.insertAdjacentHTML("afterbegin", cfg.chips(all, ctx));
         D.placeFeed(box, raw);
         document.getElementById("cards").innerHTML = cfg.cards(all);
         const state = { sort: cfg.sort || "status", dir: cfg.dir || "asc", sort2: cfg.sort2 || "strength", dir2: "desc", page: 0 };
@@ -260,6 +280,7 @@
     const liquidNote = D.isBlank(mt.liquid_n) ? "names with a score" : D.esc(String(mt.liquid_n)) + " pass the liquidity filter";
     ctx.page.innerHTML =
       flowStrip(ctx.files) +
+      trendStrip(mt) +
       '<div class="cards seven">' +
       card("Nifty 50", D.num(mt.spy_price) == null ? D.na() : D.esc(D.fmt(mt.spy_price, 2)), "day move " + (day == null ? D.na() : '<span style="color:' + D.retColor(day) + '">' + (day < 0 ? "▼" : "▲") + D.fmt(Math.abs(day), 2) + "%</span>")) +
       card("% above 50-day", b == null ? D.na() : D.esc(D.fmt(b, 1) + "%"), deltaHtml) +
@@ -498,7 +519,8 @@
       const scoreN = D.num(row.score);
       host.innerHTML =
         '<div class="panel pad identity"><div class="id-main"><div class="big">' + D.esc(row.ticker) + "</div><div>" + D.esc(row.company) +
-        '</div><div class="m2" style="font-size:12px">' + D.esc(row.sector) + (row.industry ? " · " + D.esc(row.industry) : "") + "</div></div>" +
+        '</div><div class="m2" style="font-size:12px">' + D.esc(row.sector) + (row.industry ? " · " + D.esc(row.industry) : "") +
+        "</div><div class=\"m2\" style=\"font-size:12px\">Relative strength uses " + D.esc(row.rs_benchmark || "Nifty 50") + ".</div></div>" +
         '<div class="stat"><div class="l">Price</div><div class="v">' + px2(row.price) + "</div></div>" +
         '<div class="stat"><div class="l">Day %</div><div class="v" style="color:' + D.retColor(day) + '">' + (day == null ? D.na() : D.esc((day > 0 ? "+" : "") + D.fmt(day, 2) + "%")) + "</div></div>" +
         '<div class="stat"><div class="l">Confidence</div><div class="v" style="font-size:16px">' + (D.isBlank(row.confidence) ? D.na() : D.esc(row.confidence)) + '</div><div class="l" style="margin-top:8px">Verdict</div><div class="vpill">' + D.verdictHtml(row.verdict) + "</div></div>" +
@@ -630,7 +652,7 @@
     const cards = list.map((r) => '<article class="lettercard"><div class="buyid">' + D.tickerHtml(r.ticker) + "</div>" +
       cols.map((c) => '<div class="lrow"><b>' + c[1] + "</b><div>" + letterHtml(r, c[0]) + "</div></div>").join("") +
       "</article>").join("");
-    return '<div class="letterwrap"><div class="panel"><div class="pad" style="padding-bottom:0"><div class="ptitle">Letter details</div><div class="psub">M is the market. Nifty and Bank Nifty versus their 21, 50, and 200 day averages.</div></div>' +
+    return '<div class="letterwrap"><div class="panel"><div class="pad" style="padding-bottom:0"><div class="ptitle">Letter details</div><div class="psub">M is the market. Nifty 50, SENSEX, and Bank Nifty versus their 21, 50, and 200 day averages.</div></div>' +
       '<div class="scroll lettertable"><table><thead><tr>' + head + "</tr></thead><tbody>" + body + "</tbody></table></div>" +
       '<div class="letters">' + cards + "</div></div>" +
       '<div class="panel pad"><div class="ptitle">Why this name</div><p class="cap">' + D.esc((row && row.reason) || "") + "</p></div>";
@@ -644,7 +666,7 @@
       ["S", "Supply and demand", "Shares available, and big volume on up days."],
       ["L", "Leader or laggard", "A top stock in its group. The scan wants an RS rank of 80 or higher."],
       ["I", "Institutional sponsorship", "Are big funds buying? That means FII, DII, and mutual funds."],
-      ["M", "Market direction", "Is the overall market in an uptrend? This desk checks the Nifty, and Bank Nifty too."],
+      ["M", "Market direction", "Is the overall market in an uptrend? This desk shows the Nifty 50, SENSEX, and Bank Nifty. The check passes when the Nifty 50 or SENSEX is in an uptrend."],
     ];
     const narrow = window.matchMedia("(max-width: 900px)").matches;
     const body = rows.map((r) => '<div class="ckey"><b>' + r[0] + '</b><div><div class="t">' + D.esc(r[1]) +
@@ -984,12 +1006,20 @@
       single: [{ key: "qualify", label: "Qualify", value: "strict" }],
     },
     guide: canslimGuide,
-    chips(all) {
+    strip(all, ctx) {
       const row = all[0] || {};
-      const nifty = D.marketWord(row.m_market) || "n/a";
-      const bank = D.marketWord(row.m_qqq) || "n/a";
-      return '<span class="moodchip" style="border-color:' + D.marketColor(nifty) + ";color:" + D.marketColor(nifty) + '">Nifty: ' + D.esc(nifty) + "</span>" +
-        '<span class="moodchip" style="border-color:' + D.marketColor(bank) + ";color:" + D.marketColor(bank) + '">Bank Nifty: ' + D.esc(bank) + "</span>";
+      const mt = ((ctx && ctx.files["market_today.csv"]) || [])[0] || {};
+      return trendStrip({
+        nifty_trend: row.m_spy || mt.nifty_trend,
+        sensex_trend: row.m_sensex || mt.sensex_trend,
+        bank_trend: row.m_qqq || mt.bank_trend,
+        spy_price: mt.spy_price,
+        spy_day_pct: mt.spy_day_pct,
+        sensex_price: mt.sensex_price,
+        sensex_day_pct: mt.sensex_day_pct,
+        bank_price: mt.bank_price,
+        qqq_day_pct: mt.qqq_day_pct,
+      });
     },
     columns: [TK, T("index_membership", "Index"), T("status", "Status", "setup"), T("pivot", "Buy point", "num", { dec: 2 }),
       T("strength", "CANSLIM strength (raw)", "num", { dec: 0 }), T("qualify", "Qualify", "pass"),
@@ -1391,7 +1421,9 @@
     const vix = D.num(row.india_vix);
     const fii = D.num(row.fii_net_cr);
     const dii = D.num(row.dii_net_cr);
+    const mt = (ctx.files["market_today.csv"] || [])[0] || {};
     ctx.page.innerHTML =
+      trendStrip(mt) +
       '<div class="cards">' +
       card("India VIX", vix == null ? D.na() : D.esc(D.fmt(vix, 2)), D.esc(row.vix_zone || "zone not set")) +
       card("FII net, crore", fii == null ? D.na() : D.esc(D.fmt(fii, 0)), "cash market, one day") +
@@ -1686,7 +1718,8 @@
   function renderMacro(ctx) {
     const raw = ctx.files["macro_screener.csv"];
     const all = D.realRows(raw);
-    ctx.page.innerHTML = '<div class="ctrls" id="ctrls"></div>' +
+    const mt = (ctx.files["market_today.csv"] || [])[0] || {};
+    ctx.page.innerHTML = trendStrip(mt) + '<div class="ctrls" id="ctrls"></div>' +
       '<p class="cap">Signal is +1 when the surprise is in the direction that usually helps stocks (for unemployment and jobless claims, lower is the helpful direction). It is a label, not a forecast.</p>' +
       '<div class="cards" id="cards"></div><div class="panel" id="tbl"></div>';
     document.getElementById("cards").innerHTML =
@@ -1872,7 +1905,8 @@
     const raw = D.realRows(ctx.files["breadth_history.csv"]);
     const mt = (ctx.files["market_today.csv"] || [])[0] || {};
     const end = maxDate(raw, "date");
-    ctx.page.innerHTML = '<div class="ctrls" id="ctrls"></div><div class="cards" id="cards"></div>' +
+    const mood = (ctx.files["market_today.csv"] || [])[0] || {};
+    ctx.page.innerHTML = trendStrip(mood) + '<div class="ctrls" id="ctrls"></div><div class="cards" id="cards"></div>' +
       '<div class="panel pad"><div class="ptitle">Share of the desk above each average</div><div class="chart-box htall"><canvas id="br"></canvas></div></div>' +
       '<p class="cap">A blank point is a session that did not have enough prices. The gap is left open, never drawn as zero.</p>';
     const now50 = D.num(mt.breadth_sma50);
@@ -2097,7 +2131,7 @@
       card("FII year to date", croreHtml(flowPrefix(rows, "fii_net", 4)), "DII " + (flowPrefix(rows, "dii_net", 4) == null ? "n/a" : D.fmt(flowPrefix(rows, "dii_net", 4), 0))) +
       "</div>" +
       '<div class="panel pad"><div class="ptitle">FII and DII, last 90 sessions</div><div class="psub">Bars are the daily net in crore. The line is the running FII total.</div><div class="chart-box tall"><canvas id="flowbars"></canvas></div></div>' +
-      '<div class="panel pad"><div class="ptitle">FII net and the Nifty</div><div class="psub">Same sessions. Nifty is the line on the right scale.</div><div class="chart-box tall"><canvas id="flownifty"></canvas></div></div>' +
+      '<div class="panel pad"><div class="ptitle">FII net and the index</div><div class="psub">Same sessions. The index is the line on the right scale.</div><div class="rrgtabs" id="flowbench"><button type="button" data-k="nifty" class="on">Nifty 50</button><button type="button" data-k="sensex">SENSEX</button></div><div class="chart-box tall"><canvas id="flownifty"></canvas></div></div>' +
       '<div id="oi"></div>' +
       '<p class="cap">History is kept and grows each run. A short chart means the free files only answered for those days.</p>';
     if (windowRows.length) {
@@ -2133,25 +2167,42 @@
           },
         },
       });
-      D.makeChart(document.getElementById("flownifty"), {
-        type: "bar",
-        data: {
-          labels: labels,
-          datasets: [
-            { label: "FII net", data: fiiBars, backgroundColor: fiiColors, yAxisID: "y" },
-            { type: "line", label: "Nifty", data: windowRows.map((r) => D.num(r.nifty)), borderColor: "#7C9CFF", backgroundColor: "#7C9CFF", yAxisID: "y1", pointRadius: 0, borderWidth: 2, spanGaps: true },
-          ],
-        },
-        options: {
-          responsive: true, maintainAspectRatio: false,
-          plugins: { legend: { labels: { color: "#8B96AD", boxWidth: 12 } } },
-          scales: {
-            x: { ticks: D.dateTicks(labels), grid: { color: "#1E293B" } },
-            y: { position: "left", title: { display: true, text: "FII net, crore", color: "#8B96AD" }, ticks: { color: "#8B96AD" }, grid: { color: "#1E293B" } },
-            y1: { position: "right", title: { display: true, text: "Nifty", color: "#7C9CFF" }, ticks: { color: "#7C9CFF" }, grid: { display: false } },
+      let flowKey = "nifty";
+      function paintFlowIndex() {
+        const label = flowKey === "sensex" ? "SENSEX" : "Nifty 50";
+        const series = windowRows.map((r) => D.num(flowKey === "sensex" ? r.sensex : r.nifty));
+        D.makeChart(document.getElementById("flownifty"), {
+          type: "bar",
+          data: {
+            labels: labels,
+            datasets: [
+              { label: "FII net", data: fiiBars, backgroundColor: fiiColors, yAxisID: "y" },
+              { type: "line", label: label, data: series, borderColor: "#7C9CFF", backgroundColor: "#7C9CFF", yAxisID: "y1", pointRadius: 0, borderWidth: 2, spanGaps: true },
+            ],
           },
-        },
+          options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { labels: { color: "#8B96AD", boxWidth: 12 } } },
+            scales: {
+              x: { ticks: D.dateTicks(labels), grid: { color: "#1E293B" } },
+              y: { position: "left", title: { display: true, text: "FII net, crore", color: "#8B96AD" }, ticks: { color: "#8B96AD" }, grid: { color: "#1E293B" } },
+              y1: { position: "right", title: { display: true, text: label, color: "#7C9CFF" }, ticks: { color: "#7C9CFF" }, grid: { display: false } },
+            },
+          },
+        });
+      }
+      document.querySelectorAll("#flowbench button").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          flowKey = btn.getAttribute("data-k");
+          document.querySelectorAll("#flowbench button").forEach((b) => b.classList.toggle("on", b === btn));
+          paintFlowIndex();
+        });
       });
+      if (!D.featureOn("feature.sensex")) {
+        const host = document.getElementById("flowbench");
+        if (host) host.hidden = true;
+      }
+      paintFlowIndex();
     }
     const oiHost = document.getElementById("oi");
     if (panelOff("feature.fii_dii_derivatives")) {
@@ -2383,7 +2434,11 @@
         fact("Count", count == null ? D.na() : D.esc(D.fmt(count, 0))) +
         fact("52w range", range) +
         fact("% from 52w high", D.pctHtml(row.pct_from_high_52w, 1, true)) +
-        fact("Nifty uptrend", mktHtml) +
+        fact("Market check", mktHtml) +
+        fact("Nifty 50", D.isBlank(row.nifty_trend) ? D.na() : D.esc(row.nifty_trend)) +
+        fact("SENSEX", D.isBlank(row.sensex_trend) ? D.na() : D.esc(row.sensex_trend)) +
+        fact("Bank Nifty", D.isBlank(row.bank_trend) ? D.na() : D.esc(row.bank_trend)) +
+        fact("Financials", String(row.financials_pending || "").toLowerCase() === "yes" ? '<span style="color:#8B96AD">Pending</span>' : "On file") +
       "</div>";
   }
   function buyLines(row) {
@@ -2409,25 +2464,34 @@
     });
     const market = fileRows[0] || {};
     const yes = (v) => String(v || "").toLowerCase() === "yes";
-    const niftyUp = yes(market.spy_uptrend || market.market_ok);
-    const bankUp = yes(market.qqq_uptrend);
     const filterOn = D.featureOn("buy_setups.market_filter");
-    const marketDown = !missing && filterOn && !niftyUp;
-    const yn = (on) => on ? '<span style="color:#22C55E">yes</span>' : '<span style="color:#EF4444">no</span>';
+    const marketDown = !missing && filterOn && !yes(market.market_ok);
+    const progress = (ctx.files["backfill_progress.csv"] || []).find((r) => String(r.kind || "") === "statements") || {};
+    const coverage = D.num(progress.pct);
+    const cutoff = D.num((ctx.settings || []).find((r) => r.setting === "buy_setups.full_rules_at_coverage_pct")?.value);
+    const fullAt = cutoff == null ? 80 : cutoff;
+    const configChart = D.featureOn("buy_setups.chart_setups_only");
+    let chartOnly = configChart && !(coverage != null && coverage >= fullAt);
     ctx.page.innerHTML =
       '<p class="cap">Research list, not a recommendation. This desk never places trades.</p>' +
+      trendStrip(Object.assign({}, (ctx.files["market_today.csv"] || [])[0] || {}, {
+        nifty_trend: market.nifty_trend,
+        sensex_trend: market.sensex_trend,
+        bank_trend: market.bank_trend,
+      })) +
       '<div id="buybanner" class="buybanner" hidden></div>' +
       '<div class="cards" id="cards"></div>' +
       '<div class="ctrls" id="ctrls"></div>' +
       '<div class="panel" id="tbl"></div>' +
-      '<p class="cap">A name is listed when at least one of VCP, Box, Flag, and CANSLIM is ready or broke out today, the desk verdict is BUY, the close is above the 50-day and 200-day averages, and the risk from the entry to the stop is 8% or less. Setup is which of those scanners agree. Count is how many agree. Status is the strongest one. Entry is that scanner\'s buy point. Stop is the tighter of 7% under the entry or the setup\'s own stop, and it is never above the entry. Target 1 is 20% above the entry, or 20% above today\'s close after a breakout. Target 2 is the entry plus three times the rupee risk. The 52-week columns match the 52-week page. Tap a row for the reason, the trade plan, and the daily price chart. Many breakouts fail, which is why the stop is always shown. Nothing here is an alert.</p>';
+      '<p class="cap">A name is listed when at least one of VCP, Box, Flag, and CANSLIM is ready or broke out today, the close is above the 50-day and 200-day averages, and the risk from the entry to the stop is 8% or less. Chart setups only also keeps a BUY or a Not scored yet label, and tags the unscored rows Financials pending. A scored AVOID stays off. With the switch off, only BUY remains. The market check passes when the Nifty 50 or SENSEX is in an uptrend. Show anyway lists the names when that check fails. Tap a row for the reason, the trade plan, and the daily price chart. Many breakouts fail, which is why the stop is always shown. Nothing here is an alert.</p>';
     const box = document.getElementById("ctrls");
     box.innerHTML =
       D.multiHtml("index", "Index", D.indexTokens(named)) +
       D.multiHtml("sector", "Sector", D.uniq(named, "sector")) +
       D.multiHtml("source", "Setup", ["VCP", "Box", "Flag", "CANSLIM"]) +
       D.multiHtml("status", "Status", D.uniq(named, "status")) +
-      D.searchHtml("ticker", "Ticker", "tick-list-buy", D.uniq(named, "ticker"));
+      D.searchHtml("ticker", "Ticker", "tick-list-buy", D.uniq(named, "ticker")) +
+      '<div class="rrgtabs" id="chartsw"><span class="lab">Chart setups only</span><button type="button" id="chartonly">' + (chartOnly ? "On" : "Off") + "</button></div>";
     D.placeFeed(box, raw);
     let showAnyway = false;
     const state = { sort: "_ord", dir: "asc", page: 0 };
@@ -2443,7 +2507,7 @@
       T("risk_pct", "Risk %", "pct", { dec: 1 }),
       T("reward_risk", "Reward/risk", "multiple", { dec: 2 }),
       T("dist_to_entry_pct", "Dist. to entry", "pct", { dec: 1, color: true }),
-      SC, VE,
+      SC, VE, T("financials_pending", "Financials", "pending"),
     ];
     const sourceOk = (row) => {
       const picked = D.selectedMulti(box, "source");
@@ -2472,11 +2536,12 @@
       ranked.forEach((r, i) => { r._ord = i; });
       return ranked;
     };
+    const chartPass = (row) => chartOnly || String(row.verdict || "") === "BUY";
     const draw = () => {
       const grey = marketDown && showAnyway;
-      const pool = (marketDown && !showAnyway) ? [] : named.filter((r) => readCommon(box, r) && sourceOk(r));
+      const pool = (marketDown && !showAnyway) ? [] : named.filter((r) => chartPass(r) && readCommon(box, r) && sourceOk(r));
       const rows = specOrder(pool);
-      const kpis = (marketDown && !showAnyway) ? [] : named;
+      const kpis = (marketDown && !showAnyway) ? [] : named.filter(chartPass);
       const broken = countWhere(kpis, (r) => r.best_status === "BROKEN OUT today");
       const multi = countWhere(kpis, (r) => (D.num(r.sources_count) || 0) >= 2);
       const rr = avg(kpis, "reward_risk");
@@ -2484,12 +2549,17 @@
         card("Setups today", String(kpis.length)) +
         card("Broken out today", String(broken)) +
         card("Multi-scanner setups", String(multi), "At least two scanners agree") +
-        card("Market status", missing ? D.na() : "Nifty " + yn(niftyUp), missing ? "" : "Bank Nifty " + yn(bankUp)) +
+        card("Market status", missing ? D.na() : D.esc((market.nifty_trend || "n/a") + " / " + (market.sensex_trend || "n/a")), missing ? "" : "Bank Nifty " + D.esc(market.bank_trend || "n/a")) +
         card("Average reward-to-risk", rr == null ? D.na() : D.esc(D.fmt(rr, 2)), "Target 1 versus the stop");
       const banner = document.getElementById("buybanner");
       if (marketDown) {
         banner.hidden = false;
-        banner.innerHTML = '<span>The Nifty is not in an uptrend today, so no buy setups are listed</span>' +
+        const rule = String(market.market_rule || "either") === "both"
+          ? "A buy setup needs both the Nifty 50 and SENSEX in an uptrend, so none are listed."
+          : "A buy setup needs the Nifty 50 or SENSEX in an uptrend, so none are listed.";
+        banner.innerHTML = "<span>Nifty 50 is " + D.esc(market.nifty_trend || "not on file") +
+          ". SENSEX is " + D.esc(market.sensex_trend || "not on file") +
+          ". Bank Nifty is " + D.esc(market.bank_trend || "not on file") + ". " + rule + "</span>" +
           '<button type="button" id="showanyway">' + (showAnyway ? "Hide greyed names" : "Show anyway") + "</button>";
         banner.querySelector("#showanyway").addEventListener("click", () => { showAnyway = !showAnyway; draw(); });
       } else {
@@ -2507,24 +2577,44 @@
         lines: buyLines,
         priceSub: "Entry, stop, and both targets. The stop stays on the chart because many breakouts fail.",
         detail: buyDetailHtml,
-        empty: marketDown && !showAnyway ? "No buy setups are listed." : (named.length ? "No names match these filters." : "No stock passed the buy-setup rules today."),
+        empty: marketDown && !showAnyway ? "No buy setups are listed." : (named.filter(chartPass).length ? "No names match these filters." : "No stock passed the buy-setup rules today."),
       });
     };
+    const chartBtn = document.getElementById("chartonly");
+    if (chartBtn) {
+      chartBtn.classList.toggle("on", chartOnly);
+      chartBtn.addEventListener("click", () => {
+        chartOnly = !chartOnly;
+        chartBtn.textContent = chartOnly ? "On" : "Off";
+        chartBtn.classList.toggle("on", chartOnly);
+        draw();
+      });
+    }
     hook(box, state, draw);
     draw();
   }
 
   function renderRotation(ctx) {
     const raw = ctx.files["sector_rotation.csv"] || [];
-    const rows = D.realRows(raw);
-    const tails = D.realRows(ctx.files["sector_rotation_tails.csv"] || []);
+    const allRows = D.realRows(raw);
+    const allTails = D.realRows(ctx.files["sector_rotation_tails.csv"] || []);
     const scores = D.realRows(ctx.files["scores.csv"] || []);
+    let benchPick = "^NSEI";
+    const savedBench = (ctx.settings || []).find((r) => r.setting === "sector_rotation.benchmark");
+    if (savedBench && String(savedBench.value).indexOf("BSESN") >= 0) benchPick = "^BSESN";
+    const takeBench = (list) => {
+      if (!list.some((r) => r.benchmark)) return list;
+      const got = list.filter((r) => String(r.benchmark) === benchPick);
+      return got.length ? got : list.filter((r) => String(r.benchmark) !== "^BSESN");
+    };
+    let rows = takeBench(allRows);
+    let tails = takeBench(allTails);
     const colors = {
       "^CNXIT": "#7C9CFF", "^NSEBANK": "#F59E0B", "^CNXAUTO": "#FB7185", "^CNXPHARMA": "#22C55E",
       "^CNXFMCG": "#FBBF24", "^CNXMETAL": "#94A3B8", "^CNXREALTY": "#C084FC", "^CNXENERGY": "#EF4444",
       "^CNXMEDIA": "#A78BFA", "^CNXPSUBANK": "#38BDF8", "^CNXFIN": "#2DD4BF", "^CNXINFRA": "#E6EBF5",
     };
-    const ranked = rows.slice().sort((a, b) => (D.num(a.rank) || 99) - (D.num(b.rank) || 99) || String(a.name).localeCompare(String(b.name)));
+    let ranked = rows.slice().sort((a, b) => (D.num(a.rank) || 99) - (D.num(b.rank) || 99) || String(a.name).localeCompare(String(b.name)));
     let tf = "W";
     let tailN = 8;
     let pick = ranked[0] ? ranked[0].ticker : "";
@@ -2534,12 +2624,13 @@
     const sample = rows[0] || {};
     ctx.page.innerHTML =
       '<div class="ctrls" id="ctrls"></div>' +
-      '<p class="cap">RS is the sector index divided by the Nifty 50, using daily closes already saved. RS-Ratio is 100 plus the z-score of that ratio, smoothed, versus its rolling mean. RS-Momentum is 100 plus the z-score of how fast RS-Ratio is changing. 100 is the center. Weekly and monthly points are built from those same daily bars. This is a desk calculation, not a commercial indicator. Research only. This desk never places trades.</p>' +
+      '<p class="cap" id="rotcap">RS is the sector index divided by the Nifty 50, using daily closes already saved. RS-Ratio is 100 plus the z-score of that ratio, smoothed, versus its rolling mean. RS-Momentum is 100 plus the z-score of how fast RS-Ratio is changing. 100 is the center. Weekly and monthly points are built from those same daily bars. This is a desk calculation, not a commercial indicator. Research only. This desk never places trades.</p>' +
       '<div class="cards" id="cards"></div>' +
       '<div class="panel pad"><div class="ptitle">Relative rotation</div><div class="chart-box rrg-box"><canvas id="rrg"></canvas></div><div class="rrglegend" id="rrglegend"></div><div class="rrgread" id="rrgread">Tap a point to read RS-Ratio and RS-Momentum.</div></div>' +
       '<div class="split"><div class="panel pad" id="macro"></div><div class="panel pad" id="changed"></div></div>' +
       '<div class="panel" id="tbl"></div><div class="panel" id="names"></div>';
     document.getElementById("ctrls").innerHTML =
+      '<div class="rrgtabs" id="rotbench"><span class="lab">Benchmark</span><button type="button" data-b="^NSEI">Nifty 50</button><button type="button" data-b="^BSESN">SENSEX</button></div>' +
       '<div class="rrgtabs" id="rrgtf">' +
       '<button type="button" data-tf="D">Daily</button><button type="button" data-tf="W" class="on">Weekly</button><button type="button" data-tf="M">Monthly</button></div>' +
       '<div class="rrgtabs" id="rrgtail"><span class="lab">Tail</span>' +
@@ -2739,6 +2830,44 @@
         empty: "No sector rotation on file.",
       });
     }
+    function paintBench() {
+      rows = takeBench(allRows);
+      tails = takeBench(allTails);
+      ranked = rows.slice().sort((a, b) => (D.num(a.rank) || 99) - (D.num(b.rank) || 99) || String(a.name).localeCompare(String(b.name)));
+      pick = ranked[0] ? ranked[0].ticker : "";
+      const word = benchPick === "^BSESN" ? "the SENSEX" : "the Nifty 50";
+      const cap = document.getElementById("rotcap");
+      if (cap) cap.textContent = "RS is the sector index divided by " + word + ", using daily closes already saved. RS-Ratio is 100 plus the z-score of that ratio, smoothed, versus its rolling mean. RS-Momentum is 100 plus the z-score of how fast RS-Ratio is changing. 100 is the center. Weekly and monthly points are built from those same daily bars. This is a desk calculation, not a commercial indicator. Research only. This desk never places trades.";
+      const headNow = ranked[0] || {};
+      const leadNow = countWhere(rows, (r) => r.quadrant_w === "Leading");
+      const lagNow = countWhere(rows, (r) => r.quadrant_w === "Lagging");
+      document.getElementById("cards").innerHTML =
+        card("Top sector", D.esc(headNow.name || "n/a"), headNow.score != null && headNow.score !== "" ? "Score " + D.fmt(D.num(headNow.score), 1) : "") +
+        card("Leading", String(leadNow), "Weekly") +
+        card("Lagging", String(lagNow), "Weekly") +
+        card("Quadrant changes", String(rows.filter((r) => String(r.change_weekly || "").indexOf("moved from") >= 0).length), "Versus last week") +
+        card("India 10-year", D.esc((rows[0] || {}).dgs10_trend || "not on file"), "About 3 months, when a history is saved");
+      document.getElementById("rrglegend").innerHTML = ranked.map((r) =>
+        '<span><i class="rrgdot" style="background:' + (colors[r.ticker] || "#8B96AD") + '"></i>' + D.esc(r.name || r.ticker) + "</span>").join("") +
+        '<span><i class="rrgdot" style="background:#22C55E"></i>Leading</span>' +
+        '<span><i class="rrgdot" style="background:#F59E0B"></i>Weakening</span>' +
+        '<span><i class="rrgdot" style="background:#EF4444"></i>Lagging</span>' +
+        '<span><i class="rrgdot" style="background:#7C9CFF"></i>Improving</span>';
+      document.querySelectorAll("#rotbench button").forEach((b) => b.classList.toggle("on", b.getAttribute("data-b") === benchPick));
+      drawChart();
+      drawTable();
+      drawNames();
+    }
+    document.querySelectorAll("#rotbench button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        benchPick = btn.getAttribute("data-b");
+        paintBench();
+      });
+    });
+    if (!D.featureOn("feature.sensex")) {
+      const host = document.getElementById("rotbench");
+      if (host) host.hidden = true;
+    }
     document.getElementById("rrgtf").querySelectorAll("button").forEach((btn) => {
       btn.addEventListener("click", () => {
         tf = btn.getAttribute("data-tf");
@@ -2753,9 +2882,7 @@
         drawChart();
       });
     });
-    drawChart();
-    drawTable();
-    drawNames();
+    paintBench();
   }
 
 
@@ -2802,7 +2929,7 @@
     secperf: { files: ["sector_performance.csv"], render: renderSecPerf },
     heatmaps: { files: ["heatmaps.csv"], render: renderHeatmaps },
     updates: { files: ["updates_log.csv", "freshness.csv", "backfill_progress.csv"], render: renderUpdates },
-    buysetups: { files: ["buy_setups.csv"], render: renderBuySetups },
+    buysetups: { files: ["buy_setups.csv", "backfill_progress.csv"], render: renderBuySetups },
     week52: { files: ["scanner_52w.csv", "highs_lows_history.csv"], render: renderWeek52 },
     rotation: { files: ["sector_rotation.csv", "sector_rotation_tails.csv", "sector_rotation_history.csv", "scores.csv"], render: renderRotation },
     help: { files: ["help.csv", "settings.csv"], render: renderHelp },
