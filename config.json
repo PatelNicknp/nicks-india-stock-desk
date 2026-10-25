@@ -67,8 +67,8 @@
     "bse_only_uses_sensex": true
   },
   "fundamentals_backfill": {
-    "statements_per_run": 40,
-    "shareholding_per_run": 40,
+    "statements_per_run": 200,
+    "shareholding_per_run": 200,
     "pause_seconds": 0.45,
     "max_minutes": 18,
     "statements_refresh_days": 90,
