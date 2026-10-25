@@ -1,24 +1,14 @@
 {
  "statements_retry_after": {},
- "shareholding_retry_after": {
-  "EMPOWER": "2026-10-26",
-  "FEDDERSHOL": "2026-10-26",
-  "FREDUN": "2026-10-26",
-  "FRONTSP": "2026-10-26",
-  "GNRL": "2026-10-26",
-  "GRAUWEIL": "2026-10-26",
-  "HALDYNGL": "2026-10-26",
-  "HAZOOR": "2026-10-26",
-  "KENNAMET": "2026-10-26",
-  "KIRLFER": "2026-10-26",
-  "KLBRENG-B": "2026-10-26",
-  "KMCSHIL": "2026-10-26",
-  "KOVAI": "2026-10-26",
-  "KPL": "2026-10-26"
- },
- "last_batch_at": "2026-10-25T19:28Z",
+ "shareholding_retry_after": {},
+ "last_batch_at": "2026-10-25T19:57Z",
  "last_statements_ok": 200,
  "last_statements_fail": 0,
- "last_shareholding_ok": 0,
- "last_shareholding_fail": 6
+ "last_shareholding_ok": 198,
+ "last_shareholding_fail": 0,
+ "shareholding_empty_on": {
+  "BIRET": "2026-10-26",
+  "EMBASSY": "2026-10-26"
+ },
+ "last_shareholding_empty": 2
 }
