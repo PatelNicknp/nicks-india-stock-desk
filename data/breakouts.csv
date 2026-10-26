@@ -1,7 +1,7 @@
 ticker,company,sector,price,dist_52w_high_pct,volume_ratio,score,verdict,data_status,note,disclaimer
 SW1,SW INVESTMENTS LTD,Financials,235.0,0.0,0.0,4,HOLD,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-PHOTON,PHOTON CAPITAL ADVISORS LTD.,Financials,501.6,0.0,1.93,1,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 RAJVI,RAJVI LOGITRADE LIMITED,Industrials,48.53,0.0,0.46,1,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+PHOTON,PHOTON CAPITAL ADVISORS LTD.,Financials,501.6,0.0,1.93,1,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 NEWMKTAVE,NEW MARKETS AVENUE LIMITED,Information Technology,123.19,0.0,0.16,1,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 TRUSTWAVE,TRUSTWAVE SECURITIES LIMITED,Financials,291.5,0.0,0.02,1,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 AURIQUE,AURIQUE LIMITED,Industrials,77.43,0.0,1.54,0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
