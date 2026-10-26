@@ -71,6 +71,7 @@ def batch_cfg(cfg):
         "max_minutes": max(1, num("max_minutes", 18)),
         "statements_refresh_days": max(1, num("statements_refresh_days", 90)),
         "shareholding_refresh_days": max(1, num("shareholding_refresh_days", 90)),
+        "company_lines_per_run": max(0, num("company_lines_per_run", 40)),
     }
 
 
@@ -794,6 +795,7 @@ def run_batch(root, cfg, max_names=None):
         time.sleep(pause)
     annual, quarters = _flush_statements(annual, quarters, new_a, new_q, cache)
     _flush_info_earn(info_rows, earn_rows, earn, cache)
+    stats["company_lines"] = _refresh_company_lines(root, cfg, codes, book, spec, deadline)
     cursor["last_batch_at"] = now_iso()
     cursor["last_statements_ok"] = stats["statements_ok"]
     cursor["last_statements_fail"] = stats["statements_fail"]
@@ -815,6 +817,31 @@ def run_batch(root, cfg, max_names=None):
     )
     stats["enabled"] = True
     return stats
+
+
+def company_line_on(cfg):
+    return bool((cfg.get("features") or {}).get("company_line", True))
+
+
+def _refresh_company_lines(root, cfg, codes, book, spec, deadline):
+    """Fill a few names that still have no summary, then rewrite data/company_lines.csv."""
+    if not company_line_on(cfg):
+        return 0
+    import company_lines
+    tried = 0
+    try:
+        if spec["company_lines_per_run"] and time.time() < deadline:
+            tried = company_lines.fill_missing(
+                root, cfg, codes, book, limit=spec["company_lines_per_run"], deadline=deadline,
+                pause=max(1.0, spec["pause_seconds"]), today=today_ist(),
+            )
+        frame = company_lines.write_lines(root, today=today_ist())
+        if frame is not None:
+            real = int((frame["source"] != "Industry fallback").sum())
+            print("Company lines %d real, %d industry fallback, %d names tried this run" % (real, len(frame) - real, tried))
+    except Exception as exc:
+        print("company lines skipped", str(exc)[:160])
+    return tried
 
 
 def _flush_statements(annual, quarters, new_a, new_q, cache):

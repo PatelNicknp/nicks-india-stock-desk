@@ -41,7 +41,9 @@ jobs:
             cache/earnings.csv \
             cache/holders.csv \
             cache/backfill_cursor.json \
-            data/backfill_progress.csv
+            cache/company_profiles.csv \
+            data/backfill_progress.csv \
+            data/company_lines.csv
           if git diff --cached --quiet; then
             echo "No financials changes."
             exit 0

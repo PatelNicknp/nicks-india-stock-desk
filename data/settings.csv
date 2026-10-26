@@ -57,6 +57,7 @@ feature.buy_setups,True
 feature.sector_rotation,True
 feature.fundamentals_backfill,True
 feature.sensex,True
+feature.company_line,True
 buy_setups.market_filter,True
 buy_setups.chart_setups_only,True
 buy_setups.full_rules_at_coverage_pct,80
