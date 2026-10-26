@@ -62,6 +62,7 @@ feature.high_volume_scanner,True
 buy_setups.market_filter,True
 buy_setups.chart_setups_only,True
 buy_setups.full_rules_at_coverage_pct,80
+fundamentals_backfill.rebuild_pages_after_run,True
 market.require_both_uptrends,False
 benchmark.bse_only_uses_sensex,True
 sector_rotation.benchmark,^NSEI
