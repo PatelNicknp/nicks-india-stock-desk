@@ -1,0 +1,143 @@
+name: Schedule watchdog
+# Self-healing schedule. GitHub's cron sometimes skips or delays runs.
+# This small job wakes up several times an hour and starts a workflow only
+# when it is overdue and nothing for it is already queued or running.
+#   Financials backfill: no run started in the last 45 minutes.
+#   Daily update: no good close run since the latest weekday NSE close.
+# Each check has its own switch under self_heal_schedule in config.json.
+on:
+  schedule:
+    - cron: "7,37 * * * *"
+    - cron: "22,52 * * * *"
+  workflow_dispatch:
+    inputs:
+      backfill_overdue_minutes:
+        description: "Test only: use this backfill overdue limit instead of config.json"
+        required: false
+        default: ""
+      dry_run:
+        description: "Only report, do not start anything"
+        type: boolean
+        default: false
+permissions:
+  actions: write
+  contents: read
+concurrency:
+  group: india-watchdog
+  cancel-in-progress: true
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            config.json
+            data/backfill_progress.csv
+          sparse-checkout-cone-mode: false
+      - name: Start overdue workflows
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          BRANCH: ${{ github.event.repository.default_branch }}
+          OVERRIDE: ${{ inputs.backfill_overdue_minutes }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          set -euo pipefail
+          cfg() { jq -r ".self_heal_schedule.$1 // $2" config.json; }
+          now=$(date -u +%s)
+          note() { echo "$1"; echo "- $1" >> "$GITHUB_STEP_SUMMARY"; }
+
+          # Prints the run list, or nothing if the workflow is turned off in Actions.
+          runs_of() {
+            local state
+            state=$(gh api "repos/$REPO/actions/workflows/$1" -q .state)
+            if [ "$state" != "active" ]; then echo ""; return; fi
+            gh api "repos/$REPO/actions/workflows/$1/runs?per_page=30"
+          }
+          busy() { echo "$1" | jq '[.workflow_runs[] | select(.status != "completed")] | length'; }
+          start() {
+            if [ "${DRY_RUN:-false}" = "true" ]; then note "$1: dry run, not starting it."; return; fi
+            gh workflow run "$1" -R "$REPO" --ref "$BRANCH"
+            note "$1: started on $BRANCH."
+          }
+
+          # 1. Financials backfill.
+          WF=fundamentals-backfill.yml
+          if [ "$(cfg backfill_watchdog true)" != "true" ]; then
+            note "$WF: watchdog is off in config.json."
+          else
+            limit=$(cfg backfill_overdue_minutes 45)
+            [ -n "${OVERRIDE:-}" ] && limit="$OVERRIDE"
+            # In refresh mode, when the last batch found no name due, there is no
+            # catching up to do, so leave it to the cron.
+            idle=false
+            if [ "$(cfg backfill_skip_when_nothing_due true)" = "true" ] && [ -f data/backfill_progress.csv ]; then
+              idle=$(python3 -c "import csv;r=list(csv.DictReader(open('data/backfill_progress.csv')));print('true' if r and all(x.get('next_name')=='none' for x in r) else 'false')")
+            fi
+            runs=$(runs_of "$WF")
+            if [ -z "$runs" ]; then
+              note "$WF: turned off in Actions, not starting it."
+            elif [ "$idle" = "true" ]; then
+              note "$WF: no name is due (refresh mode), leaving it to the cron."
+            elif [ "$(busy "$runs")" -gt 0 ]; then
+              note "$WF: a run is already queued or running."
+            else
+              last=$(echo "$runs" | jq -r '.workflow_runs[0].created_at // "1970-01-01T00:00:00Z"')
+              age=$(( (now - $(date -u -d "$last" +%s)) / 60 ))
+              if [ "$age" -le "$limit" ]; then
+                note "$WF: last run started $last, $age min ago (limit $limit). Not overdue."
+              else
+                note "$WF: last run started $last, $age min ago (limit $limit). Overdue."
+                start "$WF"
+              fi
+            fi
+          fi
+
+          # 2. Daily update after the NSE close.
+          WF=update.yml
+          if [ "$(cfg daily_update_watchdog true)" != "true" ]; then
+            note "$WF: watchdog is off in config.json."
+          else
+            close_utc=$(cfg daily_update_close_utc '"10:30"')
+            grace=$(cfg daily_update_grace_minutes 60)
+            gap=$(cfg daily_update_retry_gap_minutes 90)
+            max_tries=$(cfg daily_update_max_tries 3)
+            # Latest weekday close that is at least the grace time in the past.
+            close=""
+            for d in 0 1 2 3 4 5 6 7; do
+              day=$(date -u -d "today -$d day" +%F)
+              t=$(date -u -d "$day $close_utc" +%s)
+              dow=$(date -u -d "$day" +%u)
+              if [ "$dow" -le 5 ] && [ $((t + grace * 60)) -le "$now" ]; then close=$t; break; fi
+            done
+            close_iso=$(date -u -d "@$close" +%FT%TZ)
+            # A close run is a manual or watchdog start, or a scheduled run that began
+            # before 02:00 UTC the next day (the 02:30 UTC morning run has no prices).
+            morning=$(( $(date -u -d "$(date -u -d "@$close" +%F) +1 day 02:00" +%s) ))
+            runs=$(runs_of "$WF")
+            if [ -z "$runs" ]; then
+              note "$WF: turned off in Actions, not starting it."
+            else
+              since=$(echo "$runs" | jq --argjson c "$close" --argjson m "$morning" \
+                '[.workflow_runs[] | select((.created_at|fromdateiso8601) >= $c)
+                  | select(.event != "schedule" or ((.created_at|fromdateiso8601) < $m))]')
+              good=$(echo "$since" | jq '[.[] | select(.conclusion == "success")] | length')
+              tries=$(echo "$since" | jq 'length')
+              last=$(echo "$runs" | jq -r '.workflow_runs[0].created_at // "1970-01-01T00:00:00Z"')
+              age=$(( (now - $(date -u -d "$last" +%s)) / 60 ))
+              if [ "$good" -gt 0 ]; then
+                note "$WF: a close run already worked since the $close_iso close."
+              elif [ "$(busy "$runs")" -gt 0 ]; then
+                note "$WF: a run is already queued or running."
+              elif [ "$tries" -ge "$max_tries" ]; then
+                note "$WF: $tries tries since the $close_iso close, none worked. Waiting for the next close."
+              elif [ "$age" -lt "$gap" ]; then
+                note "$WF: last try started $age min ago, waiting $gap min between tries."
+              else
+                note "$WF: no good close run since the $close_iso close. Overdue."
+                start "$WF"
+              fi
+            fi
+          fi
