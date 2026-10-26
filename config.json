@@ -78,6 +78,17 @@
     "company_lines_per_run": 40,
     "rebuild_pages_after_run": true
   },
+  "self_heal_schedule": {
+    "_note": "Self-healing schedule. A small watchdog job checks a few times an hour and starts a workflow only when it is overdue and nothing for it is queued or running. false turns a check off and leaves only GitHub's own cron.",
+    "backfill_watchdog": true,
+    "backfill_overdue_minutes": 45,
+    "backfill_skip_when_nothing_due": true,
+    "daily_update_watchdog": true,
+    "daily_update_close_utc": "10:30",
+    "daily_update_grace_minutes": 60,
+    "daily_update_retry_gap_minutes": 90,
+    "daily_update_max_tries": 3
+  },
   "buy_setups": {
     "market_filter": true,
     "chart_setups_only": true,

@@ -48,6 +48,22 @@ Every stock chart has one plain line above it that says what the company does. T
 
 If a source fails, the job keeps the saved file and the Data updates page says CACHED.
 
+## Self-healing schedule
+
+GitHub's own cron sometimes skips or delays scheduled runs. Three layers keep both jobs going, all inside GitHub:
+
+1. **The normal crons** in `update.yml` and `fundamentals-backfill.yml`.
+2. **A watchdog** (`.github/workflows/watchdog.yml`). It wakes at 7, 22, 37 and 52 minutes past each hour and looks up the last runs through the GitHub API, using the built-in `GITHUB_TOKEN`. It starts a workflow with "Run workflow" only when nothing for that workflow is queued or running and:
+   - **Financials backfill**: no run started in the last 45 minutes. When the last batch found no name due (refresh mode), it leaves the backfill to its cron.
+   - **Daily update**: no close run worked since the latest weekday NSE close (10:30 UTC, checked from 11:30 UTC). It tries at most 3 times per close, 90 minutes apart, so a source that is down is not hammered. A watchdog start runs the full after-close update (`--close`).
+3. **Concurrency groups**, so two runs of the same job never overlap or pile up.
+
+Switches in `config.json` under `self_heal_schedule`: `backfill_watchdog` and `daily_update_watchdog` (`true` or `false`), plus `backfill_overdue_minutes`, `backfill_skip_when_nothing_due`, `daily_update_close_utc`, `daily_update_grace_minutes`, `daily_update_retry_gap_minutes` and `daily_update_max_tries`. Set a switch to `false` to go back to GitHub's cron only for that job.
+
+To test it by hand, open Actions, pick "Schedule watchdog", press "Run workflow", and set a small "backfill_overdue_minutes" (tick "dry_run" to only see what it would do). The run summary lists what it checked and started.
+
+GitHub turns off scheduled workflows in a public repo after 60 days with no repo activity. The backfill and daily update commit data often, so this does not apply while they keep saving data.
+
 ## Pages that can say "not available"
 
 These stay on the site with a plain note when the free source does not answer:
