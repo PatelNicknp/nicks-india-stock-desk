@@ -75,7 +75,8 @@
     "max_minutes": 18,
     "statements_refresh_days": 90,
     "shareholding_refresh_days": 90,
-    "company_lines_per_run": 40
+    "company_lines_per_run": 40,
+    "rebuild_pages_after_run": true
   },
   "buy_setups": {
     "market_filter": true,

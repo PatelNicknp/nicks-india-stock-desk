@@ -208,7 +208,7 @@ COLS["buy_setups"] = [
     "setup_sources", "sources_count", "best_status", "entry", "stop", "target1", "target2",
     "risk_pct", "reward_risk", "dist_to_entry_pct", "score", "verdict",
     "range_position_52w", "pct_from_high_52w", "reason", "market_ok", "spy_uptrend", "qqq_uptrend",
-    "sensex_uptrend", "nifty_trend", "sensex_trend", "bank_trend", "market_rule", "financials_pending", "rs_benchmark",
+    "sensex_uptrend", "nifty_trend", "sensex_trend", "bank_trend", "market_rule", "financials_pending", "listed", "rs_benchmark",
     "data_status", "note", "disclaimer",
 ]
 COLS["sector_rotation"] = [
@@ -688,30 +688,38 @@ def xly_xlp_table(close):
 
 
 def historical_pe(close, prepared):
-    rows = []
     if close is None or close.empty or not prepared:
         return pd.DataFrame()
     idx = close.index
-    month_ends = idx.to_series().groupby(idx.to_period("M")).max().tolist()
-    for d in month_ends[-120:]:
-        pes = []
-        for t, prep in prepared.items():
-            if t not in close.columns or prep is None or len(prep) == 0:
-                continue
-            known = prep[prep["known_on"] <= d]
-            if known.empty:
-                continue
-            eps = known.iloc[-1].get("eps")
-            price = close.at[d, t]
-            try:
-                eps = float(eps)
-                price = float(price)
-            except (TypeError, ValueError):
-                continue
+    month_ends = idx.to_series().groupby(idx.to_period("M")).max().tolist()[-120:]
+    if not month_ends:
+        return pd.DataFrame()
+    ends = pd.DatetimeIndex(month_ends)
+    pes_by_month = [[] for _ in month_ends]
+    for t, prep in prepared.items():
+        if t not in close.columns or prep is None or len(prep) == 0:
+            continue
+        if "known_on" not in prep.columns or "eps" not in prep.columns:
+            continue
+        known_on = pd.to_datetime(prep["known_on"], errors="coerce")
+        if getattr(known_on.dt, "tz", None) is not None:
+            known_on = known_on.dt.tz_localize(None)
+        known_vals = known_on.values
+        eps_vals = pd.to_numeric(prep["eps"], errors="coerce").values
+        prices = pd.to_numeric(close[t].reindex(ends), errors="coerce").values
+        # For each month end, the last row in file order already known on that day.
+        ok = known_vals[None, :] <= ends.values[:, None]
+        any_ok = ok.any(axis=1)
+        last = ok.shape[1] - 1 - np.argmax(ok[:, ::-1], axis=1)
+        for i in np.flatnonzero(any_ok):
+            eps = eps_vals[last[i]]
+            price = prices[i]
             if np.isfinite(eps) and eps > 0 and np.isfinite(price) and price > 0:
                 pe = price / eps
                 if 0 < pe < 2000:
-                    pes.append(pe)
+                    pes_by_month[i].append(pe)
+    rows = []
+    for d, pes in zip(month_ends, pes_by_month):
         if len(pes) < 20:
             continue
         rows.append({
@@ -1005,7 +1013,7 @@ def help_rows():
         ("CANSLIM scanner", "C and A are the year-ago EPS change from the saved statements. N is how close the price is to its 52-week closing high. S is the 20-day average volume. L is the relative-strength percentile versus the Nifty for NSE stocks, and versus SENSEX for BSE-only stocks. I is the shareholding change when we have it. M shows the Nifty 50, SENSEX, and Bank Nifty side by side as Uptrend, Under pressure, or Correction. The market is in an uptrend when the Nifty 50 or SENSEX is in an uptrend. Set market.require_both_uptrends to true to require both. Bank Nifty is shown and does not decide. The What CANSLIM means box explains each letter. A blank that says not verified was not in the cache. It is not a guess."),
         ("Row charts", "On a stock list, the button at the left of a row opens that stock's daily price chart under the row. Only one chart stays open. The caption names the benchmark: Nifty 50 for NSE stocks, SENSEX for BSE-only stocks. The scorecard says the same thing. Turn the charts off with feature.row_charts in config.json."),
         ("52-week highs and lows", "The 52-week high is the highest price of the last 252 trading sessions, and the 52-week low is the lowest. A new high today means the close is at or above the prior 252-session high. A new low today means the close is at or below the prior 252-session low. Near the high means the close is within 5% of that high. A high on volume also needs volume at least 1.5 times the 50-day average. This page is separate from the 52-week breakouts list, which only keeps names within 1% of the high. Research only. Turn it off with feature.scanner_52w."),
-        ("Buy setups", "Research list, not a recommendation. This desk never places trades. A stock is listed when VCP, Box, Flag, or CANSLIM is ready or broke out today, the close is above the 50-day and the 200-day averages, and the risk from the entry to the stop is 8% or less. Chart setups only, on while financials coverage is under 80%, also keeps a BUY or a Not scored yet label and marks the unscored names Financials pending. A scored AVOID stays off the list. Turn that switch off and the page keeps only BUY. The market check passes when the Nifty 50 or SENSEX is in an uptrend. Set market.require_both_uptrends to require both. Bank Nifty is shown and does not decide. When the check fails, the list stays empty until you press Show anyway. The banner names which index is up or down. The stop is the tighter of 7% under the entry or the setup's own stop. Target 1 is 20% above the entry, or 20% above the breakout close. Target 2 is the entry plus three times the risk. Turn the page off with feature.buy_setups."),
+        ("Buy setups", "Research list, not a recommendation. This desk never places trades. A stock is listed when VCP, Box, Flag, or CANSLIM is ready or broke out today, the close is above the 50-day and the 200-day averages, and the risk from the entry to the stop is 8% or less. Chart setups only, on while financials coverage is under 80%, also keeps a BUY or a Not scored yet label and marks the unscored names Financials pending. A scored AVOID stays off the list until you press Show anyway. Turn that switch off and the page keeps only BUY. The market check passes when the Nifty 50 or SENSEX is in an uptrend. Set market.require_both_uptrends to require both. Bank Nifty is shown and does not decide. When the check fails, the list stays empty until you press Show anyway. Show anyway then lists every name that passes the chart rules, greyed out, with its real verdict: BUY, HOLD, AVOID, or Not scored yet. The banner names which index is up or down. The stop is the tighter of 7% under the entry or the setup's own stop. Target 1 is 20% above the entry, or 20% above the breakout close. Target 2 is the entry plus three times the risk. Scores are rebuilt from the saved financials and shareholding at the end of every backfill run, with no new downloads. Turn that off with fundamentals_backfill.rebuild_pages_after_run. Turn the page off with feature.buy_setups."),
         ("Sector rotation", "The graph compares Nifty sector indexes with a benchmark using daily closes already in the cache. The default benchmark is the Nifty 50. You can switch the page to SENSEX. No new download. RS is the sector index close divided by that benchmark. RS-Ratio is 100 plus the z-score of that ratio, after a moving average, versus its own rolling mean. RS-Momentum is 100 plus the z-score of the change in RS-Ratio. 100 is the center. Leading is top right, Weakening is bottom right, Lagging is bottom left, Improving is top left. Weekly and monthly points are built from those same daily bars. The score blends relative strength, how many of the sector's stocks are above their averages, how many are near a 52-week high, how many are on a buy setup, and the average desk score. A missing factor is left out. It is not stored as zero. Oil and gold are not on file. Turn it off with feature.sector_rotation."),
         ("Financials backfill", "A separate job downloads company statements, ratios, analyst numbers, and promoter, FII, DII, and public shareholding. It is scheduled every 15 minutes, including weekends, and continues from a saved cursor. GitHub may start a run late. Liquid stocks come first, then the rest of the NSE list, then BSE-only names. After every name has a saved row, it refreshes the oldest shareholding about every 90 days and refreshes results after the next earnings date, or every 90 days. At 200 statements and 200 shareholding names a run, the first pass of the full list is well under a day when the free sources answer. A name with no shareholding filing is saved for later in the pass. Turn it off with feature.fundamentals_backfill. The price schedule does not change."),
         ("High volume", "This page lists stocks that traded far more shares than usual in the latest session. Volume ratio is today's volume divided by the average of the last 50 sessions, so 3.2x means 3.2 times a normal day. Heavy volume on an up day usually means buying. Heavy volume on a down day usually means selling. The page starts at 2x or more, a close over Rs 20, and at least Rs 1 crore traded. You can switch to 1.5x, 3x, or 5x, pick up days or down days, and pick NSE or BSE. Tap a row to see its chart. It uses the same daily prices the desk already saves. No new download. ETFs and funds are left out. Research only. Turn it off with feature.high_volume_scanner."),
@@ -1024,6 +1032,8 @@ def settings_rows(cfg):
     rows.append({"setting": "buy_setups.market_filter", "value": buy_cfg.get("market_filter", True)})
     rows.append({"setting": "buy_setups.chart_setups_only", "value": buy_cfg.get("chart_setups_only", True)})
     rows.append({"setting": "buy_setups.full_rules_at_coverage_pct", "value": buy_cfg.get("full_rules_at_coverage_pct", 80)})
+    back_cfg = cfg.get("fundamentals_backfill") or {}
+    rows.append({"setting": "fundamentals_backfill.rebuild_pages_after_run", "value": back_cfg.get("rebuild_pages_after_run", True)})
     market_cfg = cfg.get("market") or {}
     rows.append({"setting": "market.require_both_uptrends", "value": market_cfg.get("require_both_uptrends", False)})
     bench_cfg = cfg.get("benchmark") or {}

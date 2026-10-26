@@ -468,6 +468,85 @@ def test_merge_keeps_older_bars_and_rewrite_skips_same_text():
         shutil.rmtree(folder, ignore_errors=True)
 
 
+def test_light_rescore_uses_files_on_disk_and_keeps_history():
+    """The backfill rebuild rescores from the saved files, downloads nothing, and keeps the daily snapshot."""
+    root = tempfile.mkdtemp(prefix="desk-rescore-")
+    try:
+        build_fixture(root)
+        os.environ["DESK_ROOT"] = root
+        stock_desk.main(["--offline"])
+        data = os.path.join(root, "data")
+        cache = os.path.join(root, "cache")
+        prev_before = open(os.path.join(cache, "prev_scores.csv")).read()
+        hist_before = open(os.path.join(data, "score_history.csv")).read()
+        stamps_before = open(os.path.join(cache, "stamps.json")).read()
+        # The backfill saves financials for a new name. The light rebuild must score it.
+        annual = pd.read_csv(os.path.join(cache, "annual.csv"))
+        scores = pd.read_csv(os.path.join(data, "scores.csv"))
+        assert "Not scored yet" not in set(scores.loc[scores.ticker == "AAA", "verdict"])
+        annual = annual[annual.ticker != "CCC"]
+        annual.to_csv(os.path.join(cache, "annual.csv"), index=False)
+        info = pd.read_csv(os.path.join(cache, "yahoo_info.csv"))
+        info[info.ticker != "CCC"].to_csv(os.path.join(cache, "yahoo_info.csv"), index=False)
+        stock_desk.main(["--rescore", "--after-backfill"])
+        mid = pd.read_csv(os.path.join(data, "scores.csv"))
+        assert mid.loc[mid.ticker == "CCC", "verdict"].iloc[0] == "Not scored yet"
+        pd.DataFrame(_facts_rows("CCC", 100, 1.5, 50, 20, 9, 2, 0.2, 10)).pipe(
+            lambda add: pd.concat([annual, add], ignore_index=True)).to_csv(os.path.join(cache, "annual.csv"), index=False)
+        stock_desk.main(["--rescore", "--after-backfill"])
+        after = pd.read_csv(os.path.join(data, "scores.csv"))
+        assert after.loc[after.ticker == "CCC", "verdict"].iloc[0] != "Not scored yet"
+        meta = json.load(open(os.path.join(data, "meta.json")))
+        assert meta["mode"] == "rescore"
+        assert open(os.path.join(cache, "prev_scores.csv")).read() == prev_before
+        assert open(os.path.join(data, "score_history.csv")).read() == hist_before
+        assert open(os.path.join(cache, "stamps.json")).read() == stamps_before
+        log = pd.read_csv(os.path.join(data, "updates_log.csv"))
+        assert "Light rebuild" in set(log["source"])
+        assert log.loc[log["source"].str.contains("Fundamentals"), "note"].str.contains("offline|cache", case=False).all()
+        buy = pd.read_csv(os.path.join(data, "buy_setups.csv"))
+        assert list(buy.columns) == tables.COLS["buy_setups"]
+    finally:
+        os.environ.pop("DESK_ROOT", None)
+        shutil.rmtree(root, ignore_errors=True)
+
+
+def test_rebuild_switch_off_skips_the_rebuild():
+    root = tempfile.mkdtemp(prefix="desk-rescore-off-")
+    try:
+        build_fixture(root)
+        cfg = json.load(open(os.path.join(root, "config.json")))
+        assert cfg["fundamentals_backfill"]["rebuild_pages_after_run"] is True
+        assert stock_desk.rebuild_after_backfill_on(cfg)
+        assert stock_desk.rebuild_after_backfill_on({})
+        cfg["fundamentals_backfill"]["rebuild_pages_after_run"] = False
+        json.dump(cfg, open(os.path.join(root, "config.json"), "w"))
+        os.environ["DESK_ROOT"] = root
+        assert stock_desk.main(["--rescore", "--after-backfill"]) == {}
+        assert not os.path.exists(os.path.join(root, "data", "scores.csv"))
+    finally:
+        os.environ.pop("DESK_ROOT", None)
+        shutil.rmtree(root, ignore_errors=True)
+
+
+def test_price_file_matches_row_by_row_build():
+    dates = pd.bdate_range("2024-01-01", periods=80)
+    close = pd.DataFrame({"AAA": np.linspace(10, 30, 80), "BBB": np.linspace(50, 40, 80)}, index=dates)
+    close.iloc[10, 1] = np.nan
+    scores = pd.DataFrame([
+        {"ticker": "AAA", "entry_low": 9.5, "entry_high": 10.5, "stop": 9.0, "trade_target": 14.0},
+        {"ticker": "BBB", "entry_low": np.nan, "entry_high": np.nan, "stop": 38.0, "trade_target": np.nan},
+    ])
+    out = stock_desk.price_file(close, scores)
+    assert len(out) == 80 + 79
+    a = out[out.ticker == "AAA"].iloc[-1]
+    assert a["close"] == 30.0
+    assert a["sma20"] == round(float(close["AAA"].tail(20).mean()), 2)
+    assert a["stop"] == 9.0
+    first = out[out.ticker == "AAA"].iloc[0]
+    assert first["sma20"] is None or pd.isna(first["sma20"])
+
+
 if __name__ == "__main__":
     test_offline_job()
     test_feature_off_writes_header_only()
@@ -486,4 +565,7 @@ if __name__ == "__main__":
     test_candle_file_keeps_full_history_for_average_warmup()
     test_published_candles_use_real_opens()
     test_merge_keeps_older_bars_and_rewrite_skips_same_text()
+    test_light_rescore_uses_files_on_disk_and_keeps_history()
+    test_rebuild_switch_off_skips_the_rebuild()
+    test_price_file_matches_row_by_row_build()
     print("job ok")

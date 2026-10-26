@@ -6,6 +6,7 @@ Research screen for NSE stocks. It never places a trade and it never calls a bro
     python stock_desk.py --retry    # same, but only the last few sessions (late bhavcopy)
     python stock_desk.py --morning  # news and FII/DII only
     python stock_desk.py --offline  # cache only, for tests
+    python stock_desk.py --rescore  # light rebuild: rescore from files on disk, no downloads
 
 Daily prices come from the NSE bhavcopy. BSE, Stooq, and Yahoo are fallbacks.
 Yahoo is not used to price every stock. Statements and shareholding rotate
@@ -76,6 +77,12 @@ def paths():
     for d in (data, cache, os.path.join(cache, "pcr"), os.path.join(cache, "econ")):
         os.makedirs(d, exist_ok=True)
     return data, cache, inp
+
+
+def rebuild_after_backfill_on(cfg):
+    """Switch for the light rebuild at the end of each backfill run. Default on."""
+    spec = (cfg or {}).get("fundamentals_backfill") or {}
+    return bool(spec.get("rebuild_pages_after_run", True))
 
 
 def load_cfg():
@@ -1904,31 +1911,40 @@ def price_file(close, scores):
     if close is None or close.empty or scores is None or len(scores) == 0:
         return pd.DataFrame()
     names = [t for t in scores["ticker"] if t in close.columns]
+    names = list(dict.fromkeys(names))
+    if not names:
+        return pd.DataFrame()
     # Average each ticker on the sessions it actually traded, using the full
     # cache, and only then keep the chart window. A holiday hole in the wide
     # frame used to blank the next 20 or 50 bars.
-    sma20 = pd.DataFrame(index=close.index, columns=names, dtype=float)
-    sma50 = pd.DataFrame(index=close.index, columns=names, dtype=float)
+    px = close[names].tail(CHART_BARS)
+    window = px.index
+    sma20 = {}
+    sma50 = {}
     for t in names:
         traded = pd.to_numeric(close[t], errors="coerce").dropna()
-        sma20[t] = traded.rolling(20, min_periods=20).mean()
-        sma50[t] = traded.rolling(50, min_periods=50).mean()
-    px = close[names].tail(CHART_BARS)
-    levels = scores.set_index("ticker")
-    rows = []
+        sma20[t] = traded.rolling(20, min_periods=20).mean().reindex(window)
+        sma50[t] = traded.rolling(50, min_periods=50).mean().reindex(window)
+    levels = scores.drop_duplicates("ticker", keep="first").set_index("ticker")
+    level_cols = ("entry_low", "entry_high", "stop", "trade_target")
+    pieces = []
     for t in names:
-        for d, val in px[t].dropna().items():
-            rec = levels.loc[t]
-            if isinstance(rec, pd.DataFrame):
-                rec = rec.iloc[0]
-            rows.append({
-                "date": str(pd.Timestamp(d).date()), "ticker": t, "close": round(float(val), 2),
-                "sma20": None if pd.isna(sma20.at[d, t]) else round(float(sma20.at[d, t]), 2),
-                "sma50": None if pd.isna(sma50.at[d, t]) else round(float(sma50.at[d, t]), 2),
-                "entry_low": rec.get("entry_low"), "entry_high": rec.get("entry_high"),
-                "stop": rec.get("stop"), "trade_target": rec.get("trade_target"),
-            })
-    return pd.DataFrame(rows)
+        vals = pd.to_numeric(px[t], errors="coerce").dropna()
+        if not len(vals):
+            continue
+        part = pd.DataFrame({
+            "date": [str(pd.Timestamp(d).date()) for d in vals.index],
+            "ticker": t,
+            "close": [round(float(v), 2) for v in vals.values],
+            "sma20": [None if pd.isna(v) else round(float(v), 2) for v in sma20[t].reindex(vals.index).values],
+            "sma50": [None if pd.isna(v) else round(float(v), 2) for v in sma50[t].reindex(vals.index).values],
+        })
+        for col in level_cols:
+            part[col] = levels.at[t, col] if col in levels.columns else None
+        pieces.append(part)
+    if not pieces:
+        return pd.DataFrame()
+    return pd.concat(pieces, ignore_index=True)
 
 
 def candle_file(long_df, tickers, bars=CANDLE_BARS):
@@ -2719,7 +2735,11 @@ def main(argv=None):
     global ROOT
     argv = list(sys.argv[1:] if argv is None else argv)
     mode = "full"
-    if "--offline" in argv:
+    # Light rebuild. Same as offline (no network), and it also skips the
+    # backtest, the price candles, and the saved score history, so it is quick
+    # and keeps the daily comparison for alerts. The backfill job runs it.
+    light = "--rescore" in argv
+    if "--offline" in argv or light:
         mode = "offline"
     elif "--morning" in argv or "--hourly" in argv:
         mode = "morning"
@@ -2731,6 +2751,9 @@ def main(argv=None):
     LOG.clear()
     STAMPS.clear()
     cfg = load_cfg()
+    if light and "--after-backfill" in argv and not rebuild_after_backfill_on(cfg):
+        print("Rebuild after the backfill is off in config.json (fundamentals_backfill.rebuild_pages_after_run).")
+        return {}
     data, cache, inp = paths()
     load_stamps(cache)
     features = cfg["features"]
@@ -2867,7 +2890,7 @@ def main(argv=None):
         participants = read_csv(os.path.join(cache, "participant_oi.csv"))
         log("FII derivatives (NSE participant OI)", "OK" if len(participants) else "MISSING", "",
             "reused cache" if len(participants) else "not loaded on this run")
-    if len(participants):
+    if len(participants) and not light:
         participants.to_csv(os.path.join(cache, "participant_oi.csv"), index=False)
     econ, fred = load_india_macro(cfg, cache, mode) if features.get("macro_screener", True) else (pd.DataFrame(), {})
 
@@ -2900,6 +2923,8 @@ def main(argv=None):
     bt = {"summary": pd.DataFrame(), "buckets": pd.DataFrame(), "equity": pd.DataFrame(), "yearly": pd.DataFrame(), "notes": pd.DataFrame()}
     bt_path = os.path.join(data, "backtest_summary.csv")
     run_bt = features.get("backtest", True) and (mode in ("full", "offline") or "--backtest" in argv or not os.path.exists(bt_path))
+    if light and os.path.exists(bt_path):
+        run_bt = False
     if features.get("backtest", True) and run_bt and len(close):
         sector_etf = {}
         for _, u in universe.iterrows():
@@ -2952,7 +2977,9 @@ def main(argv=None):
     port, port_sum = build_portfolio(holds, scores, history) if features.get("watchlist_portfolio", True) else (pd.DataFrame(), pd.DataFrame())
     watch_out = build_watch(watch, scores) if features.get("watchlist_portfolio", True) else pd.DataFrame()
     prices = price_file(close, scores) if features.get("scorecard", True) else pd.DataFrame()
-    if len(scores) and long is not None and len(long):
+    if light:
+        log("Price candles", "OK", asof, "Light rebuild. Prices did not change, so the saved candle files were kept.")
+    elif len(scores) and long is not None and len(long):
         candle_names = list(scores["ticker"])
         if "^NSEI" in set(long["ticker"].astype(str)):
             candle_names.append("^NSEI")
@@ -3028,8 +3055,9 @@ def main(argv=None):
         )
     else:
         buy = pd.DataFrame()
+    buy_listed = setups.buy_rows_listed(buy) if _n(buy) else buy
     log("Buy setups", "OK" if _n(buy) else "MISSING", asof,
-        "%d names. The market check passes when the Nifty 50 or SENSEX is in an uptrend. This desk never places trades." % _n(buy))
+        "%d chart setups, %d with a BUY or Not scored yet label. The market check passes when the Nifty 50 or SENSEX is in an uptrend. This desk never places trades." % (_n(buy), _n(buy_listed)))
     rot_scores = scores
     if len(scores) and (cfg.get("liquidity") or {}).get("enabled", True) and "liquid" in scores.columns:
         rot_scores = scores[scores["liquid"].astype(str).str.lower().eq("yes")]
@@ -3048,7 +3076,7 @@ def main(argv=None):
             one = sector_rotation.build(
                 close, high, rot_scores, cfg.get("sector_etfs"),
                 scanners=setup_frames,
-                buy_setups=buy if _n(buy) else None,
+                buy_setups=buy_listed if _n(buy_listed) else None,
                 fred=sector_rotation.read_fred_cache(cache),
                 cfg=one_cfg,
             )
@@ -3201,8 +3229,11 @@ def main(argv=None):
     for name, df in files.items():
         write_out(df if df is not None else pd.DataFrame(), name, data)
 
-    # persist score history and previous snapshot for the next run
-    if len(scores):
+    # persist score history and previous snapshot for the next run.
+    # The light rebuild keeps them, so alerts still compare with the last daily run.
+    if light:
+        log("Light rebuild", "OK", "", "Rescored from the financials and shareholding already on disk. No downloads.")
+    if len(scores) and not light:
         today = pd.Timestamp.now(tz=IST).strftime("%Y-%m-%d")
         snap = scores[["ticker", "score", "verdict", "price", "timing", "stop", "insider_buys_3m"]].copy()
         snap["date"] = today
@@ -3210,11 +3241,12 @@ def main(argv=None):
         hist = hist.drop_duplicates(["date", "ticker"], keep="last")
         hist.to_csv(hist_path, index=False)
         snap.to_csv(prev_path, index=False)
-    save_stamps(cache)
+    if not light:
+        save_stamps(cache)
     meta = {
         "updated_pt": updated,
         "price_as_of": asof,
-        "mode": mode,
+        "mode": "rescore" if light else mode,
         "label": DISCLAIMER,
         "n_stocks": int(len(scores)),
         "tabs": sorted(files),
