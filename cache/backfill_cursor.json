@@ -41,10 +41,10 @@
   "ABSLBANETF": "2026-10-27",
   "ABSLNN50ET": "2026-10-27"
  },
- "last_batch_at": "2026-10-26T03:59Z",
- "last_statements_ok": 200,
+ "last_batch_at": "2026-10-26T04:26Z",
+ "last_statements_ok": 157,
  "last_statements_fail": 0,
- "last_shareholding_ok": 198,
+ "last_shareholding_ok": 200,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
   "BIRET": "2026-10-26",
@@ -70,6 +70,6 @@
   "GSAILPP": "2026-10-26",
   "JAYKAYPP": "2026-10-26"
  },
- "last_shareholding_empty": 2,
+ "last_shareholding_empty": 0,
  "last_shareholding_skipped": 0
 }
