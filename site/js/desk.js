@@ -1661,9 +1661,51 @@
       if (cap) cap.textContent = "The price chart could not load.";
     });
   }
+  // One plain line about what the company does. Read once from company_lines.csv.
+  let companyLineMap = null;
+  function companyLines() {
+    if (!companyLineMap) {
+      companyLineMap = loadCsv("company_lines.csv").then((rows) => {
+        const m = new Map();
+        (rows || []).forEach((r) => { if (r.ticker && r.line) m.set(String(r.ticker).toUpperCase(), r.line); });
+        return m;
+      }).catch(() => new Map());
+    }
+    return companyLineMap;
+  }
+  function fillCompanyLine(el, ticker) {
+    if (!el) return;
+    const want = String(ticker || "").trim().toUpperCase();
+    el.dataset.colineFor = want;
+    if (!want || !featureOn("feature.company_line")) {
+      el.hidden = true;
+      el.textContent = "";
+      return;
+    }
+    companyLines().then((m) => {
+      if (el.dataset.colineFor !== want) return;
+      const line = m.get(want) || "";
+      el.textContent = line;
+      el.hidden = !line;
+    });
+  }
+  function companyLineHtml(id) {
+    return '<p class="coline" data-coline' + (id ? ' id="' + esc(id) + '"' : "") + ' hidden></p>';
+  }
+  function panelCompanyLine(panel, ticker) {
+    let el = panel.querySelector(":scope > [data-coline]");
+    if (!el) {
+      panel.insertAdjacentHTML("afterbegin", companyLineHtml());
+      el = panel.querySelector(":scope > [data-coline]");
+      const head = panel.querySelector(":scope > .rowhead");
+      if (head) head.after(el);
+    }
+    fillCompanyLine(el, ticker);
+  }
   function drawPriceChart(panel, opts) {
     if (!panel) return;
     opts = opts || {};
+    panelCompanyLine(panel, opts.ticker);
     const tools = panel.querySelector("[data-px-tools]");
     const chips = panel.querySelector("[data-px-mas]");
     const cap = panel.querySelector("[data-px-cap]");
@@ -2096,6 +2138,7 @@
     num: num, isBlank: isBlank, esc: esc, na: na, fmt: fmt, compact: compact,
     realRows: realRows, alertDataRows: alertDataRows, quietMessage: quietMessage, showQuiet: showQuiet,
     banner: banner, noteOf: noteOf, statusOf: statusOf, drawPriceChart: drawPriceChart,
+    fillCompanyLine: fillCompanyLine, companyLineHtml: companyLineHtml,
     scoreHtml: scoreHtml, scoreFill: scoreFill, tickerHtml: tickerHtml, etfHtml: etfHtml, pctHtml: pctHtml, moneyHtml: moneyHtml,
     verdictHtml: verdictHtml, trendHtml: trendHtml, pointsHtml: pointsHtml, zoneHtml: zoneHtml, signedPts: signedPts,
     drawTable: drawTable, uniq: uniq, indexTokens: indexTokens,

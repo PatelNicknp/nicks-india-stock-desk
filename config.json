@@ -58,7 +58,8 @@
     "buy_setups": true,
     "sector_rotation": true,
     "fundamentals_backfill": true,
-    "sensex": true
+    "sensex": true,
+    "company_line": true
   },
   "market": {
     "require_both_uptrends": false
@@ -72,7 +73,8 @@
     "pause_seconds": 0.45,
     "max_minutes": 18,
     "statements_refresh_days": 90,
-    "shareholding_refresh_days": 90
+    "shareholding_refresh_days": 90,
+    "company_lines_per_run": 40
   },
   "buy_setups": {
     "market_filter": true,

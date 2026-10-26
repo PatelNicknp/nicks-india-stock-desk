@@ -44,6 +44,8 @@ The main run is after the NSE close, weekdays at 16:30 IST. A retry at 18:30 IST
 
 Company statements, ratios, analyst numbers, and shareholding keep filling in a separate job, about every 30 minutes all week. It continues from `cache/backfill_cursor.json`. Liquid names come first, then the rest of the NSE list, then BSE-only names. At 40 names a run, the first pass of the full list is about 2 to 3 days when the free sources answer. After that it refreshes the oldest shareholding about every 90 days, and results after the next earnings date or every 90 days. Turn it off with `feature.fundamentals_backfill`. The price schedule does not change.
 
+Every stock chart has one plain line above it that says what the company does. The lines live in `data/company_lines.csv` (ticker, line, source, as_of). They come from Yahoo's business summary, which the backfill already reads for each name, then Screener.in's About text, then NSE and BSE industry and sector. A short rule keeps the first sentence, drops legal wording like "together with its subsidiaries", and cuts it at about 20 words. A stock with no summary gets a line built from its industry and sector, so none is blank. `company_lines.py` has the rule and `tests/test_company_lines.py` checks it. Turn it off with `feature.company_line`.
+
 If a source fails, the job keeps the saved file and the Data updates page says CACHED.
 
 ## Pages that can say "not available"

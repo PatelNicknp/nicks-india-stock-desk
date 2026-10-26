@@ -257,6 +257,7 @@ def _frames_to_rows(ticker, income, balance, cash, quarterly):
 def fetch_yahoo_bundle(ticker, cfg, symbol=None):
     """One name: profile, earnings dates, and annual plus quarterly statements."""
     import yfinance as yf
+    import company_lines
     symbol = symbol or yahoo_symbol(ticker)
     delays = tuple((cfg.get("rate_limit") or {}).get("backoff_seconds") or (1.5, 3, 6, 12))
     tries = int((cfg.get("rate_limit") or {}).get("max_retries") or 4)
@@ -294,6 +295,8 @@ def fetch_yahoo_bundle(ticker, cfg, symbol=None):
             "target_mean": inf.get("targetMeanPrice"),
             "target_median": inf.get("targetMedianPrice"),
             "earnings_ts": inf.get("earningsTimestamp"),
+            # Already in the same profile reply, so the company line costs no extra request.
+            "summary": company_lines.keep_summary(inf.get("longBusinessSummary") or ""),
         }
         return info, annual, quarters, erows
 

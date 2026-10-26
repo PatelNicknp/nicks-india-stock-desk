@@ -1566,7 +1566,7 @@
     const tickers = D.uniq(all, "ticker");
     const start = tickers.indexOf("ADSK") >= 0 ? "ADSK" : (tickers[0] || "");
     ctx.page.innerHTML = '<div class="ctrls" id="ctrls"></div><div class="split r21">' +
-      '<div class="panel pad"><div class="ptitle">EPS surprise %, last 8 reports</div><div class="chart-box"><canvas id="su"></canvas></div></div>' +
+      '<div class="panel pad"><div class="ptitle">EPS surprise %, last 8 reports</div>' + D.companyLineHtml("su-line") + '<div class="chart-box"><canvas id="su"></canvas></div></div>' +
       '<div class="cards col" id="cards"></div></div><div class="panel" id="tbl"></div>';
     const box = document.getElementById("ctrls");
     let upcoming = false;
@@ -1587,6 +1587,7 @@
         card("Upcoming (no actual yet)", String(countWhere(all, (r) => r.ticker === q && D.isBlank(r.eps_actual))));
       const chartRows = all.filter((r) => r.ticker === q && D.num(r.surprise_pct) != null)
         .sort((a, b) => a.earnings_date < b.earnings_date ? -1 : 1).slice(-8);
+      D.fillCompanyLine(document.getElementById("su-line"), q);
       D.destroyCharts();
       const mon = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
       D.barChart(document.getElementById("su"), chartRows.map((r) => {
@@ -1624,7 +1625,7 @@
     const end = maxDate(all, "fy_end");
     ctx.page.innerHTML = '<div class="ctrls" id="ctrls"></div>' +
       '<p class="cap">Annual figures from SEC filings. Margins are blank when the filing did not include that line.</p>' +
-      '<div class="split"><div class="panel pad"><div class="ptitle">Revenue and net income</div><div class="chart-box"><canvas id="rev"></canvas></div><p class="cap" id="nicap"></p></div>' +
+      D.companyLineHtml("co-line") + '<div class="split"><div class="panel pad"><div class="ptitle">Revenue and net income</div><div class="chart-box"><canvas id="rev"></canvas></div><p class="cap" id="nicap"></p></div>' +
       '<div class="panel pad"><div class="ptitle">Margins</div><div class="chart-box"><canvas id="mg"></canvas></div></div></div><div class="panel" id="tbl"></div>';
     const box = document.getElementById("ctrls");
     box.innerHTML = D.searchHtml("ticker", "Ticker", "co-tk", tickers) +
@@ -1644,6 +1645,7 @@
       const rows = mine.slice(-nYears);
       const labels = rows.map((r) => fyLabel(r.fy_end));
       const missingNi = rows.some((r) => D.num(r.revenue) != null && D.num(r.net_income) == null);
+      D.fillCompanyLine(document.getElementById("co-line"), t);
       const note = document.getElementById("nicap");
       if (note) note.textContent = missingNi ? "Net income not parsed for these years." : "";
       D.destroyCharts();
