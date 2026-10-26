@@ -143,22 +143,6 @@ TFCILTD,Sentiment,Institutional 13F trend,0,zero,,,
 TFCILTD,Sentiment,Insider buys vs sells,,n/a,,,
 TFCILTD,Earnings,Latest earnings vs estimate,1,plus 1,,,
 TFCILTD,Sector,"Sector vs S&P 500, 3 months",1,plus 1,85.09,,
-RELIANCE,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
-RELIANCE,Technical,Oscillator (RSI-14),0,zero,44.4,,
-RELIANCE,Financials,Forward P/E (lower is better),1,plus 1,16.689497,44.37639717491516,-1.0
-RELIANCE,Financials,Trailing P/E (lower is better),1,plus 1,19.271255060728745,44.37639717491516,-1.0
-RELIANCE,Financials,Price / sales (lower is better),1,plus 1,1.4479291861691412,3.3598667486901377,0.0
-RELIANCE,Financials,Debt / equity (lower is better),0,zero,0.44025087663020035,0.44721473608837403,-1.0
-RELIANCE,Financials,Price / free cash flow (lower is better),1,plus 1,23.26964929820657,352.0612923016057,-1.0
-RELIANCE,Financials,Revenue growth (higher is better),1,plus 1,9.59,4.85,1.0
-RELIANCE,Financials,EPS growth (higher is better),1,plus 1,15.97,2.21,-1.0
-RELIANCE,Financials,Return on equity (higher is better),1,plus 1,9.24,8.78,-1.0
-RELIANCE,Financials,Dividend yield (higher is better),1,plus 1,0.46,0.22,1.0
-RELIANCE,Sentiment,Analyst rating,2,plus 2,1.32,,
-RELIANCE,Sentiment,Institutional 13F trend,0,zero,,,
-RELIANCE,Sentiment,Insider buys vs sells,0,zero,,,
-RELIANCE,Earnings,Latest earnings vs estimate,1,plus 1,,,
-RELIANCE,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,-1.14,,
 APOLLOTYRE,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
 APOLLOTYRE,Technical,Oscillator (RSI-14),0,zero,35.5,,
 APOLLOTYRE,Financials,Forward P/E (lower is better),1,plus 1,11.510506,22.881173396761813,1.0
@@ -223,6 +207,22 @@ ORIENTELEC,Sentiment,Institutional 13F trend,0,zero,,,
 ORIENTELEC,Sentiment,Insider buys vs sells,,n/a,,,
 ORIENTELEC,Earnings,Latest earnings vs estimate,1,plus 1,,,
 ORIENTELEC,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,10.5,,
+RELIANCE,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
+RELIANCE,Technical,Oscillator (RSI-14),0,zero,44.4,,
+RELIANCE,Financials,Forward P/E (lower is better),1,plus 1,16.689497,44.37639717491516,-1.0
+RELIANCE,Financials,Trailing P/E (lower is better),1,plus 1,19.271255060728745,44.37639717491516,-1.0
+RELIANCE,Financials,Price / sales (lower is better),1,plus 1,1.4479291861691412,3.3598667486901377,0.0
+RELIANCE,Financials,Debt / equity (lower is better),0,zero,0.44025087663020035,0.44721473608837403,-1.0
+RELIANCE,Financials,Price / free cash flow (lower is better),1,plus 1,23.26964929820657,352.0612923016057,-1.0
+RELIANCE,Financials,Revenue growth (higher is better),1,plus 1,9.59,4.85,1.0
+RELIANCE,Financials,EPS growth (higher is better),1,plus 1,15.97,2.21,-1.0
+RELIANCE,Financials,Return on equity (higher is better),1,plus 1,9.24,8.78,-1.0
+RELIANCE,Financials,Dividend yield (higher is better),1,plus 1,0.46,0.22,1.0
+RELIANCE,Sentiment,Analyst rating,2,plus 2,1.32,,
+RELIANCE,Sentiment,Institutional 13F trend,0,zero,,,
+RELIANCE,Sentiment,Insider buys vs sells,,n/a,,,
+RELIANCE,Earnings,Latest earnings vs estimate,1,plus 1,,,
+RELIANCE,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,-1.14,,
 SHREECEM,Technical,Trend vs 20-day and 50-day,0,zero,,,
 SHREECEM,Technical,Oscillator (RSI-14),1,plus 1,54.0,,
 SHREECEM,Financials,Forward P/E (lower is better),1,plus 1,34.461857,71.74013191280575,-1.0
@@ -1151,22 +1151,6 @@ MTPL,Sentiment,Institutional 13F trend,1,plus 1,,,
 MTPL,Sentiment,Insider buys vs sells,,n/a,,,
 MTPL,Earnings,Latest earnings vs estimate,,n/a,,,
 MTPL,Sector,"Sector vs S&P 500, 3 months",1,plus 1,-60.35,,
-LT,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
-LT,Technical,Oscillator (RSI-14),0,zero,40.1,,
-LT,Financials,Forward P/E (lower is better),1,plus 1,20.262451,36.35559935746492,1.0
-LT,Financials,Trailing P/E (lower is better),1,plus 1,30.825796635956387,36.35559935746492,-1.0
-LT,Financials,Price / sales (lower is better),1,plus 1,1.75581942958275,2.126716930880693,-1.0
-LT,Financials,Debt / equity (lower is better),1,plus 1,1.1482959983456829,1.3511700183813236,-1.0
-LT,Financials,Price / free cash flow (lower is better),1,plus 1,42.06164480258604,53.78968925487083,-1.0
-LT,Financials,Revenue growth (higher is better),-1,minus 1,11.81,18.32,1.0
-LT,Financials,EPS growth (higher is better),-1,minus 1,6.95,21.25,-1.0
-LT,Financials,Return on equity (higher is better),1,plus 1,14.9,14.08,1.0
-LT,Financials,Dividend yield (higher is better),1,plus 1,0.93,0.81,1.0
-LT,Sentiment,Analyst rating,2,plus 2,1.68966,,
-LT,Sentiment,Institutional 13F trend,0,zero,,,
-LT,Sentiment,Insider buys vs sells,0,zero,,,
-LT,Earnings,Latest earnings vs estimate,1,plus 1,,,
-LT,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,1.48,,
 ANANDRATHI,Technical,Trend vs 20-day and 50-day,1,plus 1,,,
 ANANDRATHI,Technical,Oscillator (RSI-14),1,plus 1,63.3,,
 ANANDRATHI,Financials,Forward P/E (lower is better),1,plus 1,67.20794,179.6110707781636,-1.0
@@ -1359,6 +1343,22 @@ INDHOTEL,Sentiment,Institutional 13F trend,0,zero,,,
 INDHOTEL,Sentiment,Insider buys vs sells,,n/a,,,
 INDHOTEL,Earnings,Latest earnings vs estimate,0,zero,,,
 INDHOTEL,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,13.29,,
+LT,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
+LT,Technical,Oscillator (RSI-14),0,zero,40.1,,
+LT,Financials,Forward P/E (lower is better),1,plus 1,20.262451,36.35559935746492,1.0
+LT,Financials,Trailing P/E (lower is better),1,plus 1,30.825796635956387,36.35559935746492,-1.0
+LT,Financials,Price / sales (lower is better),1,plus 1,1.75581942958275,2.126716930880693,-1.0
+LT,Financials,Debt / equity (lower is better),1,plus 1,1.1482959983456829,1.3511700183813236,-1.0
+LT,Financials,Price / free cash flow (lower is better),1,plus 1,42.06164480258604,53.78968925487083,-1.0
+LT,Financials,Revenue growth (higher is better),-1,minus 1,11.81,18.32,1.0
+LT,Financials,EPS growth (higher is better),-1,minus 1,6.95,21.25,-1.0
+LT,Financials,Return on equity (higher is better),1,plus 1,14.9,14.08,1.0
+LT,Financials,Dividend yield (higher is better),1,plus 1,0.93,0.81,1.0
+LT,Sentiment,Analyst rating,2,plus 2,1.68966,,
+LT,Sentiment,Institutional 13F trend,0,zero,,,
+LT,Sentiment,Insider buys vs sells,,n/a,,,
+LT,Earnings,Latest earnings vs estimate,1,plus 1,,,
+LT,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,1.48,,
 NEWGEN,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
 NEWGEN,Technical,Oscillator (RSI-14),0,zero,38.5,,
 NEWGEN,Financials,Forward P/E (lower is better),1,plus 1,15.621584,81.70453362689683,1.0
@@ -3551,22 +3551,6 @@ SEATV,Sentiment,Institutional 13F trend,0,zero,,,
 SEATV,Sentiment,Insider buys vs sells,,n/a,,,
 SEATV,Earnings,Latest earnings vs estimate,,n/a,,,
 SEATV,Sector,"Sector vs S&P 500, 3 months",1,plus 1,12.0,,
-TCS,Technical,Trend vs 20-day and 50-day,1,plus 1,,,
-TCS,Technical,Oscillator (RSI-14),0,zero,74.2,,
-TCS,Financials,Forward P/E (lower is better),1,plus 1,15.728267,29.61159091825078,1.0
-TCS,Financials,Trailing P/E (lower is better),1,plus 1,18.128403554026942,29.61159091825078,1.0
-TCS,Financials,Price / sales (lower is better),1,plus 1,3.346933026885121,5.586053550229657,-1.0
-TCS,Financials,Debt / equity (lower is better),-1,minus 1,0.10315324765353498,0.09092667262713611,1.0
-TCS,Financials,Price / free cash flow (lower is better),1,plus 1,19.2621552555448,32.15960264321557,1.0
-TCS,Financials,Revenue growth (higher is better),-1,minus 1,4.58,6.42,-1.0
-TCS,Financials,EPS growth (higher is better),-1,minus 1,1.36,7.94,-1.0
-TCS,Financials,Return on equity (higher is better),-1,minus 1,46.05,49.53,1.0
-TCS,Financials,Dividend yield (higher is better),1,plus 1,4.31,2.8,1.0
-TCS,Sentiment,Analyst rating,1,plus 1,2.19048,,
-TCS,Sentiment,Institutional 13F trend,0,zero,,,
-TCS,Sentiment,Insider buys vs sells,0,zero,,,
-TCS,Earnings,Latest earnings vs estimate,0,zero,,,
-TCS,Sector,"Sector vs S&P 500, 3 months",1,plus 1,18.72,,
 AFFLE,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
 AFFLE,Technical,Oscillator (RSI-14),-1,minus 1,25.9,,
 AFFLE,Financials,Forward P/E (lower is better),1,plus 1,26.762728,57.78853449526556,-1.0
@@ -4047,6 +4031,22 @@ TATAELXSI,Sentiment,Institutional 13F trend,0,zero,,,
 TATAELXSI,Sentiment,Insider buys vs sells,,n/a,,,
 TATAELXSI,Earnings,Latest earnings vs estimate,-1,minus 1,,,
 TATAELXSI,Sector,"Sector vs S&P 500, 3 months",1,plus 1,14.54,,
+TCS,Technical,Trend vs 20-day and 50-day,1,plus 1,,,
+TCS,Technical,Oscillator (RSI-14),0,zero,74.2,,
+TCS,Financials,Forward P/E (lower is better),1,plus 1,15.728267,29.61159091825078,1.0
+TCS,Financials,Trailing P/E (lower is better),1,plus 1,18.128403554026942,29.61159091825078,1.0
+TCS,Financials,Price / sales (lower is better),1,plus 1,3.346933026885121,5.586053550229657,-1.0
+TCS,Financials,Debt / equity (lower is better),-1,minus 1,0.10315324765353498,0.09092667262713611,1.0
+TCS,Financials,Price / free cash flow (lower is better),1,plus 1,19.2621552555448,32.15960264321557,1.0
+TCS,Financials,Revenue growth (higher is better),-1,minus 1,4.58,6.42,-1.0
+TCS,Financials,EPS growth (higher is better),-1,minus 1,1.36,7.94,-1.0
+TCS,Financials,Return on equity (higher is better),-1,minus 1,46.05,49.53,1.0
+TCS,Financials,Dividend yield (higher is better),1,plus 1,4.31,2.8,1.0
+TCS,Sentiment,Analyst rating,1,plus 1,2.19048,,
+TCS,Sentiment,Institutional 13F trend,0,zero,,,
+TCS,Sentiment,Insider buys vs sells,,n/a,,,
+TCS,Earnings,Latest earnings vs estimate,0,zero,,,
+TCS,Sector,"Sector vs S&P 500, 3 months",1,plus 1,18.72,,
 UTIAMC,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
 UTIAMC,Technical,Oscillator (RSI-14),-1,minus 1,23.6,,
 UTIAMC,Financials,Forward P/E (lower is better),1,plus 1,14.642713,19.299837320783308,-1.0
@@ -6287,22 +6287,6 @@ AMARSEC,Sentiment,Institutional 13F trend,0,zero,,,
 AMARSEC,Sentiment,Insider buys vs sells,,n/a,,,
 AMARSEC,Earnings,Latest earnings vs estimate,,n/a,,,
 AMARSEC,Sector,"Sector vs S&P 500, 3 months",1,plus 1,29.66,,
-ITC,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
-ITC,Technical,Oscillator (RSI-14),0,zero,44.0,,
-ITC,Financials,Forward P/E (lower is better),1,plus 1,15.235252,23.760307955909507,1.0
-ITC,Financials,Trailing P/E (lower is better),1,plus 1,16.189579409918395,23.760307955909507,1.0
-ITC,Financials,Price / sales (lower is better),1,plus 1,4.143457496954413,7.7647999443443,-1.0
-ITC,Financials,Debt / equity (lower is better),-1,minus 1,0.033091288739202813,0.0041912230286585694,1.0
-ITC,Financials,Price / free cash flow (lower is better),1,plus 1,19.83009740227265,36.63464414299731,0.0
-ITC,Financials,Revenue growth (higher is better),1,plus 1,4.77,3.36,-1.0
-ITC,Financials,EPS growth (higher is better),-1,minus 1,-40.5,37.68,-1.0
-ITC,Financials,Return on equity (higher is better),-1,minus 1,27.52,34.94,1.0
-ITC,Financials,Dividend yield (higher is better),1,plus 1,5.65,3.23,1.0
-ITC,Sentiment,Analyst rating,1,plus 1,2.20588,,
-ITC,Sentiment,Institutional 13F trend,0,zero,,,
-ITC,Sentiment,Insider buys vs sells,0,zero,,,
-ITC,Earnings,Latest earnings vs estimate,1,plus 1,,,
-ITC,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,-3.0,,
 ASTRAL,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
 ASTRAL,Technical,Oscillator (RSI-14),0,zero,36.1,,
 ASTRAL,Financials,Forward P/E (lower is better),1,plus 1,39.849678,97.81980264301667,-1.0
@@ -6463,6 +6447,22 @@ INDIAMART,Sentiment,Institutional 13F trend,0,zero,,,
 INDIAMART,Sentiment,Insider buys vs sells,,n/a,,,
 INDIAMART,Earnings,Latest earnings vs estimate,1,plus 1,,,
 INDIAMART,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,-6.84,,
+ITC,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
+ITC,Technical,Oscillator (RSI-14),0,zero,44.0,,
+ITC,Financials,Forward P/E (lower is better),1,plus 1,15.235252,23.760307955909507,1.0
+ITC,Financials,Trailing P/E (lower is better),1,plus 1,16.189579409918395,23.760307955909507,1.0
+ITC,Financials,Price / sales (lower is better),1,plus 1,4.143457496954413,7.7647999443443,-1.0
+ITC,Financials,Debt / equity (lower is better),-1,minus 1,0.033091288739202813,0.0041912230286585694,1.0
+ITC,Financials,Price / free cash flow (lower is better),1,plus 1,19.83009740227265,36.63464414299731,0.0
+ITC,Financials,Revenue growth (higher is better),1,plus 1,4.77,3.36,-1.0
+ITC,Financials,EPS growth (higher is better),-1,minus 1,-40.5,37.68,-1.0
+ITC,Financials,Return on equity (higher is better),-1,minus 1,27.52,34.94,1.0
+ITC,Financials,Dividend yield (higher is better),1,plus 1,5.65,3.23,1.0
+ITC,Sentiment,Analyst rating,1,plus 1,2.20588,,
+ITC,Sentiment,Institutional 13F trend,0,zero,,,
+ITC,Sentiment,Insider buys vs sells,,n/a,,,
+ITC,Earnings,Latest earnings vs estimate,1,plus 1,,,
+ITC,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,-3.0,,
 IXIGO,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
 IXIGO,Technical,Oscillator (RSI-14),0,zero,42.3,,
 IXIGO,Financials,Forward P/E (lower is better),1,plus 1,35.851166,165.2655292629465,-1.0
@@ -15439,22 +15439,6 @@ TECH,Sentiment,Institutional 13F trend,,n/a,,,
 TECH,Sentiment,Insider buys vs sells,,n/a,,,
 TECH,Earnings,Latest earnings vs estimate,,n/a,,,
 TECH,Sector,"Sector vs S&P 500, 3 months",,n/a,16.49,,
-SBIN,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
-SBIN,Technical,Oscillator (RSI-14),0,zero,44.2,,
-SBIN,Financials,Forward P/E (lower is better),1,plus 1,8.990494,9.867330013435991,1.0
-SBIN,Financials,Trailing P/E (lower is better),-1,minus 1,10.515576739643897,9.867330013435991,1.0
-SBIN,Financials,Price / sales (lower is better),-1,minus 1,2.318118171044844,2.085177997289467,1.0
-SBIN,Financials,Debt / equity (lower is better),1,plus 1,1.2193500751464357,1.3549663851966398,-1.0
-SBIN,Financials,Price / free cash flow (lower is better),0,zero,29.758328163455023,29.624926667969227,-1.0
-SBIN,Financials,Revenue growth (higher is better),-1,minus 1,9.21,13.86,0.0
-SBIN,Financials,EPS growth (higher is better),-1,minus 1,4.89,18.09,-1.0
-SBIN,Financials,Return on equity (higher is better),-1,minus 1,13.97,15.87,1.0
-SBIN,Financials,Dividend yield (higher is better),1,plus 1,1.6,1.43,1.0
-SBIN,Sentiment,Analyst rating,2,plus 2,1.45,,
-SBIN,Sentiment,Institutional 13F trend,0,zero,,,
-SBIN,Sentiment,Insider buys vs sells,0,zero,,,
-SBIN,Earnings,Latest earnings vs estimate,1,plus 1,,,
-SBIN,Sector,"Sector vs S&P 500, 3 months",1,plus 1,-0.01,,
 ADANIPORTS,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
 ADANIPORTS,Technical,Oscillator (RSI-14),0,zero,42.5,,
 ADANIPORTS,Financials,Forward P/E (lower is better),1,plus 1,21.745146,32.34878964475549,0.0
@@ -15647,6 +15631,22 @@ MFSL,Sentiment,Institutional 13F trend,0,zero,,,
 MFSL,Sentiment,Insider buys vs sells,,n/a,,,
 MFSL,Earnings,Latest earnings vs estimate,1,plus 1,,,
 MFSL,Sector,"Sector vs S&P 500, 3 months",1,plus 1,-14.14,,
+SBIN,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
+SBIN,Technical,Oscillator (RSI-14),0,zero,44.2,,
+SBIN,Financials,Forward P/E (lower is better),1,plus 1,8.990494,9.867330013435991,1.0
+SBIN,Financials,Trailing P/E (lower is better),-1,minus 1,10.515576739643897,9.867330013435991,1.0
+SBIN,Financials,Price / sales (lower is better),-1,minus 1,2.318118171044844,2.085177997289467,1.0
+SBIN,Financials,Debt / equity (lower is better),1,plus 1,1.2193500751464357,1.3549663851966398,-1.0
+SBIN,Financials,Price / free cash flow (lower is better),0,zero,29.758328163455023,29.624926667969227,-1.0
+SBIN,Financials,Revenue growth (higher is better),-1,minus 1,9.21,13.86,0.0
+SBIN,Financials,EPS growth (higher is better),-1,minus 1,4.89,18.09,-1.0
+SBIN,Financials,Return on equity (higher is better),-1,minus 1,13.97,15.87,1.0
+SBIN,Financials,Dividend yield (higher is better),1,plus 1,1.6,1.43,1.0
+SBIN,Sentiment,Analyst rating,2,plus 2,1.45,,
+SBIN,Sentiment,Institutional 13F trend,0,zero,,,
+SBIN,Sentiment,Insider buys vs sells,,n/a,,,
+SBIN,Earnings,Latest earnings vs estimate,1,plus 1,,,
+SBIN,Sector,"Sector vs S&P 500, 3 months",1,plus 1,-0.01,,
 SJS,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
 SJS,Technical,Oscillator (RSI-14),-1,minus 1,27.8,,
 SJS,Financials,Forward P/E (lower is better),1,plus 1,22.987173,28.253892828455445,-1.0
