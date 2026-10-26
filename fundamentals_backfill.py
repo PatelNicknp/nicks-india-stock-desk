@@ -12,8 +12,17 @@ statement pass cannot use up the clock. Shareholding tries the NSE filing,
 then the public Screener page, then the BSE shareholding file. Statements try
 Yahoo .NS, then Yahoo .BO. A source that errors three times in one run is
 skipped for the rest of that run. An empty filing is recorded and tried again
-later in the pass. It does not stop the batch. A name whose sources error is
-tried again the next day, not every half hour.
+later in the pass. It does not stop the batch. A statement name whose sources
+error is tried again the next day. A shareholding name whose sources all fail
+is recorded as failed and tried again after 3 days, then 7, 14 and 30 days if
+it keeps failing, and the batch moves on to the next name. Shareholding only
+stops early for a real outage: the first names of the run all fail, or a few
+big, well-known stocks fail too.
+
+Screener addresses a BSE-only company by its BSE scrip code
+(screener.in/company/530621/), not by its BSE ticker, so BSE-only names are
+looked up by code. Mutual fund and ETF units (ISIN starting INF) file no
+shareholding pattern and are not queued for shareholding.
 """
 import json
 import os
@@ -31,12 +40,24 @@ import tables
 IST = "Asia/Kolkata"
 CURSOR_NAME = "backfill_cursor.json"
 LIQUID, NSE, BSE = 0, 1, 2
+# Days to wait before trying a failed shareholding name again: first failure,
+# second, third, then every later failure.
+SHAREHOLDING_RETRY_DAYS = (3, 7, 14, 30)
+# Shareholding stops for the run only when this many names in a row have
+# failed from the start of the run, with no name saved and no empty filing.
+OUTAGE_FIRST_NAMES = 25
+# After this many failures in a row, try the big stocks below. If they fail too,
+# the sources are blocking or down, so shareholding stops for the run.
+CANARY_EVERY = 10
+CANARY_TICKERS = ("RELIANCE", "TCS", "HDFCBANK")
+SHAREHOLDING_MIN_GAP = 1.0
 PASS_NOTE = (
     "At 200 statements and 200 shareholding names a run, the first pass of about "
     "4,300 stocks takes well under a day when the free sources answer. "
     "Liquid names come first, then the rest of the NSE list, then BSE-only names. "
-    "A name with no shareholding filing is saved for later in the pass, so one "
-    "empty name does not stop the batch."
+    "A name with no shareholding filing is saved for later in the pass, and a name "
+    "no source answers for is tried again after a few days, so hard names do not "
+    "stop the batch."
 )
 REFRESH_NOTE = (
     "Every name has a saved row. Shareholding refreshes about every 90 days. "
@@ -262,6 +283,8 @@ def build_queue(universe, scores, info, annual, holders, earn, cursor, today, re
             fetched = parse_day(hold.get("fetched_on"))
             as_of = parse_day(hold.get("as_of"))
             due = shareholding_due(covered, fetched, as_of, today, days)
+            if not covered and is_fund_unit(rec):
+                due = False
         retry_after = parse_day(retry.get(ticker))
         if retry_after and retry_after > today:
             due = False
@@ -306,6 +329,14 @@ def take_batch(queue, cap):
     return out
 
 
+def is_fund_unit(rec):
+    """Mutual fund and ETF units (ISIN INF...) have no shareholding pattern."""
+    isin = str(rec.get("isin") or "").strip().upper()
+    if isin in ("NAN", "NONE"):
+        return False
+    return isin.startswith("INF")
+
+
 def statement_symbols(rec):
     nse = str(rec.get("nse_symbol") or "").strip().upper()
     bse = str(rec.get("bse_symbol") or "").strip().upper()
@@ -331,10 +362,12 @@ def first_good(field, steps, book, pause=0.0):
     no filing at that source. It does not retire the source. An exception does.
     """
     saw_empty = False
+    tried = 0
     for name, fn in steps:
         if not book.allow(name):
             book.hit(field, name, "FAILED", "skipped after repeated failures")
             continue
+        tried += 1
         try:
             value = fn()
         except Exception as exc:
@@ -352,6 +385,10 @@ def first_good(field, steps, book, pause=0.0):
         return value, name, "ok"
     if saw_empty:
         return None, "", "empty"
+    if steps and not tried:
+        # Every source was retired earlier in this run. Nothing was asked, so
+        # this is not a failure of the name itself.
+        return None, "", "retired"
     return None, "", "down"
 
 
@@ -485,26 +522,52 @@ def fetch_nse_shareholding(symbol, cfg):
     return row
 
 
-def fetch_screener_shareholding(symbol, cfg):
-    safe = quote(str(symbol), safe="")
+def _is_not_found(exc):
+    return "404" in str(exc)
+
+
+def fetch_screener_shareholding(symbols, cfg):
+    """Shareholding from the public Screener page.
+
+    symbols is one slug or a list tried in order: the NSE symbol for NSE names,
+    the BSE scrip code for BSE-only names. A 404 means Screener has no page at
+    that address. It moves on to the next slug and, when no slug has a page,
+    returns None (no filing here), so a wrong address does not retire Screener
+    for the rest of the run. Other errors (403, 429, 5xx) are raised.
+    """
+    if isinstance(symbols, str):
+        symbols = [symbols]
+    slugs = []
+    for raw in symbols or []:
+        token = str(raw or "").strip().upper()
+        if token.endswith(".0") and token[:-2].isdigit():
+            token = token[:-2]
+        if token and token not in ("NAN", "NONE") and token not in slugs:
+            slugs.append(token)
     headers = dict(india_data.BROWSER)
-    headers["Accept"] = "text/html"
+    headers["Accept"] = "text/html,application/xhtml+xml"
+    headers["Referer"] = "https://www.screener.in/"
     last_err = None
-    for url in (
-        "https://www.screener.in/company/%s/consolidated/" % safe,
-        "https://www.screener.in/company/%s/" % safe,
-    ):
-        if not fallback.robots_allows(url):
-            raise netutil.PermanentError("robots.txt does not allow this page")
-        try:
-            response = netutil.http_get(requests_mod(), url, headers, 20, max_tries=2, delays=(1.5, 3.0))
-        except Exception as exc:
-            last_err = exc
-            continue
-        parsed = parse_screener_shareholding(response.text)
-        if parsed:
-            parsed["ticker"] = symbol
-            return parsed
+    for slug in slugs:
+        safe = quote(slug, safe="")
+        for url in (
+            "https://www.screener.in/company/%s/consolidated/" % safe,
+            "https://www.screener.in/company/%s/" % safe,
+        ):
+            if not fallback.robots_allows(url):
+                raise netutil.PermanentError("robots.txt does not allow this page")
+            try:
+                response = netutil.http_get(requests_mod(), url, headers, 20, max_tries=2, delays=(1.5, 3.0))
+            except Exception as exc:
+                if _is_not_found(exc):
+                    # No company at this address. The standalone page will 404 too.
+                    break
+                last_err = exc
+                continue
+            parsed = parse_screener_shareholding(response.text)
+            if parsed:
+                parsed["ticker"] = slug
+                return parsed
     if last_err:
         raise last_err
     return None
@@ -588,6 +651,25 @@ def bse_code_map(root):
     return out
 
 
+def screener_slugs(rec, code):
+    """Screener addresses to try. BSE-only companies live at their BSE scrip code."""
+    ticker = str(rec.get("ticker") or "").strip().upper()
+    nse = str(rec.get("nse_symbol") or "").strip().upper()
+    bse_sym = str(rec.get("bse_symbol") or "").strip().upper()
+    bse_only = str(rec.get("in_bse_only") or "").lower() == "yes" or str(rec.get("exchange") or "").upper() == "BSE"
+    code = str(code or "").strip()
+    out = []
+    if bse_only:
+        order = [code] if code else [bse_sym or ticker]
+    else:
+        order = [nse or ticker, code]
+    for token in order:
+        token = str(token or "").strip().upper()
+        if token and token not in ("NAN", "NONE") and token not in out:
+            out.append(token)
+    return out
+
+
 def fetch_shareholding(rec, cfg, codes, book):
     ticker = rec["ticker"]
     nse = str(rec.get("nse_symbol") or "").strip().upper()
@@ -596,10 +678,10 @@ def fetch_shareholding(rec, cfg, codes, book):
     steps = []
     if nse and not bse_only:
         steps.append(("NSE shareholding", lambda symbol=nse: fetch_nse_shareholding(symbol, cfg)))
-    screener_symbol = nse or bse_sym or ticker
-    if screener_symbol:
-        steps.append(("Screener shareholding", lambda symbol=screener_symbol: fetch_screener_shareholding(symbol, cfg)))
     code = codes.get(ticker) or codes.get(bse_sym) or codes.get(str(rec.get("isin") or "").strip().upper())
+    slugs = screener_slugs(rec, code)
+    if slugs:
+        steps.append(("Screener shareholding", lambda symbols=slugs: fetch_screener_shareholding(symbols, cfg)))
     if code:
         steps.append(("BSE shareholding", lambda scrip=code: fetch_bse_shareholding(scrip, cfg)))
     value, source, outcome = first_good("shareholding:" + ticker, steps, book, pause=0.25)
@@ -630,6 +712,106 @@ def _mark_retry(cursor, kind, ticker, today):
     book = dict(cursor.get(key) or {})
     book[ticker] = shift_days(today, 1)
     cursor[key] = book
+
+
+def retry_days(fail_count):
+    """3 days after the first failure, then 7, 14, and 30 days."""
+    n = max(1, int(fail_count or 1))
+    return SHAREHOLDING_RETRY_DAYS[min(n, len(SHAREHOLDING_RETRY_DAYS)) - 1]
+
+
+def _mark_shareholding_failed(cursor, ticker, today, note=""):
+    """Record a name no shareholding source answered for, and when to try it again."""
+    fails = dict(cursor.get("shareholding_failures") or {})
+    prev = fails.get(ticker) or {}
+    try:
+        count = int(prev.get("count") or 0) + 1
+    except (TypeError, ValueError, AttributeError):
+        count = 1
+    wait = retry_days(count)
+    after = shift_days(today, wait)
+    fails[ticker] = {"count": count, "last_on": today, "retry_after": after, "note": str(note or "")[:140]}
+    cursor["shareholding_failures"] = fails
+    retry = dict(cursor.get("shareholding_retry_after") or {})
+    retry[ticker] = after
+    cursor["shareholding_retry_after"] = retry
+    return after
+
+
+def _clear_shareholding_failed(cursor, ticker):
+    fails = dict(cursor.get("shareholding_failures") or {})
+    if ticker in fails:
+        fails.pop(ticker, None)
+        cursor["shareholding_failures"] = fails
+
+
+class OutageGuard:
+    """Decides when shareholding should stop for the run.
+
+    A name that fails is recorded and the batch moves on. The run stops only when
+    the first OUTAGE_FIRST_NAMES names all fail, or when CANARY_EVERY names fail in
+    a row and the big stocks (canary) fail too. A canary that answers clears the
+    streak, so a long stretch of hard small names keeps going.
+    """
+
+    def __init__(self, canary=None, first_names=OUTAGE_FIRST_NAMES, every=CANARY_EVERY):
+        self.canary = canary
+        self.first_names = int(first_names)
+        self.every = int(every)
+        self.seen = 0
+        self.any_answer = False
+        self.streak = 0
+        self.reason = ""
+
+    def record(self, outcome):
+        """Returns True when shareholding should stop now."""
+        self.seen += 1
+        if outcome in ("ok", "empty"):
+            self.any_answer = True
+            if outcome == "ok":
+                self.streak = 0
+            return False
+        self.streak += 1
+        if not self.any_answer and self.seen >= self.first_names:
+            self.reason = "the first %d names all failed" % self.seen
+            return True
+        if self.streak >= self.every and self.streak % self.every == 0:
+            if self.canary is None:
+                return False
+            if self.canary():
+                self.streak = 0
+                return False
+            self.reason = "%d names failed in a row and the big stocks failed too" % self.streak
+            return True
+        return False
+
+
+def make_canary(universe, cfg, codes, book, tickers=CANARY_TICKERS):
+    """A check that one of the big stocks still answers. One name per check, polite."""
+    recs = []
+    if universe is not None and len(universe) and "ticker" in universe.columns:
+        by_ticker = {str(r.get("ticker") or "").strip().upper(): r for r in universe.to_dict("records")}
+        for t in tickers:
+            if t in by_ticker:
+                recs.append(by_ticker[t])
+    if not recs:
+        recs = [{"ticker": t, "nse_symbol": t, "bse_symbol": t, "exchange": "Both", "in_bse_only": "no"} for t in tickers]
+    state = {"i": 0}
+
+    def check():
+        rec = dict(recs[state["i"] % len(recs)])
+        state["i"] += 1
+        rec["ticker"] = str(rec.get("ticker") or "").strip().upper()
+        try:
+            row, source, outcome = fetch_shareholding(rec, cfg, codes, book)
+        except Exception as exc:
+            print("shareholding canary", rec["ticker"], "error", str(exc)[:120])
+            return False
+        good = outcome == "ok" and bool(row)
+        print("shareholding canary", rec["ticker"], "answered by " + source if good else "failed")
+        return good
+
+    return check
 
 
 def _clear_retry(cursor, kind, ticker):
@@ -689,6 +871,7 @@ def run_batch(root, cfg, max_names=None):
         "shareholding_ok": 0,
         "shareholding_fail": 0,
         "shareholding_empty": 0,
+        "shareholding_skipped": 0,
     }
 
     def over_time():
@@ -704,7 +887,7 @@ def run_batch(root, cfg, max_names=None):
     hold_queue = build_queue(universe, scores, info, annual, holders, earn, cursor, today, refresh, "shareholding")
     hold_todo = take_batch(hold_queue, spec["shareholding_per_run"])
     print("Shareholding batch %d" % len(hold_todo))
-    streak = 0
+    guard = OutageGuard(canary=make_canary(universe, cfg, codes, book))
     for i, rec in enumerate(hold_todo):
         if over_time():
             print("Stopping shareholding at the time limit")
@@ -732,25 +915,34 @@ def run_batch(root, cfg, max_names=None):
             hold_map[ticker] = row
             _clear_retry(cursor, "shareholding", ticker)
             _clear_empty(cursor, ticker)
+            _clear_shareholding_failed(cursor, ticker)
             stats["shareholding_ok"] += 1
-            streak = next_streak(streak, "ok")
+            guard.record("ok")
         elif outcome == "empty":
             stats["shareholding_empty"] += 1
             _mark_empty(cursor, ticker, today)
-            streak = next_streak(streak, "empty")
+            guard.record("empty")
             print("shareholding none", ticker, "no filing, saved for later in this pass")
+        elif outcome == "retired":
+            # Every source for this kind of name was retired earlier in this run.
+            # Leave the name as it is; the next run asks again.
+            stats["shareholding_skipped"] += 1
+            if stats["shareholding_skipped"] == 1:
+                print("shareholding skip", ticker, "its sources were retired earlier in this run")
         else:
             stats["shareholding_fail"] += 1
-            streak = next_streak(streak, "down")
-            _mark_retry(cursor, "shareholding", ticker, today)
-            print("shareholding fail", ticker, fail_note)
-            if streak >= 6:
-                print("Shareholding paused after 6 failures in a row")
+            after = _mark_shareholding_failed(cursor, ticker, today, fail_note)
+            print("shareholding fail", ticker, fail_note + ", retry after " + after)
+            if guard.record("down"):
+                print("Shareholding stopped for this run: " + guard.reason)
                 break
         if (i + 1) % 8 == 0:
             _flush_holders(hold_map, cache)
             save_cursor(cache, cursor)
-        time.sleep(pause)
+        if outcome != "retired":
+            # Most BSE-only names have one live source (Screener), so keep at
+            # least a second between names to stay polite.
+            time.sleep(max(pause, SHAREHOLDING_MIN_GAP))
     _flush_holders(hold_map, cache)
     save_cursor(cache, cursor)
 
@@ -802,6 +994,7 @@ def run_batch(root, cfg, max_names=None):
     cursor["last_shareholding_ok"] = stats["shareholding_ok"]
     cursor["last_shareholding_fail"] = stats["shareholding_fail"]
     cursor["last_shareholding_empty"] = stats["shareholding_empty"]
+    cursor["last_shareholding_skipped"] = stats["shareholding_skipped"]
     save_cursor(cache, cursor)
     frame = progress_frame(root)
     _write_progress(data, frame)
