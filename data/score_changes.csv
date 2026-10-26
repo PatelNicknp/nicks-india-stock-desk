@@ -1,3 +1,2 @@
 ticker,company,price,day_pct,score,score_prev,score_change,verdict,data_status,note,disclaimer
-AANCHALISP,Aanchal Ispat Limited,54.61,3.86,-1.0,0.0,-1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-A1L,A-1 LIMITED,4.9,-0.2,-3.0,-2.0,-1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+REGENCY,REGENCY FINCORP LIMITED,63.6,2.0,6.0,4.0,2.0,HOLD,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
