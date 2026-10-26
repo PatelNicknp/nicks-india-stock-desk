@@ -58,6 +58,7 @@ feature.sector_rotation,True
 feature.fundamentals_backfill,True
 feature.sensex,True
 feature.company_line,True
+feature.high_volume_scanner,True
 buy_setups.market_filter,True
 buy_setups.chart_setups_only,True
 buy_setups.full_rules_at_coverage_pct,80
@@ -107,8 +108,8 @@ sector_rotation.windows.M.mom_window,12
 sector_rotation.near_high_pct,5
 sector_rotation.w52_bars,252
 sector_rotation.tail_keep,12
-fundamentals_backfill.statements_per_run,40
-fundamentals_backfill.shareholding_per_run,40
+fundamentals_backfill.statements_per_run,200
+fundamentals_backfill.shareholding_per_run,200
 fundamentals_backfill.pause_seconds,0.45
 fundamentals_backfill.max_minutes,18
 fundamentals_backfill.statements_refresh_days,90

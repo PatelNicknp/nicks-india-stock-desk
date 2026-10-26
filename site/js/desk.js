@@ -29,6 +29,7 @@
       ["Flag breakout", "flag.html", "flag"],
       ["Leaders", "leaders.html", "leaders"],
       ["52-week", "52-week.html", "week52"],
+      ["High volume", "high-volume.html", "highvol"],
     ]],
     ["Earnings", [
       ["Calendar", "earnings-calendar.html", "calendar"],
@@ -475,6 +476,34 @@
         if (n == null || Math.abs(n) > 500) return na();
         return esc(fmt(n, d));
       }
+      case "ratiox": {
+        const n = num(v);
+        if (n == null) return na();
+        const text = (n >= 10 ? fmt(n, 0) : fmt(n, 1)) + "x";
+        const color = n >= 5 ? AM : n >= 2 ? UP : TX;
+        return '<span style="color:' + color + ';font-weight:700">' + esc(text) + "</span>";
+      }
+      case "codesc": {
+        const name = isBlank(v) ? "" : '<span class="coname">' + esc(v) + "</span>";
+        const desc = isBlank(row.description) ? "" : '<span class="codesc" title="' + esc(row.description) + '">' + esc(row.description) + "</span>";
+        const flag = String(row.split_check || "").toLowerCase() === "yes"
+          ? '<span class="pill lite" style="color:#F59E0B" title="The price jumped more than 35% in one day in the last 50 sessions. That is usually a split or bonus, so the volume ratio may be too high.">Split or bonus?</span>' : "";
+        if (!name && !desc && !flag) return na();
+        return '<span class="cobox">' + name + desc + flag + "</span>";
+      }
+      case "updown": {
+        const s = String(v || "").toLowerCase();
+        if (s === "up") return '<span class="pill" style="color:' + UP + '">' + (col.short ? "Buying" : "Up · buying") + "</span>";
+        if (s === "down") return '<span class="pill" style="color:' + DN + '">' + (col.short ? "Selling" : "Down · selling") + "</span>";
+        if (s === "flat") return '<span class="pill" style="color:' + MU + '">Flat</span>';
+        return na();
+      }
+      case "abovema": {
+        const s = String(v || "").toLowerCase();
+        if (s === "yes") return '<span style="color:' + UP + '">Above</span>';
+        if (s === "no") return '<span style="color:' + DN + '">Below</span>';
+        return na();
+      }
       case "volx": {
         const n = num(v);
         if (n == null) return na();
@@ -630,7 +659,7 @@
 
   function align(col) {
     if (col.align) return col.align;
-    if (["num", "pct", "money", "compact", "dist", "heatpct", "shares"].indexOf(col.kind) >= 0) return "num";
+    if (["num", "pct", "money", "compact", "dist", "heatpct", "shares", "ratiox"].indexOf(col.kind) >= 0) return "num";
     if (["score", "points", "plabel", "grade", "flag", "tone", "signal"].indexOf(col.kind) >= 0) return "c";
     return "";
   }
@@ -638,7 +667,7 @@
   function compare(a, b, col, dir) {
     const va = a[col.key];
     const vb = b[col.key];
-    const numeric = ["num", "pct", "money", "compact", "dollars", "dist", "score", "points", "tone", "signal", "flag", "heatpct", "delta", "multiple", "volx", "retrace", "strengthbar", "daybar", "rangepos", "scorejump", "count", "signedcompact", "of8", "owncap"].indexOf(col.kind) >= 0;
+    const numeric = ["num", "pct", "money", "compact", "dollars", "dist", "score", "points", "tone", "signal", "flag", "heatpct", "delta", "multiple", "volx", "retrace", "strengthbar", "daybar", "rangepos", "scorejump", "count", "signedcompact", "of8", "owncap", "ratiox"].indexOf(col.kind) >= 0;
     let c = 0;
     if (numeric) {
       const pull = (value) => {
@@ -2058,6 +2087,7 @@
     flag: "feature.scanner_flag",
     leaders: "feature.scanner_leaders",
     week52: "feature.scanner_52w",
+    highvol: "feature.high_volume_scanner",
     buysetups: "feature.buy_setups",
     rotation: "feature.sector_rotation",
     calendar: "feature.earnings_calendar",
@@ -2112,6 +2142,9 @@
       const unique = Array.from(new Set(names));
       const loaded = {};
       await Promise.all(unique.map(async (n) => { loaded[n] = await loadCsv(n); }));
+      await Promise.all((spec.optional || []).filter((n) => !loaded[n]).map(async (n) => {
+        try { loaded[n] = await loadCsv(n); } catch (err) { loaded[n] = []; }
+      }));
       SETTINGS = loaded["settings.csv"] || [];
       renderShell(meta);
       const mt = loaded["market_today.csv"];

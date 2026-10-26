@@ -397,3 +397,16 @@ tr.selrow .rowexp{color:#7C9CFF}
 .coline[hidden]{display:none}
 #co-line{margin:0 0 12px}
 @media (max-width:699px){.coline{font-size:13px;line-height:18px;max-width:none}}
+
+/* High volume page: company name with a one-line description under it. */
+.cobox{display:flex;flex-direction:column;gap:2px;min-width:0;max-width:280px;white-space:normal}
+.cobox .coname{color:#E6EBF5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cobox .codesc{font-size:11px;line-height:15px;color:#8B96AD;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cobox .pill{align-self:flex-start;font-size:11px}
+@media (max-width:699px){
+  .cobox{max-width:180px}
+}
+@media (min-width:700px) and (max-width:899px){
+  .cards.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+.cards.four .card .v{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}

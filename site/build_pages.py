@@ -20,6 +20,7 @@ PAGES = [
     ("flag.html", "flag", "Flag breakout"),
     ("leaders.html", "leaders", "Leaders"),
     ("52-week.html", "week52", "52-week"),
+    ("high-volume.html", "highvol", "High volume"),
     ("earnings-calendar.html", "calendar", "Calendar"),
     ("earnings-heatmap.html", "heatmap", "Strength heatmap"),
     ("earnings-cards.html", "cards", "Report cards"),

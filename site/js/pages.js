@@ -250,6 +250,128 @@
   function offBox() {
     return '<div class="panel pad m2" style="font-size:12px">Turned off in Settings</div>';
   }
+  // High volume: stocks trading far above their own 50-day average volume.
+  const HV_COLS = [
+    TK,
+    T("company", "Company", "codesc", { width: "240px" }),
+    T("volume", "Volume today", "compact", { align: "num" }),
+    T("avg_volume_50d", "50-day avg volume", "compact", { align: "num", hide: "md" }),
+    T("volume_ratio", "Volume ratio", "ratiox"),
+    T("day_pct", "Price change", "pct", { dec: 2, color: true }),
+    T("close", "Close", "num", { dec: 2 }),
+    T("above_sma50", "vs 50-day", "abovema"),
+    T("above_sma200", "vs 200-day", "abovema"),
+    T("day_type", "Day", "updown"),
+  ];
+  function hvColumns(all) {
+    const cols = HV_COLS.slice();
+    if (all.some((r) => D.num(r.delivery_pct) != null)) cols.push(T("delivery_pct", "Delivery %", "pct", { dec: 1 }));
+    return cols;
+  }
+  function hvMatch(r, minx, side, exch) {
+    const ratio = D.num(r.volume_ratio);
+    if (ratio == null || ratio < minx) return false;
+    if (side && String(r.day_type || "") !== side) return false;
+    if (exch) {
+      const e = String(r.exchange || "");
+      if (e !== exch && e !== "Both") return false;
+    }
+    return true;
+  }
+  function hvDetail(r) {
+    const ratio = D.num(r.volume_ratio);
+    const ratioText = ratio == null ? "More shares than usual" : (ratio >= 10 ? D.fmt(ratio, 0) : D.fmt(ratio, 1)) + " times its normal volume";
+    const side = String(r.day_type || "");
+    const meaning = side === "Up" ? " on an up day. That usually means buyers were in control." :
+      side === "Down" ? " on a down day. That usually means sellers were in control." : ".";
+    const traded = D.num(r.traded_cr);
+    const tradedText = traded == null ? "" : " About Rs " + D.fmt(traded, traded >= 100 ? 0 : 1) + " crore changed hands.";
+    const split = String(r.split_check || "") === "yes" ? " The price jumped more than 35% in one day recently. That is usually a split or bonus, so the ratio may be too high." : "";
+    return '<p class="whytext">' + D.esc(ratioText + meaning + tradedText + split) + "</p>";
+  }
+  // The one-line company description, when company_lines.csv is on the desk.
+  function hvAddLines(rows, files) {
+    if (!D.featureOn("feature.company_line")) return rows;
+    const lines = new Map();
+    (files["company_lines.csv"] || []).forEach((r) => {
+      if (r.ticker && r.line) lines.set(String(r.ticker).toUpperCase(), r.line);
+    });
+    if (!lines.size) return rows;
+    return rows.map((r) => {
+      const line = lines.get(String(r.ticker || "").toUpperCase());
+      return line && D.isBlank(r.description) ? Object.assign({}, r, { description: line }) : r;
+    });
+  }
+  function renderHighVolume(ctx) {
+    const raw = ctx.files["high_volume.csv"] || [];
+    const all = hvAddLines(D.realRows(raw).filter((r) => !D.isBlank(r.ticker)), ctx.files);
+    const day = (all[0] && all[0].date) || "";
+    const when = day ? " in the " + D.esc(day) + " session" : "";
+    ctx.page.innerHTML =
+      '<p class="cap">Stocks that traded far more shares than usual' + when + '. Volume ratio is today\'s volume divided by the average of the last 50 sessions, so 3.2x means 3.2 times a normal day. ' +
+      'Heavy volume on an up day usually means buying. On a down day it usually means selling. Only stocks with a close over Rs 20 and at least Rs 1 crore traded are listed. Tap a row to see the chart. Research only.</p>' +
+      '<div class="ctrls" id="ctrls"></div><div class="cards four" id="cards"></div><div class="panel" id="tbl"></div>';
+    const box = document.getElementById("ctrls");
+    box.innerHTML =
+      D.selectHtml("minx", "Volume at least", [
+        { value: "1.5", label: "1.5x normal" }, { value: "2", label: "2x normal" },
+        { value: "3", label: "3x normal" }, { value: "5", label: "5x normal" },
+      ], "2", { all: false }) +
+      D.selectHtml("side", "Day", [{ value: "Up", label: "Up only (buying)" }, { value: "Down", label: "Down only (selling)" }], "") +
+      D.selectHtml("exch", "Exchange", [{ value: "NSE", label: "NSE" }, { value: "BSE", label: "BSE" }], "") +
+      D.searchHtml("ticker", "Ticker", "tick-list-hv", D.uniq(all, "ticker"));
+    const cols = hvColumns(all);
+    const state = { sort: "volume_ratio", dir: "desc", page: 0 };
+    const emptyAll = all.length ? "" : (D.noteOf(raw) || "No stocks had unusually high volume in the latest session.");
+    const draw = () => {
+      const minx = Number(D.fieldVal(box, "minx") || "2");
+      const side = D.fieldVal(box, "side") || "";
+      const exch = D.fieldVal(box, "exch") || "";
+      const ticker = (D.fieldVal(box, "ticker") || "").trim();
+      const rows = all.filter((r) => hvMatch(r, minx, side, exch) && D.matchText(r, "ticker", ticker));
+      const ups = countWhere(rows, (r) => r.day_type === "Up");
+      const downs = countWhere(rows, (r) => r.day_type === "Down");
+      const top = rows.slice().sort((a, b) => (D.num(b.volume_ratio) || 0) - (D.num(a.volume_ratio) || 0))[0];
+      document.getElementById("cards").innerHTML =
+        card("Stocks listed", D.esc(String(rows.length)), "at " + D.esc(String(minx)) + "x or more") +
+        card("Up days", '<span style="color:#22C55E">' + D.esc(String(ups)) + "</span>", "heavy buying") +
+        card("Down days", '<span style="color:#EF4444">' + D.esc(String(downs)) + "</span>", "heavy selling") +
+        card("Biggest jump", top ? D.esc(top.ticker) : D.na(), top ? D.esc((D.num(top.volume_ratio) >= 10 ? D.fmt(top.volume_ratio, 0) : D.fmt(top.volume_ratio, 1)) + "x normal volume") : "");
+      D.drawTable(document.getElementById("tbl"), {
+        rows: rows, columns: cols, state: state, pageSize: 25,
+        detail: hvDetail,
+        priceSub: "Daily candles in rupees. The volume bars show the heavy day.",
+        empty: emptyAll || "No stocks match these filters today. Try 1.5x, or set Day and Exchange to All.",
+      });
+    };
+    hook(box, state, draw);
+    draw();
+  }
+
+  function hvTodayPanel(files) {
+    if (panelOff("feature.high_volume_scanner")) return "";
+    return '<div class="panel today-hv" id="hvtop"></div>';
+  }
+  function paintHvToday(files) {
+    const host = document.getElementById("hvtop");
+    if (!host) return;
+    const raw = files["high_volume.csv"] || [];
+    const rows = D.realRows(raw).filter((r) => !D.isBlank(r.ticker) && hvMatch(r, 2, "", ""));
+    const head = '<div class="pad" style="padding-bottom:0"><div class="rowhead"><div><div class="ptitle">High volume today</div>' +
+      '<div class="psub">Stocks at 2x or more of their normal volume. Up day means buying, down day means selling.</div></div>' +
+      '<a class="more" href="high-volume.html">All high volume ›</a></div></div>';
+    if (!rows.length) {
+      host.innerHTML = head + '<div class="empty">' + D.esc(raw.length ? "No stocks had unusually high volume in the latest session." : "The high volume list is not ready yet.") + "</div>";
+      return;
+    }
+    host.innerHTML = head + '<div id="hvtbl"></div>';
+    D.drawTable(document.getElementById("hvtbl"), {
+      rows: rows, columns: [TK, T("volume_ratio", "Ratio", "ratiox"),
+        T("day_pct", "Change", "pct", { dec: 2, color: true }), T("day_type", "Day", "updown", { short: true })],
+      state: { sort: "volume_ratio", dir: "desc", page: 0 }, pageSize: 5, foot: false, detail: hvDetail,
+    });
+  }
+
   function renderToday(ctx) {
     const mt = (ctx.files["market_today.csv"] || [])[0] || {};
     const breadth = D.lastNDays(D.realRows(ctx.files["breadth_history.csv"]), "date", 182);
@@ -301,7 +423,8 @@
       '<div class="split today-bot">' +
       (panelOff("feature.top_sectors") ? offBox() : '<div class="panel" id="top5"></div>') +
       (panelOff("feature.alerts") ? offBox() : '<div class="panel"><div class="pad" style="padding-bottom:0"><div class="rowhead"><div><div class="ptitle">Latest alerts</div><div class="psub">Changes since the previous run. Nothing is emailed or sent to a phone.</div></div><a class="more" href="alerts.html">All alerts ›</a></div></div><div id="alerts"></div></div>') +
-      "</div>";
+      "</div>" + hvTodayPanel(ctx.files);
+    paintHvToday(ctx.files);
     if (!panelOff("feature.breadth")) {
       D.lineChart(document.getElementById("br"), breadth.map((r) => r.date), [
         { label: "20-day", data: D.seriesNum(breadth, "pct_above_sma20"), color: "#7C9CFF" },
@@ -2889,7 +3012,7 @@
 
 
   window.DESK_PAGES = {
-    today: { files: ["market_today.csv", "breadth_history.csv", "sectors.csv", "alerts.csv", "fii_flows.csv"], render: renderToday },
+    today: { files: ["market_today.csv", "breadth_history.csv", "sectors.csv", "alerts.csv", "fii_flows.csv"], optional: ["high_volume.csv"], render: renderToday },
     flows: { files: ["fii_flows.csv", "participant_oi.csv"], render: renderFlows },
     top: { files: ["scores.csv"], render: renderTop },
     scorecard: { files: ["scores.csv", "score_details.csv", "news.csv", "earnings_history.csv"], render: renderScorecard },
@@ -2933,6 +3056,7 @@
     updates: { files: ["updates_log.csv", "freshness.csv", "backfill_progress.csv"], render: renderUpdates },
     buysetups: { files: ["buy_setups.csv", "backfill_progress.csv"], render: renderBuySetups },
     week52: { files: ["scanner_52w.csv", "highs_lows_history.csv"], render: renderWeek52 },
+    highvol: { files: ["high_volume.csv"], optional: ["company_lines.csv"], render: renderHighVolume },
     rotation: { files: ["sector_rotation.csv", "sector_rotation_tails.csv", "sector_rotation_history.csv", "scores.csv"], render: renderRotation },
     help: { files: ["help.csv", "settings.csv"], render: renderHelp },
   };
