@@ -40,11 +40,11 @@
   "ABSLBANETF": "2026-10-27",
   "ABSLNN50ET": "2026-10-27"
  },
- "last_batch_at": "2026-10-26T02:47Z",
+ "last_batch_at": "2026-10-26T03:02Z",
  "last_statements_ok": 200,
  "last_statements_fail": 0,
- "last_shareholding_ok": 0,
- "last_shareholding_fail": 6,
+ "last_shareholding_ok": 198,
+ "last_shareholding_fail": 0,
  "shareholding_empty_on": {
   "BIRET": "2026-10-26",
   "EMBASSY": "2026-10-26",
@@ -63,7 +63,10 @@
   "ENKEIWHEL": "2026-10-26",
   "FUSIONCX": "2026-10-26",
   "GKB": "2026-10-26",
-  "OLAELEC-RE": "2026-10-26"
+  "OLAELEC-RE": "2026-10-26",
+  "APLABPP": "2026-10-26",
+  "ATLPP": "2026-10-26"
  },
- "last_shareholding_empty": 0
+ "last_shareholding_empty": 2,
+ "last_shareholding_skipped": 0
 }
