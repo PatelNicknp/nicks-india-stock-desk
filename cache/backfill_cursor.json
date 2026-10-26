@@ -41,10 +41,10 @@
   "ABSLBANETF": "2026-10-27",
   "ABSLNN50ET": "2026-10-27"
  },
- "last_batch_at": "2026-10-26T05:27Z",
+ "last_batch_at": "2026-10-26T05:37Z",
  "last_statements_ok": 0,
  "last_statements_fail": 0,
- "last_shareholding_ok": 198,
+ "last_shareholding_ok": 185,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
   "BIRET": "2026-10-26",
@@ -54,16 +54,6 @@
   "DUMMYINGL1": "2026-10-26",
   "DUMMYINGL2": "2026-10-26",
   "DUMMYINXGN": "2026-10-26",
-  "EASTWEST": "2026-10-26",
-  "EBIX": "2026-10-26",
-  "ECORECO": "2026-10-26",
-  "EKI": "2026-10-26",
-  "ELCIDIN": "2026-10-26",
-  "ELPROINTL": "2026-10-26",
-  "EMPIND": "2026-10-26",
-  "ENKEIWHEL": "2026-10-26",
-  "FUSIONCX": "2026-10-26",
-  "GKB": "2026-10-26",
   "OLAELEC-RE": "2026-10-26",
   "APLABPP": "2026-10-26",
   "ATLPP": "2026-10-26",
@@ -73,6 +63,6 @@
   "SURAJINDPP": "2026-10-26",
   "VERTEXPP": "2026-10-26"
  },
- "last_shareholding_empty": 2,
+ "last_shareholding_empty": 15,
  "last_shareholding_skipped": 0
 }
