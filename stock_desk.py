@@ -3091,6 +3091,21 @@ def main(argv=None):
         walls = tables.mark_nearest_expiry(walls)
         walls["note"] = "Open interest only, for the focus list, once a day. Not an option pick."
 
+    # High volume scanner. Uses the bars already in memory. Its own try so a
+    # problem here can never stop the rest of the update.
+    hv_on = features.get("high_volume_scanner", True)
+    hv = pd.DataFrame()
+    hv_note = "High volume scanner is off."
+    if hv_on:
+        try:
+            import volume_scanner
+            hv, hv_note = volume_scanner.build(long, scores, universe, cfg)
+            log("High volume scanner", "OK" if len(hv) else "MISSING", asof, hv_note)
+        except Exception as exc:
+            hv = pd.DataFrame()
+            hv_note = "The high volume scan did not run this time. The rest of the desk updated as normal."
+            log("High volume scanner", "MISSING", asof, (hv_note + " " + str(exc))[:200])
+
     aaii_note = "There is no free AAII survey for India. India VIX and FII or DII cash were not available, so this page has no number."
     mood = build_mood(close, fii) if features.get("aaii_sentiment", True) else None
 
@@ -3147,6 +3162,7 @@ def main(argv=None):
         "trends": gated(tr, "trends", features.get("trends", True), "No trend rows."),
         "pullbacks": gated(pb, "pullbacks", features.get("pullbacks", True), "No pullback rows."),
         "gainers_losers": gated(gl, "gainers_losers", features.get("gainers_losers", True), "No gainers."),
+        "high_volume": gated(hv, "high_volume", hv_on, hv_note),
         "sector_performance": gated(tables.sector_perf(scores), "sector_performance", features.get("sector_performance", True), "No sector performance."),
         "heatmaps": gated(heat, "heatmaps", features.get("heatmaps", True), "No heatmap."),
         "freshness": gated(fresh, "freshness", features.get("freshness_flags", True), "Freshness flags are off."),

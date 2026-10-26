@@ -59,7 +59,8 @@
     "sector_rotation": true,
     "fundamentals_backfill": true,
     "sensex": true,
-    "company_line": true
+    "company_line": true,
+    "high_volume_scanner": true
   },
   "market": {
     "require_both_uptrends": false

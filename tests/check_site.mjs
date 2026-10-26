@@ -26,7 +26,7 @@ const pages = [
   "earnings-cards.html", "put-call.html", "walls.html", "analysts.html", "thirteen-f.html", "aaii.html",
   "insiders.html", "headlines.html", "xly-xlp.html", "financials.html", "earnings-tracker.html",
   "company-financials.html", "dividend-fundamentals.html", "macro.html", "sector-macro.html",
-  "historical-pe.html", "breakouts.html", "trends.html", "pullbacks.html", "gainers.html",
+  "historical-pe.html", "breakouts.html", "trends.html", "pullbacks.html", "gainers.html", "high-volume.html",
   "breadth.html", "sector-performance.html", "heatmaps.html", "updates.html", "help.html",
 ];
 const ipad = new Set(["index.html", "top-stocks.html", "scorecard.html", "watchlist.html", "backtest.html", "vcp.html"]);

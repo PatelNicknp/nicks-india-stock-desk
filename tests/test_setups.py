@@ -428,6 +428,47 @@ def test_switches_skip_the_work():
     assert all(len(v) == 0 for v in out.values())
 
 
+def _hv_bars():
+    """Four stocks, 220 sessions each. Only the last session differs."""
+    days = [d.strftime("%Y-%m-%d") for d in _dates(220)]
+    rows = []
+    spec = {
+        "BIGUP": (100.0, 100000, 400000, 104.0),    # 4x on an up day
+        "BIGDN": (50.0, 100000, 250000, 48.0),      # 2.5x on a down day
+        "QUIET": (100.0, 100000, 110000, 101.0),    # normal day
+        "PENNY": (10.0, 10000000, 50000000, 11.0),  # under Rs 20
+        "FUNDX": (100.0, 100000, 900000, 101.0),    # fund unit
+    }
+    for t, (px, vol, last_vol, last_px) in spec.items():
+        for i, d in enumerate(days):
+            last = i == len(days) - 1
+            rows.append({"date": d, "ticker": t, "close": last_px if last else px, "volume": last_vol if last else vol,
+                         "isin": "INF000000001" if t == "FUNDX" else "INE000000001"})
+    rows.append({"date": "2030-01-05", "ticker": "INR=X", "close": 90.0, "volume": 0, "isin": ""})
+    return pd.DataFrame(rows), days[-1]
+
+
+def test_high_volume_scanner():
+    import volume_scanner
+    bars, last_day = _hv_bars()
+    scores = pd.DataFrame([{"ticker": t, "company": t + " Ltd", "exchange": "Both"} for t in ("BIGUP", "BIGDN", "QUIET", "PENNY", "FUNDX")])
+    out, note = volume_scanner.build(bars, scores, None, {})
+    assert volume_scanner.session_date(bars) == last_day
+    assert list(out["ticker"]) == ["BIGUP", "BIGDN"]
+    up = out.iloc[0]
+    assert abs(up["volume_ratio"] - 4.0) < 1e-9
+    assert up["day_type"] == "Up" and up["meaning"] == "Buying"
+    assert up["above_sma50"] == "yes" and up["above_sma200"] == "yes"
+    assert out.iloc[1]["day_type"] == "Down" and out.iloc[1]["above_sma50"] == "no"
+    assert "2 stocks at 2x" in note
+
+
+def test_high_volume_scanner_empty_is_safe():
+    import volume_scanner
+    out, note = volume_scanner.build(pd.DataFrame(), None, None, {})
+    assert len(out) == 0 and note
+
+
 if __name__ == "__main__":
     test_pivot_is_strict_and_delayed()
     test_vcp_ready_matches_pine_levels()
@@ -443,4 +484,6 @@ if __name__ == "__main__":
     test_bse_only_names_use_sensex()
     test_buy_setups_keep_unscored_and_drop_avoid()
     test_switches_skip_the_work()
+    test_high_volume_scanner()
+    test_high_volume_scanner_empty_is_safe()
     print("setups ok")
