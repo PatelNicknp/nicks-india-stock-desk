@@ -1,51 +1,51 @@
-ticker,company,sector,in_next50,in_nifty50,in_midcap150
-ABB,ABB India Ltd.,Capital Goods,yes,no,no
-ADANIENSOL,Adani Energy Solutions Ltd.,Power,yes,no,no
-ADANIGREEN,Adani Green Energy Ltd.,Power,yes,no,no
-ADANIPOWER,Adani Power Ltd.,Power,yes,no,no
-AMBUJACEM,Ambuja Cements Ltd.,Construction Materials,yes,no,no
-DMART,Avenue Supermarts Ltd.,Consumer Services,yes,no,no
-BAJAJHLDNG,Bajaj Holdings & Investment Ltd.,Financial Services,yes,no,no
-BANKBARODA,Bank of Baroda,Financial Services,yes,no,no
-BPCL,Bharat Petroleum Corporation Ltd.,Oil Gas & Consumable Fuels,yes,no,no
-BOSCHLTD,Bosch Ltd.,Automobile and Auto Components,yes,no,no
-BRITANNIA,Britannia Industries Ltd.,Fast Moving Consumer Goods,yes,no,no
-CGPOWER,CG Power and Industrial Solutions Ltd.,Capital Goods,yes,no,no
-CANBK,Canara Bank,Financial Services,yes,no,no
-CHOLAFIN,Cholamandalam Investment and Finance Company Ltd.,Financial Services,yes,no,no
-CUMMINSIND,Cummins India Ltd.,Capital Goods,yes,no,no
-DLF,DLF Ltd.,Realty,yes,no,no
-DIVISLAB,Divi's Laboratories Ltd.,Healthcare,yes,no,no
-GAIL,GAIL (India) Ltd.,Oil Gas & Consumable Fuels,yes,no,no
-GODREJCP,Godrej Consumer Products Ltd.,Fast Moving Consumer Goods,yes,no,no
-HDFCAMC,HDFC Asset Management Company Ltd.,Financial Services,yes,no,no
-HAL,Hindustan Aeronautics Ltd.,Capital Goods,yes,no,no
-HINDZINC,Hindustan Zinc Ltd.,Metals & Mining,yes,no,no
-POWERINDIA,Hitachi Energy India Ltd.,Capital Goods,yes,no,no
-HYUNDAI,Hyundai Motor India Ltd.,Automobile and Auto Components,yes,no,no
-IOC,Indian Oil Corporation Ltd.,Oil Gas & Consumable Fuels,yes,no,no
-IRFC,Indian Railway Finance Corporation Ltd.,Financial Services,yes,no,no
-JINDALSTEL,Jindal Steel Ltd.,Metals & Mining,yes,no,no
-LTM,LTM Ltd.,Information Technology,yes,no,no
-MAZDOCK,Mazagoan Dock Shipbuilders Ltd.,Capital Goods,yes,no,no
-MUTHOOTFIN,Muthoot Finance Ltd.,Financial Services,yes,no,no
-PIDILITIND,Pidilite Industries Ltd.,Chemicals,yes,no,no
-POLYCAB,Polycab India Ltd.,Capital Goods,yes,no,no
-PFC,Power Finance Corporation Ltd.,Financial Services,yes,no,no
-PNB,Punjab National Bank,Financial Services,yes,no,no
-MOTHERSON,Samvardhana Motherson International Ltd.,Automobile and Auto Components,yes,no,no
-ENRIN,Siemens Energy India Ltd.,Capital Goods,yes,no,no
-SIEMENS,Siemens Ltd.,Capital Goods,yes,no,no
-SOLARINDS,Solar Industries India Ltd.,Chemicals,yes,no,no
-TVSMOTOR,TVS Motor Company Ltd.,Automobile and Auto Components,yes,no,no
-TATACAP,Tata Capital Ltd.,Financial Services,yes,no,no
-TMCV,Tata Motors Ltd.,Capital Goods,yes,no,no
-TATAPOWER,Tata Power Co. Ltd.,Power,yes,no,no
-TORNTPHARM,Torrent Pharmaceuticals Ltd.,Healthcare,yes,no,no
-UNIONBANK,Union Bank of India,Financial Services,yes,no,no
-VBL,Varun Beverages Ltd.,Fast Moving Consumer Goods,yes,no,no
-VAML,Vedanta Aluminium Metal Ltd.,Metals & Mining,yes,no,no
-VEDL,Vedanta Ltd.,Metals & Mining,yes,no,no
-IDEA,Vodafone Idea Ltd.,Telecommunication,yes,no,no
-WIPRO,Wipro Ltd.,Information Technology,yes,no,no
-ZYDUSLIFE,Zydus Lifesciences Ltd.,Healthcare,yes,no,no
+ticker,company,sector,in_next50,in_nifty50,in_midcap150,in_smallcap250,in_microcap250,in_totalmarket,in_other_nse,in_sme,in_bse_only,in_my_picks
+ABB,ABB India Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+ADANIENSOL,Adani Energy Solutions Ltd.,Power,yes,no,no,no,no,no,no,no,no,no
+ADANIGREEN,Adani Green Energy Ltd.,Power,yes,no,no,no,no,no,no,no,no,no
+ADANIPOWER,Adani Power Ltd.,Power,yes,no,no,no,no,no,no,no,no,no
+AMBUJACEM,Ambuja Cements Ltd.,Construction Materials,yes,no,no,no,no,no,no,no,no,no
+DMART,Avenue Supermarts Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+BAJAJHLDNG,Bajaj Holdings & Investment Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+BANKBARODA,Bank of Baroda,Financial Services,yes,no,no,no,no,no,no,no,no,no
+BPCL,Bharat Petroleum Corporation Ltd.,Oil Gas & Consumable Fuels,yes,no,no,no,no,no,no,no,no,no
+BOSCHLTD,Bosch Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+BRITANNIA,Britannia Industries Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+CGPOWER,CG Power and Industrial Solutions Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+CANBK,Canara Bank,Financial Services,yes,no,no,no,no,no,no,no,no,no
+CHOLAFIN,Cholamandalam Investment and Finance Company Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+CUMMINSIND,Cummins India Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+DLF,DLF Ltd.,Realty,yes,no,no,no,no,no,no,no,no,no
+DIVISLAB,Divi's Laboratories Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+GAIL,GAIL (India) Ltd.,Oil Gas & Consumable Fuels,yes,no,no,no,no,no,no,no,no,no
+GODREJCP,Godrej Consumer Products Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+HDFCAMC,HDFC Asset Management Company Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+HAL,Hindustan Aeronautics Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+HINDZINC,Hindustan Zinc Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+POWERINDIA,Hitachi Energy India Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+HYUNDAI,Hyundai Motor India Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+IOC,Indian Oil Corporation Ltd.,Oil Gas & Consumable Fuels,yes,no,no,no,no,no,no,no,no,no
+IRFC,Indian Railway Finance Corporation Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+JINDALSTEL,Jindal Steel Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+LTM,LTM Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+MAZDOCK,Mazagoan Dock Shipbuilders Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+MUTHOOTFIN,Muthoot Finance Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+PIDILITIND,Pidilite Industries Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+POLYCAB,Polycab India Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+PFC,Power Finance Corporation Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+PNB,Punjab National Bank,Financial Services,yes,no,no,no,no,no,no,no,no,no
+MOTHERSON,Samvardhana Motherson International Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+ENRIN,Siemens Energy India Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+SIEMENS,Siemens Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+SOLARINDS,Solar Industries India Ltd.,Chemicals,yes,no,no,no,no,no,no,no,no,no
+TVSMOTOR,TVS Motor Company Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+TATACAP,Tata Capital Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+TMCV,Tata Motors Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+TATAPOWER,Tata Power Co. Ltd.,Power,yes,no,no,no,no,no,no,no,no,no
+TORNTPHARM,Torrent Pharmaceuticals Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+UNIONBANK,Union Bank of India,Financial Services,yes,no,no,no,no,no,no,no,no,no
+VBL,Varun Beverages Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+VAML,Vedanta Aluminium Metal Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+VEDL,Vedanta Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+IDEA,Vodafone Idea Ltd.,Telecommunication,yes,no,no,no,no,no,no,no,no,no
+WIPRO,Wipro Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+ZYDUSLIFE,Zydus Lifesciences Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no

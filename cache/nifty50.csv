@@ -1,51 +1,51 @@
-ticker,company,sector,in_nifty50,in_next50,in_midcap150
-ADANIENT,Adani Enterprises Ltd.,Metals & Mining,yes,no,no
-ADANIPORTS,Adani Ports and Special Economic Zone Ltd.,Services,yes,no,no
-APOLLOHOSP,Apollo Hospitals Enterprise Ltd.,Healthcare,yes,no,no
-ASIANPAINT,Asian Paints Ltd.,Consumer Durables,yes,no,no
-AXISBANK,Axis Bank Ltd.,Financial Services,yes,no,no
-BSE,BSE Ltd.,Financial Services,yes,no,no
-BAJAJ-AUTO,Bajaj Auto Ltd.,Automobile and Auto Components,yes,no,no
-BAJFINANCE,Bajaj Finance Ltd.,Financial Services,yes,no,no
-BAJAJFINSV,Bajaj Finserv Ltd.,Financial Services,yes,no,no
-BEL,Bharat Electronics Ltd.,Capital Goods,yes,no,no
-BHARTIARTL,Bharti Airtel Ltd.,Telecommunication,yes,no,no
-CIPLA,Cipla Ltd.,Healthcare,yes,no,no
-COALINDIA,Coal India Ltd.,Oil Gas & Consumable Fuels,yes,no,no
-DRREDDY,Dr. Reddy's Laboratories Ltd.,Healthcare,yes,no,no
-EICHERMOT,Eicher Motors Ltd.,Automobile and Auto Components,yes,no,no
-ETERNAL,Eternal Ltd.,Consumer Services,yes,no,no
-GRASIM,Grasim Industries Ltd.,Construction Materials,yes,no,no
-HCLTECH,HCL Technologies Ltd.,Information Technology,yes,no,no
-HDFCBANK,HDFC Bank Ltd.,Financial Services,yes,no,no
-HDFCLIFE,HDFC Life Insurance Company Ltd.,Financial Services,yes,no,no
-HINDALCO,Hindalco Industries Ltd.,Metals & Mining,yes,no,no
-HINDUNILVR,Hindustan Unilever Ltd.,Fast Moving Consumer Goods,yes,no,no
-ICICIBANK,ICICI Bank Ltd.,Financial Services,yes,no,no
-ITC,ITC Ltd.,Fast Moving Consumer Goods,yes,no,no
-INFY,Infosys Ltd.,Information Technology,yes,no,no
-INDIGO,InterGlobe Aviation Ltd.,Services,yes,no,no
-JSWSTEEL,JSW Steel Ltd.,Metals & Mining,yes,no,no
-JIOFIN,Jio Financial Services Ltd.,Financial Services,yes,no,no
-KOTAKBANK,Kotak Mahindra Bank Ltd.,Financial Services,yes,no,no
-LT,Larsen & Toubro Ltd.,Construction,yes,no,no
-M&M,Mahindra & Mahindra Ltd.,Automobile and Auto Components,yes,no,no
-MARUTI,Maruti Suzuki India Ltd.,Automobile and Auto Components,yes,no,no
-MAXHEALTH,Max Healthcare Institute Ltd.,Healthcare,yes,no,no
-NTPC,NTPC Ltd.,Power,yes,no,no
-NESTLEIND,Nestle India Ltd.,Fast Moving Consumer Goods,yes,no,no
-ONGC,Oil & Natural Gas Corporation Ltd.,Oil Gas & Consumable Fuels,yes,no,no
-POWERGRID,Power Grid Corporation of India Ltd.,Power,yes,no,no
-RELIANCE,Reliance Industries Ltd.,Oil Gas & Consumable Fuels,yes,no,no
-SBILIFE,SBI Life Insurance Company Ltd.,Financial Services,yes,no,no
-SHRIRAMFIN,Shriram Finance Ltd.,Financial Services,yes,no,no
-SBIN,State Bank of India,Financial Services,yes,no,no
-SUNPHARMA,Sun Pharmaceutical Industries Ltd.,Healthcare,yes,no,no
-TCS,Tata Consultancy Services Ltd.,Information Technology,yes,no,no
-TATACONSUM,Tata Consumer Products Ltd.,Fast Moving Consumer Goods,yes,no,no
-TMPV,Tata Motors Passenger Vehicles Ltd.,Automobile and Auto Components,yes,no,no
-TATASTEEL,Tata Steel Ltd.,Metals & Mining,yes,no,no
-TECHM,Tech Mahindra Ltd.,Information Technology,yes,no,no
-TITAN,Titan Company Ltd.,Consumer Durables,yes,no,no
-TRENT,Trent Ltd.,Consumer Services,yes,no,no
-ULTRACEMCO,UltraTech Cement Ltd.,Construction Materials,yes,no,no
+ticker,company,sector,in_nifty50,in_next50,in_midcap150,in_smallcap250,in_microcap250,in_totalmarket,in_other_nse,in_sme,in_bse_only,in_my_picks
+ADANIENT,Adani Enterprises Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+ADANIPORTS,Adani Ports and Special Economic Zone Ltd.,Services,yes,no,no,no,no,no,no,no,no,no
+APOLLOHOSP,Apollo Hospitals Enterprise Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+ASIANPAINT,Asian Paints Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+AXISBANK,Axis Bank Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+BSE,BSE Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+BAJAJ-AUTO,Bajaj Auto Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+BAJFINANCE,Bajaj Finance Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+BAJAJFINSV,Bajaj Finserv Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+BEL,Bharat Electronics Ltd.,Capital Goods,yes,no,no,no,no,no,no,no,no,no
+BHARTIARTL,Bharti Airtel Ltd.,Telecommunication,yes,no,no,no,no,no,no,no,no,no
+CIPLA,Cipla Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+COALINDIA,Coal India Ltd.,Oil Gas & Consumable Fuels,yes,no,no,no,no,no,no,no,no,no
+DRREDDY,Dr. Reddy's Laboratories Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+EICHERMOT,Eicher Motors Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+ETERNAL,Eternal Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+GRASIM,Grasim Industries Ltd.,Construction Materials,yes,no,no,no,no,no,no,no,no,no
+HCLTECH,HCL Technologies Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+HDFCBANK,HDFC Bank Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+HDFCLIFE,HDFC Life Insurance Company Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+HINDALCO,Hindalco Industries Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+HINDUNILVR,Hindustan Unilever Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+ICICIBANK,ICICI Bank Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+ITC,ITC Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+INFY,Infosys Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+INDIGO,InterGlobe Aviation Ltd.,Services,yes,no,no,no,no,no,no,no,no,no
+JSWSTEEL,JSW Steel Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+JIOFIN,Jio Financial Services Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+KOTAKBANK,Kotak Mahindra Bank Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+LT,Larsen & Toubro Ltd.,Construction,yes,no,no,no,no,no,no,no,no,no
+M&M,Mahindra & Mahindra Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+MARUTI,Maruti Suzuki India Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+MAXHEALTH,Max Healthcare Institute Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+NTPC,NTPC Ltd.,Power,yes,no,no,no,no,no,no,no,no,no
+NESTLEIND,Nestle India Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+ONGC,Oil & Natural Gas Corporation Ltd.,Oil Gas & Consumable Fuels,yes,no,no,no,no,no,no,no,no,no
+POWERGRID,Power Grid Corporation of India Ltd.,Power,yes,no,no,no,no,no,no,no,no,no
+RELIANCE,Reliance Industries Ltd.,Oil Gas & Consumable Fuels,yes,no,no,no,no,no,no,no,no,no
+SBILIFE,SBI Life Insurance Company Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+SHRIRAMFIN,Shriram Finance Ltd.,Financial Services,yes,no,no,no,no,no,no,no,no,no
+SBIN,State Bank of India,Financial Services,yes,no,no,no,no,no,no,no,no,no
+SUNPHARMA,Sun Pharmaceutical Industries Ltd.,Healthcare,yes,no,no,no,no,no,no,no,no,no
+TCS,Tata Consultancy Services Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+TATACONSUM,Tata Consumer Products Ltd.,Fast Moving Consumer Goods,yes,no,no,no,no,no,no,no,no,no
+TMPV,Tata Motors Passenger Vehicles Ltd.,Automobile and Auto Components,yes,no,no,no,no,no,no,no,no,no
+TATASTEEL,Tata Steel Ltd.,Metals & Mining,yes,no,no,no,no,no,no,no,no,no
+TECHM,Tech Mahindra Ltd.,Information Technology,yes,no,no,no,no,no,no,no,no,no
+TITAN,Titan Company Ltd.,Consumer Durables,yes,no,no,no,no,no,no,no,no,no
+TRENT,Trent Ltd.,Consumer Services,yes,no,no,no,no,no,no,no,no,no
+ULTRACEMCO,UltraTech Cement Ltd.,Construction Materials,yes,no,no,no,no,no,no,no,no,no
