@@ -9,10 +9,10 @@
   "DYNPRO": "2026-10-27"
  },
  "shareholding_retry_after": {},
- "last_batch_at": "2026-10-25T23:58Z",
+ "last_batch_at": "2026-10-26T00:24Z",
  "last_statements_ok": 200,
  "last_statements_fail": 0,
- "last_shareholding_ok": 199,
+ "last_shareholding_ok": 200,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
   "BIRET": "2026-10-26",
@@ -34,5 +34,5 @@
   "GKB": "2026-10-26",
   "OLAELEC-RE": "2026-10-26"
  },
- "last_shareholding_empty": 1
+ "last_shareholding_empty": 0
 }
