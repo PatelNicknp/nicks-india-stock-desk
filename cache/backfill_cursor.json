@@ -8,12 +8,19 @@
   "DVL": "2026-10-27",
   "DYNPRO": "2026-10-27"
  },
- "shareholding_retry_after": {},
- "last_batch_at": "2026-10-26T00:24Z",
+ "shareholding_retry_after": {
+  "08AGG": "2026-10-27",
+  "08GPG": "2026-10-27",
+  "08MPD": "2026-10-27",
+  "11AGG": "2026-10-27",
+  "11AMD": "2026-10-27",
+  "11AQD": "2026-10-27"
+ },
+ "last_batch_at": "2026-10-26T00:49Z",
  "last_statements_ok": 200,
  "last_statements_fail": 0,
- "last_shareholding_ok": 200,
- "last_shareholding_fail": 0,
+ "last_shareholding_ok": 157,
+ "last_shareholding_fail": 6,
  "shareholding_empty_on": {
   "BIRET": "2026-10-26",
   "EMBASSY": "2026-10-26",
