@@ -1,100 +1,4 @@
 ticker,company,sector,industry,forward_pe,analyst_mean,analyst_count,target_mean,target_median,earnings_ts,source,fetched_on,summary
-360ONE,360 ONE WAM LIMITED,Financial Services,Asset Management,24.586624,1.1,10.0,1316.0,1327.5,1792058400.0,,,
-ABB,ABB INDIA LIMITED,Industrials,Specialty Industrial Machinery,58.553665,3.40741,27.0,7035.3335,7094.0,1794564000.0,,,
-ABBOTINDIA,ABBOTT INDIA LIMITED,Healthcare,Drug Manufacturers - Specialty & Generic,27.687696,1.875,8.0,32467.375,31524.5,1786528800.0,,,
-ABCAPITAL,ADITYA BIRLA CAPITAL LTD.,Financial Services,Financial Conglomerates,13.687933,1.14286,14.0,468.7857,470.0,1793354400.0,,,
-ADANIENSOL,ADANI ENERGY SOLUTION LTD,Utilities,Utilities - Independent Power Producers,33.73906,1.88889,9.0,1675.6666,1728.0,1792663200.0,,,
-ADANIENT,ADANI ENTERPRISES LIMITED,Energy,Thermal Coal,44.12708,1.0,4.0,3561.5,3556.0,1793181600.0,,,
-ADANIGREEN,ADANI GREEN ENERGY LTD,Utilities,Utilities - Renewable,43.506145,1.6,10.0,1515.8,1539.0,1800439200.0,,,
-ADANIPORTS,ADANI PORT & SEZ LTD,Industrials,Marine Shipping,21.609259,1.26087,23.0,2073.4783,2080.0,1793181600.0,,,
-ADANIPOWER,ADANI POWER LTD,Utilities,Utilities - Independent Power Producers,22.924555,1.54545,11.0,250.27274,250.0,1792749600.0,,,
-AIAENG,AIA ENGINEERING LIMITED,Industrials,Specialty Industrial Machinery,23.42255,,13.0,4847.385,4998.0,1786528800.0,,,
-AIIL,AUTHUM INVEST & INFRA LTD,Financial Services,Capital Markets,,,,,,,,,
-AJANTPHARM,AJANTA PHARMA LIMITED,Healthcare,Drug Manufacturers - Specialty & Generic,28.185562,,13.0,3808.3845,3830.0,,,,
-ALKEM,ALKEM LABORATORIES LTD.,Healthcare,Drug Manufacturers - Specialty & Generic,22.107199,2.1,20.0,6002.55,6050.0,1786701600.0,,,
-AMBUJACEM,AMBUJA CEMENTS LTD,Basic Materials,Building Materials,25.237839,1.94872,38.0,480.07895,475.0,1793268000.0,,,
-ANTHEM,ANTHEM BIOSCIENCES LTD,Healthcare,Biotechnology,53.77308,,8.0,920.125,900.0,,,,
-APARINDS,APAR INDUSTRIES LTD.,Industrials,Electrical Equipment & Parts,38.237194,2.0,8.0,15398.125,15100.0,,,,
-APLAPOLLO,APL APOLLO TUBES LTD,Basic Materials,Steel,31.919422,1.36842,18.0,2287.0557,2277.5,1793008800.0,,,
-APOLLOHOSP,APOLLO HOSPITALS ENTER. L,Healthcare,Medical Care Facilities,35.497894,1.46667,30.0,9822.167,10000.0,1793786400.0,,,
-ASHOKLEY,ASHOK LEYLAND LTD,Industrials,Farm & Heavy Construction Machinery,18.035898,2.0,34.0,185.20589,185.0,1786701600.0,,,
-ASIANPAINT,ASIAN PAINTS LIMITED,Basic Materials,Specialty Chemicals,38.083336,2.5,34.0,2985.5881,2960.0,1793268000.0,,,
-ASTERDM,ASTER DM QUALITY CARE LTD,Healthcare,Medical Care Facilities,32.373096,1.66667,12.0,918.0833,905.0,,,,
-ASTRAL,ASTRAL LIMITED,Industrials,Building Products & Equipment,40.250103,1.55172,29.0,1741.1034,1740.0,1786528800.0,,,
-ATGL,ADANI TOTAL GAS LIMITED,Utilities,Utilities - Regulated Gas,,,,,,1792663200.0,,,
-AUBANK,AU SMALL FINANCE BANK LTD,Financial Services,Banks - Regional,15.420047,2.28571,29.0,1126.1034,1200.0,1792836000.0,,,
-AUROPHARMA,AUROBINDO PHARMA LTD,Healthcare,Drug Manufacturers - Specialty & Generic,16.822248,2.07407,27.0,1747.7037,1800.0,1785924000.0,,,
-AXISBANK,AXIS BANK LIMITED,Financial Services,Banks - Regional,10.403688,1.21951,41.0,1584.6586,1590.0,1792231200.0,,,
-BAJAJ-AUTO,BAJAJ AUTO LIMITED,Consumer Cyclical,Auto Manufacturers,21.049398,2.09756,41.0,11648.707,11700.0,1793095200.0,,,
-BAJAJFINSV,BAJAJ FINSERV LTD.,Financial Services,Financial Conglomerates,17.467018,,13.0,2366.2307,2460.0,1793700000.0,,,
-BAJAJHFL,BAJAJ HOUSING FINANCE LTD,Financial Services,Mortgage Finance,17.764332,2.94118,17.0,92.23529,92.0,,,,
-BAJAJHLDNG,BAJAJ HOLDINGS & INVS LTD,Financial Services,Asset Management,,,,,,1793700000.0,,,
-BAJFINANCE,BAJAJ FINANCE LIMITED,Financial Services,Credit Services,18.415588,1.68571,35.0,1165.0,1190.0,1792404000.0,,,
-BALKRISIND,BALKRISHNA IND. LTD,Consumer Cyclical,Auto Parts,20.973381,2.73684,19.0,2373.6316,2350.0,1785319200.0,,,
-BANKBARODA,BANK OF BARODA,Financial Services,Banks - Regional,5.3531117,,34.0,286.7647,280.0,1793354400.0,,,
-BANKINDIA,BANK OF INDIA,Financial Services,Banks - Regional,5.0642695,2.75,4.0,152.25,160.0,,,,
-BDL,BHARAT DYNAMICS LIMITED,Industrials,Aerospace & Defense,33.512924,2.6875,16.0,1331.375,1302.5,1786701600.0,,,
-BEL,BHARAT ELECTRONICS LTD,Industrials,Aerospace & Defense,32.256054,1.34375,32.0,489.96875,500.0,1793354400.0,,,
-BERGEPAINT,BERGER PAINTS (I) LTD,Basic Materials,Specialty Chemicals,36.058697,2.63636,22.0,571.0909,570.0,1793872800.0,,,
-BHARATFORG,BHARAT FORGE LTD,Industrials,Metal Fabrication,35.691772,2.95833,24.0,1978.875,2025.0,1786356000.0,,,
-BHARTIARTL,BHARTI AIRTEL LIMITED,Communication Services,Telecom Services,23.003273,1.44118,34.0,2319.2646,2327.5,1793872800.0,,,
-BHARTIHEXA,BHARTI HEXACOM LIMITED,Communication Services,Telecom Services,25.988401,1.86667,15.0,1852.6,1880.0,,,,
-BHEL,BHEL,Industrials,Specialty Industrial Machinery,24.013182,2.68421,19.0,436.78946,500.0,1791972000.0,,,
-BIOCON,BIOCON LIMITED.,Healthcare,Biotechnology,29.539682,2.44444,19.0,440.6842,455.0,1794391200.0,,,
-BLUESTARCO,BLUE STAR LIMITED,Industrials,Building Products & Equipment,39.190647,2.46154,26.0,1666.0769,1698.5,1793268000.0,,,
-BOSCHLTD,BOSCH LIMITED,Consumer Cyclical,Auto Parts,38.810066,,5.0,52113.4,54050.0,1793959200.0,,,
-BPCL,BHARAT PETROLEUM CORP  LT,Energy,Oil & Gas Refining & Marketing,7.3149295,2.48387,31.0,347.6129,360.0,1792749600.0,,,
-BRITANNIA,BRITANNIA INDUSTRIES LTD,Consumer Defensive,Packaged Foods,34.96648,1.90909,33.0,6154.485,6100.0,1786010400.0,,,
-BSE,BSE LIMITED,Financial Services,Financial Data & Stock Exchanges,36.505913,2.47368,19.0,3698.4736,3800.0,,,,
-CANBK,CANARA BANK,Financial Services,Banks - Regional,4.856025,1.6,21.0,149.5238,151.0,1785146400.0,,,
-CGPOWER,CG POWER AND IND SOL LTD,Industrials,Electrical Equipment & Parts,58.77915,2.2,20.0,948.15,974.0,1792749600.0,,,
-CHOLAFIN,CHOLAMANDALAM IN & FIN CO,Financial Services,Credit Services,14.921785,,32.0,2000.625,2000.0,1793181600.0,,,
-CIPLA,CIPLA LTD,Healthcare,Drug Manufacturers - Specialty & Generic,21.107168,2.19444,36.0,1512.1945,1525.0,1793095200.0,,,
-COALINDIA,COAL INDIA LTD,Energy,Thermal Coal,7.000505,2.08,24.0,471.66666,477.5,1793268000.0,,,
-COCHINSHIP,COCHIN SHIPYARD LIMITED,Industrials,Aerospace & Defense,25.50112,,4.0,1499.0,1618.0,,,,
-COFORGE,COFORGE LIMITED,Technology,Information Technology Services,25.955027,1.65714,35.0,2085.4856,2130.0,1792749600.0,,,
-COLPAL,COLGATE PALMOLIVE LTD.,Consumer Defensive,Household & Personal Products,27.84012,3.0,26.0,1902.0769,1840.5,1792663200.0,,,
-CONCOR,CONTAINER CORP OF IND LTD,Industrials,Railroads,19.269266,2.07143,14.0,557.0,550.0,1793613600.0,,,
-COROMANDEL,COROMANDEL INTERNTL. LTD,Basic Materials,Agricultural Inputs,18.319904,1.44444,9.0,2299.2222,2235.0,,,,
-CRISIL,CRISIL LTD,Financial Services,Financial Data & Stock Exchanges,31.564684,,2.0,5092.0,5092.0,,,,
-CUMMINSIND,CUMMINS INDIA LTD,Industrials,Specialty Industrial Machinery,38.001205,1.86364,22.0,5850.591,6086.0,1793786400.0,,,
-DABUR,DABUR INDIA LTD,Consumer Defensive,Household & Personal Products,27.615335,2.27027,37.0,489.16217,485.0,1793786400.0,,,
-DALBHARAT,DALMIA BHARAT LIMITED,Basic Materials,Building Materials,22.21689,1.73529,34.0,2127.4707,2120.0,1793008800.0,,,
-DIVISLAB,DIVI S LABORATORIES LTD,Healthcare,Drug Manufacturers - Specialty & Generic,59.178474,2.58621,29.0,8571.311,8600.0,1794045600.0,,,
-DIXON,DIXON TECHNO (INDIA) LTD,Technology,Consumer Electronics,40.15371,2.03704,27.0,14876.593,15450.0,1793354400.0,,,
-DLF,DLF LIMITED,Real Estate,Real Estate - Development,26.064436,1.36364,22.0,819.36365,805.0,1785751200.0,,,
-DMART,AVENUE SUPERMARTS LIMITED,Consumer Defensive,Discount Stores,47.350567,2.9375,32.0,3909.4375,3918.5,1791626400.0,,,
-DRREDDY,DR. REDDY S LABORATORIES,Healthcare,Drug Manufacturers - Specialty & Generic,20.876947,2.56757,37.0,1300.1621,1305.0,1792749600.0,,,
-EICHERMOT,EICHER MOTORS LTD,Consumer Cyclical,Auto Manufacturers,25.887255,2.0,37.0,8336.811,8469.0,1785319200.0,,,
-EMBASSY,"EMBASSY.NS,0P0001H6LJ,387837",,,26.922344,,,,,,,,
-ENDURANCE,ENDURANCE TECHNO. LTD.,Consumer Cyclical,Auto Parts,22.001549,1.92857,14.0,3174.2144,3165.0,,,,
-ENRIN,SIEMENS ENERGY INDIA LTD,Utilities,Utilities - Renewable,47.347775,,15.0,3817.6,3655.0,,,,
-ESCORTS,ESCORTS KUBOTA LIMITED,Industrials,Farm & Heavy Construction Machinery,18.960365,2.94737,17.0,3288.647,3310.0,1793613600.0,,,
-ETERNAL,ETERNAL LIMITED,Consumer Cyclical,Internet Retail,101.67863,1.53125,32.0,382.40625,390.0,1792576800.0,,,
-EXIDEIND,EXIDE INDUSTRIES LTD,Consumer Cyclical,Auto Parts,17.903769,,16.0,442.8125,426.5,1785405600.0,,,
-FACT,FACT LTD,Basic Materials,Agricultural Inputs,,,,,,,,,
-FEDERALBNK,FEDERAL BANK LTD,Financial Services,Banks - Regional,13.807941,2.08571,35.0,367.1143,365.0,1792144800.0,,,
-FLUOROCHEM,GUJARAT FLUOROCHEM LTD,Basic Materials,Specialty Chemicals,38.057487,2.05882,17.0,4745.1177,4800.0,1786528800.0,,,
-FORTIS,FORTIS HEALTHCARE LTD,Healthcare,Medical Care Facilities,31.313442,1.3,20.0,1098.25,1132.5,1786010400.0,,,
-GAIL,GAIL (INDIA) LTD,Utilities,Utilities - Regulated Gas,8.914179,1.93333,30.0,195.5,197.5,1793354400.0,,,
-GICRE,GENERAL INS CORP OF INDIA,Financial Services,Insurance - Reinsurance,5.6824317,,6.0,449.66666,475.0,,,,
-GLAXO,GLAXOSMITHKLINE PHARMA LT,Healthcare,Drug Manufacturers - General,30.37196,1.75,4.0,3097.25,2994.5,,,,
-GLENMARK,GLENMARK PHARMACEUTICALS,Healthcare,Drug Manufacturers - Specialty & Generic,22.336527,1.58333,11.0,2512.818,2590.0,1785492000.0,,,
-GMRAIRPORT,GMR AIRPORTS LIMITED,Industrials,Airports & Air Services,54.14859,1.22222,9.0,119.22222,120.0,1786528800.0,,,
-GODFRYPHLP,GODFREY PHILLIPS INDIA LT,Consumer Defensive,Tobacco,14.888493,,,,,,,,
-GODREJCP,GODREJ CONSUMER PRODUCTS,Consumer Defensive,Household & Personal Products,31.706932,1.55882,34.0,1148.5294,1114.5,1793268000.0,,,
-GODREJIND,GODREJ INDUSTRIES LTD,Industrials,Conglomerates,,,,,,1786615200.0,,,
-GODREJPROP,GODREJ PROPERTIES LTD,Real Estate,Real Estate - Development,13.378553,1.90909,22.0,2317.682,2330.0,1792749600.0,,,
-GRASIM,GRASIM INDUSTRIES LTD,Basic Materials,Building Materials,21.600176,1.4,10.0,3837.5,3825.0,1786528800.0,,,
-GROWW,BILLIONBRAINS GARAGE VN L,Financial Services,Capital Markets,29.488836,1.3,11.0,235.0,240.0,,,,
-GVT&D,GE VERNOVA T&D INDIA LTD,Industrials,Specialty Industrial Machinery,46.38747,1.55556,18.0,5365.222,5244.0,,,,
-HAL,HINDUSTAN AERONAUTICS LTD,Industrials,Aerospace & Defense,27.356308,1.7037,27.0,5582.407,5733.0,1786528800.0,,,
-HAVELLS,HAVELLS INDIA LIMITED,Industrials,Electrical Equipment & Parts,32.23475,1.85714,35.0,1295.8286,1260.0,1792663200.0,,,
-HCLTECH,HCL TECHNOLOGIES LTD,Technology,Information Technology Services,17.755001,2.79487,39.0,1269.6923,1255.0,1791799200.0,,,
-HDBFS,HDB FINANCIAL SERVICES L,Financial Services,Credit Services,11.1318035,2.25,16.0,737.875,725.0,,,,
-HDFCAMC,HDFC AMC LIMITED,Financial Services,Asset Management,26.211592,1.37037,27.0,2973.111,3000.0,1792058400.0,,,
-HDFCBANK,HDFC BANK LTD,Financial Services,Banks - Regional,11.0612545,1.21429,42.0,959.4048,947.0,1792231200.0,,,
-HDFCLIFE,HDFC LIFE INS CO LTD,Financial Services,Insurance - Life,44.73311,1.24242,33.0,718.6667,705.0,1792058400.0,,,
 HEROMOTOCO,HERO MOTOCORP LIMITED,Consumer Cyclical,Auto Manufacturers,15.591172,2.13158,37.0,6218.3516,6150.0,1793181600.0,,,
 HEXT,HEXAWARE TECHNOLOGIES LTD,Technology,Information Technology Services,21.542145,2.55556,18.0,569.3333,575.0,,,,
 HINDALCO,HINDALCO  INDUSTRIES  LTD,Basic Materials,Aluminum,7.8094754,2.1,30.0,1152.0333,1150.5,1793959200.0,,,
@@ -4191,3 +4095,203 @@ UNIVSTAR,UNIVERSAL STARCH-CHEM ALLIED L,Basic Materials,Agricultural Inputs,,,,,
 UNJHAFOR,UNJHA FORMULATIONS LTD.,Healthcare,Drug Manufacturers - Specialty & Generic,,,,,,,Yahoo BO,2026-10-26,Unjha Formulations Limited manufactures and sells ayurvedic products in India.
 UNRYLMA,UNIROYAL MARINE EXPORTS LTD.,Consumer Defensive,Farm Products,,,,,,,Yahoo BO,2026-10-26,"Uniroyal Marine Exports Limited engages in manufacturing, processing, curing, canning, freezing, purchasing, selling, exporting, and dealing in marine products in India."
 UPSURGE,UPSURGE INVESTMENT & FINANCE L,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,Upsurge Investment & Finance Limited operates as a non-banking finance company that provides financial services in India.
+URSUGAR,UR SUGAR INDUSTRIES LIMITED,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,UR Sugar Industries Limited engages in the manufacturing and sale of sugar in India.
+USGTECH,USG TECH SOLUTIONS LTD.,Technology,Software - Infrastructure,,,,,,,Yahoo BO,2026-10-26,USG Tech Solutions Limited engages in the provision of IT solutions and software project development services in India.
+USHAKIRA,USHAKIRAN FINANCE LTD.,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,"Ushakiran Finance Limited, a non-banking finance company, engages in the investments and financing business in India."
+UTIQUE,UTIQUE ENTERPRISES LIMITED,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,Utique Enterprises Limited engages in the commodity trading activities.
+UTLINDS,UTL INDUSTRIES LIMITED,Industrials,Engineering & Construction,,,,,,,Yahoo BO,2026-10-26,UTL Industries Limited engages in the construction business in India.
+UVDRHOR,UNITED VAN DER HORST LTD.,Industrials,Specialty Industrial Machinery,,,,,,,Yahoo BO,2026-10-26,"United Van Der Horst Limited provides reconditioning, re-standardizing, reverse engineering and manufacturing services to various industries in India and internationally."
+UVS,UVS HOSPITALITY AND SERVICES L,Consumer Cyclical,Restaurants,,,,,,,Yahoo BO,2026-10-26,"UVS Hospitality and Services Limited, together with its subsidiaries, engages in the food and beverage processing industry and other allied services in India."
+VAARAD,VAARAD VENTURES LTD,Financial Services,Asset Management,,,,,,,Yahoo BO,2026-10-26,"Vaarad Ventures Limited, a non-banking financial company, engages in investment activities in India."
+VAL30IETF,ICICI Prudential Mutual Fund,,,,,,,,,Yahoo BO,2026-10-26,
+VALIANT,VALIANT COMMUNICATIONS LTD.,Technology,Communication Equipment,,,,,,,Yahoo BO,2026-10-26,Valiant Communications Limited manufactures and markets communications equipment.
+VALSONQ,VALSON INDUSTRIES LTD.,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo BO,2026-10-26,Valson Industries Limited manufactures and sells polyester texturized and twisted yarns under the VALSON brand name in India and internationally.
+VALUE,Mirae Asset Mutual Fund,,,,,,,,,Yahoo BO,2026-10-26,
+VALUEAXIS,Axis Mutual Fund,,,,,,,,,Yahoo BO,2026-10-26,
+VAMA,VAMA INDUSTRIES LTD.,Technology,Information Technology Services,,,,,,,Yahoo BO,2026-10-26,"Vama Industries Limited, together with its subsidiary, Vama Technologies Pte Ltd., distributes computers and its peripherals, and software products in India and Singapore."
+VAMSHIRU,VAMSHI RUBBER LTD.,Consumer Cyclical,Auto Parts,,,,,,,Yahoo BO,2026-10-26,Vamshi Rubber Limited engages in the manufacture and sale of tire retreading materials in India.
+VANICOM,Vani Commercials Limited,Financial Services,Credit Services,,,,,,,Yahoo BO,2026-10-26,"Vani Commercials Limited, a non-banking finance company, provides financial services in India."
+VARIMAN,VARIMAN GLOBAL ENTERPRISES LIM,Technology,Software - Application,,,,,,,Yahoo BO,2026-10-26,Variman Global Enterprises Limited provides information technology (IT) solutions in India.
+VASINFRA,VAS INFRASTRUCTURE LTD.,Real Estate,Real Estate - Development,,,,,,,Yahoo BO,2026-10-26,VAS Infrastructure Limited engages in the development of real estate properties in India.
+VBDESAI,V.B.DESAI FINANCIAL SERVICES L,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,V. B. Desai Financial Services Limited provides merchant banking and advisory services in India.
+VBIND,V B INDUSTRIES LIMITED,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,V. B. Industries Limited engages in the finance and investment business in India.
+VCU,VCU DATA MANAGEMENT LTD,Industrials,Security & Protection Services,,,,,,,Yahoo BO,2026-10-26,VCU Data Management Limited manufactures and trades in electronic security products in India.
+VEERENRGY,VEER ENERGY & INFRASTRUCTURE L,Utilities,Utilities - Renewable,,,,,,,Yahoo BO,2026-10-26,"Veer Energy & Infrastructure Limited develops, constructs, implements, and operates various projects in the renewable energy sector in India."
+VEERHEALTH,VEERHEALTH CARE LIMITED,Healthcare,Drug Manufacturers - Specialty & Generic,,,,,,,Yahoo BO,2026-10-26,"Veerhealth Care Limited engages in manufacturing and markets oral care, skincare, personal care, cosmetic, and Ayurvedic products and formulations in India."
+VEL,Vaxfab Enterprises Limited,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo BO,2026-10-26,Vaxfab Enterprises Limited is involved in the trading of textile products and clothing in India and United Arab Emirates.
+VELHO,VELAN HOTELS LTD.,Consumer Cyclical,Lodging,,,,,,,Yahoo BO,2026-10-26,Velan Hotels Limited provides hospitality services in India.
+VELLORA,VELLORA IMPACT LIMITED,Basic Materials,Chemicals,,,,,,,Yahoo BO,2026-10-26,Vellora Impact Limited supplies agricultural commodities and provides information technology solutions in India.
+VELOX,Velox Shipping and Logistics L,Industrials,Integrated Freight & Logistics,,,,,,,Yahoo BO,2026-10-26,Velox Shipping and Logistics Limited does not have significant operations.
+VENLONENT,VENLON ENTERPRISES LTD.,Basic Materials,Specialty Chemicals,,,,,,,Yahoo BO,2026-10-26,Venlon Enterprises Limited does not have significant operations.
+VENMAX,VENMAX DRUGS AND PHARMACEUTICA,Healthcare,Drug Manufacturers - Specialty & Generic,,,,,,,Yahoo BO,2026-10-26,"Venmax Drugs and Pharmaceuticals Limited engages in the business of pharmaceutical products, drug intermediaries, and API's in India."
+VENTURA,VENTURA TEXTILES LTD.,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo BO,2026-10-26,Superbev Limited engages in trading of cotton yarn in India.
+VERITAS,VERITAS (INDIA) LTD.,Industrials,Conglomerates,,,,,,,Yahoo BO,2026-10-26,"Veritas (India) Limited trades in and distributes polymers, paper and paper boards, rubber products, heavy distillates, and petrochemicals in India and internationally."
+VERTEX,VERTEX SECURITIES LTD.,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,"Vertex Securities Limited, together with its subsidiaries, provides brokerage services for equity, equity derivatives, currency derivatives, and commodities in India."
+VERTEXPP,Vertex Securities Ltd.,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,"Vertex Securities Limited, together with its subsidiaries, provides brokerage services for equity, equity derivatives, currency derivatives, and commodities in India."
+VGIL,Veer Global Infraconstruction,Real Estate,Real Estate - Development,,,,,,,Yahoo BO,2026-10-26,"Veer Global Infraconstruction Limited engages in the location identification, acquisition, project planning, designing, and development of real estate properties in India."
+VICTMILL,VICTORIA MILLS LTD.,Real Estate,Real Estate - Development,,,,,,,Yahoo BO,2026-10-26,The Victoria Mills Limited engages in the real estate development business in India.
+VIKASPROP,VIKAS PROPPANT & GRANITE LTD.,Basic Materials,Agricultural Inputs,,,,,,,Yahoo BO,2026-10-26,Vikas Proppant & Granite Limited engages in the oil fracturing proppants used in cuttings of granite stones in India.
+VIKASWSP,VIKAS WSP LTD.,Basic Materials,Specialty Chemicals,,,,,,,Yahoo BO,2026-10-26,Vikas WSP Limited does not have significant operations.
+VIKRAMAR,VIKRAM AROMA LIMITED,Basic Materials,Specialty Chemicals,,,,,,,Yahoo BO,2026-10-26,"Vikram Aroma Limited engages in the development, manufacturing, and marketing of diphenyl oxide."
+VIKRAMTH,VIKRAM THERMO (INDIA) LTD.,Healthcare,Drug Manufacturers - Specialty & Generic,,,,,,,Yahoo BO,2026-10-26,"Vikram Thermo (India) Limited engages in the manufacture, marketing, and export of pharmaceutical excipients and chemicals in India and internationally."
+VINRKLB,REKVINA LABORATORIES LTD.,Healthcare,Drug Manufacturers - Specialty & Generic,,,,,,,Yahoo BO,2026-10-26,Rekvina Laboratories Limited engages in manufacturing and marketing pharmaceutical products and related activities in India.
+VIPPYSP,VIPPY SPINPRO LTD.,Consumer Cyclical,Textile Manufacturing,26.100777,,,,,,Yahoo BO,2026-10-26,Vippy Spinpro Limited manufactures and sells cotton yarns in India.
+VIPULORG,Vipul Organics Limited,Basic Materials,Specialty Chemicals,,,,,,,Yahoo BO,2026-10-26,"Vipul Organics Limited manufactures and trades in dyestuffs, organic pigments, and organic intermediates in India."
+VIRATCRA,VIRAT CRANE INDUSTRIES LTD.,Consumer Defensive,Packaged Foods,,,,,,,Yahoo BO,2026-10-26,Virat Crane Industries Limited produces and sells dairy products in India.
+VIRGOGLOB,Virgo Global Limited,Technology,Computer Hardware,,,,,,,Yahoo BO,2026-10-26,"Virgo Global Limited manufactures, trades in, and deals and maintains computer hardware and software."
+VISAGAR,VISAGAR FINANCIAL SERVICES LTD,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,Visagar Financial Services Limited operates as a non-banking financial company in India.
+VISHALBL,Vishal Bearings Limited,Industrials,Specialty Industrial Machinery,,,,,,,Yahoo BO,2026-10-26,Vishal Bearings Limited engages in manufacturing and sale of bearing rollers in India and Internationally.
+VISIONCINE,VISION CINEMAS LTD.,Communication Services,Entertainment,,,,,,,Yahoo BO,2026-10-26,"Vision Cinemas Limited, together with its subsidiaries, identifies, designs, builds, and operates multiplexes in India."
+VISIONCO,VISION CORPORATION LTD.,Communication Services,Entertainment,,,,,,,Yahoo BO,2026-10-26,Vision Corporation Limited engages in the movies and entertainment business in India.
+VISTAPH,VISTA PHARMACEUTICALS LTD.,Healthcare,Drug Manufacturers - Specialty & Generic,,,,,,,Yahoo BO,2026-10-26,"Vista Pharmaceuticals Limited manufactures and sells pharmaceutical, medical, and veterinary preparations in India and internationally."
+VISTARAMAR,Vistar Amar Limited,Consumer Defensive,Packaged Foods,,,,,,,Yahoo BO,2026-10-26,Vistar Amar Limited engages in manufacturing and sale of fishmeal in India.
+VISVEN,VISHVPRABHA VENTURES LIMITED,Industrials,Engineering & Construction,,,,,,,Yahoo BO,2026-10-26,"Vishvprabha Ventures Limited, together with its subsidiaries, engages in the engineering and construction of large infrastructure projects."
+VIVANTA,Vivanta Industries Limited,Industrials,Consulting Services,,,,,,,Yahoo BO,2026-10-26,"Vivanta Industries Limited, together with its subsidiaries, engages in the project management consultancy, turnkey project, and technology supply and consultancy business in India."
+VIVANZA,Vivanza Biosciences Limited,Healthcare,Drug Manufacturers - Specialty & Generic,,,,,,,Yahoo BO,2026-10-26,Vivanza Biosciences Limited engages in the manufacturing and sale of pharmaceutical products in India.
+VIVIDIND,VIVID GLOBAL INDUSTRIES LTD.,Basic Materials,Specialty Chemicals,4.316703,,,,,,Yahoo BO,2026-10-26,Vivid Global Industries Limited engages in the production and sale of dye intermediates and dyes in India.
+VIVIDM,VIVID MERCANTILE LIMITED,Industrials,Specialty Business Services,,,,,,,Yahoo BO,2026-10-26,Vivid Mercantile Limited engages in the real estate business in India.
+VJTFEDU,VJTF EDUSERVICES LTD.,Financial Services,Asset Management,,,,,,,Yahoo BO,2026-10-26,"VJTF Eduservices Limited, a non-banking financial company, engages in investment and financial activities in India."
+VKAL,Vantage Knowledge Academy Limi,Consumer Defensive,Education & Training Services,,,,,,,Yahoo BO,2026-10-26,Vantage Knowledge Academy Limited provides education services in India.
+VMS,VMS INDUSTRIES LTD.,Industrials,Waste Management,,,,,,,Yahoo BO,2026-10-26,VMS Industries Limited engages in the ship recycling activities in India.
+VOLKAI,Kairosoft AI Solutions Limited,Financial Services,Credit Services,,,,,,,Yahoo BO,2026-10-26,Kairosoft AI Solutions engaged in the field of Artificial Intelligence (AI) development and related technology solutions in India.
+VOLLF,VOLTAIRE LEASING & FINANCE LTD,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,Voltaire Leasing & Finance Limited engages in financing activities in India.
+VRFILMS,V R FILMS & STUDIOS LIMITED,Communication Services,Entertainment,,,,,,,Yahoo BO,2026-10-26,V R Films & Studios Limited engages in film distribution and dubbing in India.
+VRL,VASUNDHARA RASAYANS LTD,Basic Materials,Chemicals,,,,,,,Yahoo BO,2026-10-26,Vasundhara Rasayans Limited engages in the manufacture and sale of antacids therapeutic category of active pharmaceutical ingredients (API) in India.
+VSFPROJ,VSF PROJECTS LTD.,Industrials,Engineering & Construction,,,,,,,Yahoo BO,2026-10-26,VSF Projects Limited engages in the construction and infrastructure development and execution business in India.
+VSL,Viram Suvarn Limited,Consumer Cyclical,Luxury Goods,,,,,,,Yahoo BO,2026-10-26,"Viram Suvarn Limited manufactures and sells gold, diamond, and jewellery ornaments primarily in India."
+VXLINSTR,VXL INSTRUMENTS LTD.,Technology,Computer Hardware,,,,,,,Yahoo BO,2026-10-26,VXL Instruments Limited manufactures and trades in data processing units in India and internationally.
+WAGEND,WAGEND INFRA VENTURE LIMITED,Financial Services,Credit Services,,,,,,,Yahoo BO,2026-10-26,Wagend Infra Venture Limited engages in investing activities primarily in India.
+WALCHPF,WALCHAND PEOPLEFIRST LTD.,Consumer Defensive,Education & Training Services,,,,,,,Yahoo BO,2026-10-26,Walchand PeopleFirst Limited provides consulting and training services to individuals and employees of corporates in India.
+WALLFORT,WALLFORT FINANCIAL SERVICES LT,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,"Wallfort Financial Services Ltd. acts as a stockbroker to execute proprietary trades and trades on behalf of its clients, including retail customers, mutual funds, and corporate clients in India."
+WARDWIZFBL,Wardwizard Foods and Beverages,Consumer Defensive,Packaged Foods,,,,,,,Yahoo BO,2026-10-26,"Wardwizard Foods and Beverages Limited manufactures and sells ready-to-eat (RTE) products, frozen food items, beverages, spices, and condiments in India."
+WARRENTEA,WARREN TEA LTD.,Consumer Defensive,Farm Products,,,,,,,Yahoo BO,2026-10-26,Warren Tea Limited engages in the retail consumer marketing of teas in India.
+WELCURE,WELCURE DRUGS & PHARMACEUTICAL,Healthcare,Medical Distribution,,,,,,,Yahoo BO,2026-10-26,Welcure Drugs and Pharmaceuticals Limited engages in trading of medical products in India.
+WEPSOLN,WEP SOLUTIONS LTD.,Technology,Computer Hardware,,,,,,,Yahoo BO,2026-10-26,WeP Solutions Limited provides managed printing solutions and digital services in India and internationally.
+WESTLEIRES,WEST LEISURE RESORTS LTD,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,West Leisure Resorts Limited operates as an investment company in India.
+WHITEORG,White Organic Agro Limited,Consumer Defensive,Farm Products,,,,,,,Yahoo BO,2026-10-26,"White Organic Agro Limited engages in farming, cultivation, harvesting, processing, wholesale, retail, and export of organic food products in India."
+WILLIMFI,WILLIAMSON FINANCIAL SERVICES,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,"Williamson Financial Services Limited, a non-banking financial company, engages in the investment and lending activities in India."
+WINSOMBR,WINSOME BREWERIES LTD.,Consumer Defensive,Education & Training Services,,,,,,,Yahoo BO,2026-10-26,Winsome Breweries Limited manufactures and sells beer in India.
+WINSOMTX,WINSOME TEXTILE INDUSTRIES LTD,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo BO,2026-10-26,Winsome Textile Industries Limited engages in manufactures and sells yarns and fabrics for knitting and weaving in India.
+WORTH,WORTH INVESTMENT & TRADING CO,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,Worth Investment & Trading Company Limited operates as a finance and investment company in India.
+WSFX,WSFX Global Pay Limited,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,WSFx Global Pay Limited engages in the foreign exchange business (forex) in India.
+YAANENT,YAAN ENTERPRISES LIMITED,Consumer Cyclical,Travel Services,,,,,,,Yahoo BO,2026-10-26,Yaan Enterprises Limited engages in the provision of construction services in India and internationally.
+YAMNINV,YAMINI INVESTMENTS COMPANY LTD,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,Yamini Investments Company Limited engages in the loans and advances and investments business in India.
+YARNSYN,YARN SYNDICATE LTD.,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo BO,2026-10-26,Yarn Syndicate Limited engages in the manufacture and trade of textiles.
+YASHCHEM,Yash Chemex Limited,Basic Materials,Specialty Chemicals,,,,,,,Yahoo BO,2026-10-26,"Yash Chemex Limited, together with its subsidiary, Yasons Chemex Care Limited, trades in chemical products in India."
+YASHINNO,YASH INNOVENTURES LIMITED,Real Estate,Real Estate Services,,,,,,,Yahoo BO,2026-10-26,Yash Innoventures Limited engages in the construction and infrastructure businesses in India.
+YASHMGM,YASH MANAGEMENT & SATELLITE LT,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,Yash Management & Satellite Ltd. engages in wholesale trading activities in India.
+YASHRAJC,YASHRAJ CONTAINEURS LTD.,Consumer Cyclical,Packaging & Containers,,,,,,,Yahoo BO,2026-10-26,Yashraj Containeurs Limited manufactures and sells metal drums and barrels in India.
+YOGISUNG,YOGI SUNG-WON (INDIA) LTD.,Industrials,Infrastructure Operations,,,,,,,Yahoo BO,2026-10-26,Yogi Infra Projects Limited engages in the construction and infrastructure projects in India.
+YORKEXP,YORK EXPORTS LTD.,Consumer Cyclical,Apparel Manufacturing,,,,,,,Yahoo BO,2026-10-26,York Exports Limited engages in the manufacture and sale of knitwear and readymade garments in India.
+YSL,The Yamuna Syndicate Ltd,Industrials,Conglomerates,,,,,,,Yahoo BO,2026-10-26,The Yamuna Syndicate Limited engages in goods trading activities in India.
+YUNIKM,Yunik Managing Advisors Limite,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,Yunik Managing Advisors Limited provides consultancy and management advisory services in India.
+YUVRAAJHPL,YUVRAAJ HYGIENE PRODUCTS LTD.,Consumer Defensive,Household & Personal Products,,,,,,,Yahoo BO,2026-10-26,Yuvraaj Hygiene Products Limited manufactures and supplies hygiene and cleaning products in India.
+ZDHJERK,DHANVANTRI JEEVAN REKHA LTD.,Healthcare,Medical Care Facilities,,,,,,,Yahoo BO,2026-10-26,Dhanvantri Jeevan Rekha Limited engages in the provision of healthcare and hospital services in India.
+ZEAL,Zeal Aqua Limited,Consumer Defensive,Farm Products,,,,,,,Yahoo BO,2026-10-26,"Zeal Aqua Limited, an aquaculture company, engages in the farming, producing, and harvesting of prawns in India and internationally."
+ZENIFIB,ZENITH FIBRES LTD.,Consumer Cyclical,Textile Manufacturing,3.670886,,,,,,Yahoo BO,2026-10-26,Zenith Fibres Limited manufactures and sells polypropylene (PP) staple fibres and PP yarn in India.
+ZENITHHE,ZENITH HEALTH CARE LTD.,Healthcare,Drug Manufacturers - Specialty & Generic,,,,,,,Yahoo BO,2026-10-26,Zenith Healthcare Limited engages in the manufacturing and trading of pharmaceutical products in India and internationally.
+ZENLABS,Zenlabs Ethica Limited,Healthcare,Medical Distribution,,,,,,,Yahoo BO,2026-10-26,Zenlabs Ethica Limited markets and distributes pharmaceutical products in India.
+ZENOTECH,ZENOTECH LABORATORIES LTD.,Healthcare,Drug Manufacturers - Specialty & Generic,,,,,,,Yahoo BO,2026-10-26,Zenotech Laboratories Limited manufactures and markets pharmaceutical specialty generic injectables in the oncology and anesthesiology markets in India.
+ZMILGFIN,MILGREY FINANCE & INVESTMENT L,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,Milgrey Finance and Investments Limited does not have significant operations.
+ZMULTIPU,MULTIPURPOSE TRADING & AGENCIE,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,Multipurpose Trading and Agencies Limited engages in the trade of securities in India.
+ZODIACVEN,ZODIAC VENTURES LIMITED,Real Estate,Real Estate Services,,,,,,,Yahoo BO,2026-10-26,Zodiac Ventures Limited operates as a real estate development company in India.
+ZODJRDMKJ,ZODIAC-JRD-MKJ LTD.,Consumer Cyclical,Luxury Goods,,,,,,,Yahoo BO,2026-10-26,"Zodiac-JRD-MKJ Limited engages in the sale and trading of gold and diamond jewellery, cut and polished diamonds, precious stones, and semi-precious stones in India."
+ZR2,ZR2 BIOENERGY LIMITED,Basic Materials,Chemicals,,,,,,,Yahoo BO,2026-10-26,ZR2 Bioenergy Limited operates as a bioenergy manufacturing company.
+ZSVARAJT,SVARAJ TRADING & AGENCIES LTD.,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,Svaraj Trading and Agencies Limited engages in general trading business in India.
+ZWELCAST,WELCAST STEELS LTD.,Basic Materials,Steel,17.27733,,,,,,Yahoo BO,2026-10-26,Welcast Steels Limited manufactures and sells high chrome grinding media balls in India and internationally.
+360ONE,360 ONE WAM LIMITED,Financial Services,Asset Management,24.16004,1.1,10.0,1316.0,1327.5,1792058400.0,Yahoo NS,2026-10-26,"360 One Wam Limited, together with its subsidiaries, provides wealth and asset management services in India."
+ABB,ABB INDIA LIMITED,Industrials,Specialty Industrial Machinery,57.967175,3.40741,27.0,7035.3335,7094.0,1794564000.0,Yahoo NS,2026-10-26,"ABB India Limited develops and sells products and system solutions to utilities, industries, channel partners, and original equipment manufacturers in India and internationally."
+ABBOTINDIA,ABBOTT INDIA LIMITED,Healthcare,Drug Manufacturers - Specialty & Generic,27.516237,1.875,8.0,32467.375,31524.5,1786528800.0,Yahoo NS,2026-10-26,"Abbott India Limited, together with its subsidiaries, operates as a pharmaceutical company in India."
+ABCAPITAL,ADITYA BIRLA CAPITAL LTD.,Financial Services,Financial Conglomerates,13.232655,1.14286,14.0,468.7857,470.0,1793354400.0,Yahoo NS,2026-10-26,"Aditya Birla Capital Limited, through its subsidiaries, provides various financial products and services in India and internationally."
+ADANIENSOL,ADANI ENERGY SOLUTION LTD,Utilities,Utilities - Independent Power Producers,33.049404,1.88889,9.0,1706.1111,1728.0,1792663200.0,Yahoo NS,2026-10-26,"Adani Energy Solutions Limited, together with its subsidiaries, generates, transmits, and distributes power in India."
+ADANIENT,ADANI ENTERPRISES LIMITED,Energy,Thermal Coal,43.758316,1.0,4.0,3561.5,3556.0,1793181600.0,Yahoo NS,2026-10-26,"Adani Enterprises Limited, together with its subsidiaries, operates in the new energy ecosystem, data center, airports, roads, copper and PVC, and other sectors in India and internationally."
+ADANIGREEN,ADANI GREEN ENERGY LTD,Utilities,Utilities - Renewable,43.92408,1.6,10.0,1515.8,1539.0,1800439200.0,Yahoo NS,2026-10-26,Adani Green Energy Limited generates and supplies renewable energy to central and state government entities and government backed corporations in India.
+ADANIPORTS,ADANI PORT & SEZ LTD,Industrials,Marine Shipping,21.745146,1.26087,23.0,2073.4783,2080.0,1793181600.0,Yahoo NS,2026-10-26,"Adani Ports and Special Economic Zone Limited, together with its subsidiaries, develops, operates, and maintains port infrastructure in India and internationally."
+ADANIPOWER,ADANI POWER LTD,Utilities,Utilities - Independent Power Producers,22.477499,1.54545,11.0,250.27274,250.0,1792749600.0,Yahoo NS,2026-10-26,"Adani Power Limited engages in the generation, transmission, and sale of electricity under long term power purchase agreements (PPAs), supplemental PPAs, medium and short term PPAs, and on merchant basis in India."
+AIAENG,AIA ENGINEERING LIMITED,Industrials,Specialty Industrial Machinery,23.222303,,13.0,4847.385,4998.0,1786528800.0,Yahoo NS,2026-10-26,"AIA Engineering Limited designs, develops, produces, installs, and services high chromium parts in India, the United Arab Emirates, and internationally."
+AIIL,AUTHUM INVEST & INFRA LTD,Financial Services,Capital Markets,,,,,,,Yahoo NS,2026-10-26,"Authum Investment & Infrastructure Limited, a non-banking finance company, engages in investment, trading, and lending activities in India."
+AJANTPHARM,AJANTA PHARMA LIMITED,Healthcare,Drug Manufacturers - Specialty & Generic,28.44391,,13.0,3808.3845,3830.0,,Yahoo NS,2026-10-26,"Ajanta Pharma Limited, together with its subsidiaries, a pharmaceutical formulation company engages in the development, manufacture, and marketing of specialty pharmaceutical finished dosages."
+ALKEM,ALKEM LABORATORIES LTD.,Healthcare,Drug Manufacturers - Specialty & Generic,21.941854,2.1,20.0,6002.55,6050.0,1786701600.0,Yahoo NS,2026-10-26,"Alkem Laboratories Limited, a pharmaceutical company, engages in the research and development, manufacture, and sale of pharmaceutical and nutraceutical products in India, the United States, and internationally."
+AMBUJACEM,AMBUJA CEMENTS LTD,Basic Materials,Building Materials,24.840532,1.94872,38.0,480.07895,475.0,1793268000.0,Yahoo NS,2026-10-26,"Ambuja Cements Limited, together with its subsidiaries, manufactures, markets, and sells cement and related products to individual home builders, developers, institutional clients, masons, contractors, architects, and construction professionals in India."
+ANTHEM,ANTHEM BIOSCIENCES LTD,Healthcare,Biotechnology,53.597763,,8.0,920.125,900.0,,Yahoo NS,2026-10-26,"Anthem Biosciences Limited operates as a contract research, development, and manufacturing organization in India, rest of Asia, North America, Europe, and internationally."
+APARINDS,APAR INDUSTRIES LTD.,Industrials,Electrical Equipment & Parts,37.51122,2.0,8.0,15398.125,15100.0,,Yahoo NS,2026-10-26,APAR Industries Limited engages in the electrical and metallurgical engineering business in India and internationally.
+APLAPOLLO,APL APOLLO TUBES LTD,Basic Materials,Steel,32.264717,1.36842,18.0,2287.0557,2277.5,1793008800.0,Yahoo NS,2026-10-26,APL Apollo Tubes Limited manufactures and sells structural steel tubes and related value added products in India and internationally.
+APOLLOHOSP,APOLLO HOSPITALS ENTER. L,Healthcare,Medical Care Facilities,35.348648,1.46667,30.0,9822.167,10000.0,1793786400.0,Yahoo NS,2026-10-26,"Apollo Hospitals Enterprise Limited, together with its subsidiaries, provides healthcare services in India."
+ASHOKLEY,ASHOK LEYLAND LTD,Industrials,Farm & Heavy Construction Machinery,17.681278,2.0,34.0,185.20589,185.0,1786701600.0,Yahoo NS,2026-10-26,"Ashok Leyland Limited, together with its subsidiaries, manufactures and sells commercial vehicles in India."
+ASIANPAINT,ASIAN PAINTS LIMITED,Basic Materials,Specialty Chemicals,37.195217,,34.0,2985.5881,2960.0,1793268000.0,Yahoo NS,2026-10-26,"Asian Paints Limited, together with its subsidiaries, engages in the manufacture, distribution, and sale of paints, coatings, and products related to home decoration and bath fittings, kitchen, and wardrobe in India, Asia, the Middle East, Africa, and the South Pacific region."
+ASTERDM,ASTER DM QUALITY CARE LTD,Healthcare,Medical Care Facilities,32.117023,1.66667,12.0,918.0833,905.0,,Yahoo NS,2026-10-26,Aster DM Quality Care Limited operates as an integrated healthcare provider in India.
+ASTRAL,ASTRAL LIMITED,Industrials,Building Products & Equipment,39.849678,1.55172,29.0,1741.1034,1740.0,1786528800.0,Yahoo NS,2026-10-26,"Astral Limited engages in the manufacture and marketing of pipes and fittings, water tanks, and adhesives and sealants in India and internationally."
+ATGL,ADANI TOTAL GAS LIMITED,Utilities,Utilities - Regulated Gas,,,,,,1792663200.0,Yahoo NS,2026-10-26,Adani Total Gas Limited engages in the city gas distribution (CGD) business in India.
+AUBANK,AU SMALL FINANCE BANK LTD,Financial Services,Banks - Regional,14.26183,2.28571,29.0,1124.8241,1200.0,1792836000.0,Yahoo NS,2026-10-26,AU Small Finance Bank Limited provides various banking and financial services in India.
+AUROPHARMA,AUROBINDO PHARMA LTD,Healthcare,Drug Manufacturers - Specialty & Generic,16.797632,2.07407,27.0,1747.7037,1800.0,1785924000.0,Yahoo NS,2026-10-26,"Aurobindo Pharma Limited, a pharmaceutical company, develops, manufactures, and commercializes generic pharmaceuticals in India, the United States, Europe, and internationally."
+AXISBANK,AXIS BANK LIMITED,Financial Services,Banks - Regional,10.3673525,1.21951,41.0,1584.6586,1590.0,1792231200.0,Yahoo NS,2026-10-26,Axis Bank Limited provides various financial products and services in India and internationally.
+BAJAJ-AUTO,BAJAJ AUTO LIMITED,Consumer Cyclical,Auto Manufacturers,20.809061,2.09756,41.0,11648.707,11700.0,1793095200.0,Yahoo NS,2026-10-26,"Bajaj Auto Limited, together with its subsidiaries, engages in the development, manufacture, and distribution of automobiles in India and internationally."
+BAJAJFINSV,BAJAJ FINSERV LTD.,Financial Services,Financial Conglomerates,17.293932,,13.0,2366.2307,2460.0,1793700000.0,Yahoo NS,2026-10-26,"Bajaj Finserv Ltd., through its subsidiaries, provides financial services in India."
+BAJAJHFL,BAJAJ HOUSING FINANCE LTD,Financial Services,Mortgage Finance,17.434048,2.94118,17.0,92.23529,92.0,,Yahoo NS,2026-10-26,Bajaj Housing Finance Limited provides housing finance services in India.
+BAJAJHLDNG,BAJAJ HOLDINGS & INVS LTD,Financial Services,Asset Management,,,,,,1793700000.0,Yahoo NS,2026-10-26,"Bajaj Holdings & Investment Limited, an investment holding company, operates as a non-banking financial-investment and credit company in India."
+BAJFINANCE,BAJAJ FINANCE LIMITED,Financial Services,Credit Services,18.063541,1.68571,35.0,1165.0,1190.0,1792404000.0,Yahoo NS,2026-10-26,Bajaj Finance Limited operates as a deposit-taking non-banking financial company in India.
+BALKRISIND,BALKRISHNA IND. LTD,Consumer Cyclical,Auto Parts,20.734798,2.73684,19.0,2373.6316,2350.0,1785319200.0,Yahoo NS,2026-10-26,"Balkrishna Industries Limited manufactures and sells tires under the BKT brand in India, Europe, North America, and internationally."
+BANKBARODA,BANK OF BARODA,Financial Services,Banks - Regional,5.275678,,34.0,286.7647,280.0,1793354400.0,Yahoo NS,2026-10-26,"Bank of Baroda Limited provides various banking products and services to individuals, government departments, and corporate customers in India and internationally."
+BANKINDIA,BANK OF INDIA,Financial Services,Banks - Regional,4.8647914,2.75,4.0,151.0,157.5,,Yahoo NS,2026-10-26,Bank of India provides various banking products and services in India and internationally.
+BDL,BHARAT DYNAMICS LIMITED,Industrials,Aerospace & Defense,33.124275,2.6875,16.0,1331.375,1302.5,1786701600.0,Yahoo NS,2026-10-26,"Bharat Dynamics Limited manufactures and sells guided missiles, underwater weapons, air-borne products, and allied defense equipment in India."
+BEL,BHARAT ELECTRONICS LTD,Industrials,Aerospace & Defense,31.792704,1.34375,32.0,489.96875,500.0,1793354400.0,Yahoo NS,2026-10-26,"Bharat Electronics Limited designs, manufactures, and supplies electronic equipment and systems for the defense and civilian markets in India."
+BERGEPAINT,BERGER PAINTS (I) LTD,Basic Materials,Specialty Chemicals,35.641163,,22.0,571.0909,570.0,1793872800.0,Yahoo NS,2026-10-26,Berger Paints India Limited manufactures and sells paints in India and internationally.
+BHARATFORG,BHARAT FORGE LTD,Industrials,Metal Fabrication,35.33302,2.95833,24.0,1978.875,2025.0,1786356000.0,Yahoo NS,2026-10-26,Bharat Forge Limited engages in the manufacture and sale of forged and machined components in India and internationally.
+BHARTIARTL,BHARTI AIRTEL LIMITED,Communication Services,Telecom Services,22.80389,1.44118,34.0,2319.2646,2327.5,1793872800.0,Yahoo NS,2026-10-26,Bharti Airtel Limited operates as a telecommunications company in India and internationally.
+BHARTIHEXA,BHARTI HEXACOM LIMITED,Communication Services,Telecom Services,25.785305,1.86667,15.0,1852.6,1880.0,,Yahoo NS,2026-10-26,"Bharti Hexacom Limited provides mobile services, fixed-line telephone, and broadband services to end consumers under the Airtel brand in India and internationally."
+BHEL,BHEL,Industrials,Specialty Industrial Machinery,26.034487,2.68421,19.0,436.78946,500.0,1791972000.0,Yahoo NS,2026-10-26,Bharat Heavy Electricals Limited operates as power plant equipment manufacturer in India and internationally.
+BIOCON,BIOCON LIMITED.,Healthcare,Biotechnology,29.361622,2.44444,19.0,440.6842,455.0,1794391200.0,Yahoo NS,2026-10-26,"Biocon Limited, together with its subsidiaries, manufactures biotechnology products and offers research services in India, the United States, Ireland, rest of the European Union, and internationally."
+BLUESTARCO,BLUE STAR LIMITED,Industrials,Building Products & Equipment,39.130516,2.46154,26.0,1666.0769,1698.5,1793268000.0,Yahoo NS,2026-10-26,"Blue Star Limited provides air conditioning and commercial refrigeration products, air and water purifiers, air coolers, cold storages, and specialty products in India."
+BOSCHLTD,BOSCH LIMITED,Consumer Cyclical,Auto Parts,38.581177,,5.0,52113.4,54050.0,1793959200.0,Yahoo NS,2026-10-26,Bosch Limited engages in the manufacture and trading of automotive products in India.
+BPCL,BHARAT PETROLEUM CORP  LT,Energy,Oil & Gas Refining & Marketing,7.4018416,2.48387,31.0,346.64517,360.0,1792749600.0,Yahoo NS,2026-10-26,Bharat Petroleum Corporation Limited engages in refining crude oil and marketing petroleum products in India and internationally.
+BRITANNIA,BRITANNIA INDUSTRIES LTD,Consumer Defensive,Packaged Foods,34.91331,1.90909,33.0,6154.485,6100.0,1786010400.0,Yahoo NS,2026-10-26,"Britannia Industries Limited engages in manufacturing, trading, and sale of various food products in India and internationally."
+BSE,BSE LIMITED,Financial Services,Financial Data & Stock Exchanges,36.52964,2.47368,19.0,3698.4736,3800.0,,Yahoo NS,2026-10-26,"BSE Limited, together with its subsidiaries, provides a platform for the listing and trading of equity, debt instruments, currencies, commodities, derivatives, mutual funds, and small and medium enterprise securities in India and internationally."
+CANBK,CANARA BANK,Financial Services,Banks - Regional,4.807532,1.6,21.0,149.5238,151.0,1785146400.0,Yahoo NS,2026-10-26,Canara Bank provides various banking products and services in India and internationally.
+CGPOWER,CG POWER AND IND SOL LTD,Industrials,Electrical Equipment & Parts,57.768177,2.15,20.0,948.85,974.0,1792749600.0,Yahoo NS,2026-10-26,"CG Power and Industrial Solutions Limited, together with its subsidiaries, provides various solutions in India and internationally."
+CHOLAFIN,CHOLAMANDALAM IN & FIN CO,Financial Services,Credit Services,14.567039,,32.0,2000.625,2000.0,1793181600.0,Yahoo NS,2026-10-26,"Cholamandalam Investment and Finance Company Limited, operates as a non-banking finance company in India."
+CIPLA,CIPLA LTD,Healthcare,Drug Manufacturers - Specialty & Generic,21.18762,2.19444,36.0,1512.1945,1525.0,1793095200.0,Yahoo NS,2026-10-26,"Cipla Limited, together with its subsidiaries, manufactures, develops, sells, and distributes pharmaceutical products in India, the United States, South Africa, and internationally."
+COALINDIA,COAL INDIA LTD,Energy,Thermal Coal,6.984652,2.08,24.0,471.66666,477.5,1793268000.0,Yahoo NS,2026-10-26,"Coal India Limited, together with its subsidiaries, produces and sells coal and coal products in India."
+COCHINSHIP,COCHIN SHIPYARD LIMITED,Industrials,Aerospace & Defense,25.26622,,4.0,1499.0,1618.0,,Yahoo NS,2026-10-26,"Cochin Shipyard Limited, together with its subsidiaries, engages in the building and repair of ships and offshore structures in India and internationally."
+COFORGE,COFORGE LIMITED,Technology,Information Technology Services,25.125433,1.65714,35.0,2096.0857,2135.0,1792749600.0,Yahoo NS,2026-10-26,"Coforge Limited provides information technology (IT) and IT-enabled services in India, the Americas, Europe, the Middle East and Africa, Latin America, and the Asia Pacific."
+COLPAL,COLGATE PALMOLIVE LTD.,Consumer Defensive,Household & Personal Products,27.84012,3.0,26.0,1902.0769,1840.5,1792663200.0,Yahoo NS,2026-10-26,Colgate-Palmolive (India) Limited manufactures and trades in personal and oral care products in India.
+CONCOR,CONTAINER CORP OF IND LTD,Industrials,Railroads,19.128323,2.07143,14.0,557.0,550.0,1793613600.0,Yahoo NS,2026-10-26,"Container Corporation of India Limited engages in handling, transportation, and warehousing activities in India."
+COROMANDEL,COROMANDEL INTERNTL. LTD,Basic Materials,Agricultural Inputs,18.13756,1.44444,9.0,2299.2222,2235.0,,Yahoo NS,2026-10-26,Coromandel International Limited provides agriculture solutions in India and internationally.
+CRISIL,CRISIL LTD,Financial Services,Financial Data & Stock Exchanges,29.616762,,2.0,5092.0,5092.0,,Yahoo NS,2026-10-26,"CRISIL Limited, an analytical company, provides ratings, research, and risk and policy consulting services in India, Europe, North America, and internationally."
+CUMMINSIND,CUMMINS INDIA LTD,Industrials,Specialty Industrial Machinery,37.702038,1.86364,22.0,5850.591,6086.0,1793786400.0,Yahoo NS,2026-10-26,"Cummins India Limited engages in the design, manufacture, distribution, and service of engines, generator sets, and related technologies in India, Nepal, and Bhutan."
+DABUR,DABUR INDIA LTD,Consumer Defensive,Household & Personal Products,27.23496,2.27027,37.0,489.16217,485.0,1793786400.0,Yahoo NS,2026-10-26,Dabur India Limited operates as a fast moving consumer goods company worldwide.
+DALBHARAT,DALMIA BHARAT LIMITED,Basic Materials,Building Materials,22.080067,1.73529,34.0,2127.4707,2120.0,1793008800.0,Yahoo NS,2026-10-26,"Dalmia Bharat Limited, together with its subsidiaries, manufactures and sells cement and its related products primarily in India."
+DIVISLAB,DIVI S LABORATORIES LTD,Healthcare,Drug Manufacturers - Specialty & Generic,58.966885,2.58621,29.0,8571.311,8600.0,1794045600.0,Yahoo NS,2026-10-26,"Divi's Laboratories Limited engages in the manufacture and sale of generic active pharmaceutical ingredients (APIs), intermediates, and nutraceuticals in India, North America, Asia, Europe, and internationally."
+DIXON,DIXON TECHNO (INDIA) LTD,Technology,Consumer Electronics,39.762615,2.03704,27.0,14876.593,15450.0,1793354400.0,Yahoo NS,2026-10-26,"Dixon Technologies (India) Limited, together with its subsidiaries, engages in the manufacture and sale of electronic goods in India and internationally."
+DLF,DLF LIMITED,Real Estate,Real Estate - Development,26.008894,1.36364,22.0,819.36365,805.0,1785751200.0,Yahoo NS,2026-10-26,"DLF Limited, together with its subsidiaries, engages in the business of colonization and real estate development in India."
+DMART,AVENUE SUPERMARTS LIMITED,Consumer Defensive,Discount Stores,47.415047,2.9375,32.0,3909.4375,3918.5,1791626400.0,Yahoo NS,2026-10-26,Avenue Supermarts Limited engages in the business of organized retail and operation of supermarkets under the D-Mart brand name in India.
+DRREDDY,DR. REDDY S LABORATORIES,Healthcare,Drug Manufacturers - Specialty & Generic,21.562454,2.45946,37.0,1311.081,1320.0,1792749600.0,Yahoo NS,2026-10-26,"Dr. Reddy's Laboratories Limited, together with its subsidiaries, operates as an integrated pharmaceutical company North America, Europe, India, Russia, and internationally."
+EICHERMOT,EICHER MOTORS LTD,Consumer Cyclical,Auto Manufacturers,25.52822,2.0,37.0,8336.811,8469.0,1785319200.0,Yahoo NS,2026-10-26,"Eicher Motors Limited, an automobile company, engages in the manufacture and sale of motorcycles and commercial vehicles in India and internationally."
+EMBASSY,"EMBASSY.NS,0P0001H6LJ,387837",,,26.922344,,,,,,Yahoo NS,2026-10-26,
+ENDURANCE,ENDURANCE TECHNO. LTD.,Consumer Cyclical,Auto Parts,21.727194,1.92857,14.0,3174.2144,3165.0,,Yahoo NS,2026-10-26,Endurance Technologies Limited manufactures and sells automotive components for original equipment manufacturers (OEM) in India and internationally.
+ENRIN,SIEMENS ENERGY INDIA LTD,Utilities,Utilities - Renewable,47.308514,,15.0,3817.6,3655.0,,Yahoo NS,2026-10-26,Siemens Energy India Limited engages in energy business.
+ESCORTS,ESCORTS KUBOTA LIMITED,Industrials,Farm & Heavy Construction Machinery,18.712084,2.94737,17.0,3288.647,3310.0,1793613600.0,Yahoo NS,2026-10-26,Escorts Kubota Limited manufactures and sells agricultural and construction equipment in India and internationally.
+ETERNAL,ETERNAL LIMITED,Consumer Cyclical,Internet Retail,100.81369,1.53125,32.0,382.40625,390.0,1792576800.0,Yahoo NS,2026-10-26,"Eternal Limited, together with its subsidiaries, provides e-commerce platform services to restaurant partners, quick commerce merchants, delivery partners, theatres, sports facilities, event organizers, and users in India and internationally."
+EXIDEIND,EXIDE INDUSTRIES LTD,Consumer Cyclical,Auto Parts,17.88489,,16.0,442.8125,426.5,1785405600.0,Yahoo NS,2026-10-26,"Exide Industries Limited designs, manufactures, markets, and sells lead acid batteries and accumulators in India and internationally."
+FACT,FACT LTD,Basic Materials,Agricultural Inputs,,,,,,,Yahoo NS,2026-10-26,The Fertilisers and Chemicals Travancore Limited manufactures and markets fertilizers and petrochemicals in India.
+FEDERALBNK,FEDERAL BANK LTD,Financial Services,Banks - Regional,13.767437,2.08571,35.0,367.1143,365.0,1792144800.0,Yahoo NS,2026-10-26,The Federal Bank Limited provides various banking and financial services in India.
+FLUOROCHEM,GUJARAT FLUOROCHEM LTD,Basic Materials,Specialty Chemicals,37.228252,2.05882,17.0,4745.1177,4800.0,1786528800.0,Yahoo NS,2026-10-26,"Gujarat Fluorochemicals Limited engages in the manufacture and trading of refrigerant gases, fluorochemicals, fluoropolymers, battery chemicals, wind energy, and renewable energy solutions in India, Europe, the United States, and internationally."
+FORTIS,FORTIS HEALTHCARE LTD,Healthcare,Medical Care Facilities,31.104803,1.3,20.0,1098.25,1132.5,1786010400.0,Yahoo NS,2026-10-26,Fortis Healthcare Limited operates as a healthcare delivery service provider in India.
+GAIL,GAIL (INDIA) LTD,Utilities,Utilities - Regulated Gas,8.894062,1.93333,30.0,195.5,197.5,1793354400.0,Yahoo NS,2026-10-26,GAIL (India) Limited operates as a natural gas processing and distribution company in India and internationally.
+GICRE,GENERAL INS CORP OF INDIA,Financial Services,Insurance - Reinsurance,5.5718546,,6.0,449.66666,475.0,,Yahoo NS,2026-10-26,General Insurance Corporation of India engages in the provision of reinsurance services in India and internationally.
+GLAXO,GLAXOSMITHKLINE PHARMA LT,Healthcare,Drug Manufacturers - General,30.749605,1.75,4.0,3097.25,2994.5,,Yahoo NS,2026-10-26,"GlaxoSmithKline Pharmaceuticals Limited manufactures, distributes, and trades in pharmaceuticals in India and internationally."
+GLENMARK,GLENMARK PHARMACEUTICALS,Healthcare,Drug Manufacturers - Specialty & Generic,22.23446,1.58333,11.0,2512.818,2590.0,1785492000.0,Yahoo NS,2026-10-26,"Glenmark Pharmaceuticals Limited, together with its subsidiaries, research, develops, manufactures, and sells generics, specialty medicines, and over the counter (OTC) pharmaceutical products in India, North America, Europe, and internationally."
+GMRAIRPORT,GMR AIRPORTS LIMITED,Industrials,Airports & Air Services,53.885307,1.22222,9.0,119.22222,120.0,1786528800.0,Yahoo NS,2026-10-26,"GMR Airports Limited development, maintenance, and operation of airports in India."
+GODFRYPHLP,GODFREY PHILLIPS INDIA LT,Consumer Defensive,Tobacco,14.7279215,,,,,,Yahoo NS,2026-10-26,"Godfrey Phillips India Limited, together with its subsidiaries, manufactures and trades cigarettes, tobacco products, and related products in India and internationally."
+GODREJCP,GODREJ CONSUMER PRODUCTS,Consumer Defensive,Household & Personal Products,31.249664,1.55882,34.0,1148.5294,1114.5,1793268000.0,Yahoo NS,2026-10-26,"Godrej Consumer Products Limited, a fast-moving consumer goods company, manufactures and sells personal care and home care products in India, Africa, Indonesia, the Middle East, the United States, and internationally."
+GODREJIND,GODREJ INDUSTRIES LTD,Industrials,Conglomerates,,,,,,1786615200.0,Yahoo NS,2026-10-26,"Godrej Industries Limited, together with its subsidiaries, engages in the chemical, agriculture, real estate, vegetable oil, hospitality, and financial and investment businesses in India and internationally."
+GODREJPROP,GODREJ PROPERTIES LTD,Real Estate,Real Estate - Development,13.479493,1.90909,22.0,2309.682,2301.5,1792749600.0,Yahoo NS,2026-10-26,"Godrej Properties Limited, together with its subsidiaries, engages primarily in the business of real estate construction, development, hospitality, and other related activities in India."
+GRASIM,GRASIM INDUSTRIES LTD,Basic Materials,Building Materials,21.427761,1.4,10.0,3837.5,3825.0,1786528800.0,Yahoo NS,2026-10-26,"Grasim Industries Limited, together with its subsidiaries, primarily produces cellulosic fibres, diversified chemicals, fashion yarns, and fabrics in india and internationally."
+GROWW,BILLIONBRAINS GARAGE VN L,Financial Services,Capital Markets,28.993347,1.3,11.0,235.0,240.0,,Yahoo NS,2026-10-26,Billionbrains Garage Ventures Limited develops a direct-to-customer digital investment platform that provides wealth creation opportunities through multiple financial products and services in India.
+GVT&D,GE VERNOVA T&D INDIA LTD,Industrials,Specialty Industrial Machinery,45.771896,1.55556,18.0,5365.222,5244.0,,Yahoo NS,2026-10-26,GE Vernova T&D India Limited engages in power transmission and distribution business in India and internationally.
+HAL,HINDUSTAN AERONAUTICS LTD,Industrials,Aerospace & Defense,26.970715,1.7037,27.0,5582.407,5733.0,1786528800.0,Yahoo NS,2026-10-26,"Hindustan Aeronautics Limited engages in the design, development, manufacture, repair, overhaul, upgrade, and servicing of aircraft, helicopters, aero-engines, avionics, accessories, and aerospace structures in India and internationally."
+HAVELLS,HAVELLS INDIA LIMITED,Industrials,Electrical Equipment & Parts,31.17463,1.85714,35.0,1295.8286,1260.0,1792663200.0,Yahoo NS,2026-10-26,"Havells India Limited, a fast-moving electrical and electronic durables company, manufactures, trades in, and sells various consumer electrical and electronic products in India and internationally."
+HCLTECH,HCL TECHNOLOGIES LTD,Technology,Information Technology Services,17.588963,2.79487,39.0,1269.6923,1255.0,1791799200.0,Yahoo NS,2026-10-26,"HCL Technologies Limited provides IT and business services, engineering, research and development services, software products, and IP-led offerings."
+HDBFS,HDB FINANCIAL SERVICES L,Financial Services,Credit Services,10.986276,2.25,16.0,737.875,725.0,,Yahoo NS,2026-10-26,HDB Financial Services Limited operates as a non-banking financial company that provides lending and business process outsourcing services in India.
+HDFCAMC,HDFC AMC LIMITED,Financial Services,Asset Management,26.04617,1.37037,27.0,2973.111,3000.0,1792058400.0,Yahoo NS,2026-10-26,HDFC Asset Management Company Limited is a publicly owned investment manager.
+HDFCBANK,HDFC BANK LTD,Financial Services,Banks - Regional,11.015752,1.21429,42.0,959.4048,947.0,1792231200.0,Yahoo NS,2026-10-26,"HDFC Bank Limited provides banking and financial products and services to individuals and businesses in India, Bahrain, Hong Kong, Singapore, and Dubai."
+HDFCLIFE,HDFC LIFE INS CO LTD,Financial Services,Insurance - Life,43.92599,1.24242,33.0,718.6667,705.0,1792058400.0,Yahoo NS,2026-10-26,HDFC Life Insurance Company Limited engages in the provision of individual and group insurance solutions in India.
