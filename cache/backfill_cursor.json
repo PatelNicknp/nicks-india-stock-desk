@@ -32,9 +32,15 @@
   "AASTAFIN": "2026-10-27",
   "AAYUSH": "2026-10-27",
   "ABATEAS": "2026-10-27",
-  "ABCINDQ": "2026-10-27"
+  "ABCINDQ": "2026-10-27",
+  "ABHICAP": "2026-10-27",
+  "ABHIFIN": "2026-10-27",
+  "ABIRAFN": "2026-10-27",
+  "ABSL10BANK": "2026-10-27",
+  "ABSLBANETF": "2026-10-27",
+  "ABSLNN50ET": "2026-10-27"
  },
- "last_batch_at": "2026-10-26T02:22Z",
+ "last_batch_at": "2026-10-26T02:47Z",
  "last_statements_ok": 200,
  "last_statements_fail": 0,
  "last_shareholding_ok": 0,
