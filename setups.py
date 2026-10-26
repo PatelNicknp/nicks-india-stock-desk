@@ -1782,16 +1782,34 @@ def _pending_verdict(verdict):
 
 
 def _buy_allowed(verdict):
-    """Chart setups keep BUY and names whose financials are still downloading. A scored AVOID stays off."""
+    """Chart setups only keeps BUY and names whose financials are still downloading. A scored AVOID stays off."""
     text = str(verdict or "").strip()
     return text == "BUY" or text == "Not scored yet"
 
 
+def _chart_verdict(verdict):
+    """The label a chart setup carries. A name with no score row is not scored yet."""
+    text = str(verdict or "").strip()
+    return text or "Not scored yet"
+
+
+def buy_rows_listed(df):
+    """Rows the normal list can show: BUY and Not scored yet. HOLD and AVOID rows are for Show anyway."""
+    if df is None or len(df) == 0 or "ticker" not in getattr(df, "columns", []):
+        return df
+    rows = df[df["ticker"].astype(str).str.strip() != ""]
+    if "verdict" not in rows.columns:
+        return rows
+    return rows[rows["verdict"].map(_buy_allowed)]
+
+
 def build_buy_setups(vcp, box, flag, canslim, scores, close=None, week=None, sma_ok=None, market=None, cfg=None):
-    """Names that pass the chart rules. The page can hide unscored names when coverage is high.
+    """Names that pass the chart rules, with their real verdict.
 
     No network. Scanners, scores, the 52-week file, and the cached closes are the inputs.
-    The market switch does not delete rows, so the page can show them greyed.
+    Every verdict is kept. The page keeps BUY, or BUY and Not scored yet with
+    Chart setups only, and Show anyway lists every row greyed. The market
+    switch does not delete rows either, so the page can show them greyed.
     """
     grouped = {}
     for source, frame in (("VCP", vcp), ("Box", box), ("Flag", flag), ("CANSLIM", canslim)):
@@ -1816,9 +1834,7 @@ def build_buy_setups(vcp, box, flag, canslim, scores, close=None, week=None, sma
     order = {name: i for i, name in enumerate(BUY_SETUP_ORDER)}
     rows = []
     for ticker, setups_for in grouped.items():
-        verdict = _w52_text(_w52_lookup(score_idx, ticker, "verdict"))
-        if not _buy_allowed(verdict):
-            continue
+        verdict = _chart_verdict(_w52_text(_w52_lookup(score_idx, ticker, "verdict")))
         if sma_ok is not None:
             if not sma_ok.get(ticker):
                 continue
@@ -1887,6 +1903,7 @@ def build_buy_setups(vcp, box, flag, canslim, scores, close=None, week=None, sma
             "bank_trend": snap.get("bank_trend") or "",
             "market_rule": snap.get("market_rule") or "either",
             "financials_pending": "yes" if _pending_verdict(verdict) else "no",
+            "listed": "yes" if _buy_allowed(verdict) else "no",
             "rs_benchmark": _w52_text(_w52_lookup(score_idx, ticker, "rs_benchmark")),
             "data_status": "OK",
             "note": "Research list, not a recommendation. This desk never places trades. The market check uses the Nifty 50 and SENSEX.",
@@ -1951,6 +1968,7 @@ def _buy_market_row(snap):
         "bank_trend": snap.get("bank_trend") or "",
         "market_rule": snap.get("market_rule") or "either",
         "financials_pending": "",
+        "listed": "",
         "rs_benchmark": "",
         "data_status": "OK",
         "note": "No names passed the buy-setup rules. Research list, not a recommendation. This desk never places trades. The market check uses the Nifty 50 and SENSEX.",

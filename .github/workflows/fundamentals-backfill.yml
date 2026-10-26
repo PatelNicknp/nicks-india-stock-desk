@@ -19,7 +19,8 @@ concurrency:
 jobs:
   backfill:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    # 18 minutes of downloads at most, then a short rebuild that has its own limit.
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -53,3 +54,35 @@ jobs:
             git pull --rebase origin "${GITHUB_REF_NAME}" && git push && break
             sleep $((i * 5))
           done
+      # Light rebuild of the scored pages, so Buy setups, CANSLIM, and the score
+      # pages pick up the financials and shareholding saved above. It reads only
+      # files already on disk and downloads nothing. It runs after the batch is
+      # saved and pushed, and every step below is allowed to fail, so a problem
+      # here can never undo or block the backfill. Turn it off with
+      # fundamentals_backfill.rebuild_pages_after_run in config.json.
+      - name: Rebuild the scored pages
+        id: rebuild
+        continue-on-error: true
+        timeout-minutes: 10
+        run: python stock_desk.py --rescore --after-backfill
+      - name: Save the rebuilt pages
+        if: steps.rebuild.outcome == 'success'
+        continue-on-error: true
+        timeout-minutes: 4
+        run: |
+          git add data
+          if git diff --cached --quiet; then
+            echo "No page changes."
+            exit 0
+          fi
+          git commit -m "Rescore pages from saved financials $(date -u +%Y-%m-%dT%H:%MZ)"
+          for i in 1 2 3 4; do
+            if git pull --rebase origin "${GITHUB_REF_NAME}"; then
+              git push && exit 0
+            else
+              git rebase --abort || true
+            fi
+            sleep $((i * 5))
+          done
+          echo "The rebuilt pages could not be saved this time. The next run rebuilds them."
+          exit 0

@@ -2608,7 +2608,7 @@
       '<div class="cards" id="cards"></div>' +
       '<div class="ctrls" id="ctrls"></div>' +
       '<div class="panel" id="tbl"></div>' +
-      '<p class="cap">A name is listed when at least one of VCP, Box, Flag, and CANSLIM is ready or broke out today, the close is above the 50-day and 200-day averages, and the risk from the entry to the stop is 8% or less. Chart setups only also keeps a BUY or a Not scored yet label, and tags the unscored rows Financials pending. A scored AVOID stays off. With the switch off, only BUY remains. The market check passes when the Nifty 50 or SENSEX is in an uptrend. Show anyway lists the names when that check fails. Tap a row for the reason, the trade plan, and the daily price chart. Many breakouts fail, which is why the stop is always shown. Nothing here is an alert.</p>';
+      '<p class="cap">A name is listed when at least one of VCP, Box, Flag, and CANSLIM is ready or broke out today, the close is above the 50-day and 200-day averages, and the risk from the entry to the stop is 8% or less. Chart setups only also keeps a BUY or a Not scored yet label, and tags the unscored rows Financials pending. A scored AVOID stays off. With the switch off, only BUY remains. The market check passes when the Nifty 50 or SENSEX is in an uptrend. When that check fails, Show anyway lists every name that passes the chart rules, greyed out, with its real verdict: BUY, HOLD, AVOID, or Not scored yet. Tap a row for the reason, the trade plan, and the daily price chart. Many breakouts fail, which is why the stop is always shown. Nothing here is an alert.</p>';
     const box = document.getElementById("ctrls");
     box.innerHTML =
       D.multiHtml("index", "Index", D.indexTokens(named)) +
@@ -2661,12 +2661,20 @@
       ranked.forEach((r, i) => { r._ord = i; });
       return ranked;
     };
-    const chartPass = (row) => chartOnly || String(row.verdict || "") === "BUY";
+    const verdictOf = (row) => String(row.verdict || "").trim() || "Not scored yet";
+    const chartPass = (row) => {
+      const v = verdictOf(row);
+      return v === "BUY" || (chartOnly && v === "Not scored yet");
+    };
+    // Show anyway lists every chart setup, whatever its verdict, so it never
+    // depends on the Chart setups only switch or on the financials coverage.
+    const listPass = (row) => (marketDown && showAnyway) ? true : chartPass(row);
+    const correction = [market.nifty_trend, market.sensex_trend].some((t) => /correction/i.test(String(t || "")));
     const draw = () => {
       const grey = marketDown && showAnyway;
-      const pool = (marketDown && !showAnyway) ? [] : named.filter((r) => chartPass(r) && readCommon(box, r) && sourceOk(r));
+      const pool = (marketDown && !showAnyway) ? [] : named.filter((r) => listPass(r) && readCommon(box, r) && sourceOk(r));
       const rows = specOrder(pool);
-      const kpis = (marketDown && !showAnyway) ? [] : named.filter(chartPass);
+      const kpis = (marketDown && !showAnyway) ? [] : named.filter(listPass);
       const broken = countWhere(kpis, (r) => r.best_status === "BROKEN OUT today");
       const multi = countWhere(kpis, (r) => (D.num(r.sources_count) || 0) >= 2);
       const rr = avg(kpis, "reward_risk");
@@ -2684,7 +2692,11 @@
           : "A buy setup needs the Nifty 50 or SENSEX in an uptrend, so none are listed.";
         banner.innerHTML = "<span>Nifty 50 is " + D.esc(market.nifty_trend || "not on file") +
           ". SENSEX is " + D.esc(market.sensex_trend || "not on file") +
-          ". Bank Nifty is " + D.esc(market.bank_trend || "not on file") + ". " + rule + "</span>" +
+          ". Bank Nifty is " + D.esc(market.bank_trend || "not on file") + ". " + rule +
+          (showAnyway
+            ? " " + (correction ? "The market is in a correction." : "The market is not in an uptrend.") +
+              " These names pass the chart rules and are greyed out. Each one shows its real verdict."
+            : "") + "</span>" +
           '<button type="button" id="showanyway">' + (showAnyway ? "Hide greyed names" : "Show anyway") + "</button>";
         banner.querySelector("#showanyway").addEventListener("click", () => { showAnyway = !showAnyway; draw(); });
       } else {
@@ -2702,7 +2714,7 @@
         lines: buyLines,
         priceSub: "Entry, stop, and both targets. The stop stays on the chart because many breakouts fail.",
         detail: buyDetailHtml,
-        empty: marketDown && !showAnyway ? "No buy setups are listed." : (named.filter(chartPass).length ? "No names match these filters." : "No stock passed the buy-setup rules today."),
+        empty: marketDown && !showAnyway ? "No buy setups are listed." : (named.filter(listPass).length ? "No names match these filters." : (grey ? "No stock passed the chart rules today." : "No stock passed the buy-setup rules today.")),
       });
     };
     const chartBtn = document.getElementById("chartonly");

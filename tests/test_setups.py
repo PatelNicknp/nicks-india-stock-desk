@@ -396,8 +396,8 @@ def _ready(ticker):
     }
 
 
-def test_buy_setups_keep_unscored_and_drop_avoid():
-    vcp = pd.DataFrame([_ready("PEND"), _ready("NOPE"), _ready("OKBUY"), _ready("HOLDME")])
+def test_buy_setups_keep_every_verdict_and_mark_the_listed_ones():
+    vcp = pd.DataFrame([_ready("PEND"), _ready("NOPE"), _ready("OKBUY"), _ready("HOLDME"), _ready("NOROW")])
     empty = pd.DataFrame()
     scores = pd.DataFrame([
         {"ticker": "PEND", "verdict": "Not scored yet", "company": "Pend Co", "sector": "Tech", "rs_benchmark": "Nifty 50", "score": 2},
@@ -407,16 +407,40 @@ def test_buy_setups_keep_unscored_and_drop_avoid():
     ])
     out = setups.build_buy_setups(
         vcp, empty, empty, empty, scores,
-        sma_ok={"PEND": True, "NOPE": True, "OKBUY": True, "HOLDME": True},
+        sma_ok={"PEND": True, "NOPE": True, "OKBUY": True, "HOLDME": True, "NOROW": True},
         market={"spy": True, "qqq": False},
     )
-    names = set(out["ticker"].astype(str))
-    assert names == {"PEND", "OKBUY"}
-    pend = out[out["ticker"] == "PEND"].iloc[0]
-    assert pend["financials_pending"] == "yes"
-    assert pend["verdict"] == "Not scored yet"
-    assert pend["rs_benchmark"] == "Nifty 50"
-    assert out[out["ticker"] == "OKBUY"].iloc[0]["financials_pending"] == "no"
+    by = out.set_index("ticker")
+    # Every chart setup stays in the file with its real verdict, so Show anyway can list it.
+    assert set(by.index) == {"PEND", "NOPE", "OKBUY", "HOLDME", "NOROW"}
+    assert by.loc["NOPE", "verdict"] == "AVOID" and by.loc["NOPE", "listed"] == "no"
+    assert by.loc["HOLDME", "verdict"] == "HOLD" and by.loc["HOLDME", "listed"] == "no"
+    assert by.loc["OKBUY", "listed"] == "yes" and by.loc["OKBUY", "financials_pending"] == "no"
+    assert by.loc["PEND", "financials_pending"] == "yes"
+    assert by.loc["PEND", "verdict"] == "Not scored yet" and by.loc["PEND", "listed"] == "yes"
+    assert by.loc["PEND", "rs_benchmark"] == "Nifty 50"
+    # A name with no score row is not scored yet, never blank.
+    assert by.loc["NOROW", "verdict"] == "Not scored yet" and by.loc["NOROW", "financials_pending"] == "yes"
+    listed = setups.buy_rows_listed(out)
+    assert set(listed["ticker"]) == {"PEND", "OKBUY", "NOROW"}
+
+
+def test_buy_setups_keep_rows_when_the_market_check_fails():
+    vcp = pd.DataFrame([_ready("OKBUY"), _ready("NOPE")])
+    empty = pd.DataFrame()
+    scores = pd.DataFrame([
+        {"ticker": "OKBUY", "verdict": "BUY", "score": 9},
+        {"ticker": "NOPE", "verdict": "AVOID", "score": -4},
+    ])
+    out = setups.build_buy_setups(
+        vcp, empty, empty, empty, scores,
+        sma_ok={"OKBUY": True, "NOPE": True},
+        market={"spy": False, "qqq": False},
+    )
+    assert set(out["ticker"]) == {"OKBUY", "NOPE"}
+    assert (out["market_ok"] == "no").all()
+    assert len(setups.buy_rows_visible(out, True)) == 0
+    assert len(setups.buy_rows_visible(out, False)) == 2
 
 
 def test_switches_skip_the_work():
@@ -482,7 +506,8 @@ if __name__ == "__main__":
     test_freshness_follows_spy_not_a_later_vix_bar()
     test_market_check_uses_nifty_or_sensex()
     test_bse_only_names_use_sensex()
-    test_buy_setups_keep_unscored_and_drop_avoid()
+    test_buy_setups_keep_every_verdict_and_mark_the_listed_ones()
+    test_buy_setups_keep_rows_when_the_market_check_fails()
     test_switches_skip_the_work()
     test_high_volume_scanner()
     test_high_volume_scanner_empty_is_safe()
