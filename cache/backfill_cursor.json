@@ -43,10 +43,10 @@
   "ABSLBANETF": "2026-10-27",
   "ABSLNN50ET": "2026-10-27"
  },
- "last_batch_at": "2026-10-26T17:52Z",
+ "last_batch_at": "2026-10-26T18:17Z",
  "last_statements_ok": 0,
  "last_statements_fail": 0,
- "last_shareholding_ok": 93,
+ "last_shareholding_ok": 95,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
   "BIRET": "2026-10-26",
@@ -65,10 +65,8 @@
   "SURAJINDPP": "2026-10-26",
   "VERTEXPP": "2026-10-26",
   "ICICIPRULI": "2026-10-26",
-  "KHAZANCHI": "2026-10-26",
-  "SUDARSHAN": "2026-10-26",
   "ACESEPP": "2026-10-26"
  },
- "last_shareholding_empty": 19,
+ "last_shareholding_empty": 17,
  "last_shareholding_skipped": 0
 }
