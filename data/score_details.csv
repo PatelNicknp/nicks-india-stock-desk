@@ -60239,22 +60239,6 @@ DEEPAKFERT,Sentiment,Institutional 13F trend,0,zero,,,
 DEEPAKFERT,Sentiment,Insider buys vs sells,,n/a,,,
 DEEPAKFERT,Earnings,Latest earnings vs estimate,1,plus 1,,,
 DEEPAKFERT,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,-22.76,,
-DONEAR,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
-DONEAR,Technical,Oscillator (RSI-14),-1,minus 1,27.3,,
-DONEAR,Financials,Forward P/E (lower is better),-1,minus 1,25.604027,16.256961810509125,-1.0
-DONEAR,Financials,Trailing P/E (lower is better),1,plus 1,10.365145228215766,16.256961810509125,1.0
-DONEAR,Financials,Price / sales (lower is better),1,plus 1,0.43981956635312797,0.6589096729056743,1.0
-DONEAR,Financials,Debt / equity (lower is better),1,plus 1,1.5425002455951782,1.792320984806512,-1.0
-DONEAR,Financials,Price / free cash flow (lower is better),,n/a,163.14538590604027,,-1.0
-DONEAR,Financials,Revenue growth (higher is better),-1,minus 1,0.0,5.43,-1.0
-DONEAR,Financials,EPS growth (higher is better),-1,minus 1,36.22,-6.2,1.0
-DONEAR,Financials,Return on equity (higher is better),-1,minus 1,13.58,17.24,1.0
-DONEAR,Financials,Dividend yield (higher is better),1,plus 1,0.27,0.19,1.0
-DONEAR,Sentiment,Analyst rating,,n/a,,,
-DONEAR,Sentiment,Institutional 13F trend,0,zero,,,
-DONEAR,Sentiment,Insider buys vs sells,,n/a,,,
-DONEAR,Earnings,Latest earnings vs estimate,-1,minus 1,,,
-DONEAR,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,-5.24,,
 DREAMFOLKS,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
 DREAMFOLKS,Technical,Oscillator (RSI-14),-1,minus 1,25.5,,
 DREAMFOLKS,Financials,Forward P/E (lower is better),1,plus 1,4.450158,33.23171456392831,1.0
@@ -64799,6 +64783,22 @@ DHAMPURSUG,Sentiment,Institutional 13F trend,0,zero,,,
 DHAMPURSUG,Sentiment,Insider buys vs sells,,n/a,,,
 DHAMPURSUG,Earnings,Latest earnings vs estimate,-1,minus 1,,,
 DHAMPURSUG,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,28.48,,
+DONEAR,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
+DONEAR,Technical,Oscillator (RSI-14),-1,minus 1,27.3,,
+DONEAR,Financials,Forward P/E (lower is better),-1,minus 1,25.604027,16.256961810509125,-1.0
+DONEAR,Financials,Trailing P/E (lower is better),1,plus 1,10.365145228215766,16.256961810509125,1.0
+DONEAR,Financials,Price / sales (lower is better),1,plus 1,0.43981956635312797,0.6589096729056743,1.0
+DONEAR,Financials,Debt / equity (lower is better),1,plus 1,1.5425002455951782,1.792320984806512,-1.0
+DONEAR,Financials,Price / free cash flow (lower is better),,n/a,163.14538590604027,,-1.0
+DONEAR,Financials,Revenue growth (higher is better),-1,minus 1,0.0,5.43,-1.0
+DONEAR,Financials,EPS growth (higher is better),-1,minus 1,36.22,-6.2,1.0
+DONEAR,Financials,Return on equity (higher is better),-1,minus 1,13.58,17.24,1.0
+DONEAR,Financials,Dividend yield (higher is better),1,plus 1,0.27,0.19,1.0
+DONEAR,Sentiment,Analyst rating,,n/a,,,
+DONEAR,Sentiment,Institutional 13F trend,-1,minus 1,,,
+DONEAR,Sentiment,Insider buys vs sells,,n/a,,,
+DONEAR,Earnings,Latest earnings vs estimate,-1,minus 1,,,
+DONEAR,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,-5.24,,
 EIMCOELECO,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
 EIMCOELECO,Technical,Oscillator (RSI-14),0,zero,38.4,,
 EIMCOELECO,Financials,Forward P/E (lower is better),1,plus 1,23.002104,25.68180286923707,-1.0
