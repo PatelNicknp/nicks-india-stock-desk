@@ -1,2 +1,4 @@
 ticker,company,price,day_pct,score,score_prev,score_change,verdict,data_status,note,disclaimer
+UNITDSPR,United Spirits Ltd.,1270.0,0.48,5.0,3.0,2.0,HOLD,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+HINDUNILVR,Hindustan Unilever Ltd.,1818.0,-0.11,5.0,6.0,-1.0,HOLD,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 CMXLTD,CMX HOLDINGS LIMITED,24.31,-4.63,3.0,2.0,1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
