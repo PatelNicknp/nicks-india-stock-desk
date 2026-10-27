@@ -3035,15 +3035,16 @@ def main(argv=None):
     else:
         setup_frames = {k: pd.DataFrame() for k in (
             "scanner_vcp", "scanner_canslim", "scanner_box", "scanner_flag", "scanner_leaders",
-            "scanner_52w", "highs_lows_history",
+            "scanner_qullamaggie", "scanner_marios", "scanner_52w", "highs_lows_history",
         )}
     def _n(frame):
         if frame is None or len(frame) == 0 or "ticker" not in getattr(frame, "columns", []):
             return 0
         return int((frame["ticker"].astype(str) != "").sum())
-    log("Pattern scanners", "OK", asof, "VCP %d, CANSLIM %d, box %d, flag %d, leaders %d, 52-week %d. No new downloads." % (
+    log("Pattern scanners", "OK", asof, "VCP %d, CANSLIM %d, box %d, flag %d, Qullamaggie %d, Marios %d, leaders %d, 52-week %d. No new downloads." % (
         _n(setup_frames.get("scanner_vcp")), _n(setup_frames.get("scanner_canslim")),
         _n(setup_frames.get("scanner_box")), _n(setup_frames.get("scanner_flag")),
+        _n(setup_frames.get("scanner_qullamaggie")), _n(setup_frames.get("scanner_marios")),
         _n(setup_frames.get("scanner_leaders")), _n(setup_frames.get("scanner_52w")),
     ))
     buy_on = features.get("buy_setups", True)
@@ -3052,6 +3053,7 @@ def main(argv=None):
             setup_frames.get("scanner_vcp"), setup_frames.get("scanner_box"),
             setup_frames.get("scanner_flag"), setup_frames.get("scanner_canslim"),
             scores, close, setup_frames.get("scanner_52w"), cfg=cfg,
+            qullamaggie=setup_frames.get("scanner_qullamaggie"), marios=setup_frames.get("scanner_marios"),
         )
     else:
         buy = pd.DataFrame()
@@ -3158,6 +3160,8 @@ def main(argv=None):
         "scanner_canslim": gated(setup_frames["scanner_canslim"], "scanner_canslim", features.get("scanner_canslim", True), "No CANSLIM setups. Missing letters stay not verified. No new downloads."),
         "scanner_box": gated(setup_frames["scanner_box"], "scanner_box", features.get("scanner_box", True), "No box setups in the cached prices."),
         "scanner_flag": gated(setup_frames["scanner_flag"], "scanner_flag", features.get("scanner_flag", True), "No flag setups in the cached prices."),
+        "scanner_qullamaggie": gated(setup_frames.get("scanner_qullamaggie"), "scanner_qullamaggie", features.get("scanner_qullamaggie", True), "No Qullamaggie setups in the cached prices."),
+        "scanner_marios": gated(setup_frames.get("scanner_marios"), "scanner_marios", features.get("scanner_marios", True), "No Marios setups in the cached prices."),
         "scanner_leaders": gated(setup_frames.get("scanner_leaders"), "scanner_leaders", features.get("scanner_leaders", True), "No leaders. A leader is a ready or just-broken VCP, a strict CANSLIM qualify, or both."),
         "scanner_52w": gated(setup_frames.get("scanner_52w"), "scanner_52w", features.get("scanner_52w", True), "No 52-week rows. The scan used cached prices only."),
         "highs_lows_history": gated(setup_frames.get("highs_lows_history"), "highs_lows_history", features.get("scanner_52w", True), "No 52-week history in the cached prices."),

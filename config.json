@@ -61,7 +61,31 @@
     "sensex": true,
     "company_line": true,
     "high_volume_scanner": true,
-    "page_descriptions": true
+    "page_descriptions": true,
+    "scanner_qullamaggie": true,
+    "scanner_marios": true
+  },
+  "qullamaggie": {
+    "_note": "Qullamaggie breakout scan. Cached daily bars only. Percents are whole numbers.",
+    "run_min_pct": 30,
+    "run_lookback_min": 21,
+    "run_lookback_max": 126,
+    "base_min_days": 10,
+    "base_max_days": 40,
+    "base_max_range_pct": 25,
+    "base_top_near_run_high_pct": 10,
+    "above_ma_share": 0.6,
+    "near_pivot_pct": 3,
+    "vol_mult": 1.5,
+    "vol_len": 50
+  },
+  "marios": {
+    "_note": "Marios breakout exits. Entry uses the qullamaggie settings above.",
+    "adr_days": 20,
+    "fast_adr_pct": 5,
+    "target_low_adr": 2.5,
+    "target_high_adr": 3.0,
+    "in_trade_days": 20
   },
   "market": {
     "require_both_uptrends": false
