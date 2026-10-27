@@ -9,7 +9,9 @@
   "DYNPRO": "2026-10-27",
   "TEAM24": "2026-10-28",
   "KHAZANCHI": "2026-10-28",
-  "SUDARSHAN": "2026-10-28"
+  "SUDARSHAN": "2026-10-28",
+  "SHIVAM-RE1": "2026-10-28",
+  "TAG": "2026-10-28"
  },
  "shareholding_retry_after": {
   "08AGG": "2026-10-27",
@@ -28,10 +30,10 @@
   "ABSLBANETF": "2026-10-27",
   "ABSLNN50ET": "2026-10-27"
  },
- "last_batch_at": "2026-10-27T13:15Z",
- "last_statements_ok": 0,
- "last_statements_fail": 0,
- "last_shareholding_ok": 91,
+ "last_batch_at": "2026-10-27T18:33Z",
+ "last_statements_ok": 37,
+ "last_statements_fail": 2,
+ "last_shareholding_ok": 106,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
   "BIRET": "2026-10-27",
@@ -50,7 +52,9 @@
   "SURAJINDPP": "2026-10-27",
   "VERTEXPP": "2026-10-27",
   "ICICIPRULI": "2026-10-27",
-  "ACESEPP": "2026-10-27"
+  "ACESEPP": "2026-10-27",
+  "SHIVAM-RE1": "2026-10-27",
+  "ANIRITPP": "2026-10-27"
  },
  "last_shareholding_empty": 17,
  "last_shareholding_skipped": 0
