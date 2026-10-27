@@ -1022,6 +1022,7 @@ def help_rows():
         ("Your list", "Edit input/holdings.csv and input/my_watchlist.csv to change the portfolio and the watchlist. Example rows are marked example=yes. Replace them with your own shares and cost. The desk still will not place a trade."),
         ("Alerts", "The alerts page lists score and label changes since the last run. It does not send a phone alert, an email, or a message."),
         ("Updates log", "OK means the source answered. PARTIAL means a column is blank on every row. CACHED means this run failed and an older copy was used. MISSING means there is no copy at all. A blank cell is missing data. It is not a zero."),
+        ("Page descriptions", "Each page starts with a short box that says what the page does. Turn all of them off with feature.page_descriptions in config.json."),
         ("Switches", "Every page has an on/off switch in config.json under features. The index lists have switches under indexes. Turning a page off keeps the file headers so the site does not break."),
     ]
 

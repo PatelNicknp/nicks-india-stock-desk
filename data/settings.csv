@@ -59,6 +59,7 @@ feature.fundamentals_backfill,True
 feature.sensex,True
 feature.company_line,True
 feature.high_volume_scanner,True
+feature.page_descriptions,True
 buy_setups.market_filter,True
 buy_setups.chart_setups_only,True
 buy_setups.full_rules_at_coverage_pct,80

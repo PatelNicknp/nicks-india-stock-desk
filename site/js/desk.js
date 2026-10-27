@@ -2125,6 +2125,24 @@
     if (!row) return true;
     return String(row.value).toLowerCase() !== "false";
   }
+  // The "What this page does" box. One plain-English card above the page,
+  // outside #page so a filter redraw never wipes it. Off with feature.page_descriptions.
+  function aboutHtml(about) {
+    if (!about || !featureOn("feature.page_descriptions")) return "";
+    const lines = [].concat(about.lines || []).filter((t) => t);
+    if (!lines.length) return "";
+    const body = lines.map((t) => "<p>" + esc(t) + "</p>").join("") +
+      (about.note ? '<p class="about-note">' + esc(about.note) + "</p>" : "");
+    return '<section class="about" id="about" aria-label="' + esc(about.title || "What this page does") + '">' +
+      '<div class="about-title">' + esc(about.title || "What this page does") + "</div>" + body + "</section>";
+  }
+  function placeAbout(about) {
+    const old = document.getElementById("about");
+    if (old) old.remove();
+    const html = aboutHtml(about);
+    const page = document.getElementById("page");
+    if (html && page) page.insertAdjacentHTML("beforebegin", html);
+  }
   function markReady(value) {
     requestAnimationFrame(() => requestAnimationFrame(() => { document.body.dataset.ready = value; }));
   }
@@ -2155,6 +2173,7 @@
         markReady("1");
         return;
       }
+      placeAbout(spec.about);
       spec.render({ page: document.getElementById("page"), files: loaded, settings: SETTINGS });
       markReady("1");
     } catch (err) {
@@ -2178,7 +2197,7 @@
     selectedMulti: selectedMulti, fieldVal: fieldVal,
     multiHtml: multiHtml, selectHtml: selectHtml, searchHtml: searchHtml, rangeHtml: rangeHtml,
     pairHtml: pairHtml, dateHtml: dateHtml, feedHtml: feedHtml, placeFeed: placeFeed,
-    featureOn: featureOn, marketWord: marketWord, marketColor: marketColor, monthLabel: monthLabel, dateTicks: dateTicks, ptsColor: ptsColor,
+    featureOn: featureOn, aboutHtml: aboutHtml, marketWord: marketWord, marketColor: marketColor, monthLabel: monthLabel, dateTicks: dateTicks, ptsColor: ptsColor,
     wireFilters: wireFilters, matchMulti: matchMulti, matchContains: matchContains,
     matchText: matchText, matchMin: matchMin,
     destroyCharts: destroyCharts, lineChart: lineChart, barChart: barChart, comboChart: comboChart, makeChart: makeChart,

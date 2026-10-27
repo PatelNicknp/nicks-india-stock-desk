@@ -3023,6 +3023,198 @@
   }
 
 
+  // Plain-English "What this page does" boxes, one per page. Shown above the page by
+  // Desk.boot. One switch turns them all off: feature.page_descriptions in config.json.
+  // Numbers match config.json, setups.py, tables.py, and volume_scanner.py. Simple words, short sentences.
+  const LIQUID_LINE = "Only stocks that trade at least ₹1 crore a day are scanned. That is the middle value of the last 20 days.";
+  const ALL_SCORED_LINE = "This list checks every stock with a desk score, so it can include quiet stocks that trade under ₹1 crore a day.";
+  const SCAN = "What this scanner does";
+  const ABOUT = {
+    vcp: { title: SCAN, note: LIQUID_LINE, lines: [
+      "Same rules as Nick's TradingView indicator. The trend template must be 8 of 8, and there must be at least two pullbacks that get smaller.",
+      "READY means price is still under the buy line. BROKEN OUT today means it closed above the buy line on volume at least 1.5 times the 50-day average.",
+      "WATCHING means it is close but not there yet. For example, price went over the line on low volume, or there is only one pullback so far.",
+      "A buy needs a fresh close above the line on big volume. Stops and targets: 7% stop, sell part at +20%.",
+    ] },
+    box: { title: SCAN, note: LIQUID_LINE, lines: [
+      "A tight sideways range of 15 to 40 days, no more than 10% wide.",
+      "READY means price is within 2% of the top of the box. A breakout is a close above the box on volume above 1.5 times the 50-day average.",
+      "The stop is the box low.",
+    ] },
+    flag: { title: SCAN, note: LIQUID_LINE, lines: [
+      "A sharp rise of at least 15% in 3 to 12 days (the pole), then a short 3 to 15 day pause that gives back less than half of the rise (the flag).",
+      "A breakout is a close above the flag high on volume above 1.5 times the 50-day average.",
+    ] },
+    canslim: { title: SCAN, note: LIQUID_LINE, lines: [
+      "William O'Neil's method. It checks earnings growth versus a year ago, how close price is to its 52-week high, and trading volume.",
+      "It also checks strength versus the Nifty 50 (SENSEX for BSE-only stocks), shareholding changes, and whether the market is in an uptrend.",
+    ] },
+    leaders: { title: SCAN, note: LIQUID_LINE, lines: [
+      "Stocks that are a READY or just broken out VCP, or a strict CANSLIM pass. One row per stock.",
+      "The best names are on both. Use the On VCP and On CANSLIM filters to see only the stocks on both lists.",
+    ] },
+    buysetups: { title: SCAN, note: LIQUID_LINE, lines: [
+      "The main shortlist. A stock is listed when VCP, Box, Flag or CANSLIM is ready or broke out today, price is above the 50-day and 200-day averages, and the stop is 8% or less away.",
+      "It is also checked against the company score and the market trend. Show anyway lists the greyed-out ones.",
+    ] },
+    week52: { title: SCAN, note: LIQUID_LINE, lines: [
+      "Where each stock sits in its yearly range.",
+      "It flags new highs, new lows, closes within 5% of the high, and new highs made on 1.5 times normal volume.",
+    ] },
+    breakouts: { title: SCAN, note: ALL_SCORED_LINE, lines: [
+      "Only stocks within 1% of their 52-week high.",
+    ] },
+    pullbacks: { title: SCAN, note: ALL_SCORED_LINE, lines: [
+      "Stocks in an uptrend (above the 50-day and 200-day averages) that have dipped back into the buy zone near the 20-day average.",
+      "RSI must be under 70, and the stock must not be scored AVOID.",
+    ] },
+    highvol: { title: SCAN, note: "Only stocks that closed above ₹20 and traded at least ₹1 crore that day are listed.", lines: [
+      "Stocks trading 2 times or more their usual 50-day volume, marked as a buying day (up) or a selling day (down).",
+      "Filters go from 1.5x to 5x.",
+    ] },
+    growth: { title: SCAN, note: LIQUID_LINE, lines: [
+      "Revenue growth of 15% or more, and not scored AVOID.",
+    ] },
+    quality: { title: SCAN, note: LIQUID_LINE, lines: [
+      "Good return on equity (it earns the plus 1 point) and debt under 1.5 times equity. Not scored AVOID.",
+    ] },
+    dividend: { title: SCAN, note: LIQUID_LINE, lines: [
+      "Dividend yield of 1.5% or more, and not scored AVOID.",
+    ] },
+    wheel: { title: SCAN, note: LIQUID_LINE, lines: [
+      "Big, heavily traded stocks (₹20 crore or more a day) in an uptrend (above the 200-day average).",
+      "RSI under 70, not extended or in a downtrend, and not AVOID. Stock list only, no option contract picks.",
+    ] },
+    today: { lines: [
+      "A quick look at the whole market today. The cards show the Nifty 50, advancers and decliners, new 52-week highs and lows, put/call mood, India VIX, the 10-year rate, and the rupee.",
+      "Below that are today's sector moves, market breadth, and the latest alerts.",
+    ] },
+    flows: { lines: [
+      "How much foreign investors (FII) and Indian institutions (DII) bought or sold in the cash market, in crore rupees. Green is net buying. Red is net selling.",
+      "It shows 5-day, 20-day, month and year totals, a chart against the index, and index-futures positions when NSE has them.",
+    ] },
+    top: { lines: [
+      "Every stock on the desk ranked by its desk score, highest first.",
+      "Each row shows the label (BUY, HOLD or AVOID), the trend, and an entry zone, stop and target to study. The Liquid filter starts on Yes. Pick All to see quieter stocks too.",
+    ] },
+    scorecard: { lines: [
+      "One stock at a time. Type a ticker to see its total score and how each point was earned, versus its own 3-year average and versus its sector.",
+      "It also shows the plan (entry, stop, target), recent earnings surprises, and headlines.",
+    ] },
+    watchlist: { lines: [
+      "Your holdings and your watchlist, with portfolio value, today's profit or loss, total gain, and the desk score of each stock.",
+      "Change the lists in input/holdings.csv and input/my_watchlist.csv.",
+    ] },
+    alerts: { lines: [
+      "What changed since the last run: label changes, breakouts, and stocks that moved into their entry zone.",
+      "Nothing is sent to your phone or email.",
+    ] },
+    backtest: { lines: [
+      "Tests the desk score on past data, using only what was public at the time. It compares the top 20 stocks with the Nifty 50 over 1, 4 and 12 weeks.",
+      "If it says there is no clear edge, believe it. Past results are not future results.",
+    ] },
+    calendar: { lines: [
+      "Upcoming earnings report dates for stocks on the desk, and how many days away they are.",
+      "It also shows the last result versus the estimate and how much the stock moved the next day. Your holdings are marked Held.",
+    ] },
+    heatmap: { lines: [
+      "Earnings results by quarter for each stock. Green is a beat, red is a miss, and grey is in line with the estimate.",
+    ] },
+    cards: { lines: [
+      "A simple A to F report card for each company.",
+      "The grade comes from a fixed rule on recent earnings beats and revenue growth versus the company's own history. It is not a trade.",
+    ] },
+    putcall: { lines: [
+      "The Nifty put/call ratio. It is put open interest divided by call open interest, with a 5-day average and a mood zone.",
+      "Market mood only, not a trade.",
+    ] },
+    walls: { lines: [
+      "The strike prices with the most open interest for puts and calls. Traders often watch them as a floor and a ceiling.",
+      "Market mood only, not a contract to trade.",
+    ] },
+    analysts: { lines: [
+      "What analysts think of each stock: the average rating from 1 (strong buy) to 5 (sell), the median price target, and the upside from today's price.",
+    ] },
+    thirteen: { lines: [
+      "Who owns each company: promoters, foreign institutions (FII), Indian institutions (DII), and the public.",
+      "The change is versus the prior quarter. This is not a buy or sell list.",
+    ] },
+    aaii: { lines: [
+      "India market mood. There is no Indian version of the AAII survey, so this page uses India VIX (the fear gauge) and the day's FII and DII cash flow in crore.",
+    ] },
+    insiders: { lines: [
+      "Insider buy and sell counts over the last three months, from the NSE insider (PIT) file.",
+      "If NSE blocks the file, the cells stay blank.",
+    ] },
+    headlines: { lines: [
+      "Recent news headlines with a simple tone label.",
+      "The tone comes from a word rule (beat, upgrade, probe, and similar words). It does not change the desk score.",
+    ] },
+    xly: { lines: [
+      "The Nifty Auto index divided by the Nifty FMCG index.",
+      "When the ratio is above its own 50-day average, the page says risk on. That means buyers prefer cars and big spending over everyday goods.",
+    ] },
+    financials: { lines: [
+      "Each money measure for a stock, now versus its own 3-year average and versus the sector median.",
+      "The Better when column says if a lower or a higher number earns the point.",
+    ] },
+    tracker: { lines: [
+      "Past earnings reports for one stock: actual EPS versus the estimate, the surprise %, and whether it was a beat or a miss.",
+      "Reports that have a date but no result yet are counted as upcoming.",
+    ] },
+    company: { lines: [
+      "Yearly revenue, profit, EPS, and margins for one company, with charts.",
+      "It also shows P/E, price to sales, and price to free cash flow.",
+    ] },
+    divfund: { lines: [
+      "The dividend yield of every stock on the desk.",
+      "A yield of 0 means the company does not pay. A dash means the yield could not be read.",
+    ] },
+    macro: { lines: [
+      "India economy numbers such as inflation (CPI), GDP, and industry growth from the World Bank, plus the rupee.",
+      "Signal is +1 when the surprise is the kind that usually helps stocks. It is a sketch, not a forecast.",
+    ] },
+    secmacro: { lines: [
+      "Each Nifty sector index with its day, week, month and year moves, plus simple growth, inflation, and rate scores.",
+      "The scores are a rule of thumb, not a forecast.",
+    ] },
+    histpe: { lines: [
+      "The middle (median) trailing P/E of the stocks on this desk, month by month.",
+      "There is no free official Nifty 50 P/E history, so that line is not drawn.",
+    ] },
+    trends: { lines: [
+      "Shows if each stock is above its 20, 50, 100, and 200-day averages.",
+      "Uptrend means above all four. Downtrend means below all four. Anything else is Mixed.",
+    ] },
+    gainers: { lines: [
+      "The biggest gainers and losers among the desk's stocks in the latest session, by day % change.",
+    ] },
+    breadth: { lines: [
+      "How much of the market is going up. It shows the share of the desk's stocks above each moving average over time.",
+      "More stocks above their averages means a healthier market.",
+    ] },
+    secperf: { lines: [
+      "Sector returns for the day, week, month, 3 months, and year, plus the share of stocks above their 50-day average.",
+      "Each sector is an equal-weight average of the desk's stocks, not the sector index.",
+    ] },
+    heatmaps: { lines: [
+      "A color grid of each stock's own return over 1 day, 1 week, 1 month, and the year so far. Green is up and red is down.",
+      "It also shows if the stock is above its 20, 50, 100, and 200-day averages.",
+    ] },
+    rotation: { lines: [
+      "Which Nifty sectors are leading or lagging the Nifty 50 (you can switch to SENSEX). Leading is top right, Weakening is bottom right, Lagging is bottom left, and Improving is top left.",
+      "The table ranks sectors by a score that blends strength, how many stocks are above their averages or near a high, buy setups, and the average desk score.",
+    ] },
+    updates: { lines: [
+      "Checks that the data is fresh. OK means the source answered. CACHED means an older copy was used. MISSING means there is no copy.",
+      "It also shows how much of the financials and shareholding is on file, and which page switches are on.",
+    ] },
+    help: { lines: [
+      "Plain-English answers about how the desk works, and a list of every setting.",
+      "Start here if a word or label is unclear.",
+    ] },
+  };
+
   window.DESK_PAGES = {
     today: { files: ["market_today.csv", "breadth_history.csv", "sectors.csv", "alerts.csv", "fii_flows.csv"], optional: ["high_volume.csv"], render: renderToday },
     flows: { files: ["fii_flows.csv", "participant_oi.csv"], render: renderFlows },
@@ -3072,6 +3264,9 @@
     rotation: { files: ["sector_rotation.csv", "sector_rotation_tails.csv", "sector_rotation_history.csv", "scores.csv"], render: renderRotation },
     help: { files: ["help.csv", "settings.csv"], render: renderHelp },
   };
+  Object.keys(ABOUT).forEach((id) => {
+    if (window.DESK_PAGES[id]) window.DESK_PAGES[id].about = ABOUT[id];
+  });
 
   D.boot();
 })();
