@@ -1,5 +1,5 @@
 {
- "updated_pt": "2026-10-27 07:06 IST \u00b7 2026-10-26 18:36 PT",
+ "updated_pt": "2026-10-27 12:04 IST \u00b7 2026-10-26 23:34 PT",
  "price_as_of": "2026-10-23",
  "mode": "rescore",
  "label": "Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts.",
@@ -53,7 +53,9 @@
   "scanner_flag",
   "scanner_growth",
   "scanner_leaders",
+  "scanner_marios",
   "scanner_quality",
+  "scanner_qullamaggie",
   "scanner_vcp",
   "scanner_wheel",
   "score_changes",
