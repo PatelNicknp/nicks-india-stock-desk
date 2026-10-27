@@ -1202,6 +1202,65 @@
     },
   });
 
+  const qmStatus = ["READY", "BROKEN OUT today"];
+  const qmCols = [TK, CO, T("index_membership", "Index"), T("status", "Status", "setup"), PR,
+    T("pivot", "Buy point (base high)", "num", { dec: 2 }), T("entry", "Entry", "num", { dec: 2 }),
+    T("stop", "Stop", "num", { dec: 2, tone: "stop" }), T("stop_basis", "Stop from"),
+    T("risk_pct", "Risk %", "pct", { dec: 1, color: false }), T("strength", "Strength", "strengthbar"),
+    T("run_pct", "Run before base %", "pct", { dec: 1, color: false }), T("base_days", "Base days", "num", { dec: 0 }),
+    T("base_range_pct", "Base range %", "pct", { dec: 1, color: false }), T("volume_ratio", "Volume vs 50-day", "volx", { dec: 2 }),
+    T("freshness", "Data", "fresh")];
+  const qullamaggie = patternPage({
+    file: "scanner_qullamaggie.csv",
+    caption: "",
+    filters: { status: true, statusDefault: qmStatus, index: true, sector: true, ticker: true },
+    columns: qmCols,
+    price: setupLines,
+    cards(all) {
+      return card("Broken out today", String(countWhere(all, (r) => r.status === "BROKEN OUT today"))) +
+        card("Ready", String(countWhere(all, (r) => r.status === "READY"))) +
+        card("Watching", String(countWhere(all, (r) => r.status === "WATCHING")));
+    },
+    detail(row) {
+      return '<div class="panel pad"><div class="ptitle">Why this name</div>' + whyLines(row ? [row] : []) + "</div>";
+    },
+  });
+
+  function mariosLines(row) {
+    const lines = setupLines(row).filter((l) => l.label.indexOf("Target") !== 0);
+    if (!row) return lines;
+    if (D.num(row.target_low) != null) lines.push({ value: D.num(row.target_low), color: "#22C55E", label: "Sell part from " + D.fmt(row.target_low, 2) });
+    if (D.num(row.target_high) != null) lines.push({ value: D.num(row.target_high), color: "#22C55E", label: "to " + D.fmt(row.target_high, 2) });
+    if (D.num(row.trail) != null) lines.push({ value: D.num(row.trail), color: "#7C9CFF", label: "Trail " + (row.trail_with || "") + " " + D.fmt(row.trail, 2) });
+    return lines;
+  }
+  const marios = patternPage({
+    file: "scanner_marios.csv",
+    caption: "",
+    filters: { status: true, statusDefault: ["READY", "BROKEN OUT today", "IN TRADE"], index: true, sector: true, ticker: true,
+      single: [{ key: "trail_signal", label: "Trail signal" }] },
+    columns: [TK, CO, T("status", "Status", "setup"), PR,
+      T("pivot", "Buy point (base high)", "num", { dec: 2 }), T("entry", "Entry", "num", { dec: 2 }),
+      T("stop", "Stop", "num", { dec: 2, tone: "stop" }), T("risk_pct", "Risk %", "pct", { dec: 1, color: false }),
+      T("adr_pct", "ADR %", "pct", { dec: 2, color: false }),
+      T("target_low", "Sell part from", "num", { dec: 2, tone: "target" }), T("target_high", "Sell part to", "num", { dec: 2, tone: "target" }),
+      T("trail_with", "Trail with"), T("trail", "Trail line", "num", { dec: 2 }),
+      T("partial_hit", "Part target hit"), T("trail_signal", "Trail signal", "setup"),
+      T("breakout_date", "Breakout day"), T("strength", "Strength", "strengthbar"), T("freshness", "Data", "fresh")],
+    price: mariosLines,
+    priceSub: "Buy point, stop, sell-part zone, and trail line",
+    cards(all) {
+      return card("Broken out today", String(countWhere(all, (r) => r.status === "BROKEN OUT today"))) +
+        card("Ready", String(countWhere(all, (r) => r.status === "READY"))) +
+        card("Watching", String(countWhere(all, (r) => r.status === "WATCHING"))) +
+        card("In a trade", String(countWhere(all, (r) => r.status === "IN TRADE")),
+          String(countWhere(all, (r) => r.status === "IN TRADE" && r.trail_signal === "SELL")) + " under the trail (SELL)");
+    },
+    detail(row) {
+      return '<div class="panel pad"><div class="ptitle">Why this name</div>' + whyLines(row ? [row] : []) + "</div>";
+    },
+  });
+
   const leaders = patternPage({
     file: "scanner_leaders.csv",
     caption: "Leaders is the overlap of a ready or just-broken VCP and a strict CANSLIM qualify. A name on only one of those still appears.",
@@ -2608,12 +2667,12 @@
       '<div class="cards" id="cards"></div>' +
       '<div class="ctrls" id="ctrls"></div>' +
       '<div class="panel" id="tbl"></div>' +
-      '<p class="cap">A name is listed when at least one of VCP, Box, Flag, and CANSLIM is ready or broke out today, the close is above the 50-day and 200-day averages, and the risk from the entry to the stop is 8% or less. Chart setups only also keeps a BUY or a Not scored yet label, and tags the unscored rows Financials pending. A scored AVOID stays off. With the switch off, only BUY remains. The market check passes when the Nifty 50 or SENSEX is in an uptrend. When that check fails, Show anyway lists every name that passes the chart rules, greyed out, with its real verdict: BUY, HOLD, AVOID, or Not scored yet. Tap a row for the reason, the trade plan, and the daily price chart. Many breakouts fail, which is why the stop is always shown. Nothing here is an alert.</p>';
+      '<p class="cap">A name is listed when at least one of VCP, Box, Flag, Qullamaggie, Marios, and CANSLIM is ready or broke out today, the close is above the 50-day and 200-day averages, and the risk from the entry to the stop is 8% or less. Chart setups only also keeps a BUY or a Not scored yet label, and tags the unscored rows Financials pending. A scored AVOID stays off. With the switch off, only BUY remains. The market check passes when the Nifty 50 or SENSEX is in an uptrend. When that check fails, Show anyway lists every name that passes the chart rules, greyed out, with its real verdict: BUY, HOLD, AVOID, or Not scored yet. Tap a row for the reason, the trade plan, and the daily price chart. Many breakouts fail, which is why the stop is always shown. Nothing here is an alert.</p>';
     const box = document.getElementById("ctrls");
     box.innerHTML =
       D.multiHtml("index", "Index", D.indexTokens(named)) +
       D.multiHtml("sector", "Sector", D.uniq(named, "sector")) +
-      D.multiHtml("source", "Setup", ["VCP", "Box", "Flag", "CANSLIM"]) +
+      D.multiHtml("source", "Setup", ["VCP", "Box", "Flag", "Qullamaggie", "Marios", "CANSLIM"]) +
       D.multiHtml("status", "Status", D.uniq(named, "status")) +
       D.searchHtml("ticker", "Ticker", "tick-list-buy", D.uniq(named, "ticker")) +
       '<div class="rrgtabs" id="chartsw"><span class="lab">Chart setups only</span><button type="button" id="chartonly">' + (chartOnly ? "On" : "Off") + "</button></div>";
@@ -3045,6 +3104,18 @@
       "A sharp rise of at least 15% in 3 to 12 days (the pole), then a short 3 to 15 day pause that gives back less than half of the rise (the flag).",
       "A breakout is a close above the flag high on volume above 1.5 times the 50-day average.",
     ] },
+    qullamaggie: { title: SCAN, note: LIQUID_LINE, lines: [
+      "First a big run: a rise of at least 30% from a low to a high in the 1 to 6 months before the base.",
+      "Then a quiet base of 10 to 40 days, no more than 25% from high to low, that gets tighter in its second half. Closes stay above the rising 10-day and 20-day averages most of the time, and both are above the 50-day.",
+      "READY means the close is within 3% under the base high. BROKEN OUT today means today's close went above the base high on volume at least 1.5 times the 50-day average. WATCHING means the base is there but price is lower or volume was light.",
+      "Stop is the low of the breakout day. Before a breakout it is today's low. Risk % is the drop from the entry to the stop.",
+    ] },
+    marios: { title: SCAN, note: LIQUID_LINE, lines: [
+      "Same entry as the Qullamaggie scan, plus Marios Stamatoudis's way to sell.",
+      "ADR % is how much the stock moves in a normal day, the 20-day average of high divided by low. Sell part of the position between 2.5 and 3 ADRs above the entry. Both prices are shown.",
+      "Trail the rest with the 10-day average if ADR % is 5 or more (a fast mover), or the 20-day average if not.",
+      "IN TRADE means it broke out in the last 20 sessions. It shows if the sell-part zone was reached, and SELL when the close is under the trail line.",
+    ] },
     canslim: { title: SCAN, note: LIQUID_LINE, lines: [
       "William O'Neil's method. It checks earnings growth versus a year ago, how close price is to its 52-week high, and trading volume.",
       "It also checks strength versus the Nifty 50 (SENSEX for BSE-only stocks), shareholding changes, and whether the market is in an uptrend.",
@@ -3054,7 +3125,7 @@
       "The best names are on both. Use the On VCP and On CANSLIM filters to see only the stocks on both lists.",
     ] },
     buysetups: { title: SCAN, note: LIQUID_LINE, lines: [
-      "The main shortlist. A stock is listed when VCP, Box, Flag or CANSLIM is ready or broke out today, price is above the 50-day and 200-day averages, and the stop is 8% or less away.",
+      "The main shortlist. A stock is listed when VCP, Box, Flag, Qullamaggie, Marios or CANSLIM is ready or broke out today, price is above the 50-day and 200-day averages, and the stop is 8% or less away.",
       "It is also checked against the company score and the market trend. Show anyway lists the greyed-out ones.",
     ] },
     week52: { title: SCAN, note: LIQUID_LINE, lines: [
@@ -3231,6 +3302,8 @@
     canslim: canslim,
     box: box,
     flag: flag,
+    qullamaggie: qullamaggie,
+    marios: marios,
     leaders: leaders,
     calendar: { files: ["earnings_calendar.csv"], render: renderCalendar },
     heatmap: { files: ["earnings_heatmap.csv"], render: renderHeat },

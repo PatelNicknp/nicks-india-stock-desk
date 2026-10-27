@@ -18,6 +18,8 @@ PAGES = [
     ("canslim.html", "canslim", "CANSLIM"),
     ("box.html", "box", "Box breakout"),
     ("flag.html", "flag", "Flag breakout"),
+    ("qullamaggie.html", "qullamaggie", "Qullamaggie breakout"),
+    ("marios.html", "marios", "Marios breakout"),
     ("leaders.html", "leaders", "Leaders"),
     ("52-week.html", "week52", "52-week"),
     ("high-volume.html", "highvol", "High volume"),

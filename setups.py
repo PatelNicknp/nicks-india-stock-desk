@@ -65,7 +65,7 @@ BUY_STOP_PCT = PINE["stop_pct"]
 BUY_PART_PCT = PINE["part_pct"]
 BUY_MAX_RISK_PCT = 8.0
 BUY_TARGET2_R = 3.0
-BUY_SETUP_ORDER = ("VCP", "Box", "Flag", "CANSLIM")
+BUY_SETUP_ORDER = ("VCP", "Box", "Flag", "Qullamaggie", "Marios", "CANSLIM")
 BUY_LIVE_STATUS = ("READY", "BROKEN OUT today")
 
 VCP_NOTE = (
@@ -1335,6 +1335,420 @@ def scan_flag(close, high, low, vol, universe):
     return out.sort_values(["_k", "strength"], ascending=[True, False]).drop(columns="_k")
 
 
+# ---------------------------------------------------------------- Qullamaggie and Marios breakouts
+# Desk rules modeled on Kristjan Kullamagi's (Qullamaggie) breakout and Marios Stamatoudis's
+# exits. Cached daily bars only. Every number can be changed in config.json.
+QM_DEFAULTS = {
+    "run_min_pct": 30.0,          # prior run, low to high
+    "run_lookback_min": 21,       # the run sits in the 1 to 6 months before the base
+    "run_lookback_max": 126,
+    "base_min_days": 10,          # consolidation, 2 weeks to 2 months
+    "base_max_days": 40,
+    "base_max_range_pct": 25.0,   # whole base, high to low, versus the high
+    "base_top_near_run_high_pct": 10.0,
+    "above_ma_share": 0.6,        # share of base closes above the 10-day and the 20-day
+    "near_pivot_pct": 3.0,        # READY band under the pivot
+    "vol_mult": 1.5,
+    "vol_len": 50,
+}
+MARIOS_DEFAULTS = {
+    "adr_days": 20,
+    "fast_adr_pct": 5.0,          # ADR% at or above this trails with the 10-day
+    "target_low_adr": 2.5,
+    "target_high_adr": 3.0,
+    "in_trade_days": 20,
+}
+QM_NOTE = (
+    "Desk rule modeled on Qullamaggie: a run of at least 30% in the 1 to 6 months before a 10 to 40 day base "
+    "that tightens and holds the rising 10-day and 20-day averages, both above the 50-day. "
+    "A breakout is a close through the base high on volume at least 1.5 times the 50-day average."
+)
+MARIOS_NOTE = (
+    "Same entry as the Qullamaggie scan. ADR% is the 20-day average of high divided by low, minus 1. "
+    "Sell part between 2.5 and 3 ADRs above the entry. Trail the rest with the 10-day average when ADR% is 5 or more, "
+    "otherwise the 20-day."
+)
+
+
+def _qm_cfg(cfg):
+    out = dict(QM_DEFAULTS)
+    out.update({k: v for k, v in ((cfg or {}).get("qullamaggie") or {}).items() if not str(k).startswith("_")})
+    return out
+
+
+def _marios_cfg(cfg):
+    out = dict(MARIOS_DEFAULTS)
+    out.update({k: v for k, v in ((cfg or {}).get("marios") or {}).items() if not str(k).startswith("_")})
+    return out
+
+
+def _qm_arrays(frame, p):
+    h = frame["high"].to_numpy(dtype=float)
+    l = frame["low"].to_numpy(dtype=float)
+    c = frame["close"].to_numpy(dtype=float)
+    v = frame["volume"].to_numpy(dtype=float)
+    vol_len = int(p["vol_len"])
+    va = pd.Series(v).rolling(vol_len, min_periods=vol_len).mean().to_numpy()
+    with np.errstate(divide="ignore", invalid="ignore"):
+        ratio = np.where(np.isfinite(va) & (va > 0), v / va, np.nan)
+    return {
+        "h": h, "l": l, "c": c, "v": v, "ratio": ratio,
+        "s10": _sma(c, 10), "s20": _sma(c, 20), "s50": _sma(c, 50),
+    }
+
+
+def _qm_base(a, t, length, p):
+    """Base of `length` bars that ends the bar before t. None when a rule fails."""
+    h, l, c = a["h"], a["l"], a["c"]
+    s = t - length
+    if s - int(p["run_lookback_min"]) < 0:
+        return None
+    bh, bl, bc = h[s:t], l[s:t], c[s:t]
+    if not (np.isfinite(bh).all() and np.isfinite(bl).all() and np.isfinite(bc).all()):
+        return None
+    pivot = float(bh.max())
+    low = float(bl.min())
+    if pivot <= 0:
+        return None
+    width = (pivot - low) / pivot
+    if width > float(p["base_max_range_pct"]) / 100.0:
+        return None
+    half = length // 2
+    first = float(bh[:half].max() - bl[:half].min())
+    second = float(bh[half:].max() - bl[half:].min())
+    if not second < first:
+        return None
+    # Prior run: lowest low in the 1 to 6 months before the base, up to the highest high since.
+    r0 = max(0, s - int(p["run_lookback_max"]))
+    seg = l[r0:s]
+    if len(seg) < int(p["run_lookback_min"]) or not np.isfinite(seg).all():
+        return None
+    lo_i = r0 + int(np.argmin(seg))
+    run_low = float(l[lo_i])
+    run_high = float(np.nanmax(h[lo_i:s + 1]))
+    if run_low <= 0:
+        return None
+    run = run_high / run_low - 1.0
+    if run < float(p["run_min_pct"]) / 100.0:
+        return None
+    if pivot < run_high * (1.0 - float(p["base_top_near_run_high_pct"]) / 100.0):
+        return None
+    s10, s20, s50 = a["s10"], a["s20"], a["s50"]
+    e = t - 1
+    vals = [s10[s], s20[s], s10[e], s20[e], s50[e]]
+    if not all(np.isfinite(x) for x in vals):
+        return None
+    if not (s10[e] > s10[s] and s20[e] > s20[s]):
+        return None
+    if not (s10[e] > s50[e] and s20[e] > s50[e]):
+        return None
+    share10 = float(np.mean(bc > s10[s:t]))
+    share20 = float(np.mean(bc > s20[s:t]))
+    need = float(p["above_ma_share"])
+    if share10 < need or share20 < need:
+        return None
+    return {
+        "pivot": pivot, "low": low, "width": width, "length": length, "start": s,
+        "tighten": second / first if first > 0 else 1.0, "run": run,
+        "run_low": run_low, "run_high": run_high, "run_bars": s - lo_i,
+        "share10": share10, "share20": share20,
+    }
+
+
+def _qm_best_base(a, t, p):
+    """Longest valid base that ends the bar before t."""
+    lo, hi = int(p["base_min_days"]), int(p["base_max_days"])
+    for length in range(min(hi, t), lo - 1, -1):
+        got = _qm_base(a, t, length, p)
+        if got is not None:
+            return got
+    return None
+
+
+def _qm_breakout_at(a, t, p):
+    """Base when bar t is a breakout: close through the pivot, prior close at or under it, big volume."""
+    c, h, ratio = a["c"], a["h"], a["ratio"]
+    lo = int(p["base_min_days"])
+    if t < lo + 1 or not np.isfinite(c[t]) or not np.isfinite(c[t - 1]):
+        return None
+    if not (np.isfinite(ratio[t]) and ratio[t] >= float(p["vol_mult"])):
+        return None
+    if not c[t] > np.nanmax(h[t - lo:t]):
+        return None
+    base = _qm_best_base(a, t, p)
+    if base is None:
+        return None
+    if c[t] > base["pivot"] and c[t - 1] <= base["pivot"]:
+        return base
+    return None
+
+
+def _qm_state(a, p):
+    """Today's Qullamaggie status, pivot, stop, and the words for the reason."""
+    c, l = a["c"], a["l"]
+    n = len(c)
+    t = n - 1
+    base = _qm_best_base(a, t, p)
+    if base is None:
+        return None
+    last = float(c[t])
+    prev = float(c[t - 1])
+    pivot = base["pivot"]
+    if last < base["low"]:
+        return None
+    ratio = a["ratio"][t]
+    ratio = float(ratio) if np.isfinite(ratio) else None
+    big = ratio is not None and ratio >= float(p["vol_mult"])
+    near = float(p["near_pivot_pct"]) / 100.0
+    if last > pivot and prev <= pivot and big:
+        status = "BROKEN OUT today"
+    elif last <= pivot and last >= pivot * (1.0 - near):
+        status = "READY"
+    else:
+        status = "WATCHING"
+    today_low = float(l[t])
+    recent = float(np.nanmin(l[max(base["start"], t - 5):t]))
+    if status == "BROKEN OUT today":
+        entry = last
+        stop = today_low
+        stop_basis = "breakout-day low"
+    else:
+        entry = pivot
+        if np.isfinite(today_low) and today_low < pivot:
+            stop = today_low
+            stop_basis = "today's low"
+        else:
+            stop = recent
+            stop_basis = "recent base low"
+    risk_pct = (entry - stop) / entry * 100.0 if entry and stop is not None and stop < entry else None
+    return {
+        "base": base, "status": status, "last": last, "prev": prev, "pivot": pivot,
+        "ratio": ratio, "big": big, "entry": entry, "stop": stop, "stop_basis": stop_basis,
+        "risk_pct": risk_pct,
+    }
+
+
+def _qm_strength(base, big, p):
+    run = min(max(base["run"] - float(p["run_min_pct"]) / 100.0, 0.0) / 0.7, 1.0)
+    tight = max(0.0, 1.0 - base["width"] / (float(p["base_max_range_pct"]) / 100.0))
+    squeeze = max(0.0, 1.0 - base["tighten"])
+    return round(min(100.0, 100.0 * (0.35 * run + 0.35 * tight + 0.15 * squeeze + (0.15 if big else 0.0))), 1)
+
+
+def _qm_lead(st, p):
+    base = st["base"]
+    mult = float(p["vol_mult"])
+    near = float(p["near_pivot_pct"])
+    if st["status"] == "BROKEN OUT today":
+        return "Closed above the %d-day base high on volume %.1f times the 50-day average." % (base["length"], st["ratio"] or 0)
+    if st["last"] > st["pivot"] and not st["big"]:
+        return "Closed above the base high, but volume was not %s times the 50-day average, so it is not marked broken out." % _fmt_mult(mult)
+    if st["status"] == "READY":
+        return "Tight %d-day base and the close is within %s%% under the base high." % (base["length"], _fmt_mult(near))
+    return "Tight %d-day base. Price is still more than %s%% under the base high." % (base["length"], _fmt_mult(near))
+
+
+def _basis_words(basis):
+    return basis if str(basis).startswith("today") else "the " + str(basis)
+
+
+def _fmt_mult(x):
+    x = float(x)
+    return ("%d" % x) if x == int(x) else ("%s" % round(x, 2))
+
+
+def _qm_rows(close, high, low, vol, universe, cfg, marios=False):
+    p = _qm_cfg(cfg)
+    m = _marios_cfg(cfg)
+    rows = []
+    panel = _panel_date(close)
+    names = list(universe["ticker"]) if universe is not None and len(universe) else []
+    need = int(p["run_lookback_max"]) + int(p["base_max_days"]) + 1
+    for ticker in names:
+        got = _bars(close, high, low, vol, ticker, None)
+        if got is None:
+            continue
+        frame, _ = got
+        n = len(frame)
+        if n < int(p["base_min_days"]) + int(p["run_lookback_min"]) + 2 or n < 52:
+            continue
+        a = _qm_arrays(frame, p)
+        st = _qm_state(a, p)
+        trade = None
+        if marios and (st is None or st["status"] != "BROKEN OUT today"):
+            trade = _marios_trade(a, p, m)
+        if st is None and trade is None:
+            continue
+        meta = _meta_row(universe, ticker)
+        base_row = {
+            "ticker": ticker,
+            "company": meta["company"],
+            "sector": meta["sector"],
+            "index_membership": meta["index_membership"],
+            "freshness": _freshness(frame.index[-1], panel, n, need),
+            "price": _round(a["c"][-1]),
+            "price_as_of": str(pd.Timestamp(frame.index[-1]).date()),
+            "data_status": "OK",
+        }
+        if trade is not None:
+            k = trade.pop("_k_bar")
+            trade["breakout_date"] = str(pd.Timestamp(frame.index[k]).date())
+            rows.append(dict(base_row, **trade))
+            continue
+        base = st["base"]
+        strength = _qm_strength(base, st["big"], p)
+        lead = _qm_lead(st, p)
+        detail = (
+            " The run before the base rose %.0f%% in %d sessions. The base is %.1f%% from high to low, and its second half is tighter than its first."
+            " Closes held above the 10-day %.0f%% of the time and above the 20-day %.0f%% of the time."
+        ) % (base["run"] * 100.0, base["run_bars"], base["width"] * 100.0, base["share10"] * 100.0, base["share20"] * 100.0)
+        risk_txt = "" if st["risk_pct"] is None else " Risk from the entry to the stop is %.1f%%." % st["risk_pct"]
+        row = dict(base_row, **{
+            "status": st["status"],
+            "pivot": _round(st["pivot"]),
+            "stop": _round(st["stop"]),
+            "target": "",
+            "strength": strength,
+            "entry": _round(st["entry"]),
+            "risk_pct": _round(st["risk_pct"], 1),
+            "stop_basis": st["stop_basis"],
+            "run_pct": round(base["run"] * 100.0, 1),
+            "base_days": base["length"],
+            "base_range_pct": round(base["width"] * 100.0, 1),
+            "volume_ratio": "" if st["ratio"] is None else round(st["ratio"], 2),
+        })
+        if marios:
+            row.update(_marios_levels(a, len(a["c"]) - 1, st["entry"], m))
+            row["partial_hit"] = ""
+            row["trail_signal"] = ""
+            row["breakout_date"] = ""
+            row["stop_hit"] = ""
+            row["reason"] = "%s%s Stop is %s.%s Sell part between %s and %s. Trail with the %s average." % (
+                lead, detail, _basis_words(st["stop_basis"]), risk_txt, row["target_low"], row["target_high"], row["trail_with"])
+            row["target"] = row["target_low"]
+            row["note"] = MARIOS_NOTE
+        else:
+            row["reason"] = "%s%s Stop is %s.%s No fixed target." % (lead, detail, _basis_words(st["stop_basis"]), risk_txt)
+            row["note"] = QM_NOTE
+        rows.append(row)
+    out = pd.DataFrame(rows)
+    if len(out) == 0:
+        return out
+    rank = {"BROKEN OUT today": 0, "IN TRADE": 1, "READY": 2, "WATCHING": 3}
+    out["_k"] = out["status"].map(rank)
+    return out.sort_values(["_k", "strength"], ascending=[True, False]).drop(columns="_k").reset_index(drop=True)
+
+
+def marios_adr_pct(high, low, days=20):
+    """20-day average of high divided by low, minus 1, in percent. None when short."""
+    h = np.asarray(high, dtype=float)
+    l = np.asarray(low, dtype=float)
+    if len(h) < days:
+        return None
+    hh, ll = h[-days:], l[-days:]
+    if not (np.isfinite(hh).all() and np.isfinite(ll).all()) or (ll <= 0).any():
+        return None
+    return float(np.mean(hh / ll - 1.0) * 100.0)
+
+
+def marios_targets(entry, adr_pct, low_mult=2.5, high_mult=3.0):
+    """Partial profit zone in price: entry plus 2.5 and 3 ADRs, where one ADR is ADR% of the entry."""
+    entry = _num(entry)
+    adr_pct = _num(adr_pct)
+    if entry is None or adr_pct is None:
+        return None, None
+    one = entry * adr_pct / 100.0
+    return entry + low_mult * one, entry + high_mult * one
+
+
+def marios_trail_len(adr_pct, fast_at=5.0):
+    """10-day average for fast movers (ADR% at or above fast_at), otherwise the 20-day."""
+    adr_pct = _num(adr_pct)
+    return 10 if adr_pct is not None and adr_pct >= float(fast_at) else 20
+
+
+def _marios_levels(a, t, entry, m, adr_at=None):
+    days = int(m["adr_days"])
+    k = t if adr_at is None else adr_at
+    adr = marios_adr_pct(a["h"][:k + 1], a["l"][:k + 1], days)
+    lo_t, hi_t = marios_targets(entry, adr, float(m["target_low_adr"]), float(m["target_high_adr"]))
+    trail_n = marios_trail_len(adr, float(m["fast_adr_pct"]))
+    trail_arr = a["s10"] if trail_n == 10 else a["s20"]
+    trail = trail_arr[t] if np.isfinite(trail_arr[t]) else None
+    return {
+        "adr_pct": _round(adr, 2),
+        "target_low": _round(lo_t),
+        "target_high": _round(hi_t),
+        "trail_with": "%d-day" % trail_n,
+        "trail": _round(trail),
+    }
+
+
+def _marios_trade(a, p, m):
+    """Most recent breakout in the last in_trade_days sessions, not counting today, and how it went."""
+    c, h, l = a["c"], a["h"], a["l"]
+    n = len(c)
+    t = n - 1
+    span = int(m["in_trade_days"])
+    for k in range(t - 1, max(t - span, 0) - 1, -1):
+        base = _qm_breakout_at(a, k, p)
+        if base is None:
+            continue
+        entry = float(c[k])
+        stop = float(l[k])
+        lv = _marios_levels(a, t, entry, m, adr_at=k)
+        after_h = h[k + 1:t + 1]
+        after_l = l[k + 1:t + 1]
+        partial = lv["target_low"] != "" and len(after_h) and float(np.nanmax(after_h)) >= float(lv["target_low"])
+        stop_hit = len(after_l) and float(np.nanmin(after_l)) <= stop
+        trail = _num(lv["trail"])
+        sell = trail is not None and float(c[t]) < trail
+        risk = (entry - stop) / entry * 100.0 if entry > stop else None
+        days = t - k
+        bits = ["Broke out %d session%s ago at %s on volume %.1f times the 50-day average." % (
+            days, "" if days == 1 else "s", _round(entry), float(a["ratio"][k]))]
+        bits.append("Stop is the breakout-day low at %s." % _round(stop))
+        if risk is not None:
+            bits.append("Risk from the entry to the stop was %.1f%%." % risk)
+        bits.append("Partial target zone %s to %s: %s." % (
+            lv["target_low"], lv["target_high"], "reached" if partial else "not reached yet"))
+        if stop_hit:
+            bits.append("Price has traded at or under the stop since the breakout.")
+        bits.append("Trail with the %s average at %s. %s" % (
+            lv["trail_with"], lv["trail"],
+            "Today's close is under it, so the rule says SELL." if sell else "Today's close is above it, so the rule says hold."))
+        return dict(lv, **{
+            "status": "IN TRADE",
+            "pivot": _round(base["pivot"]),
+            "stop": _round(stop),
+            "target": lv["target_low"],
+            "strength": _qm_strength(base, True, p),
+            "entry": _round(entry),
+            "risk_pct": _round(risk, 1),
+            "stop_basis": "breakout-day low",
+            "run_pct": round(base["run"] * 100.0, 1),
+            "base_days": base["length"],
+            "base_range_pct": round(base["width"] * 100.0, 1),
+            "volume_ratio": round(float(a["ratio"][k]), 2),
+            "partial_hit": "yes" if partial else "no",
+            "trail_signal": "SELL" if sell else "HOLD",
+            "stop_hit": "yes" if stop_hit else "no",
+            "breakout_date": "",
+            "reason": " ".join(bits),
+            "note": MARIOS_NOTE,
+            "_k_bar": k,
+        })
+    return None
+
+
+def scan_qullamaggie(close, high, low, vol, universe, cfg=None):
+    return _qm_rows(close, high, low, vol, universe, cfg, marios=False)
+
+
+def scan_marios(close, high, low, vol, universe, cfg=None):
+    return _qm_rows(close, high, low, vol, universe, cfg, marios=True)
+
+
 def combine_leaders(vcp, canslim):
     """One row per ticker that is a VCP ready/breakout or a strict CANSLIM qualify."""
     v = vcp.copy() if vcp is not None and len(vcp) else pd.DataFrame()
@@ -1803,7 +2217,8 @@ def buy_rows_listed(df):
     return rows[rows["verdict"].map(_buy_allowed)]
 
 
-def build_buy_setups(vcp, box, flag, canslim, scores, close=None, week=None, sma_ok=None, market=None, cfg=None):
+def build_buy_setups(vcp, box, flag, canslim, scores, close=None, week=None, sma_ok=None, market=None, cfg=None,
+                     qullamaggie=None, marios=None):
     """Names that pass the chart rules, with their real verdict.
 
     No network. Scanners, scores, the 52-week file, and the cached closes are the inputs.
@@ -1812,7 +2227,8 @@ def build_buy_setups(vcp, box, flag, canslim, scores, close=None, week=None, sma
     switch does not delete rows either, so the page can show them greyed.
     """
     grouped = {}
-    for source, frame in (("VCP", vcp), ("Box", box), ("Flag", flag), ("CANSLIM", canslim)):
+    for source, frame in (("VCP", vcp), ("Box", box), ("Flag", flag), ("Qullamaggie", qullamaggie),
+                          ("Marios", marios), ("CANSLIM", canslim)):
         for rec in _setup_records(frame, source):
             grouped.setdefault(rec["ticker"], []).append(rec)
     score_idx = None
@@ -1985,10 +2401,14 @@ def build_setups(close, high, low, vol, universe, quarters, annual, holders, fea
     want_f = features.get("scanner_flag", True)
     want_l = features.get("scanner_leaders", True)
     want_w = features.get("scanner_52w", True)
+    want_q = features.get("scanner_qullamaggie", True)
+    want_m = features.get("scanner_marios", True)
     vcp = scan_vcp(close, high, low, vol, universe, cfg) if (want_v or want_l) else pd.DataFrame()
     canslim, _market = scan_canslim(close, high, low, vol, universe, quarters, annual, holders, cfg) if (want_c or want_l) else (pd.DataFrame(), {})
     box = scan_box(close, high, low, vol, universe) if want_b else pd.DataFrame()
     flag = scan_flag(close, high, low, vol, universe) if want_f else pd.DataFrame()
+    qull = scan_qullamaggie(close, high, low, vol, universe, cfg) if want_q else pd.DataFrame()
+    mar = scan_marios(close, high, low, vol, universe, cfg) if want_m else pd.DataFrame()
     leaders = combine_leaders(vcp, canslim) if want_l else pd.DataFrame()
     if want_w:
         week, hist = scan_52w(close, high, low, vol, universe, scores)
@@ -2003,6 +2423,8 @@ def build_setups(close, high, low, vol, universe, quarters, annual, holders, fea
         "scanner_canslim": canslim,
         "scanner_box": box,
         "scanner_flag": flag,
+        "scanner_qullamaggie": qull,
+        "scanner_marios": mar,
         "scanner_leaders": leaders,
         "scanner_52w": week,
         "highs_lows_history": hist,
