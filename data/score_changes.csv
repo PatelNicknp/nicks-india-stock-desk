@@ -1,2 +1,8 @@
 ticker,company,price,day_pct,score,score_prev,score_change,verdict,data_status,note,disclaimer
-,,,,,,,,MISSING,No score changes versus the last run.,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+BSOFT,Birlasoft Ltd.,306.1,-1.8,6.0,4.0,2.0,HOLD,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+CAMS,Computer Age Management Services Ltd.,677.4,0.0,2.0,4.0,-2.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+BAJAJELEC,Bajaj Electricals Limited,292.65,3.85,3.0,5.0,-2.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+BANDHANBNK,Bandhan Bank Ltd.,155.36,2.27,-2.0,-4.0,2.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+PATANJALI,Patanjali Foods Ltd.,369.6,6.22,9.0,8.0,1.0,BUY,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+ASIANPAINT,Asian Paints Ltd.,2284.6,0.33,4.0,3.0,1.0,HOLD,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+MANKIND,Mankind Pharma Ltd.,2490.0,-0.5,4.0,5.0,-1.0,HOLD,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."

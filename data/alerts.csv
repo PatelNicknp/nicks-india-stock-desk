@@ -1,2 +1,11 @@
 ticker,kind,text,score,score_prev,verdict,verdict_prev,price,data_status,note,disclaimer
-,info,No verdict changes or score crossings this run.,,,,,,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+BSOFT,score_jump,BSOFT score moved from 4 to 6.,6,4,HOLD,HOLD,306.1,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+ASIANPAINT,verdict_change,ASIANPAINT changed from AVOID to HOLD.,4,3,HOLD,AVOID,2284.6,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+ASIANPAINT,score_cross,ASIANPAINT crossed the hold line (4).,4,3,HOLD,AVOID,2284.6,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+BAJAJELEC,verdict_change,BAJAJELEC changed from HOLD to AVOID.,3,5,AVOID,HOLD,292.65,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+BAJAJELEC,score_jump,BAJAJELEC score moved from 5 to 3.,3,5,AVOID,HOLD,292.65,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+BAJAJELEC,score_cross,BAJAJELEC crossed the hold line (4).,3,5,AVOID,HOLD,292.65,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+CAMS,verdict_change,CAMS changed from HOLD to AVOID.,2,4,AVOID,HOLD,677.4,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+CAMS,score_jump,CAMS score moved from 4 to 2.,2,4,AVOID,HOLD,677.4,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+CAMS,score_cross,CAMS crossed the hold line (4).,2,4,AVOID,HOLD,677.4,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+BANDHANBNK,score_jump,BANDHANBNK score moved from -4 to -2.,-2,-4,AVOID,AVOID,155.36,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
