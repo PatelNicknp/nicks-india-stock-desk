@@ -14,7 +14,9 @@
   "TAG": "2026-10-29",
   "BAJAJELEC": "2026-10-29",
   "BANDHANBNK": "2026-10-29",
-  "BSOFT": "2026-10-29"
+  "BSOFT": "2026-10-29",
+  "BONDADA": "2026-10-29",
+  "PHARMAIETF": "2026-10-29"
  },
  "shareholding_retry_after": {
   "08AGG": "2026-10-27",
@@ -33,10 +35,10 @@
   "ABSLBANETF": "2026-10-27",
   "ABSLNN50ET": "2026-10-27"
  },
- "last_batch_at": "2026-10-28T15:26Z",
- "last_statements_ok": 0,
- "last_statements_fail": 0,
- "last_shareholding_ok": 70,
+ "last_batch_at": "2026-10-28T16:15Z",
+ "last_statements_ok": 25,
+ "last_statements_fail": 2,
+ "last_shareholding_ok": 91,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
   "BIRET": "2026-10-28",
@@ -57,8 +59,10 @@
   "ICICIPRULI": "2026-10-27",
   "ACESEPP": "2026-10-28",
   "SHIVAM-RE1": "2026-10-28",
-  "ANIRITPP": "2026-10-28"
+  "ANIRITPP": "2026-10-28",
+  "BONDADA": "2026-10-28",
+  "PARASHLTH": "2026-10-28"
  },
- "last_shareholding_empty": 17,
+ "last_shareholding_empty": 18,
  "last_shareholding_skipped": 0
 }
