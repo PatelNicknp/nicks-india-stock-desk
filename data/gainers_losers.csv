@@ -1,7 +1,7 @@
 side,ticker,company,sector,price,day_pct,score,verdict,data_status,note,disclaimer
 gainer,HUHTAMAKI,Huhtamaki India Limited,Consumer Discretionary,229.57,20.0,3,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-gainer,INDOUS,Indo Us Biotech Limited,Materials,86.84,19.99,-1,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 gainer,ALFATRAN,ALFA TRANSFORMERS LTD.,Industrials,39.61,19.99,0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+gainer,INDOUS,Indo Us Biotech Limited,Materials,86.84,19.99,-1,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 gainer,ZENITHHE,ZENITH HEALTH CARE LTD.,Health Care,3.61,19.93,5,HOLD,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 gainer,SUDARCOLOR,Sudarshan Colorants India Limited,Materials,427.9,18.17,-2,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 gainer,RAMKY,Ramky Infrastructure Limited,Industrials,300.2,17.38,1,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
