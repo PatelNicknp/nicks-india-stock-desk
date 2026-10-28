@@ -1,4 +1,2 @@
 ticker,kind,text,score,score_prev,verdict,verdict_prev,price,data_status,note,disclaimer
-UNITDSPR,verdict_change,UNITDSPR changed from AVOID to HOLD.,5,3,HOLD,AVOID,1270.0,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-UNITDSPR,score_jump,UNITDSPR score moved from 3 to 5.,5,3,HOLD,AVOID,1270.0,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-UNITDSPR,score_cross,UNITDSPR crossed the hold line (4).,5,3,HOLD,AVOID,1270.0,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+,info,No verdict changes or score crossings this run.,,,,,,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
