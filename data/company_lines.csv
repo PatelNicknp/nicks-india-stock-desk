@@ -1,17 +1,17 @@
 ticker,line,source,as_of
-08DPD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-08GPG,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-08MPD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-11AGG,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-11AMD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-11AQD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-11DPD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-11DPR,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-11GPG,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-11MPD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-11MPR,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-11QPD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-11QPR,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+08DPD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+08GPG,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+08MPD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+11AGG,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+11AMD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+11AQD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+11DPD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+11DPR,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+11GPG,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+11MPD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+11MPR,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+11QPD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+11QPR,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 20MICRONS,Makes and sells micronized industrial minerals and specialty chemicals in India and abroad.,Yahoo,2026-10-26
 21STCENMGM,Works in the investment business in India.,Yahoo,2026-10-26
 360ONE,Provides wealth and asset management services in India.,Yahoo,2026-10-26
@@ -64,9 +64,9 @@ ABMINTLLTD,Works in the importing and trading of plastic raw materials in India.
 ABMKNO,"Provides e-governance information security, technology-enabled applications through cloud services, and other software services in India.",Yahoo,2026-10-26
 ABREL,"Develops, leases, and invests in real estate properties and in India.",Yahoo,2026-10-26
 ABSLAMC,Aditya Birla Sun Life AMC Limited is privately owned investment manager.,Yahoo,2026-10-26
-ABSLBANETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-ABSLNN50ET,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-ABSLPSE,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+ABSLBANETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+ABSLNN50ET,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+ABSLPSE,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 ACC,Makes and sells cement and ready-mix concrete in India.,Yahoo,2026-10-27
 ACCEDERE,"Provides compliance audits, technical risk assessments, and cybersecurity consulting services in India.",Yahoo,2026-10-26
 ACCEL,"Works in the information technology service, animation, engineering, real estate, and academic businesses in India and abroad.",Yahoo,2026-10-26
@@ -204,13 +204,13 @@ ALLTIME,Makes and sells plastic molded articles under the alltime brand name in 
 ALMONDZ,Provides professional advisory and consultancy services in India.,Yahoo,2026-10-26
 ALOKINDS,Makes and sells textile products in India and abroad.,Yahoo,2026-10-26
 ALPA,Makes and sells drugs and chemicals in India.,Yahoo,2026-10-26
-ALPHA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-ALPHAETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+ALPHA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+ALPHAETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 ALPHAGEO,"Provides geophysical seismic data acquisition, processing, and interpretation services for exploration of hydrocarbons and minerals in India.",Yahoo,2026-10-26
 ALPHALOGIC,Provides information technology consulting solutions and support services in India.,Yahoo,2026-10-26
 ALPINEHOU,"Works in the property development, development and construction of commercial and residential projects in India.",Yahoo,2026-10-26
 ALPINETEX,Makes and sells textiles in India.,Yahoo,2026-10-26
-ALPL30IETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+ALPL30IETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 ALSL,Offers stock broking and financial services in India.,Yahoo,2026-10-26
 ALUFLUOR,Makes and sells aluminum fluoride and related products for aluminum smelters in India.,Yahoo,2026-10-26
 AMAGI,A software-as-a-service company that connects media companies to their audiences through cloud-native technology.,Yahoo,2026-10-26
@@ -412,7 +412,7 @@ AURUS,"Trades cut and polished diamonds, and diamond-studded jewellery in India 
 AUSOMENT,A trading company in India.,Yahoo,2026-10-26
 AUSTENG,Makes and sells bearings and its components in India and abroad.,Yahoo,2026-10-26
 AUTOAXLES,Makes and sells automotive components in India.,Yahoo,2026-10-26
-AUTOIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+AUTOIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 AUTOIND,"Makes and sells sheet metal stampings, welded assemblies, and molds for the automotive industries in India and abroad.",Yahoo,2026-10-26
 AUTOINT,Works in the car rental business in India.,Yahoo,2026-10-26
 AVADHSUGAR,Makes and sells sugar and its by-products in India.,Yahoo,2026-10-26
@@ -479,19 +479,19 @@ BANCOINDIA,Makes and sells heat exchangers/cooling systems in India and abroad.,
 BANDARAM,Works in the paper industry in India.,Yahoo,2026-10-26
 BANDHANBNK,Provides banking and financial services for personal and business customers in India.,Yahoo,2026-10-29
 BANG,Works in the manufacture and trade of textile and textile products in India and abroad.,Yahoo,2026-10-26
-BANK10ADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-BANK10BETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+BANK10ADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+BANK10BETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 BANKA,Works in the wastewater treatment business in India.,Yahoo,2026-10-26
-BANKADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+BANKADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 BANKBARODA,"Provides many banking products and services to individuals, government departments, and corporate customers in India and abroad.",Yahoo,2026-10-26
-BANKBEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-BANKBETA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-BANKBETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-BANKETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-BANKIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+BANKBEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+BANKBETA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+BANKBETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+BANKETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+BANKIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 BANKINDIA,Provides many banking products and services in India and abroad.,Yahoo,2026-10-26
-BANKNIFTY1,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-BANKPSU,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+BANKNIFTY1,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+BANKPSU,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 BANSALWIRE,Makes and sells steel wires worldwide.,Yahoo,2026-10-26
 BANSWRAS,Makes and sells textile products in India and abroad.,Yahoo,2026-10-26
 BAPACK,"Makes and sells paper sacks, flexi-packaging products and trading of packet tea in India.",Yahoo,2026-10-26
@@ -505,7 +505,7 @@ BATLIBOI,Makes and sells machine tools and textile engineering machines in India
 BAYERCROP,"Works in the agriculture business in India, Germany, Bangladesh, and abroad.",Yahoo,2026-10-26
 BAZELINTER,Provides financial services in India.,Yahoo,2026-10-26
 BBL,An electrical engineering company in India and abroad.,Yahoo,2026-10-26
-BBNPNBETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+BBNPNBETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 BBOX,"Provides information and communications technology solutions in India, the United States, and abroad.",Yahoo,2026-10-26
 BBTC,"Works in the tea and coffee plantations, auto electric components, healthcare, and real estate businesses in India and abroad.",Yahoo,2026-10-26
 BBTCL,"Makes and sells corrugated boards, boxes, and kraft papers in India.",Yahoo,2026-10-26
@@ -544,7 +544,7 @@ BETALA,A trading member and provides brokerage services.,Yahoo,2026-10-26
 BETXIND,Works in textile processing business in India.,Yahoo,2026-10-26
 BFINVEST,Works in investment and financing businesses in India.,Yahoo,2026-10-26
 BFLAFL,A non-banking financial company in India.,Yahoo,2026-10-26
-BFSI,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+BFSI,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 BFUTILITIE,Works in the infrastructure business in India.,Yahoo,2026-10-26
 BGDL,Works in wholesale and trading of gold.,Yahoo,2026-10-26
 BGIL,An infotainment company in India.,Yahoo,2026-10-26
@@ -589,7 +589,7 @@ BIRLACOT,"Makes and sells cotton ring spun yarn, open end yarn, and synthetic bl
 BIRLAMONEY,Provides financial services in India.,Yahoo,2026-10-26
 BIRLANU,"Makes and sells home and building products and services in India, Europe, and abroad.",Yahoo,2026-10-26
 BIRLAPREC,"Makes and sells machine tools and accessories, precision and automotive components, and castings.",Yahoo,2026-10-26
-BIRLATOTAL,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+BIRLATOTAL,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 BITS,Provides educational services in India and abroad.,Yahoo,2026-10-26
 BKV,Works in leasing farm business in India.,Yahoo,2026-10-26
 BLACKBUCK,"Provides payments, telematics, loads marketplace, and vehicle financing services in India.",Yahoo,2026-10-26
@@ -651,12 +651,12 @@ BRNL,"A Build Operate-Transfer company that owns, designs, develops, builds, ope
 BROOKS,A pharmaceutical manufacturer in India and abroad.,Yahoo,2026-10-26
 BRPL,"Works in the design, engineering, manufacturing, supply, and erection of pre-engineered steel buildings in India and abroad.",Yahoo,2026-10-26
 BSE,"Provides a platform for the listing and trading of equity, debt instruments, currencies, commodities, derivatives, mutual funds and more.",Yahoo,2026-10-26
-BSE500IETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+BSE500IETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 BSELALGO,Works in algorithmic and proprietary trading.,Yahoo,2026-10-26
 BSHSL,"Works in the research, production, processing, and marketing of hybrid and GM seeds in India.",Yahoo,2026-10-26
 BSL,Makes and sells many yarns and fabrics in India and abroad.,Yahoo,2026-10-26
-BSLNIFTY,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-BSLSENETFG,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+BSLNIFTY,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+BSLSENETFG,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 BSOFT,"Provides software development and global IT consulting services in India, the Americas, Europe, the United Kingdom, and abroad.",Yahoo,2026-10-29
 BTML,"Makes content for television, films, and digital platforms in India.",Yahoo,2026-10-26
 BTTL,"Trades yarns in India, Europe, Africa, Far East, and Southeast Asia.",Yahoo,2026-10-26
@@ -803,7 +803,7 @@ COLPAL,Makes and sells personal and oral care products in India.,Yahoo,2026-10-2
 COMCL,Works in the commodity broking business in India.,Yahoo,2026-10-26
 COMFINCAP,A non-banking finance company in India.,Yahoo,2026-10-26
 COMFINTE,"Works in the manufacturing, bottling, and distribution of Indian made foreign liquor, and trading of goods in India.",Yahoo,2026-10-26
-COMMOIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+COMMOIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 COMPEAU,Works in trading and servicing Maruti Suzuki vehicles in India.,Yahoo,2026-10-26
 COMPINFO,"Trades computer parts and peripherals, software, and telecom products in India and abroad.",Yahoo,2026-10-26
 COMPUPN,Provides software training services in India.,Yahoo,2026-10-26
@@ -816,9 +816,9 @@ CONCORDBIO,"Works in the research and development, manufacture, and sale of phar
 CONFIPET,Makes and sells LPG cylinders in India and abroad.,Yahoo,2026-10-26
 CONSOFINVT,Works in the lending and investment business in India.,Yahoo,2026-10-26
 CONSTRONIC,"Trades construction and building materials, blue metals, m-sand, crushed stone and other allied products in India.",Yahoo,2026-10-26
-CONSUMAXIS,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-CONSUMER,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-CONSUMIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+CONSUMAXIS,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+CONSUMER,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+CONSUMIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 CONTAINER,Trades aluminum products in India.,Yahoo,2026-10-26
 CONTICON,Provides advisory services on real estate and technology-driven activities in India.,Yahoo,2026-10-26
 CONTILI,"Works in the sourcing, processing, packaging, and export/trading of food and grocery products in India.",Yahoo,2026-10-26
@@ -842,7 +842,7 @@ CPCAP,Provides financing support to educational institutions for developing infr
 CPEDU,Provides assessment and online testing services.,Yahoo,2026-10-26
 CPL,Makes and sells micro irrigation systems and allied products in India.,Yahoo,2026-10-26
 CPPLUS,"Makes, assembles and trades security and surveillance equipment in India and abroad.",Yahoo,2026-10-26
-CPSEETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+CPSEETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 CRAFTSMAN,An engineering company in India.,Yahoo,2026-10-26
 CRAMC,A subsidiary of Canara Bank.,Yahoo,2026-10-26
 CRANEINFRA,Works in the real estate business in India.,Yahoo,2026-10-26
@@ -930,7 +930,7 @@ DEEPAKFERT,"Works in the manufacture, trade, and sale of bulk chemicals in India
 DEEPAKNTR,Makes and sells chemical intermediates in India and abroad.,Yahoo,2026-10-29
 DEEPAKSP,Makes and sells synthetic staple and man-made fiber blended yarns in India and abroad.,Yahoo,2026-10-26
 DEEPINDS,Provides oil and gas field services in India.,Yahoo,2026-10-26
-DEFENCE,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+DEFENCE,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 DEL,"Works in the manufacture, supply, marketing, and sale of lighting products under the Rashmi brand in India.",Yahoo,2026-10-26
 DELHIVERY,Provides supply chain solutions in India.,Yahoo,2026-10-26
 DELPHIFX,A foreign exchange services company in India.,Yahoo,2026-10-26
@@ -983,7 +983,7 @@ DISAQ,Makes and sells foundry machinery and machinery parts in India and abroad.
 DISHTV,Provides direct to home television and teleport services in India.,Yahoo,2026-10-26
 DITCO,Works in the real estate business in India.,Yahoo,2026-10-26
 DIVGIITTS,"Makes and sells transfer cases, automatic locking hubs, and synchronizers and components to automotive original equipment manufacturers and other customers.",Yahoo,2026-10-26
-DIVIDEND,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+DIVIDEND,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 DIVISLAB,"Makes and sells generic active pharmaceutical ingredients, intermediates, and nutraceuticals in India, North America, Asia, Europe, and abroad.",Yahoo,2026-10-26
 DIVSHKT,Works in the manufacture and export of granite products in India and abroad.,Yahoo,2026-10-26
 DIXON,Makes and sells electronic goods in India and abroad.,Yahoo,2026-10-26
@@ -1018,10 +1018,10 @@ DSKULKARNI,Works in real estate development business in India.,Yahoo,2026-10-26
 DSSL,Provides IT solutions and related services in India and abroad.,Yahoo,2026-10-26
 DTIL,"Works in the cultivation, manufacture, and sale of loose and packet tea in India and abroad.",Yahoo,2026-10-26
 DUCON,"Provides solutions in the fields of flue gas desulphurization systems, air pollution control system, and material handling systems in India.",Yahoo,2026-10-26
-DUMMYHEG,A company listed on the stock exchange.,Industry fallback,2026-10-29
-DUMMYINGL1,A company in the Health Care sector.,Industry fallback,2026-10-29
-DUMMYINGL2,A company listed on the stock exchange.,Industry fallback,2026-10-29
-DUMMYINXGN,A company listed on the stock exchange.,Industry fallback,2026-10-29
+DUMMYHEG,A company listed on the stock exchange.,Industry fallback,2026-10-30
+DUMMYINGL1,A company in the Health Care sector.,Industry fallback,2026-10-30
+DUMMYINGL2,A company listed on the stock exchange.,Industry fallback,2026-10-30
+DUMMYINXGN,A company listed on the stock exchange.,Industry fallback,2026-10-30
 DUNCANENG,"Makes, assembles, and trades in fluid power and automation products in India and abroad.",Yahoo,2026-10-26
 DUROPACK,Makes and sells flexible packaging laminates in India.,Yahoo,2026-10-26
 DUROPLY,Makes and sells plywood and allied products in India.,Yahoo,2026-10-26
@@ -1041,7 +1041,7 @@ EASTSILK,Makes and sells textile products under the Eastern brand in India.,Yaho
 EASTWEST,Provides logistics services in India and abroad.,Yahoo,2026-10-26
 EBGNG,Sells laptops and desktops through its Electronics Bazaar brand in India and abroad.,Yahoo,2026-10-26
 EBIX,"Provides software and e-commerce solutions for the insurance, finance, and healthcare industries.",Yahoo,2026-10-26
-ECAPINSURE,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+ECAPINSURE,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 ECLERX,"Provides business process management, change management, data-driven insights, and advanced analytics services in North America, the United Kingdom and more.",Yahoo,2026-10-26
 ECOBOAR,Makes and sells particle boards under the Ecoboard brand name in India.,Yahoo,2026-10-26
 ECOFINITY,Trades goods in India.,Yahoo,2026-10-26
@@ -1082,7 +1082,7 @@ ELIN,"Works in the design, manufacture, and sale of electronics motors, tools, m
 ELITECON,Makes and sells tobacco and other related products.,Yahoo,2026-10-26
 ELIXIR,Trades and invests in shares and securities in India.,Yahoo,2026-10-26
 ELLEN,Makes industrial and medical gases in India.,Yahoo,2026-10-26
-ELMDIV,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+ELMDIV,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 ELNET,Provides development and maintenance services for integrated software technology parks and business process outsourcing industries in India.,Yahoo,2026-10-26
 ELPROINTL,Works in the construction and development of real estate properties in India and abroad.,Yahoo,2026-10-26
 EMAINDIA,EMA India Limited does not have significant operations.,Yahoo,2026-10-26
@@ -1107,8 +1107,8 @@ EMSLIMITED,"Builds, designs, and installs water, wastewater, and domestic waste 
 EMUDHRA,Provides trust and enterprise solutions to individuals and organizations.,Yahoo,2026-10-26
 ENBETRD,"Trades and Finance Limited, a non-banking financial company, provides financing services to small and medium business enterprises, and individuals.",Yahoo,2026-10-26
 ENDURANCE,Makes and sells automotive components for original equipment manufacturers in India and abroad.,Yahoo,2026-10-26
-ENERGY,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-ENERGYAXIS,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+ENERGY,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+ENERGYAXIS,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 ENERGYDEV,Generates and sells electricity from water and wind to many electricity boards in India.,Yahoo,2026-10-26
 ENGINERSIN,"Provides design, engineering, procurement, construction, and integrated project management services for oil, gas, fertilizers, steel, railways, power, infrastructure and more.",Yahoo,2026-10-26
 ENIL,Runs FM radio broadcasting stations in India and abroad.,Yahoo,2026-10-26
@@ -1123,8 +1123,8 @@ EPIC,Provides energy solutions in India.,Yahoo,2026-10-26
 EPIGRAL,Makes and sells chlor-alkali and derivative products in India and abroad.,Yahoo,2026-10-26
 EPL,"Makes and sells plastic packaging materials in the Americas, Europe, Africa, the Middle East, South Asia, and East Asia Pacific.",Yahoo,2026-10-26
 EPUJA,A faith-tech platform company in India.,Yahoo,2026-10-26
-EQUAL50,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-EQUAL50ADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+EQUAL50,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+EQUAL50ADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 EQUILATERA,"Trades gems and jewelry, and diamonds in India.",Yahoo,2026-10-29
 EQUIPPP,Provides IT solutions and services in India.,Yahoo,2026-10-26
 EQUITASBNK,"Provides many banking products and services to individuals and corporates, and micro, small, and medium enterprises in India.",Yahoo,2026-10-26
@@ -1134,8 +1134,8 @@ ESAFSFB,Provides banking products and services to rural and semi-urban markets i
 ESARIND,Provides asset finance services in India.,Yahoo,2026-10-26
 ESCORTS,Makes and sells agricultural and construction equipment in India and abroad.,Yahoo,2026-10-26
 ESDS,"A provider of cloud and data center services, offering integrated solutions across cloud infrastructure, managed services, and software platforms.",Yahoo,2026-10-26
-ESENSEX,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-ESG,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+ESENSEX,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+ESG,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 ESHAMEDIA,"Provides media monitoring, social listening, and consumer intelligence solutions in India.",Yahoo,2026-10-26
 ESPIRE,Works in the hospitality business in India.,Yahoo,2026-10-26
 ESSARSHPNG,"Works in the fleet operating and chartering businesses in India, the United Arab Emirates, and Mauritius.",Yahoo,2026-10-26
@@ -1155,8 +1155,8 @@ EVERESTIND,"Makes and sells building products for residential, commercial, and i
 EVERESTO,Makes and sells active pharmaceutical ingredients and its intermediaries in India.,Yahoo,2026-10-26
 EVERFIN,Provides financial services in India.,Yahoo,2026-10-26
 EVEXIA,Trades pharmaceutical chemicals in India.,Yahoo,2026-10-26
-EVIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-EVINDIA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+EVIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+EVINDIA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 EXCELINDUS,"Makes and sells speciality chemicals, intermediates, and actives in India and abroad.",Yahoo,2026-10-26
 EXCELSOFT,Designs and develops technology-based solutions in the education and e-learning space.,Yahoo,2026-10-26
 EXICOM,Makes and sells electric vehicle chargers and lithium-ion batteries in India and abroad.,Yahoo,2026-10-26
@@ -1192,7 +1192,7 @@ FINANCE,Provides financial solutions and products to individuals and businesses.
 FINCABLES,"Makes and sells electrical and communication cables, and other electrical appliances in India and abroad.",Yahoo,2026-10-26
 FINELINE,Makes and sells printed circuit boards in India.,Yahoo,2026-10-26
 FINEORG,"Works in manufacture, processing, supply, distribution, dealing, import, and export of oleochemical-based additives in India and abroad.",Yahoo,2026-10-26
-FINIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+FINIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 FINKURVE,Provides loans and financial services in India.,Yahoo,2026-10-26
 FINOPB,Provides financial solutions and services in India.,Yahoo,2026-10-26
 FINPIPE,"Makes and sells polyvinyl chloride pipes and fittings, and PVC resins in India.",Yahoo,2026-10-26
@@ -1202,15 +1202,15 @@ FISCHER,"Works in the manufacture, distribution, leasing, and maintenance of med
 FIVESTAR,A non-banking financial company in India.,Yahoo,2026-10-26
 FLAIR,"Makes and sells writing instruments, stationeries, and other allied products in India and abroad.",Yahoo,2026-10-26
 FLEXFO,"Works in the cultivation and processing of food products in freeze dried, air dried, and individually quick -frozen forms.",Yahoo,2026-10-26
-FLEXIADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+FLEXIADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 FLEXITUFF,"Makes and sells technical textiles in India, the United States, Singapore, and abroad.",Yahoo,2026-10-26
 FLFL,An integrated fashion company in India.,Yahoo,2026-10-26
 FLOMIC,Provides logistics services worldwide.,Yahoo,2026-10-26
 FLORACORP,Works in the marine and fisheries business in India.,Yahoo,2026-10-26
 FLUIDOM,Makes and sells a range of fixed speed and variable speed fluid couplings for industrial and automotive drives in India.,Yahoo,2026-10-26
 FLUOROCHEM,"Makes and sells refrigerant gases, fluorochemicals, fluoropolymers, battery chemicals, wind energy, and renewable energy solutions.",Yahoo,2026-10-26
-FMCGADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-FMCGIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+FMCGADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+FMCGIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 FMGOETZE,"Makes, supplies, and distributes automotive components for automobiles in India and abroad.",Yahoo,2026-10-26
 FMNL,"Sells Networks Limited engages in organizing of wholesale, trade, retail, and logistics infrastructure projects in India.",Yahoo,2026-10-26
 FOCUS,"Makes and deals in LED lighting, fixtures, and lighting solutions in India and abroad.",Yahoo,2026-10-26
@@ -1413,10 +1413,10 @@ GROBTEA,"Works in the cultivation, manufacture and sale of tea in India.",Yahoo,
 GROVY,"Works in real estate development, infrastructure development, and consultancy services in India.",Yahoo,2026-10-26
 GROWINGTON,Works in the import and exporting of fruits in India.,Yahoo,2026-10-26
 GROWW,Develops a direct-to-customer digital investment platform that provides wealth creation opportunities through multiple financial products and services in India.,Yahoo,2026-10-26
-GROWWDEFNC,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-GROWWHOSPI,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-GROWWPOWER,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-GROWWRAIL,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+GROWWDEFNC,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+GROWWHOSPI,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+GROWWPOWER,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+GROWWRAIL,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 GRPLTD,Makes and sells reclaimed rubber products in India and abroad.,Yahoo,2026-10-26
 GRSE,Works in the design and construction of war ships in India.,Yahoo,2026-10-26
 GRWRHITECH,"Makes and sells polyester films in India, the United States, and abroad.",Yahoo,2026-10-26
@@ -1447,7 +1447,7 @@ GUJCOTEX,"Makes, bleaches, weaves, prints, and sells textile fabrics and other m
 GUJCRAFT,"Makes, imports, and exports plastic packing materials in India and abroad.",Yahoo,2026-10-26
 GUJENERGY,Sells natural gas in India.,Yahoo,2026-10-26
 GUJHOTE,Works in hotelier business in India.,Yahoo,2026-10-26
-GUJINJEC,A company in Biotechnology (Healthcare sector).,Industry fallback,2026-10-29
+GUJINJEC,A company in Biotechnology (Healthcare sector).,Industry fallback,2026-10-30
 GUJINTRX,"Makes and supplies stainless, non-alloy, and alloy steel castings in India.",Yahoo,2026-10-26
 GUJJUBHAI,"Trades, retails, produces, and franchises dry fruits under the GujjuBhai Foods in India.",Yahoo,2026-10-26
 GUJPETR,Makes and sells plastic polymers and blends in India.,Yahoo,2026-10-26
@@ -1508,30 +1508,30 @@ HCLTECH,"Provides IT and business services, engineering, research and developmen
 HDBFS,A non-banking financial company that provides lending and business process outsourcing services in India.,Yahoo,2026-10-26
 HDFCAMC,A publicly owned investment manager.,Yahoo,2026-10-26
 HDFCBANK,"Provides banking and financial products and services to individuals and businesses in India, Bahrain, Hong Kong, Singapore, and Dubai.",Yahoo,2026-10-26
-HDFCBSE500,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+HDFCBSE500,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 HDFCLIFE,Provides individual and group insurance solutions in India.,Yahoo,2026-10-26
-HDFCMID150,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-HDFCMOMENT,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-HDFCNEXT50,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-HDFCNIF100,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-HDFCNIFBAN,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-HDFCNIFIT,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-HDFCNIFTY,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-HDFCNIMEG,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-HDFCPSUBK,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-HDFCPVTBAN,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-HDFCQUAL,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-HDFCSENSEX,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-HDFCSML250,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+HDFCMID150,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+HDFCMOMENT,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+HDFCNEXT50,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+HDFCNIF100,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+HDFCNIFBAN,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+HDFCNIFIT,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+HDFCNIFTY,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+HDFCNIMEG,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+HDFCPSUBK,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+HDFCPVTBAN,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+HDFCQUAL,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+HDFCSENSEX,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+HDFCSML250,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 HDFIRE,Makes and supplies fire protection equipment and systems in India.,Yahoo,2026-10-26
 HDIL,"Works in the real estate construction, development, and other related activities in India.",Yahoo,2026-10-26
 HEADSUP,Runs fashion apparels and accessories business in India and abroad.,Yahoo,2026-10-26
-HEALTHADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-HEALTHAXIS,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-HEALTHCARE,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-HEALTHIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+HEALTHADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+HEALTHAXIS,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+HEALTHCARE,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+HEALTHIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 HEALTHX,Runs a digital network of healthcare and portfolio management services in India.,Yahoo,2026-10-26
-HEALTHY,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+HEALTHY,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 HECPROJECT,"Provides engineering, procurement, and construction for electro-mechanical projects in India.",Yahoo,2026-10-26
 HEERAISP,Heera Ispat Limited does not have significant operations.,Yahoo,2026-10-26
 HEGAM,"Works in the research and development of advanced battery materials, battery solutions.",Yahoo,2026-10-26
@@ -1550,7 +1550,7 @@ HEXATRADEX,"A dealer, trader, import and export agent, representative, contracto
 HEXT,"Provides information technology consulting, software development, and business process services worldwide.",Yahoo,2026-10-26
 HFCL,Makes and sells telecom products in India and abroad.,Yahoo,2026-10-26
 HFIL,"Mited, a food processing company, grows and processes mushrooms in India and abroad.",Yahoo,2026-10-26
-HFTSEINDIA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+HFTSEINDIA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 HGINFRA,"Provides engineering, procurement, and construction services in India.",Yahoo,2026-10-26
 HGM,"Provides software and IT enabled services in North America, Asia Pacific, and the Middle East.",Yahoo,2026-10-26
 HGS,"Works in technology, AI, and business services in the United States, Canada, the United Kingdom, Europe, India, and abroad.",Yahoo,2026-10-26
@@ -1597,7 +1597,7 @@ HMAAGRO,Makes and sells frozen buffalo meat and related products.,Yahoo,2026-10-
 HMT,Makes and sells food processing machines in India and abroad.,Yahoo,2026-10-26
 HMVL,Works in the publishing business in India.,Yahoo,2026-10-26
 HNDFDS,Works in contract manufacturing of fast-moving consumer goods in India and abroad.,Yahoo,2026-10-26
-HNGSNGBEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+HNGSNGBEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 HOCL,Makes and sells bulk industrial chemicals and chemical intermediates in India.,Yahoo,2026-10-26
 HOM,Makes and sells biomass briquettes and pellets in India.,Yahoo,2026-10-26
 HOMEFIRST,A housing finance company in India.,Yahoo,2026-10-26
@@ -1626,7 +1626,7 @@ IBULLSLTD,Works in the in financial services and digital platforms business in I
 ICDSLTD,"Works in trading shares and securities, and mobiles and accessories in India.",Yahoo,2026-10-26
 ICEMAKE,"Makes and supplies refrigeration products and equipment under the Ice Make, Bharat, and TransFreez brands in India.",Yahoo,2026-10-26
 ICICIAMC,Provides a range of investment solutions.,Yahoo,2026-10-26
-ICICIB22,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+ICICIB22,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 ICICIBANK,Provides many banking and financial services to corporate and retail customers in India and abroad.,Yahoo,2026-10-26
 ICICIGI,Provides many general insurance products and services in India.,Yahoo,2026-10-26
 ICICILIFE,"Provides life insurance, annuity, pension, and health insurance products to individuals and groups in India.",Yahoo,2026-10-26
@@ -1727,9 +1727,9 @@ INDXTRA,"Makes and sells chemicals, pharmaceuticals, and drug intermediates.",Ya
 INFOBEAN,"Designs, builds, and manages digital applications in the United States, Germany, India, the United Arab Emirates, and abroad.",Yahoo,2026-10-26
 INFOMEDIA,Does not have significant operations.,Yahoo,2026-10-26
 INFORTEC,Provides business process outsourcing services for the securities and financial research industry.,Yahoo,2026-10-26
-INFRA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-INFRABEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-INFRAIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+INFRA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+INFRABEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+INFRAIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 INFRONICS,"Infronics Systems Limited, a technology-enabled IT and software development service in India.",Yahoo,2026-10-26
 INFY,"Provides consulting, technology, outsourcing, and digital services worldwide.",Yahoo,2026-10-26
 INGERRAND,Makes and sells industrial air compressors and related services in India.,Yahoo,2026-10-26
@@ -1745,8 +1745,8 @@ INOXINDIA,"Makes and supplies cryogenic liquid storage and transport tanks for g
 INOXWIND,"Makes and sells wind turbine generators and components for independent power producers, utilities, public sector undertakings, businesses, and private investors.",Yahoo,2026-10-26
 INSECTICID,"Makes and sells agrochemicals, pesticides, and technical products for agriculture in India and abroad.",Yahoo,2026-10-26
 INSPIRISYS,Provides information technology services in India and abroad.,Yahoo,2026-10-26
-INSURADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-INSUREIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+INSURADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+INSUREIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 INTECCAP,Provides loans to small and medium enterprises in India.,Yahoo,2026-10-26
 INTEGFD,Works in the trading and processing of many oil seeds in India.,Yahoo,2026-10-26
 INTEGHIT,"Develops income tax software and services in India, Singapore, and the United States.",Yahoo,2026-10-26
@@ -1754,7 +1754,7 @@ INTEGRAEN,Makes machineries and components in India and abroad.,Yahoo,2026-10-26
 INTELLECT,"Designs Arena Limited engages in the development, marketing, and sale of integrated banking software systems in India and abroad.",Yahoo,2026-10-26
 INTENTECH,Provides enterprise platform and IP-enabled service organization services in India.,Yahoo,2026-10-26
 INTERARCH,Provides pre-engineered steel construction solutions in India.,Yahoo,2026-10-26
-INTERNET,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+INTERNET,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 INTLCOMBQ,"Makes and supplies heavy engineering equipment, geared motors and gear boxes, and dry mix products in India and abroad.",Yahoo,2026-10-26
 INTLCONV,Makes and sells PVC conveyor belting products in India and abroad.,Yahoo,2026-10-26
 INTRGLB,Provides many financial services in India.,Yahoo,2026-10-26
@@ -1786,17 +1786,17 @@ ISHITADR,"Makes and sells active pharma ingredients, fine chemicals, drug interm
 ISLCONSUL,Works in the securities trading business in India.,Yahoo,2026-10-26
 ISTLTD,Makes and sells auto components in India.,Yahoo,2026-10-26
 ISTRNETWK,An internet and retail catalogue company in India.,Yahoo,2026-10-26
-ITADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-ITAXIS,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-ITBEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-ITBETA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+ITADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+ITAXIS,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+ITBEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+ITBETA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 ITC,"Works in the fast-moving consumer goods, paperboards, paper and packaging, and agri businesses in India and abroad.",Yahoo,2026-10-26
 ITCHOTELS,"Owns, operates, and manages hotels and resorts in India and abroad.",Yahoo,2026-10-26
 ITDC,"Works in the travel, tourism, and hospitality industry in India.",Yahoo,2026-10-26
-ITETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+ITETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 ITHL,Provides travel related services in India and abroad.,Yahoo,2026-10-26
 ITI,"Works in the manufacture, sale, and servicing of telecommunication equipment and building communication network infrastructures in India.",Yahoo,2026-10-26
-ITIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+ITIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 ITL,Makes and sells machines and machine parts in India.,Yahoo,2026-10-26
 IVALUE,An enterprise technology solutions provider in India and abroad.,Yahoo,2026-10-26
 IVC,"A private equity, venture capital, infrastructure and real estate investment firm specializing in seed capital, late venture and more.",Yahoo,2026-10-26
@@ -1903,7 +1903,7 @@ JUBLPHARMA,"An integrated pharmaceutical company in India, the Americas, Europe,
 JUJHARLOGI,Provides car carriers logistics services in India.,Yahoo,2026-10-26
 JULIEN,Trades agricultural products in India.,Yahoo,2026-10-26
 JUMBO,Makes and sells flexible intermediate bulk container packaging materials for industrial purposes in India and abroad.,Yahoo,2026-10-26
-JUNIORBEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+JUNIORBEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 JUNIPER,Provides hotel services in India.,Yahoo,2026-10-26
 JUPITERIN,A web-infomedia company in India.,Yahoo,2026-10-26
 JUSTDIAL,Works in the search engine business in India.,Yahoo,2026-10-26
@@ -2160,9 +2160,9 @@ LIBORD,Works in investing and trading in securities in India.,Yahoo,2026-10-26
 LIBORDFIN,"Works in the financial services, working capital loans, project finance, syndication of loans, corporate advisory services, and financial consultancy businesses.",Yahoo,2026-10-26
 LICHSGFIN,"Provides loans for the purchase, construction, repair, and renovation of houses/buildings in India.",Yahoo,2026-10-26
 LICI,"Provides life insurance products in India, Fiji, Mauritius, and the United Kingdom.",Yahoo,2026-10-26
-LICNETFN50,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-LICNFNHGP,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-LICNMID100,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+LICNETFN50,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+LICNFNHGP,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+LICNMID100,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 LIKHITHA,"Works in laying, erection, testing, and commissioning of oil and gas pipelines in India.",Yahoo,2026-10-26
 LIMECHM,Makes and sells precipitated and coated calcium carbonate in India.,Yahoo,2026-10-26
 LINC,Makes and sells writing instruments and stationeries in India and abroad.,Yahoo,2026-10-26
@@ -2187,7 +2187,7 @@ LOTUSCHO,"Makes and sells chocolates, cocoa products, and cocoa derivatives to c
 LOTUSDEV,Develops residential and commercial projects in India.,Yahoo,2026-10-26
 LOTUSEYE,Provides eye care and related services in India.,Yahoo,2026-10-26
 LOVABLE,Makes and sells hosiery garment products in India.,Yahoo,2026-10-26
-LOWVOLIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+LOWVOLIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 LOYAL,"Works in designing, manufacturing, supply, erection, and commissioning of process equipment in India and abroad.",Yahoo,2026-10-26
 LOYALTEX,"Makes and sells yarn, woven fabric, knitted fabric, and technical clothing products for the textile and apparel industries in India.",Yahoo,2026-10-26
 LPDC,Works in the real estate development business in India.,Yahoo,2026-10-26
@@ -2217,7 +2217,7 @@ MADHAVIPL,"Works in the development, construction, operation, and maintenance of
 MADHUCON,"An integrated construction, infrastructure development, and management company in India.",Yahoo,2026-10-26
 MADHUDIN,Works in the leasing of properties and the provision of ancilliary services.,Yahoo,2026-10-27
 MADRASFERT,Makes and sells fertilizers in India.,Yahoo,2026-10-26
-MAFANG,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+MAFANG,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 MAFATIND,"Makes and sells textiles in India, rest of Asia, and abroad.",Yahoo,2026-10-26
 MAGADSUGAR,Makes and sells sugar and its by-products in India and abroad.,Yahoo,2026-10-26
 MAGANTR,Trades & Finance Ltd. operates as a non-banking financial institution in India.,Yahoo,2026-10-26
@@ -2232,7 +2232,7 @@ MAHASTEEL,Makes and sells steel structures products in India.,Yahoo,2026-10-26
 MAHEPC,Makes and sells micro irrigation systems in India and Uganda.,Yahoo,2026-10-26
 MAHESH,Works in the construction business in India.,Yahoo,2026-10-26
 MAHESHWARI,"Works in coal, petcoke, wastepaper, and lignite trading business in India.",Yahoo,2026-10-26
-MAHKTECH,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+MAHKTECH,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 MAHLIFE,Works in the real estate and infrastructure development business in India.,Yahoo,2026-10-26
 MAHLOG,Provides integrated logistics solutions in India and abroad.,Yahoo,2026-10-26
 MAHSCOOTER,Invests in securities in India.,Yahoo,2026-10-26
@@ -2241,7 +2241,7 @@ MAINFRA,Works in the real estate development and construction activities in Indi
 MAITHANALL,Makes and sells ferro alloys.,Yahoo,2026-10-26
 MAITRI,Trades pharmaceutical and medical goods in India.,Yahoo,2026-10-26
 MAJESAUT,Provides facility management and rental services in India.,Yahoo,2026-10-26
-MAKEINDIA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+MAKEINDIA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 MAKERSL,Makes and sells formulations in India.,Yahoo,2026-10-26
 MAL,Offers readymade garments for the retail market in India.,Yahoo,2026-10-26
 MALLCOM,Makes and sells personal protective equipment in India and abroad.,Yahoo,2026-10-26
@@ -2267,7 +2267,7 @@ MANOMAY,Makes and sells denims and denim fabrics in India and abroad.,Yahoo,2026
 MANORAMA,"Makes, processes, and supplies specialty fats and butters from tree-borne, and plant-based seeds worldwide.",Yahoo,2026-10-26
 MANORG,Makes and sells chemicals for the industrial and consumer markets in India and abroad.,Yahoo,2026-10-26
 MANSIFIN,Works in lending and investment activities in India.,Yahoo,2026-10-27
-MANUFGBEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+MANUFGBEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 MANUGRAPH,Makes and sells printing machines in India and abroad.,Yahoo,2026-10-26
 MANYAVAR,"Works in the manufacture, trading, and sale of wedding and celebration wear.",Yahoo,2026-10-26
 MAPMYINDIA,"Provides digital mapping, geospatial software, navigation, and location-based IoT technologies solutions in India and abroad.",Yahoo,2026-10-26
@@ -2286,7 +2286,7 @@ MARSONS,Makes and sells power and distribution transformers in India.,Yahoo,2026
 MARUTI,"Makes and sells motor vehicles, parts, and accessories in India.",Yahoo,2026-10-27
 MASFIN,Provides retail financing services for individuals and businesses in India.,Yahoo,2026-10-26
 MASKINVEST,Works in the finance and investment activities in India.,Yahoo,2026-10-26
-MASPTOP50,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+MASPTOP50,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 MASTEK,"Provides enterprise technology solutions in India, the United Kingdom, Europe, North America, Middle East region, South-east Asia, India and more.",Yahoo,2026-10-26
 MASTERTR,Provides financial services in India.,Yahoo,2026-10-26
 MATRIMONY,Provides online matchmaking services on internet and mobile platforms in India and abroad.,Yahoo,2026-10-26
@@ -2339,9 +2339,9 @@ MERCTRD,Trades Links Limited engages in the trading of agricultural products.,Ya
 MERCURYEV,Makes and sells electronic vehicles and other related parts in India.,Yahoo,2026-10-26
 MERCURYLAB,"Works in manufacturing, selling, exporting, and dealing in many pharmaceutical drugs and medicines for mother and child healthcare.",Yahoo,2026-10-26
 META,Provides IT and software services in India.,Yahoo,2026-10-26
-METAL,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+METAL,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 METALCO,Makes and sells cold-rolled steel strips and hot-rolled pickled and oiled steel strips and coils in India.,Yahoo,2026-10-26
-METALIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+METALIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 METROBRAND,A footwear specialty retailer in India.,Yahoo,2026-10-26
 METROGLOBL,"Trades chemicals, textiles, minerals, ores, metals, and precious metals.",Yahoo,2026-10-26
 METROPOLIS,Provides pathology and related healthcare services in India and abroad.,Yahoo,2026-10-26
@@ -2356,19 +2356,19 @@ MGL,A natural gas distribution company in India.,Yahoo,2026-10-29
 MHLXMIRU,Makes and sells technical textiles and rubber products in India.,Yahoo,2026-10-26
 MHRIL,"Works in the leisure hospitality sector in India, Finland, Sweden, Spain, Dubai, Thailand, and Malaysia.",Yahoo,2026-10-26
 MICEL,"Designs, develops, manufactures, and sells Light-Emitting Diode based street lights and video displays in India.",Yahoo,2026-10-26
-MID150BEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-MID150CASE,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-MIDBANKADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-MIDCAPADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-MIDCAPBETA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-MIDCAPETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-MIDCAPIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+MID150BEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+MID150CASE,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+MIDBANKADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+MIDCAPADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+MIDCAPBETA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+MIDCAPETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+MIDCAPIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 MIDEASTP,Provides investment services to NRIs in India.,Yahoo,2026-10-26
 MIDHANI,"Makes and sells super alloys, titanium, special purpose steel, and other special metals in India and abroad.",Yahoo,2026-10-26
 MIDINDIA,Works in the trading business in India.,Yahoo,2026-10-26
-MIDQ50ADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-MIDSELIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-MIDSMALL,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+MIDQ50ADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+MIDSELIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+MIDSMALL,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 MIDWESTLTD,"Works in the exploration, exploitation, manufacturing, processing, and selling of dressed granite blocks and slabs in India and abroad.",Yahoo,2026-10-26
 MIHIKA,Works in the trading and distribution of commodities and fabrics in India.,Yahoo,2026-10-26
 MIIL,Works in the real estate development business in India.,Yahoo,2026-10-26
@@ -2406,9 +2406,9 @@ MMWL,Works in the digital media content in India and abroad.,Yahoo,2026-10-26
 MNIL,"Works in acquiring and dealing in precious metals and stones, and jewelries in India.",Yahoo,2026-10-26
 MOBAVENUE,"Runs AI-powered advertising, marketing, and consumer media platforms in India and abroad.",Yahoo,2026-10-26
 MOBIKWIK,Provides digital payments and financial services for consumers and merchants in India and abroad.,Yahoo,2026-10-26
-MOCAPITAL,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+MOCAPITAL,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 MODAIRY,Makes and sells milk products in India.,Yahoo,2026-10-26
-MODEFENCE,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+MODEFENCE,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 MODINATUR,Makes and sells oils and deoiled cakes in India.,Yahoo,2026-10-26
 MODINSU,Makes and sells porcelain insulators in India and abroad.,Yahoo,2026-10-26
 MODIPON,Modipon Limited does not have significant operations.,Yahoo,2026-10-26
@@ -2419,7 +2419,7 @@ MODMA,"Makes accessories and hardware for transmission lines, distribution lines
 MODRNSH,Provides stockbroking services in India.,Yahoo,2026-10-26
 MODTHREAD,Makes and sells wool and blended worsted yarn products in India.,Yahoo,2026-10-26
 MODULEX,"Works in production, building, supplying, fabricating, and manufacturing of modular steel buildings.",Yahoo,2026-10-26
-MOHEALTH,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+MOHEALTH,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 MOHITE,Works in the textile and power generation businesses in India.,Yahoo,2026-10-26
 MOHITIND,Works in manufacturing texturized yarn from partially oriented yarn and weaving of yarn to grey cloth in India.,Yahoo,2026-10-26
 MOHITPPR,"Makes writing, printing, and tissue papers in India and abroad.",Yahoo,2026-10-26
@@ -2429,35 +2429,35 @@ MOL,Makes and sells pigments and agrochemicals in India and abroad.,Yahoo,2026-1
 MOLBIO,Provides healthcare technologies to diagnose infectious and non-communicable diseases.,Yahoo,2026-10-26
 MOLDTECH,Provides civil and mechanical design engineering services in India and abroad.,Yahoo,2026-10-26
 MOLDTKPAC,Makes and sells plastic packaging containers in India.,Yahoo,2026-10-26
-MOM100,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-MOM30IETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-MOM50,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-MOMENTUM,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-MOMENTUM50,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-MOMMIDCAP,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-MOMOMENTUM,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+MOM100,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+MOM30IETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+MOM50,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+MOMENTUM,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+MOMENTUM50,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+MOMMIDCAP,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+MOMOMENTUM,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 MOMSBELIEF,"A holistic care provider for children with autism, ADHD, Down syndrome, and other developmental delays and disorders in India.",Yahoo,2026-10-26
-MON100,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+MON100,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 MONARCH,"Provides financial services to retail investors, mutual funds, institutional investors, foreign institutional investors, financial institutions and corporate clients in India.",Yahoo,2026-10-26
 MONEYBOXX,Works in the lending and allied activities in India.,Yahoo,2026-10-26
 MONEYVIEW,"Works in the design, development, production, and distribution of many financial products in India.",Yahoo,2026-10-26
 MONGIPA,Provides a suite of financing products in India.,Yahoo,2026-10-26
-MONIFTY500,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+MONIFTY500,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 MONOT,Trades shares and incidental activities in India.,Yahoo,2026-10-26
-MONQ50,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+MONQ50,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 MONTECARLO,"Makes and sells woolen, cotton, cotton-blended, knitted, and woven garments for men, women, and kids in India and abroad.",Yahoo,2026-10-26
 MORARJEE,Makes and sells yarns and fabrics in India and abroad.,Yahoo,2026-10-26
 MORARKFI,A non-banking finance company in India.,Yahoo,2026-10-26
-MOREALTY,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+MOREALTY,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 MOREPENLAB,"Develops, manufactures, markets, and sells active pharmaceutical ingredients, branded and generic formulations, and home health products.",Yahoo,2026-10-26
 MORGAN,A non-banking finance company in India.,Yahoo,2026-10-26
 MOSCHIP,"Designs company, designs, develops, manufactures, and sells system on chip technologies and Internet on Things solutions.",Yahoo,2026-10-26
-MOSMALL250,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+MOSMALL250,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 MOTHERSON,"Makes and sells components to automotive original equipment manufacturers in India, Germany, the United States, and abroad.",Yahoo,2026-10-26
 MOTILALOFS,Offers financial services in India.,Yahoo,2026-10-26
 MOTISONS,Works in the manufacture and retail of jewelry in India.,Yahoo,2026-10-26
 MOTOGENFIN,"Works in the rental, leasing, and sale of immovable properties in India.",Yahoo,2026-10-26
-MOVALUE,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+MOVALUE,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 MPAGI,"Works in the manufacture, storage, packing, distribution, transportation, conversion, maintenance, rendering, servicing, and sale of chemical fertilizers and more.",Yahoo,2026-10-26
 MPCOSEMB,Trades iron and iron goods.,Yahoo,2026-10-26
 MPDL,Works in development and construction of real estate properties in India.,Yahoo,2026-10-26
@@ -2469,7 +2469,7 @@ MRCAGRO,"Works in the cultivation, manufacturing, production, export, and sale o
 MRF,Makes and sells rubber products in India and abroad.,Yahoo,2026-10-26
 MRPL,Works in refining of crude oil in India and abroad.,Yahoo,2026-10-26
 MRUTR,Works in trading business in India.,Yahoo,2026-10-26
-MSCI360,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+MSCI360,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 MSCTC,Makes and sells agricultural products in India.,Yahoo,2026-10-26
 MSL,"Makes, processes, and markets hybrid and GM seeds in India.",Yahoo,2026-10-26
 MSLGLOBAL,Works in investment activities in India.,Yahoo,2026-10-26
@@ -2491,7 +2491,7 @@ MUKTA,Trades agricultural products and other related activities in India.,Yahoo,
 MUKTAARTS,"Works in the production, distribution, and exhibition of films in India.",Yahoo,2026-10-26
 MUL,Makes and sells liquefied petroleum gas cylinders and related accessories in India.,Yahoo,2026-10-26
 MULTIBASE,Makes and sells thermoplastic elastomers and silicone-based products in India and abroad.,Yahoo,2026-10-26
-MULTICAP,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+MULTICAP,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 MUNJALAU,Makes and sells auto components for motor vehicles in India.,Yahoo,2026-10-26
 MUNJALSHOW,Makes and sells auto components for the two-wheeler and four-wheeler industry in India and abroad.,Yahoo,2026-10-26
 MUNOTHFI,"Provides stock broking, depository participant, and portfolio management services in India.",Yahoo,2026-10-27
@@ -2569,7 +2569,7 @@ NEOINFRA,Works in the real estate development and construction business in India
 NEPHROPLUS,Provides dialysis healthcare services through a chain of kidney care clinics and dialysis centers.,Yahoo,2026-10-26
 NESCO,Builds an IT park in India and abroad.,Yahoo,2026-10-26
 NESTLEIND,Makes and sells food products in India and abroad.,Yahoo,2026-10-26
-NETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+NETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 NETLINK,Provides web-based and business solutions in B2B marketplace in India.,Yahoo,2026-10-26
 NETTLINX,"Provides internet solutions for data voice, and security and software development to corporate customers in India.",Yahoo,2026-10-26
 NETWEB,"Designs, manufactures, and sells high-end computing solutions in India.",Yahoo,2026-10-26
@@ -2581,11 +2581,11 @@ NEWINFRA,Works in the real estate development business in India.,Yahoo,2026-10-2
 NEWLIGHT,"Makes and sells garments, tailored apparel and uniforms in India and abroad.",Yahoo,2026-10-26
 NEWTRAC,TED does not have significant operations.,Yahoo,2026-10-26
 NEXOME,"Sells Limited engages in the merchant banking, and trading in government securities and shares in India.",Yahoo,2026-10-26
-NEXT30ADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-NEXT50,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-NEXT50ADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-NEXT50BETA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-NEXT50IETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+NEXT30ADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+NEXT50,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+NEXT50ADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+NEXT50BETA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+NEXT50IETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 NEXTMEDIA,Does not have significant operations.,Yahoo,2026-10-26
 NEXUSSURGL,Trades medical supplies in India.,Yahoo,2026-10-26
 NFL,"Makes and sells neem coated urea, bio-fertilizers, and other allied Industrial products in India.",Yahoo,2026-10-26
@@ -2600,18 +2600,18 @@ NIBE,Works in the fabrication and machining of components in the defense sector 
 NIBL,Makes and sells industrial bearings in India and abroad.,Yahoo,2026-10-26
 NICCOPAR,Works in the operation of theme-based entertainment businesses in India.,Yahoo,2026-10-26
 NIDHGRN,"Makes and sells granite and marble slabs, tiles, and sandstone and limestone products in India.",Yahoo,2026-10-26
-NIF100BEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-NIF100IETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-NIF500BETA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-NIFTY1,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-NIFTYADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-NIFTYBEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-NIFTYBETA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-NIFTYCASE,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-NIFTYETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-NIFTYIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-NIFTYJBLK,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-NIFTYQLITY,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+NIF100BEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+NIF100IETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+NIF500BETA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+NIFTY1,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+NIFTYADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+NIFTYBEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+NIFTYBETA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+NIFTYCASE,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+NIFTYETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+NIFTYIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+NIFTYJBLK,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+NIFTYQLITY,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 NIHARINF,Works in the software and e-commerce businesses in India.,Yahoo,2026-10-26
 NIITLTD,"Works in providing learning and knowledge solutions to individuals, enterprises, and many institutions in India and abroad.",Yahoo,2026-10-26
 NIITMTS,"Provides managed training services in India, the United States, Europe, and abroad.",Yahoo,2026-10-26
@@ -2674,9 +2674,9 @@ NURECA,Provides home healthcare and wellness products in India.,Yahoo,2026-10-26
 NUTECGLOB,"Makes and sells in, and sells cotton and synthetic fabrics in India.",Yahoo,2026-10-26
 NUVAMA,"Works in wealth management, asset management and services, and capital markets businesses in India and abroad.",Yahoo,2026-10-26
 NUVOCO,Makes and sale of cement and building materials products in India.,Yahoo,2026-10-26
-NV20IETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+NV20IETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 NWIL,Trades food products in India and abroad.,Yahoo,2026-10-26
-NXT100CASE,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+NXT100CASE,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 NYKAA,Makes and sells beauty and lifestyle products in India and abroad.,Yahoo,2026-10-26
 NYSSACORP,Trades shares and investment activities in India.,Yahoo,2026-10-26
 OAL,"Makes and sells fragrances, flavours, specialty aroma ingredients, and camphor and terpene chemicals in India.",Yahoo,2026-10-26
@@ -2693,7 +2693,7 @@ ODYSSEY,"Works in developing software focusing on public key infrastructure, cry
 OFSS,Provides information technology solutions to the financial services industry worldwide.,Yahoo,2026-10-26
 OIL,"Works in the exploration, development, and production of crude oil and natural gas in India.",Yahoo,2026-10-26
 OILCOUNTUB,"Makes and sells casing, tubing, and drill pipes used in the oil and gas drilling and exploration sector.",Yahoo,2026-10-26
-OILIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+OILIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 OIVL,Trades agricultural commodities in India.,Yahoo,2026-10-26
 OKPLA,Makes and sells plastic molded products in India.,Yahoo,2026-10-26
 OLAELEC,"Develops, manufactures, and sells electric vehicles in India.",Yahoo,2026-10-26
@@ -2848,11 +2848,11 @@ PGFOILQ,Makes and sells aluminum foils and its products in India and abroad.,Yah
 PGHH,Makes and sells branded packaged fast-moving consumer goods in the feminine care and healthcare businesses in India and abroad.,Yahoo,2026-10-26
 PGHL,Makes and sells pharmaceutical and chemical products in India and abroad.,Yahoo,2026-10-26
 PGIL,Makes and sells readymade garments in India and abroad.,Yahoo,2026-10-26
-PHARMABEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+PHARMABEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 PHARMAID,"Provides contract research and manufacturing services for pharma, biotech, agro, and chemical industries in India.",Yahoo,2026-10-26
-PHARMAIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+PHARMAIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 PHCAP,Trades shares and securities in India.,Yahoo,2026-10-26
-PHLSRG,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+PHLSRG,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 PHOENIXLTD,"Works in the operation and management of malls, construction of commercial and residential properties, and hotel business in India.",Yahoo,2026-10-26
 PHOENXINTL,Works in leasing building properties in India.,Yahoo,2026-10-26
 PHOSPHATE,Works in the engages in manufacturing and trading of farm inputs in India.,Yahoo,2026-10-28
@@ -2975,10 +2975,10 @@ PRUDMOULI,Owns and operates sugar mills.,Yahoo,2026-10-26
 PSB,Provides many banking and financial products and services in India.,Yahoo,2026-10-26
 PSITINFRA,"Works in the finance and investment of shares and securities, commodities, and other related activities of capital market.",Yahoo,2026-10-26
 PSPPROJECT,"Provides construction and allied services for industrial, institutional, commercial, residential, hospitality, hospital, and landmark government projects in India.",Yahoo,2026-10-26
-PSUBANK,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-PSUBANKADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-PSUBNKBEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-PSUBNKIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+PSUBANK,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+PSUBANKADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+PSUBNKBEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+PSUBNKIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 PTC,"Works in the trading and generating power in India, Nepal, Bhutan, and Bangladesh.",Yahoo,2026-10-26
 PTCIL,Makes and sells high-precision metal castings in India and abroad.,Yahoo,2026-10-26
 PTL,Works in the leasing of plant to Apollo Tyres Limited.,Yahoo,2026-10-26
@@ -2993,19 +2993,19 @@ PURVA,Works in real estate development.,Yahoo,2026-10-26
 PVP,Provides healthcare services in India.,Yahoo,2026-10-26
 PVRINOX,"Works in the exhibition, distribution, and production of movies in India and Sri Lanka.",Yahoo,2026-10-28
 PVSL,Works in the automotive dealership business in India.,Yahoo,2026-10-26
-PVTBANIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-PVTBANKADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+PVTBANIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+PVTBANKADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 PVVINFRA,Works in the steel trading and infrastructure development business.,Yahoo,2026-10-26
 PWASML,Makes and sells mink blankets and bed covers in India.,Yahoo,2026-10-26
 PWL,Offers online and offline coaching and study material for test preparation of many competitive exams in India.,Yahoo,2026-10-26
 PYRAMID,"Makes and sells polymer-based molded products for chemical, agrochemical, specialty chemical, and pharmaceutical companies for their packaging applications in India.",Yahoo,2026-10-26
 QGO,Provides financial services in India.,Yahoo,2026-10-26
 QMSMEDI,Distributes medical and healthcare products in India.,Yahoo,2026-10-26
-QNIFTY,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+QNIFTY,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 QPOWER,"Provides power products and solutions for power generation, transmission, distribution, and automation sectors in India and abroad.",Yahoo,2026-10-26
 QUADFUTURE,Develops and sells train control and signaling systems in India.,Yahoo,2026-10-26
 QUADRANT,Provides telecommunication services in North India.,Yahoo,2026-10-26
-QUAL30IETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+QUAL30IETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 QUANTDIA,Quantum Greentech Limited does not have significant operations.,Yahoo,2026-10-26
 QUESS,Provides staffing and workforce solutions in India and abroad.,Yahoo,2026-10-28
 QUESTCAP,"Sells Limited, a non-banking financial company, provides investment banking distribution, corporate finance, and advisory services in India.",Yahoo,2026-10-26
@@ -3313,18 +3313,18 @@ SBECSUG,Makes sugar and related by products in India.,Yahoo,2026-10-26
 SBFC,Works in fund-based financing activity in India.,Yahoo,2026-10-26
 SBFL,"Works in the manufacture, distribution, and marketing of textile products in India.",Yahoo,2026-10-26
 SBGLP,"Works in the construction of residential, commercial, and IT parks properties in India.",Yahoo,2026-10-26
-SBIBPB,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+SBIBPB,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 SBICARD,Provides credit cards to individual and corporate customers in India.,Yahoo,2026-10-26
-SBIDEFETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+SBIDEFETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 SBIFUNDS,A privately owned investment manager.,Yahoo,2026-10-26
 SBILIFE,A life insurance company in India.,Yahoo,2026-10-27
-SBIMIDMOM,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+SBIMIDMOM,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 SBIN,Provides banking products and services in India and abroad.,Yahoo,2026-10-26
-SBINEQWETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-SBINMID150,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+SBINEQWETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+SBINMID150,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 SBISENSEX,An exchange traded fund launched by State Bank of India.,Yahoo,2026-10-26
-SBISMLETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-SBIVALETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+SBISMLETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+SBIVALETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 SBL,Engages electric power generation using solar energy.,Yahoo,2026-10-26
 SCAGRO,"Works in seeds, fertilizers, pesticides, contract farming, and agro-processing business in India.",Yahoo,2026-10-26
 SCANPRO,Provides engineering services in India and Nepal.,Yahoo,2026-10-27
@@ -3344,7 +3344,7 @@ SDL,"Works in the food, agriculture, and life science businesses in India.",Yaho
 SEAMECLTD,Provides offshore diving support vessel services in India and abroad.,Yahoo,2026-10-26
 SEASONST,"Makes and sells in, and exports furnishing fabrics in India.",Yahoo,2026-10-26
 SEATV,A media and entertainment company in India.,Yahoo,2026-10-26
-SECLEDBETA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+SECLEDBETA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 SECMARK,"Provides consulting, technology, and outsourcing services to financial market participants in the areas of compliance, operations, software development and more.",Yahoo,2026-10-26
 SECURKLOUD,Provides information and technology services in India and the United States.,Yahoo,2026-10-26
 SEDEMAC,Provides electronic control units to original equipment manufacturers in the mobility and industrial markets.,Yahoo,2026-10-26
@@ -3352,27 +3352,27 @@ SEIL,Provides educational services in India.,Yahoo,2026-10-26
 SEJALLTD,Makes and sells value added glass in India and abroad.,Yahoo,2026-10-26
 SEKURITIND,Makes and sells laminated and tempered automotive glass in India.,Yahoo,2026-10-26
 SEL,Works in the real estate development business in India.,Yahoo,2026-10-26
-SELECTIPO,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+SELECTIPO,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 SELECTRIC,"Designs, manufactures, and supplies standard and customized enclosure systems in India, Sri Lanka, Bangladesh, Nepal, Europe, Pacific, and North America.",Yahoo,2026-10-26
 SEMAC,"Provides integrated design, engineering, procurement, construction, and consultancy services for commercial and industrial projects in India.",Yahoo,2026-10-26
 SENCO,"Makes and sells jewelry and articles made of gold, silver, platinum, and other precious and semi-precious stones.",Yahoo,2026-10-26
 SENORES,"Develops, manufactures, sells, and trades in pharmaceutical and allied products.",Yahoo,2026-10-26
 SENSEX1,An exchange traded fund launched by Kotak Mahindra Bank Limited.,Yahoo,2026-10-26
-SENSEXADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-SENSEXAXIS,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+SENSEXADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+SENSEXAXIS,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 SENSEXBEES,An exchange traded fund launched by Reliance Capital Ltd. It is managed by Reliance Capital Asset Management Limited.,Yahoo,2026-10-26
-SENSEXBETA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-SENSEXETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-SENSEXIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+SENSEXBETA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+SENSEXETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+SENSEXIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 SEPC,"Provides integrated design, engineering, procurement, construction, and project management services in India.",Yahoo,2026-10-26
 SERA,Works in investment and financing activities in India.,Yahoo,2026-10-26
 SERVOTECH,"Makes and sells light-emitting diode lights, electric vehicle chargers, and solar power products in India and abroad.",Yahoo,2026-10-26
 SESHAPAPER,Makes and sells printing and writing paper in India and abroad.,Yahoo,2026-10-26
 SETCO,Makes and sells clutches and other automotive components in India and abroad.,Yahoo,2026-10-26
 SETFBSE100,An exchange traded fund launched by State Bank of India.,Yahoo,2026-10-26
-SETFNIF50,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-SETFNIFBK,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-SETFSN50,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+SETFNIF50,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+SETFNIFBK,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+SETFSN50,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 SETL,An engineering equipment manufacturer in India and abroad.,Yahoo,2026-10-26
 SETUINFRA,Setubandhan Infrastructure Limited does not have significant operations.,Yahoo,2026-10-26
 SEYAIND,Makes and sells specialty chemicals in India and abroad.,Yahoo,2026-10-26
@@ -3410,7 +3410,7 @@ SHARDACROP,Provides many formulations and generic active ingredients worldwide.,
 SHARDAMOTR,"Makes, assembles, trades in, and sells auto components to automobiles and electronics original equipment manufacturers in India.",Yahoo,2026-10-26
 SHARDUL,Works in the investment and financing business in India.,Yahoo,2026-10-26
 SHAREINDIA,A financial services company in India.,Yahoo,2026-10-26
-SHARIABEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+SHARIABEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 SHARIKA,"Works in the engineering procurement construction contracts, specialized assembling, trading, and erection and representation services businesses in India.",Yahoo,2026-10-26
 SHARMEH,Provides medical and healthcare services.,Yahoo,2026-10-26
 SHARPINV,"Provides financial services to commercial, industrial, and financial clients in India.",Yahoo,2026-10-26
@@ -3436,7 +3436,7 @@ SHIVAAGRO,"Makes and sells fertilizers, soil and crop health products, oils, and
 SHIVACEM,Makes and sells cement and clinker products in India.,Yahoo,2026-10-26
 SHIVAGR,Works in the rolling and forging of agricultural implements and other products in India and abroad.,Yahoo,2026-10-26
 SHIVALIK,Makes and sells chemicals for the protection of plants in India.,Yahoo,2026-10-26
-SHIVAM-RE1,A company listed on the stock exchange.,Industry fallback,2026-10-29
+SHIVAM-RE1,A company listed on the stock exchange.,Industry fallback,2026-10-30
 SHIVAMAUTO,Makes and sells auto transmission components for original equipment manufacturers in India and abroad.,Yahoo,2026-10-26
 SHIVAMILLS,Makes and sells cotton yarns in India.,Yahoo,2026-10-26
 SHIVATEX,Makes yarn and technical textile products in India and abroad.,Yahoo,2026-10-26
@@ -3539,17 +3539,17 @@ SKYIND,Makes and sells narrow woven fabrics in India.,Yahoo,2026-10-26
 SKYLMILAR,Works in real estate business in India.,Yahoo,2026-10-26
 SKYWAYS,A logistics and freight forwarding service provider.,Yahoo,2026-10-26
 SLSTLQ,Makes and sells yarns in India.,Yahoo,2026-10-26
-SMALL250,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-SMALLADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-SMALLCAP,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-SMALLIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+SMALL250,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+SMALLADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+SMALLCAP,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+SMALLIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 SMARTFIN,"Works in the investment of shares and securities, capital market, and real estate businesses in India.",Yahoo,2026-10-26
 SMARTLINK,"Develops, manufactures, markets, distributes, and services networking products in India and abroad.",Yahoo,2026-10-26
 SMARTWORKS,"Owns, operates, and leases co-working spaces in India.",Yahoo,2026-10-26
 SMCGLOBAL,Provides many financial services in India and abroad.,Yahoo,2026-10-26
 SMFIL,Makes and sells forgings and machined components in India.,Yahoo,2026-10-26
 SMGOLD,Works in the manufacturing and wholesale trading of gold mangalsutra jewellery in India.,Yahoo,2026-10-26
-SML100CASE,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+SML100CASE,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 SMLMAH,Makes and sells commercial vehicles and related parts in India and abroad.,Yahoo,2026-10-26
 SMLT,Makes and sells cored wires and aluminum flipping coils in India and abroad.,Yahoo,2026-10-26
 SMRUTHIORG,Makes and sells active pharmaceutical ingredient products to India.,Yahoo,2026-10-26
@@ -3558,9 +3558,9 @@ SMT,"Works in the manufacture and distribution of Class III and Class C/D medica
 SMTEL,Trades goods and shares in India.,Yahoo,2026-10-26
 SNL,Makes and sells antifriction bearing products in India and abroad.,Yahoo,2026-10-26
 SNOWMAN,Provides temperature-controlled warehousing and distribution services in India.,Yahoo,2026-10-26
-SNXT30BEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-SNXT50BEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-SNXT50BETA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+SNXT30BEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+SNXT50BEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+SNXT50BETA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 SOBHA,"Works in the construction, development, sale, management, and operation of residential and commercial real estate under the Sobha brand.",Yahoo,2026-10-26
 SOBME,Sells metal products in India.,Yahoo,2026-10-26
 SOFCOM,"Provides software installation, maintenance, and consultancy services in India, the United Arab Emirates, and abroad.",Yahoo,2026-10-26
@@ -3792,7 +3792,7 @@ SYSCHEM,"Makes and sells active pharmaceuticals ingredients, intermediates, and 
 SYSTMTXC,Provides merchant banking services in India.,Yahoo,2026-10-26
 SYTIXSE,"Provides equity trading, leasing and equity research, and investment consultancy services.",Yahoo,2026-10-26
 TAALTECH,Provides engineering design services in India and abroad.,Yahoo,2026-10-26
-TAG,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+TAG,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 TAHMARENT,Works in the ethanol and distillery operations business in India.,Yahoo,2026-10-26
 TAIIND,"Works in trading, marketing and distribution, and retailing of packaged fruit and vegetable products under the DRUK brand.",Yahoo,2026-10-26
 TAINWALCHM,Makes and sells extruded plastic sheets in India.,Yahoo,2026-10-26
@@ -3841,7 +3841,7 @@ TDSL,Works in the procurement and processing of milk in India.,Yahoo,2026-10-26
 TEAM24,Team 24 Consumer Products Ltd is in the business of food processing.,Screener About,2026-10-26
 TEAMGTY,Provides investment services in India.,Yahoo,2026-10-26
 TEAMLEASE,Provides human resource services in India and abroad.,Yahoo,2026-10-26
-TECH,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+TECH,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 TECHM,"Provides information technology services and solutions in India, the Americas, Europe, and abroad.",Yahoo,2026-10-26
 TECHNOCRAF,"Works in the engineering, procurement, and construction turnkey projects.",Yahoo,2026-10-26
 TECHNOE,"Provides engineering, procurement, and construction services to the power generation, transmission, and distribution sectors in India and abroad.",Yahoo,2026-10-26
@@ -3922,9 +3922,9 @@ TOKYOFIN,A non-banking financial company.,Yahoo,2026-10-26
 TOKYOPLAST,"Makes and sells thermo food containers and coolers in India, the United States, Australia, and abroad.",Yahoo,2026-10-26
 TOLINS,Makes and sells tyres and tread rubber in India.,Yahoo,2026-10-26
 TONBO,"Designs, develops, and manufactures electro-optical and infrared sensing, processing, communication, and guidance systems for defense, surveillance, and security applications.",Yahoo,2026-10-26
-TOP100CASE,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-TOP10ADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-TOP20,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+TOP100CASE,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+TOP10ADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+TOP20,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 TORNTPHARM,"Works in the research, development, manufacturing, marketing, and distribution of branded and generic pharmaceutical formulations.",Yahoo,2026-10-26
 TORNTPOWER,"Works in the generation, renewables, and transmission and distribution of electricity in India.",Yahoo,2026-10-26
 TOTAL,Provides logistic services in India and abroad.,Yahoo,2026-10-26
@@ -4068,13 +4068,13 @@ VADILENT,"Works in the marketing and distribution of ice creams, dairy products,
 VAIBHAVGBL,"Makes and sells fashion jewelry and lifestyle products in India, the United States of America, Canada and more.",Yahoo,2026-10-26
 VAISHALI,Works in the pharmaceutical business in India and abroad.,Yahoo,2026-10-26
 VAKRANGEE,"Provides e-commerce, white label ATM, financial, and logistics services in India.",Yahoo,2026-10-26
-VAL30IETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+VAL30IETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 VALIANT,Makes and sells communications equipment.,Yahoo,2026-10-26
 VALIANTLAB,An active pharmaceutical ingredient/bulk drug manufacturing company in India and abroad.,Yahoo,2026-10-26
 VALIANTORG,Makes and sells specialty chemicals in India and abroad.,Yahoo,2026-10-26
 VALLABHSQ,Makes and sells basic iron and steel products in India.,Yahoo,2026-10-26
-VALUE,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
-VALUEAXIS,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-29
+VALUE,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
+VALUEAXIS,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-10-30
 VAMA,"Distributes computers and its peripherals, and software products in India and Singapore.",Yahoo,2026-10-26
 VAML,Makes metallurgical grade alumina and aluminium products.,Yahoo,2026-10-26
 VAMSHIRU,Makes and sells tire retreading materials in India.,Yahoo,2026-10-26
