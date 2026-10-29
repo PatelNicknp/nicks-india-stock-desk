@@ -1,2 +1,9 @@
 ticker,kind,text,score,score_prev,verdict,verdict_prev,price,data_status,note,disclaimer
-,info,No verdict changes or score crossings this run.,,,,,,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+RELIANCE,score_jump,RELIANCE score moved from 9 to 7.,7,9,HOLD,HOLD,1167.4,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+RELIANCE,score_cross,RELIANCE crossed the buy line (8).,7,9,HOLD,HOLD,1167.4,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+LODHA,verdict_change,LODHA changed from HOLD to AVOID.,3,5,AVOID,HOLD,1045.8,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+LODHA,score_jump,LODHA score moved from 5 to 3.,3,5,AVOID,HOLD,1045.8,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+LODHA,score_cross,LODHA crossed the hold line (4).,3,5,AVOID,HOLD,1045.8,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+GAIL,verdict_change,GAIL changed from HOLD to AVOID.,3,4,AVOID,HOLD,165.17,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+GAIL,score_cross,GAIL crossed the hold line (4).,3,4,AVOID,HOLD,165.17,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+COROMANDEL,score_jump,COROMANDEL score moved from 0 to -2.,-2,0,AVOID,AVOID,1719.8,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
