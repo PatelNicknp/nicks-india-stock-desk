@@ -1,7 +1,7 @@
 {
- "universe_nifty50": "2026-10-28",
- "universe_next50": "2026-10-28",
- "universe_midcap150": "2026-10-28",
+ "universe_nifty50": "2026-10-29",
+ "universe_next50": "2026-10-29",
+ "universe_midcap150": "2026-10-29",
  "yahoo_statements": "2026-10-25",
  "yahoo_slow": "2026-10-25",
  "shareholding": "2026-10-25",
@@ -10,7 +10,7 @@
  "pcr": "2026-10-29",
  "fii_dii": "2026-10-29",
  "econ": "2026-10-29",
- "universe_smallcap250": "2026-10-28",
- "universe_microcap250": "2026-10-28",
- "universe_totalmarket": "2026-10-28"
+ "universe_smallcap250": "2026-10-29",
+ "universe_microcap250": "2026-10-29",
+ "universe_totalmarket": "2026-10-29"
 }
