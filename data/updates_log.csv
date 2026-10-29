@@ -1,32 +1,32 @@
 source,status,latest,note,checked_pt
-Universe (Nifty 50),OK,50,"offline mode, used cache",2026-10-29 11:19 IST · 2026-10-28 22:49 PT
-Universe (Nifty Next 50),OK,50,"offline mode, used cache",2026-10-29 11:19 IST · 2026-10-28 22:49 PT
-Universe (Nifty Midcap 150),OK,150,"offline mode, used cache",2026-10-29 11:19 IST · 2026-10-28 22:49 PT
-Universe (Smallcap 250),OK,251,"offline mode, used cache",2026-10-29 11:19 IST · 2026-10-28 22:49 PT
-Universe (Microcap 250),OK,254,"offline mode, used cache",2026-10-29 11:19 IST · 2026-10-28 22:49 PT
-Universe (Total Market),OK,755,"offline mode, used cache",2026-10-29 11:19 IST · 2026-10-28 22:49 PT
-Universe (NSE equity list),OK,2618,reused cache,2026-10-29 11:19 IST · 2026-10-28 22:49 PT
-Universe (Other NSE),OK,1870,NSE shares that are not in the index lists above,2026-10-29 11:19 IST · 2026-10-28 22:49 PT
-Universe (SME),OK,,switch is off,2026-10-29 11:19 IST · 2026-10-28 22:49 PT
-Universe (BSE only),OK,1684,reused cache,2026-10-29 11:19 IST · 2026-10-28 22:49 PT
-Prices (NSE bhavcopy),OK,2026-10-28,"offline mode, used cache",2026-10-29 11:19 IST · 2026-10-28 22:49 PT
-Fundamentals (Yahoo statements),OK,2026-10-25,"offline mode, used cache",2026-10-29 11:19 IST · 2026-10-28 22:49 PT
-Analyst and profile (Yahoo Finance),OK,2026-10-25,"offline mode, used cache",2026-10-29 11:19 IST · 2026-10-28 22:49 PT
-Earnings dates (Yahoo Finance),OK,2026-10-25,reused cache,2026-10-29 11:19 IST · 2026-10-28 22:49 PT
-Shareholding (NSE),OK,2026-10-25,"offline mode, used cache",2026-10-29 11:19 IST · 2026-10-28 22:49 PT
-Insiders (NSE PIT),CACHED,,saved file has no PIT counts,2026-10-29 11:19 IST · 2026-10-28 22:49 PT
-News headlines (RSS),OK,2026-10-29,"offline mode, used cache",2026-10-29 11:22 IST · 2026-10-28 22:52 PT
-Option walls (NSE),OK,,"offline mode, used cache",2026-10-29 11:22 IST · 2026-10-28 22:52 PT
-Put/call (NSE open interest),OK,,reused cache,2026-10-29 11:22 IST · 2026-10-28 22:52 PT
-FII and DII cash (NSE),OK,,"offline mode, used cache",2026-10-29 11:22 IST · 2026-10-28 22:52 PT
-FII derivatives (NSE participant OI),OK,,reused cache,2026-10-29 11:22 IST · 2026-10-28 22:52 PT
-Macro (World Bank and FRED),OK,,"offline mode, used cache",2026-10-29 11:22 IST · 2026-10-28 22:52 PT
-Backtest,OK,,reused the last test (it rebuilds on the after-close run),2026-10-29 11:22 IST · 2026-10-28 22:52 PT
-Price candles,OK,2026-10-28,"Light rebuild. Prices did not change, so the saved candle files were kept.",2026-10-29 11:23 IST · 2026-10-28 22:53 PT
-Pattern scanners,OK,2026-10-28,"VCP 708, CANSLIM 202, box 165, flag 10, Qullamaggie 85, Marios 144, leaders 106, 52-week 1584. No new downloads.",2026-10-29 11:24 IST · 2026-10-28 22:54 PT
-Buy setups,OK,2026-10-28,"65 chart setups, 5 with a BUY or Not scored yet label. The market check passes when the Nifty 50 or SENSEX is in an uptrend. This desk never places trades.",2026-10-29 11:24 IST · 2026-10-28 22:54 PT
-Sector rotation,OK,2026-10-28,"12 sectors, 4 weekly Leading. Skipped (no price or not enough history): none. Macro: no 10-year or curve file. Oil and gold are not on file. 12 sectors, 3 weekly Leading. Skipped (no price or not enough history): none. Macro: no 10-year or curve file. Oil and gold are not on file.",2026-10-29 11:24 IST · 2026-10-28 22:54 PT
-Financials backfill,OK,2026-10-29T05:49Z,"At 200 statements and 200 shareholding names a run, the first pass of about 4,300 stocks takes well under a day when the free sources answer. Liquid names come first, then the rest of the NSE list, then BSE-only names. A name with no shareholding filing is saved for later in the pass, and a name no source answers for is tried again after a few days, so hard names do not stop the batch.",2026-10-29 11:24 IST · 2026-10-28 22:54 PT
-High volume scanner,OK,2026-10-28,"Session 2026-10-28. 144 stocks at 2x or more of their 50-day average volume, 200 at 1.5x or more. Close over Rs 20 and at least Rs 1 crore traded. Built from the saved daily bars. No new download. Delivery % is not in the saved bars, so that column stays blank.",2026-10-29 11:24 IST · 2026-10-28 22:54 PT
-Column check,PARTIAL,,"A column is blank on every row: scores, market_today, sectors, portfolio, scanner_canslim, scanner_52w, sector_rotation, earnings_heatmap, institutional_13f, insider_trading, macro_screener, sector_macro, historical_pe, high_volume. Blank is missing, not zero.",2026-10-29 11:24 IST · 2026-10-28 22:54 PT
-Light rebuild,OK,,Rescored from the financials and shareholding already on disk. No downloads.,2026-10-29 11:24 IST · 2026-10-28 22:54 PT
+Universe (Nifty 50),OK,50,"offline mode, used cache",2026-10-29 12:48 IST · 2026-10-29 00:18 PT
+Universe (Nifty Next 50),OK,50,"offline mode, used cache",2026-10-29 12:48 IST · 2026-10-29 00:18 PT
+Universe (Nifty Midcap 150),OK,150,"offline mode, used cache",2026-10-29 12:48 IST · 2026-10-29 00:18 PT
+Universe (Smallcap 250),OK,251,"offline mode, used cache",2026-10-29 12:48 IST · 2026-10-29 00:18 PT
+Universe (Microcap 250),OK,254,"offline mode, used cache",2026-10-29 12:48 IST · 2026-10-29 00:18 PT
+Universe (Total Market),OK,755,"offline mode, used cache",2026-10-29 12:48 IST · 2026-10-29 00:18 PT
+Universe (NSE equity list),OK,2618,reused cache,2026-10-29 12:48 IST · 2026-10-29 00:18 PT
+Universe (Other NSE),OK,1870,NSE shares that are not in the index lists above,2026-10-29 12:48 IST · 2026-10-29 00:18 PT
+Universe (SME),OK,,switch is off,2026-10-29 12:48 IST · 2026-10-29 00:18 PT
+Universe (BSE only),OK,1684,reused cache,2026-10-29 12:48 IST · 2026-10-29 00:18 PT
+Prices (NSE bhavcopy),OK,2026-10-28,"offline mode, used cache",2026-10-29 12:48 IST · 2026-10-29 00:18 PT
+Fundamentals (Yahoo statements),OK,2026-10-25,"offline mode, used cache",2026-10-29 12:48 IST · 2026-10-29 00:18 PT
+Analyst and profile (Yahoo Finance),OK,2026-10-25,"offline mode, used cache",2026-10-29 12:48 IST · 2026-10-29 00:18 PT
+Earnings dates (Yahoo Finance),OK,2026-10-25,reused cache,2026-10-29 12:48 IST · 2026-10-29 00:18 PT
+Shareholding (NSE),OK,2026-10-25,"offline mode, used cache",2026-10-29 12:48 IST · 2026-10-29 00:18 PT
+Insiders (NSE PIT),CACHED,,saved file has no PIT counts,2026-10-29 12:48 IST · 2026-10-29 00:18 PT
+News headlines (RSS),OK,2026-10-29,"offline mode, used cache",2026-10-29 12:51 IST · 2026-10-29 00:21 PT
+Option walls (NSE),OK,,"offline mode, used cache",2026-10-29 12:51 IST · 2026-10-29 00:21 PT
+Put/call (NSE open interest),OK,,reused cache,2026-10-29 12:51 IST · 2026-10-29 00:21 PT
+FII and DII cash (NSE),OK,,"offline mode, used cache",2026-10-29 12:51 IST · 2026-10-29 00:21 PT
+FII derivatives (NSE participant OI),OK,,reused cache,2026-10-29 12:51 IST · 2026-10-29 00:21 PT
+Macro (World Bank and FRED),OK,,"offline mode, used cache",2026-10-29 12:51 IST · 2026-10-29 00:21 PT
+Backtest,OK,,reused the last test (it rebuilds on the after-close run),2026-10-29 12:51 IST · 2026-10-29 00:21 PT
+Price candles,OK,2026-10-28,"Light rebuild. Prices did not change, so the saved candle files were kept.",2026-10-29 12:51 IST · 2026-10-29 00:21 PT
+Pattern scanners,OK,2026-10-28,"VCP 708, CANSLIM 202, box 165, flag 10, Qullamaggie 85, Marios 144, leaders 106, 52-week 1584. No new downloads.",2026-10-29 12:52 IST · 2026-10-29 00:22 PT
+Buy setups,OK,2026-10-28,"65 chart setups, 5 with a BUY or Not scored yet label. The market check passes when the Nifty 50 or SENSEX is in an uptrend. This desk never places trades.",2026-10-29 12:52 IST · 2026-10-29 00:22 PT
+Sector rotation,OK,2026-10-28,"12 sectors, 4 weekly Leading. Skipped (no price or not enough history): none. Macro: no 10-year or curve file. Oil and gold are not on file. 12 sectors, 3 weekly Leading. Skipped (no price or not enough history): none. Macro: no 10-year or curve file. Oil and gold are not on file.",2026-10-29 12:53 IST · 2026-10-29 00:23 PT
+Financials backfill,OK,2026-10-29T07:18Z,"At 200 statements and 200 shareholding names a run, the first pass of about 4,300 stocks takes well under a day when the free sources answer. Liquid names come first, then the rest of the NSE list, then BSE-only names. A name with no shareholding filing is saved for later in the pass, and a name no source answers for is tried again after a few days, so hard names do not stop the batch.",2026-10-29 12:53 IST · 2026-10-29 00:23 PT
+High volume scanner,OK,2026-10-28,"Session 2026-10-28. 144 stocks at 2x or more of their 50-day average volume, 200 at 1.5x or more. Close over Rs 20 and at least Rs 1 crore traded. Built from the saved daily bars. No new download. Delivery % is not in the saved bars, so that column stays blank.",2026-10-29 12:53 IST · 2026-10-29 00:23 PT
+Column check,PARTIAL,,"A column is blank on every row: scores, market_today, sectors, portfolio, scanner_canslim, scanner_52w, sector_rotation, earnings_heatmap, institutional_13f, insider_trading, macro_screener, sector_macro, historical_pe, high_volume. Blank is missing, not zero.",2026-10-29 12:53 IST · 2026-10-29 00:23 PT
+Light rebuild,OK,,Rescored from the financials and shareholding already on disk. No downloads.,2026-10-29 12:53 IST · 2026-10-29 00:23 PT
