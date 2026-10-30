@@ -7,15 +7,16 @@
   "DUMMYINXGN": "2026-11-01",
   "DVL": "2026-10-27",
   "DYNPRO": "2026-10-27",
-  "TEAM24": "2026-10-31",
+  "TEAM24": "2026-11-01",
   "KHAZANCHI": "2026-10-29",
   "SUDARSHAN": "2026-10-28",
-  "TAG": "2026-10-31",
+  "TAG": "2026-11-01",
   "BONDADA": "2026-10-30",
   "PHARMAIETF": "2026-11-01",
-  "SBIDEFETF": "2026-10-31",
-  "JUBLPHARMA": "2026-10-31",
-  "ABCAPITAL": "2026-10-31"
+  "SBIDEFETF": "2026-11-01",
+  "JUBLPHARMA": "2026-11-01",
+  "ABCAPITAL": "2026-11-01",
+  "CLEAN": "2026-11-01"
  },
  "shareholding_retry_after": {
   "08AGG": "2026-10-27",
@@ -34,8 +35,8 @@
   "ABSLBANETF": "2026-10-27",
   "ABSLNN50ET": "2026-10-27"
  },
- "last_batch_at": "2026-10-30T18:45Z",
- "last_statements_ok": 1,
+ "last_batch_at": "2026-10-30T19:36Z",
+ "last_statements_ok": 0,
  "last_statements_fail": 6,
  "last_shareholding_ok": 67,
  "last_shareholding_fail": 0,
