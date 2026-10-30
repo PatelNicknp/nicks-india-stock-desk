@@ -2433,7 +2433,7 @@ KAMDHENU,Earnings,Latest earnings vs estimate,1,plus 1,,,
 KAMDHENU,Sector,"Sector vs S&P 500, 3 months",0,zero,1.69,,
 NTPC,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
 NTPC,Technical,Oscillator (RSI-14),1,plus 1,46.5,,
-NTPC,Financials,Forward P/E (lower is better),1,plus 1,10.902384,14.968644840103778,1.0
+NTPC,Financials,Forward P/E (lower is better),1,plus 1,11.351042,14.968644840103778,1.0
 NTPC,Financials,Trailing P/E (lower is better),1,plus 1,10.489864864864865,14.968644840103778,1.0
 NTPC,Financials,Price / sales (lower is better),1,plus 1,1.557558253691933,1.705409310941027,1.0
 NTPC,Financials,Debt / equity (lower is better),1,plus 1,1.3338436634662014,1.4501325086062582,-1.0
@@ -15329,7 +15329,7 @@ MULTIBASE,Earnings,Latest earnings vs estimate,-1,minus 1,,,
 MULTIBASE,Sector,"Sector vs S&P 500, 3 months",0,zero,-7.79,,
 MUTHOOTFIN,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
 MUTHOOTFIN,Technical,Oscillator (RSI-14),0,zero,40.3,,
-MUTHOOTFIN,Financials,Forward P/E (lower is better),1,plus 1,7.8223825,15.348992135439092,1.0
+MUTHOOTFIN,Financials,Forward P/E (lower is better),1,plus 1,7.5451484,15.348992135439092,1.0
 MUTHOOTFIN,Financials,Trailing P/E (lower is better),1,plus 1,8.814953402993504,15.348992135439092,1.0
 MUTHOOTFIN,Financials,Price / sales (lower is better),1,plus 1,4.672633075644722,6.799221647453634,1.0
 MUTHOOTFIN,Financials,Debt / equity (lower is better),-1,minus 1,4.0002764659226875,2.874971976244359,-1.0
