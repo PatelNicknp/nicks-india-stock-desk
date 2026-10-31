@@ -7215,22 +7215,6 @@ VIKRAMTH,Sentiment,Institutional 13F trend,0,zero,,,
 VIKRAMTH,Sentiment,Insider buys vs sells,,n/a,,,
 VIKRAMTH,Earnings,Latest earnings vs estimate,1,plus 1,,,
 VIKRAMTH,Sector,"Sector vs S&P 500, 3 months",1,plus 1,66.37,,
-WONDERLA,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
-WONDERLA,Technical,Oscillator (RSI-14),0,zero,44.8,,
-WONDERLA,Financials,Forward P/E (lower is better),1,plus 1,19.447289,30.845425814376625,0.0
-WONDERLA,Financials,Trailing P/E (lower is better),0,zero,30.40650406504065,30.845425814376625,-1.0
-WONDERLA,Financials,Price / sales (lower is better),1,plus 1,5.225048054865744,9.45725982991416,-1.0
-WONDERLA,Financials,Debt / equity (lower is better),1,plus 1,0.003478775379797848,0.005158090986672911,1.0
-WONDERLA,Financials,Price / free cash flow (lower is better),,n/a,,,
-WONDERLA,Financials,Revenue growth (higher is better),1,plus 1,13.02,3.67,1.0
-WONDERLA,Financials,EPS growth (higher is better),1,plus 1,-30.84,-13.82,-1.0
-WONDERLA,Financials,Return on equity (higher is better),-1,minus 1,5.67,12.15,-1.0
-WONDERLA,Financials,Dividend yield (higher is better),1,plus 1,0.41,0.2,1.0
-WONDERLA,Sentiment,Analyst rating,,n/a,,,
-WONDERLA,Sentiment,Institutional 13F trend,0,zero,,,
-WONDERLA,Sentiment,Insider buys vs sells,,n/a,,,
-WONDERLA,Earnings,Latest earnings vs estimate,1,plus 1,,,
-WONDERLA,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,9.7,,
 AARTISURF,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
 AARTISURF,Technical,Oscillator (RSI-14),0,zero,39.9,,
 AARTISURF,Financials,Forward P/E (lower is better),,n/a,,34.281508061028795,
@@ -10847,6 +10831,22 @@ VEEDOL,Sentiment,Institutional 13F trend,0,zero,,,
 VEEDOL,Sentiment,Insider buys vs sells,,n/a,,,
 VEEDOL,Earnings,Latest earnings vs estimate,-1,minus 1,,,
 VEEDOL,Sector,"Sector vs S&P 500, 3 months",0,zero,0.35,,
+WONDERLA,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
+WONDERLA,Technical,Oscillator (RSI-14),0,zero,44.8,,
+WONDERLA,Financials,Forward P/E (lower is better),1,plus 1,19.447289,30.845425814376625,0.0
+WONDERLA,Financials,Trailing P/E (lower is better),0,zero,30.40650406504065,30.845425814376625,-1.0
+WONDERLA,Financials,Price / sales (lower is better),1,plus 1,5.225048054865744,9.45725982991416,-1.0
+WONDERLA,Financials,Debt / equity (lower is better),1,plus 1,0.003478775379797848,0.005158090986672911,1.0
+WONDERLA,Financials,Price / free cash flow (lower is better),,n/a,,,
+WONDERLA,Financials,Revenue growth (higher is better),1,plus 1,13.02,3.67,1.0
+WONDERLA,Financials,EPS growth (higher is better),1,plus 1,-30.84,-13.82,-1.0
+WONDERLA,Financials,Return on equity (higher is better),-1,minus 1,5.67,12.15,-1.0
+WONDERLA,Financials,Dividend yield (higher is better),1,plus 1,0.41,0.2,1.0
+WONDERLA,Sentiment,Analyst rating,,n/a,,,
+WONDERLA,Sentiment,Institutional 13F trend,-1,minus 1,,,
+WONDERLA,Sentiment,Insider buys vs sells,,n/a,,,
+WONDERLA,Earnings,Latest earnings vs estimate,1,plus 1,,,
+WONDERLA,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,9.7,,
 ACCEL,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
 ACCEL,Technical,Oscillator (RSI-14),-1,minus 1,28.5,,
 ACCEL,Financials,Forward P/E (lower is better),,n/a,,46.97266081871345,
