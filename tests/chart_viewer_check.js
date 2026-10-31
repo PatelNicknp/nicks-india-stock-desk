@@ -78,24 +78,57 @@ async function viewState(page) {
   });
 }
 
-// The first view fills the width: the first bar of the range at the left edge and the last bar
-// about 8 bars from the right edge, not squeezed against the right.
-async function checkFill(page, name, tag, wantShown) {
-  await page.waitForTimeout(400);
-  const f = await page.evaluate(() => {
+// Where the newest candle should land (the US rule): just left of the Why box, so the box does
+// not cover the last candles. The empty space on the right is the box width plus 14 pixels, or
+// 3 bars when the box is hidden. The first bar of the range sits at the left edge.
+async function lastCandle(page) {
+  return page.evaluate(() => {
     const st = document.getElementById("cvstage")._cv;
     const ts = st.chart.timeScale();
     const r = ts.getVisibleLogicalRange();
     const first = Math.max(0, Math.ceil(r.from));
     const n = st.bars.length;
     const sp = ts.options().barSpacing;
-    return { w: ts.width(), sp, from: r.from, to: r.to, first, x0: ts.logicalToCoordinate(first), xl: ts.logicalToCoordinate(n - 1), shown: n - first };
+    const w = ts.width();
+    const box = document.getElementById("cvreason");
+    const shown = box && !box.hidden;
+    let B = shown ? box.offsetWidth + 14 : 0;
+    if (shown && box.classList.contains("open")) B = Math.min(B, 260);
+    if (B && w - B < w * 0.35) B = w * 0.65;
+    const xl = ts.logicalToCoordinate(n - 1);
+    const host = document.getElementById("cvhost").getBoundingClientRect();
+    const br = shown ? box.getBoundingClientRect() : null;
+    return { ticker: document.getElementById("cvstage").dataset.ticker, w, sp, from: r.from, to: r.to, first,
+      x0: ts.logicalToCoordinate(first), xl, gap: w - xl, want: B ? Math.max(B, 3 * sp) : 3 * sp,
+      pageX: host.left + xl, boxLeft: br ? br.left : null, shownBars: n - first };
   });
+}
+async function checkFill(page, name, tag, wantShown) {
+  await page.waitForTimeout(400);
+  const f = await lastCandle(page);
   const bad = [];
   const tol = Math.max(6, f.sp * 1.5);
   if (!(f.x0 < tol)) bad.push(name + " " + tag + ": first bar is not at the left edge " + JSON.stringify(f));
-  if (!(Math.abs(f.w - 8 * f.sp - f.xl) < tol)) bad.push(name + " " + tag + ": last bar is not 8 bars from the right edge " + JSON.stringify(f));
-  if (wantShown !== false && !(f.shown > 40 && f.shown < 160)) bad.push(name + " " + tag + ": first view shows " + f.shown + " bars " + JSON.stringify(f));
+  if (!(Math.abs(f.gap - f.want) < tol)) bad.push(name + " " + tag + ": last candle is not just left of the Why box (US rule) " + JSON.stringify(f));
+  if (f.boxLeft != null && !(f.pageX < f.boxLeft)) bad.push(name + " " + tag + ": Why box covers the last candle " + JSON.stringify(f));
+  if (wantShown !== false && !(f.shownBars > 40 && f.shownBars < 160)) bad.push(name + " " + tag + ": first view shows " + f.shownBars + " bars " + JSON.stringify(f));
+  return bad;
+}
+// The newest candle lands in the same screen spot on 3 charts in a row.
+async function checkSameSpot(page, name) {
+  const bad = [];
+  const spots = [];
+  for (let k = 0; k < 3; k++) {
+    if (k) { await page.click("#cvnext"); await waitOk(page); }
+    bad.push(...(await checkFill(page, name, "chart " + (k + 1), false)));
+    spots.push(await lastCandle(page));
+  }
+  const xs = spots.map((f) => f.pageX);
+  const tol = Math.max(8, Math.max(...spots.map((f) => f.sp)) * 1.5);
+  if (Math.max(...xs) - Math.min(...xs) > tol) bad.push(name + ": newest candle moves between charts " + JSON.stringify(spots.map((f) => [f.ticker, Math.round(f.pageX), Math.round(f.w)])));
+  if (new Set(spots.map((f) => f.ticker)).size !== 3) bad.push(name + ": next did not change the chart " + JSON.stringify(spots.map((f) => f.ticker)));
+  await page.evaluate(() => document.getElementById("cvstage")._cv.go(-2));
+  await waitOk(page);
   return bad;
 }
 
@@ -168,15 +201,20 @@ async function checkTouch(page, ctx, name) {
   } else if (c1.i === c0.i) bad.push(name + ": swipe on a chip bar that fits should change the chart");
   await page.evaluate(() => { document.getElementById("cvchips").scrollLeft = 0; });
   // Range chips.
+  const pre = await viewState(page);
   await page.click('[data-chip="rall"]');
   await page.waitForTimeout(200);
   const all = await viewState(page);
-  if (!(all.from <= 0.5)) bad.push(name + ": All chip did not show the whole history " + JSON.stringify(all));
+  // All shows as much of the saved history as fits (the whole of it on a tablet), with the newest
+  // candle in the same spot left of the Why box.
+  if (!(all.from < pre.from - 100)) bad.push(name + ": All chip did not show more history " + JSON.stringify([pre, all]));
+  if (name.indexOf("ipad") === 0 && !(all.from <= 0.5)) bad.push(name + ": All chip did not show the whole history " + JSON.stringify(all));
+  bad.push(...(await checkFill(page, name, "All chip", false)).filter((t) => t.indexOf("left edge") < 0));
   await page.click('[data-chip="r3"]');
   await page.waitForTimeout(200);
   const m3 = await viewState(page);
   bad.push(...(await checkFill(page, name, "3M chip", false)));
-  if (!(m3.to - m3.from < 90 && m3.from > 1)) bad.push(name + ": 3M chip range " + JSON.stringify(m3));
+  if (!(m3.from > 600 && m3.from < 710)) bad.push(name + ": 3M chip range " + JSON.stringify(m3));
   // Drag chip: back to Drag: next chart, saved; a slow drag on the chart now changes the chart.
   await page.click('[data-chip="drag"]');
   const flip = await page.evaluate(() => ({ text: document.querySelector('[data-chip="drag"]').innerText, saved: localStorage.getItem("desk-cv-drag-pan") }));
@@ -242,6 +280,7 @@ async function check(browser, port, name, device, shotDir) {
   if (!full.on || Math.abs(full.w - full.vw) > 2 || Math.abs(full.h - full.vh) > 2) bad.push(name + ": full screen did not fill " + JSON.stringify(full));
   await waitOk(page);
   bad.push(...(await checkFill(page, name, "full screen")));
+  bad.push(...(await checkSameSpot(page, name)));
 
   const right = await swipe(page, 160);
   await waitOk(page);

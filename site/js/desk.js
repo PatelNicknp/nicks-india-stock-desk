@@ -2176,6 +2176,13 @@
 
   // Looks and works like the US desk's Chart Viewer (site/js/viewer.js there): the same header,
   // chip bar, reason box, swipes and first view, with the India lists, ₹ prices and NSE bars.
+  // How many empty bars to leave on the right so a box of boxPx does not cover the last candles
+  // (same rule as the US desk's padBars). With no box it is 3 bars.
+  function cvPadBars(visibleBars, plotPx, boxPx) {
+    if (!(visibleBars > 0) || !(plotPx > 0) || !(boxPx > 0)) return 3;
+    if (plotPx - boxPx < plotPx * 0.35) boxPx = plotPx * 0.65;
+    return Math.max(3, (boxPx * visibleBars) / (plotPx - boxPx));
+  }
   // Where a touch started: "bar" (the header row, or a chip bar that fits, so a sideways swipe
   // changes the chart), "scroll" (a chip bar wider than the screen: it scrolls and never changes
   // the chart), or "chart" (the chart itself, where only a quick flick changes it).
@@ -2307,12 +2314,15 @@
 
     // ---- First view. The chart holds every saved daily bar, so a drag can go back in time.
     // range_months (or range_months_phone when the chart is under 520 pixels wide), or a range chip,
-    // picks the first view: the first bar of the range on the left edge and the last bar CV_GAP
-    // bars from the right edge. It is set with bar numbers
-    // after the data is in and only once the chart has its real width, and set again when the width
-    // changes (rotation, full screen). If it were set while the chart was still a few pixels wide,
+    // picks the first view: the first bar of the range on the left edge, and on the right just enough
+    // empty bars that the Why box does not cover the last candles, so the newest candle lands just
+    // left of the box, in the same spot on every chart (the US rule). With the box hidden the gap is
+    // 3 bars. It is set with bar numbers
+    // after the data is in and only once the chart has its real width, and set again on every chart,
+    // swipe, resize, range chip and full screen, like the US desk. Opening or closing the Why box
+    // keeps the view. If it were set while the chart was still a few pixels wide,
     // the bars would be packed at the smallest spacing and stay squeezed against the right edge.
-    const CV_GAP = 8;
+    const boxPad = () => (!reasonEl || reasonEl.hidden || !st.chart ? 0 : reasonEl.offsetWidth + 14);
     let viewW = 0;
     const cvRange = (bars, w) => {
       const months = rangePick != null ? rangePick : Math.max(1, w < 520 ? cvOpt("range_months_phone") : cvOpt("range_months"));
@@ -2324,7 +2334,14 @@
         const iso = cut.toISOString().slice(0, 10);
         from = Math.max(0, bars.findIndex((b) => b.date >= iso));
       }
-      try { st.chart.timeScale().setVisibleLogicalRange({ from: from - 0.5, to: last + CV_GAP }); } catch (e) { /* chart is gone */ }
+      const pad = cvPadBars(last - from + 1, w, reasonOpen ? Math.min(boxPad(), 260) : boxPad());
+      let lo = from - 0.5, hi = last + pad;
+      // All on a phone can need bars thinner than the chart allows (0.5 px). Then show as much
+      // history as fits and keep the newest candle in the same spot left of the Why box.
+      const sp = w / (hi - lo);
+      if (sp < 0.5) { hi = last + (pad * sp) / 0.5; lo = hi - w / 0.5; }
+      st.pad = hi - last;
+      try { st.chart.timeScale().setVisibleLogicalRange({ from: lo, to: hi }); } catch (e) { /* chart is gone */ }
     };
     const applyView = () => {
       if (!st.chart || !st.bars.length) return;
@@ -2336,12 +2353,11 @@
       cvRange(st.bars, w);
     };
     st.applyView = applyView;
-    const viewSoon = () => requestAnimationFrame(() => requestAnimationFrame(() => {
-      placeReason();
-      let w = 0;
-      try { w = st.chart ? st.chart.timeScale().width() : 0; } catch (e) { w = 0; }
-      if (Math.abs(w - viewW) > 1) applyView();
-    }));
+    let viewRaf = 0;
+    const viewSoon = () => {
+      cancelAnimationFrame(viewRaf);
+      viewRaf = requestAnimationFrame(() => { viewRaf = requestAnimationFrame(applyView); });
+    };
     if (typeof ResizeObserver !== "undefined") new ResizeObserver(viewSoon).observe(host);
     window.addEventListener("orientationchange", viewSoon);
 
@@ -2371,7 +2387,7 @@
         grid: { vertLines: { color: "#161E2E" }, horzLines: { color: "#161E2E" } },
         crosshair: { mode: LC.CrosshairMode.Magnet },
         rightPriceScale: { borderColor: "#1E293B", scaleMargins: { top: 0.08, bottom: 0.06 } },
-        timeScale: { borderColor: "#1E293B", rightOffset: 4, minBarSpacing: 0.3 },
+        timeScale: { borderColor: "#1E293B", rightOffset: 4 },
       }, panOptions()));
       tvCharts.push(chart);
       st.chart = chart;
