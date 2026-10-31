@@ -79,7 +79,7 @@ def test_help_row():
                  "VCP", "CANSLIM", "Box", "Flag", "Qullamaggie", "Marios", "Episodic Pivot", "Buy setups",
                  "52-week breakouts", "Pullbacks", "Leaders", "High volume", "watchlist",
                  "Drag the chart slowly", "pinch", "flick it fast", "A slow drag never changes the chart",
-                 "top row (ticker, price and counter) always changes the chart", "scrolls the chips", "just left of the Why box", "Drag: move chart", "Drag: next chart", "pinch zoom is off", "chart_viewer.drag_mode_toggle", "every saved daily bar",
+                 "top row (ticker, price and counter) always changes the chart", "scrolls the chips", "just left of the Why box", "stays when you turn the device", "Drag: move chart", "Drag: next chart", "pinch zoom is off", "chart_viewer.drag_mode_toggle", "every saved daily bar",
                  "3M, 6M, 1Y and All", "chart_viewer.range_chips", "chart_viewer.chart_touch_pan"):
         assert word in text, word
     saved = pd.read_csv(os.path.join(ROOT, "data", "help.csv"))
@@ -146,9 +146,10 @@ def test_drag_pans_and_flick_changes_chart():
     assert "horzTouchDrag: dragPan" in block and "pinch: dragPan" in block and "kineticScroll: { touch: false" in block
     assert 'inChart && dragPan && ms > cvOpt("swipe_max_ms")' in block
     assert 'cvOpt("drag_mode_toggle")' in block and "cvSwipeZone(" in block and 'zone === "scroll"' in block
-    assert "let lo = from - 0.5, hi = last + pad;" in block and "setVisibleLogicalRange({ from: lo, to: hi })" in block and "cvPadBars(last - from + 1, w," in block
+    assert "let lo = from - 0.5, hi = last + pad;" in block and "setRange({ from: lo, to: hi })" in block and "cvPadBars(last - from + 1, w," in block
     assert "if (w < 120)" in block and "ResizeObserver(viewSoon)" in block
-    assert "function cvPadBars(" in desk and "const CV_KEEP = 6;" in block
+    assert "function cvPadBars(" in desk
+    assert "const readUserRange = () =>" in block and "userRange = carryRange;" in block and "applyView(true)" in block and "minBarSpacing: 0.3" in block and "const CV_KEEP = 6;" in block
     assert 'stage.addEventListener("touchstart"' in block
     assert 'cvOpt("range_chips")' in block and '"3M"' in block and '"All"' in block
     pages = _read("site", "js", "pages.js")
