@@ -312,7 +312,7 @@
     return colored(v, map[v] || TX, true);
   }
   function setupHtml(v) {
-    const map = { "BROKEN OUT today": UP, READY: AM, WATCHING: MU, "IN TRADE": AC, SELL: DN, HOLD: MU };
+    const map = { "BROKEN OUT today": UP, READY: AM, WATCHING: MU, "IN TRADE": AC, CLOSED: MU, SELL: DN, "SELL 1/3": AM, EXIT: DN, STOPPED: DN, HOLD: MU };
     return colored(v, map[v] || TX);
   }
   function freshHtml(v) {

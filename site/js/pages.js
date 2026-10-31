@@ -1202,25 +1202,48 @@
     },
   });
 
-  const qmStatus = ["READY", "BROKEN OUT today"];
-  const qmCols = [TK, CO, T("index_membership", "Index"), T("status", "Status", "setup"), PR,
-    T("pivot", "Buy point (base high)", "num", { dec: 2 }), T("entry", "Entry", "num", { dec: 2 }),
+  const qmStatus = ["READY", "BROKEN OUT today", "IN TRADE"];
+  const qmHead = [TK, CO, T("index_membership", "Index"), T("status", "Status", "setup"), PR,
+    T("pivot", "Buy point (base high)", "num", { dec: 2 }), T("entry", "Entry (fill)", "num", { dec: 2 }),
     T("stop", "Stop", "num", { dec: 2, tone: "stop" }), T("stop_basis", "Stop from"),
-    T("risk_pct", "Risk %", "pct", { dec: 1, color: false }), T("strength", "Strength", "strengthbar"),
-    T("run_pct", "Run before base %", "pct", { dec: 1, color: false }), T("base_days", "Base days", "num", { dec: 0 }),
-    T("base_range_pct", "Base range %", "pct", { dec: 1, color: false }), T("volume_ratio", "Volume vs 50-day", "volx", { dec: 2 }),
+    T("stop_check", "Stop check"), T("stop_adr", "Stop in ADRs", "num", { dec: 2 }),
+    T("risk_pct", "Risk %", "pct", { dec: 1, color: false }), T("shares", "Shares (0.5% risk)", "num", { dec: 0 }),
+    T("strength", "Strength", "strengthbar"),
+    T("adr_pct", "ADR %", "pct", { dec: 2, color: false }), T("adr_tag", "ADR tag"),
+    T("leader_top_pct", "Return rank, top %", "num", { dec: 1 }), T("leader_window", "Rank on days", "num", { dec: 0 }),
+    T("run_pct", "Run before base %", "pct", { dec: 1, color: false }), T("run_days", "Run days", "num", { dec: 0 }),
+    T("base_days", "Base days", "num", { dec: 0 }), T("base_range_pct", "Base range %", "pct", { dec: 1, color: false }),
+    T("higher_lows", "Higher lows", "flag"), T("dry_up", "Volume dried up", "flag"),
+    T("confirmed_close", "Closed above buy point", "flag"), T("volume_ratio", "Volume vs prior 50-day", "volx", { dec: 2 }),
+    T("volume_flag", "Big volume", "flag")];
+  const qmTail = [T("breakout_date", "Breakout day"), T("days_in_trade", "Days in trade", "num", { dec: 0 }),
+    T("exit_reason", "Closed because"), T("exit_date", "Closed on"),
+    T("market_light", "Market light"), T("earnings_soon", "Results within 5 days", "flag", { yes: "#F59E0B" }),
+    T("traded_value_cr", "20-day value Rs Cr", "num", { dec: 1 }), T("price_band", "Price band"),
     T("freshness", "Data", "fresh")];
+  function qmCards(all) {
+    return card("Broken out today", String(countWhere(all, (r) => r.status === "BROKEN OUT today"))) +
+      card("Ready", String(countWhere(all, (r) => r.status === "READY"))) +
+      card("In a trade", String(countWhere(all, (r) => r.status === "IN TRADE"))) +
+      card("Closed", String(countWhere(all, (r) => r.status === "CLOSED"))) +
+      card("Watching", String(countWhere(all, (r) => r.status === "WATCHING")));
+  }
+  function qmLines(row) {
+    const lines = setupLines(row).filter((l) => l.label.indexOf("Target") !== 0);
+    if (!row) return lines;
+    if (D.num(row.trail) != null) lines.push({ value: D.num(row.trail), color: "#7C9CFF", label: "Trail " + (row.trail_with || "") + " " + D.fmt(row.trail, 2) });
+    return lines;
+  }
   const qullamaggie = patternPage({
     file: "scanner_qullamaggie.csv",
     caption: "",
-    filters: { status: true, statusDefault: qmStatus, index: true, sector: true, ticker: true },
-    columns: qmCols,
-    price: setupLines,
-    cards(all) {
-      return card("Broken out today", String(countWhere(all, (r) => r.status === "BROKEN OUT today"))) +
-        card("Ready", String(countWhere(all, (r) => r.status === "READY"))) +
-        card("Watching", String(countWhere(all, (r) => r.status === "WATCHING")));
-    },
+    filters: { status: true, statusDefault: qmStatus, index: true, sector: true, ticker: true,
+      single: [{ key: "stop_check", label: "Stop check" }, { key: "trail_signal", label: "Trail signal" }] },
+    columns: qmHead.concat([T("partial_flag", "Sell 1/3 to 1/2"), T("trail_with", "Trail with"),
+      T("trail", "Trail line", "num", { dec: 2 }), T("trail_signal", "Trail signal", "setup")], qmTail),
+    price: qmLines,
+    priceSub: "Buy point, stop, and trail line",
+    cards: qmCards,
     detail(row) {
       return '<div class="panel pad"><div class="ptitle">Why this name</div>' + whyLines(row ? [row] : []) + "</div>";
     },
@@ -1229,32 +1252,27 @@
   function mariosLines(row) {
     const lines = setupLines(row).filter((l) => l.label.indexOf("Target") !== 0);
     if (!row) return lines;
-    if (D.num(row.target_low) != null) lines.push({ value: D.num(row.target_low), color: "#22C55E", label: "Sell part from " + D.fmt(row.target_low, 2) });
-    if (D.num(row.target_high) != null) lines.push({ value: D.num(row.target_high), color: "#22C55E", label: "to " + D.fmt(row.target_high, 2) });
-    if (D.num(row.trail) != null) lines.push({ value: D.num(row.trail), color: "#7C9CFF", label: "Trail " + (row.trail_with || "") + " " + D.fmt(row.trail, 2) });
+    if (D.num(row.target_low) != null) lines.push({ value: D.num(row.target_low), color: "#22C55E", label: "Sell part at " + D.fmt(row.target_low, 2) + " (2.5 ADR)" });
+    if (D.num(row.target_high) != null) lines.push({ value: D.num(row.target_high), color: "#22C55E", label: "3 ADR " + D.fmt(row.target_high, 2) });
+    if (D.num(row.trail10) != null) lines.push({ value: D.num(row.trail10), color: "#7C9CFF", label: "10-day " + D.fmt(row.trail10, 2) });
+    if (D.num(row.trail20) != null) lines.push({ value: D.num(row.trail20), color: "#A78BFA", label: "20-day " + D.fmt(row.trail20, 2) });
     return lines;
   }
   const marios = patternPage({
     file: "scanner_marios.csv",
     caption: "",
-    filters: { status: true, statusDefault: ["READY", "BROKEN OUT today", "IN TRADE"], index: true, sector: true, ticker: true,
-      single: [{ key: "trail_signal", label: "Trail signal" }] },
-    columns: [TK, CO, T("status", "Status", "setup"), PR,
-      T("pivot", "Buy point (base high)", "num", { dec: 2 }), T("entry", "Entry", "num", { dec: 2 }),
-      T("stop", "Stop", "num", { dec: 2, tone: "stop" }), T("risk_pct", "Risk %", "pct", { dec: 1, color: false }),
-      T("adr_pct", "ADR %", "pct", { dec: 2, color: false }),
-      T("target_low", "Sell part from", "num", { dec: 2, tone: "target" }), T("target_high", "Sell part to", "num", { dec: 2, tone: "target" }),
-      T("trail_with", "Trail with"), T("trail", "Trail line", "num", { dec: 2 }),
-      T("partial_hit", "Part target hit"), T("trail_signal", "Trail signal", "setup"),
-      T("breakout_date", "Breakout day"), T("strength", "Strength", "strengthbar"), T("freshness", "Data", "fresh")],
+    filters: { status: true, statusDefault: qmStatus, index: true, sector: true, ticker: true,
+      single: [{ key: "stop_check", label: "Stop check" }, { key: "trail_signal", label: "Trail signal" }] },
+    columns: qmHead.concat([T("weak_close", "Weak day-1 close", "flag", { yes: "#EF4444" }),
+      T("target_low", "Sell 1/4 to 1/3 at (2.5 ADR)", "num", { dec: 2, tone: "target" }),
+      T("target_high", "3 ADR level", "num", { dec: 2, tone: "target" }),
+      T("partial_hit", "Partial hit", "flag"), T("partial_date", "Partial day"),
+      T("trail10", "10-day line", "num", { dec: 2 }), T("trail20", "20-day line", "num", { dec: 2 }),
+      T("trail_signal", "Trail signal", "setup"), T("sold_third_date", "Sold 1/3 of rest on")], qmTail),
     price: mariosLines,
-    priceSub: "Buy point, stop, sell-part zone, and trail line",
+    priceSub: "Buy point, stop, sell-part levels, and the 10 and 20-day lines",
     cards(all) {
-      return card("Broken out today", String(countWhere(all, (r) => r.status === "BROKEN OUT today"))) +
-        card("Ready", String(countWhere(all, (r) => r.status === "READY"))) +
-        card("Watching", String(countWhere(all, (r) => r.status === "WATCHING"))) +
-        card("In a trade", String(countWhere(all, (r) => r.status === "IN TRADE")),
-          String(countWhere(all, (r) => r.status === "IN TRADE" && r.trail_signal === "SELL")) + " under the trail (SELL)");
+      return qmCards(all) + card("Sell 1/3 today", String(countWhere(all, (r) => r.trail_signal === "SELL 1/3")));
     },
     detail(row) {
       return '<div class="panel pad"><div class="ptitle">Why this name</div>' + whyLines(row ? [row] : []) + "</div>";
@@ -3105,16 +3123,20 @@
       "A breakout is a close above the flag high on volume above 1.5 times the 50-day average.",
     ] },
     qullamaggie: { title: SCAN, note: LIQUID_LINE, lines: [
-      "First a big run: a rise of at least 30% from a low to a high in the 1 to 6 months before the base.",
-      "Then a quiet base of 10 to 40 days, no more than 25% from high to low, that gets tighter in its second half. Closes stay above the rising 10-day and 20-day averages most of the time, and both are above the 50-day.",
-      "READY means the close is within 3% under the base high. BROKEN OUT today means today's close went above the base high on volume at least 1.5 times the 50-day average. WATCHING means the base is there but price is lower or volume was light.",
-      "Stop is the low of the breakout day. Before a breakout it is today's low. Risk % is the drop from the entry to the stop.",
+      "Qullamaggie's own rules: buy the top 1 to 2% gainers over 1, 3 or 6 months. ADR (normal daily range) of 3.5 to 5% or more. A 30 to 100% run in 1 to 3 months, then a 2 week to 2 month base with higher lows that rides the 10 and 20-day averages (sometimes the 50). Buy the opening range high. Stop at the low of the day, no wider than one ADR. Sell 1/3 to 1/2 after 3 to 5 days, move the stop to breakeven, then sell the rest on the first close under the 10 or 20-day.",
+      "This page uses daily bars, so some rules are approximations. Leader: top 3% on the 21, 63 or 126-day return across the stocks scanned. Run: 30% or more within the 63 days before the base, rising in 40 days or less. ADR: 20-day average of high divided by low, minus 1, at least 3.5% (5% or more is tagged fast). Price at least Rs 20.",
+      "Base: 10 to 40 days, the lowest low of its second half at or above the first half, at least 70% of closes above the 20-day or every close above the 50-day, and the 10-day above the 20-day with both rising. Desk rules on top: the base is no more than 25% deep, its top is within 10% of the run high, and it starts in the top half of its range. Each one has a switch.",
+      "Entry: BROKEN OUT today means today's high went above the base high (the stand-in for the opening range high). Fill is the open or the base high, whichever is higher. Stop is today's low. If the stop is more than 1 ADR under the fill it says Too wide, skip, and 0.5 ADR or less is A+. READY means the close is within 1 ADR under the base high. Big volume (1.5 times the prior 50 days) only helps the ranking.",
+      "IN TRADE follows each breakout day by day. On day 3 to 5 it says Sell 1/3 to 1/2 and the stop moves to breakeven. Then the first close under the 10-day ends the trade (a switch picks the 20-day). CLOSED shows the reason and the date. Trades are followed for up to 60 sessions.",
+      "Extra columns, not rules: market light (Nifty 50 with Smallcap 250, or SENSEX if Smallcap 250 is not in the cache), results within 5 days, 20-day traded value, a 5% or 10% price band, and shares for 0.5% risk of a Rs 10 lakh account, at most 25% of it.",
     ] },
     marios: { title: SCAN, note: LIQUID_LINE, lines: [
-      "Same entry as the Qullamaggie scan, plus Marios Stamatoudis's way to sell.",
-      "ADR % is how much the stock moves in a normal day, the 20-day average of high divided by low. Sell part of the position between 2.5 and 3 ADRs above the entry. Both prices are shown.",
-      "Trail the rest with the 10-day average if ADR % is 5 or more (a fast mover), or the 20-day average if not.",
-      "IN TRADE means it broke out in the last 20 sessions. It shows if the sell-part zone was reached, and SELL when the close is under the trail line.",
+      "Marios Stamatoudis's own rules: ADR above 2.5% (he prefers 3.5%). Buy the opening range breakout. Stop at the low of the day, less than 1 ATR away. Take partials at 2.5 to 3 ADRs above the entry (ADRs, not R). Move the stop to breakeven after the partial. Trail the rest with the 10, 20 or 50-day average.",
+      "The slides that spread online are Financial Wisdom TV's summary of his method, not his own words.",
+      "This page uses daily bars and the same base and entry checks as the Qullamaggie page, with these changes: ADR at least 2.5% (3.5% or more is marked preferred), the prior run can be up to 126 days before the base, and the last 5 base days must have lower volume than the 50-day average.",
+      "The stop check uses ADR instead of ATR on both pages: more than 1 ADR from the fill to the low is Too wide, skip. A weak day-1 close (under the fill, or less than half the risk above it) is flagged.",
+      "Selling: sell 1/4 to 1/3 when the high reaches the entry plus 2.5 ADRs (the 3 ADR level is shown too), then move the stop to breakeven. A close under the 10-day sells 1/3 of the rest. A close under the 20-day sells the rest and the trade shows as CLOSED with the reason and date.",
+      "Extra columns, not rules: market light, results within 5 days, 20-day traded value, price band, and shares for 0.5% risk of a Rs 10 lakh account, at most 25% of it.",
     ] },
     canslim: { title: SCAN, note: LIQUID_LINE, lines: [
       "William O'Neil's method. It checks earnings growth versus a year ago, how close price is to its 52-week high, and trading volume.",
@@ -3125,7 +3147,7 @@
       "The best names are on both. Use the On VCP and On CANSLIM filters to see only the stocks on both lists.",
     ] },
     buysetups: { title: SCAN, note: LIQUID_LINE, lines: [
-      "The main shortlist. A stock is listed when VCP, Box, Flag, Qullamaggie, Marios or CANSLIM is ready or broke out today, price is above the 50-day and 200-day averages, and the stop is 8% or less away.",
+      "The main shortlist. A stock is listed when VCP, Box, Flag, Qullamaggie, Marios or CANSLIM is ready or broke out today, price is above the 50-day and 200-day averages, and the stop is 8% or less away. Qullamaggie and Marios names marked Too wide, skip are left out.",
       "It is also checked against the company score and the market trend. Show anyway lists the greyed-out ones.",
     ] },
     week52: { title: SCAN, note: LIQUID_LINE, lines: [

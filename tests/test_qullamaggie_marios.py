@@ -1,4 +1,4 @@
-"""Offline checks for the Qullamaggie and Marios breakout scans. Synthetic tapes only."""
+"""Offline checks for the Qullamaggie and Marios breakout scans. Synthetic tapes only, no downloads."""
 import json
 import os
 import sys
@@ -10,102 +10,305 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 import setups  # noqa: E402
 
-PIVOT = 152.0
 
+def _tape(today="breakout", after=None, ready_close=None, bo=None, first_half_low=None):
+    """120 quiet bars near 100, a 50% run in 30 bars, a 20-bar base with higher lows and drying volume, then today.
 
-def _uni(names):
-    return pd.DataFrame([
-        {"ticker": t, "company": t + " Co", "sector": "Industrials", "index_membership": "Midcap 150"}
-        for t in names
-    ])
-
-
-def _panel(frame, ticker="AAA"):
-    return (frame[["close"]].rename(columns={"close": ticker}), frame[["high"]].rename(columns={"high": ticker}),
-            frame[["low"]].rename(columns={"low": ticker}), frame[["volume"]].rename(columns={"volume": ticker}))
-
-
-def _tape(last_close=155.0, last_vol=3_000_000.0, after=None):
-    """100 flat bars, a 50% run over 40 bars, a 30-bar base that tightens, then today.
-
-    after: optional list of (close, high, low) bars appended after today's bar.
+    today: "breakout" (high crosses the base high) or "ready" (closes under it).
+    after: (open, high, low, close) bars added after today.
+    bo: (open_offset, high_offset, low_offset, close_offset) for the breakout bar, relative to the base high.
     """
-    close, high, low = [], [], []
-    for _ in range(100):
-        close.append(100.0); high.append(101.0); low.append(99.0)
-    for px in np.linspace(101, 147, 40):
-        close.append(px); high.append(px + 1.0); low.append(px - 1.0)
-    # Base: first half swings wider, second half is tight and drifts up.
-    for i in range(15):
-        px = 146.0 + i * 0.1
-        close.append(px); high.append(px + 3.0); low.append(px - 5.0)
-    high[141] = PIVOT
-    for i in range(15):
-        px = 147.6 + i * 0.1
-        close.append(px); high.append(px + 0.8); low.append(px - 0.8)
-    close.append(last_close); high.append(last_close + 1.0); low.append(min(last_close, PIVOT) - 2.0)
-    for c, h, l in (after or []):
-        close.append(c); high.append(h); low.append(l)
-    n = len(close)
-    vol = np.full(n, 1_000_000.0)
-    vol[170] = last_vol
-    idx = pd.bdate_range("2025-01-01", periods=n)
-    return pd.DataFrame({"close": close, "high": high, "low": low, "volume": vol}, index=idx)
+    o, h, l, c, v = [], [], [], [], []
+
+    def bar(cl, w, vol=1_000_000.0):
+        c.append(cl); h.append(cl * (1 + w)); l.append(cl * (1 - w)); o.append(cl); v.append(vol)
+
+    for i in range(120):
+        bar(100.0 + 0.5 * np.sin(i), 0.025)
+    for px in np.linspace(101, 150, 30):
+        bar(px, 0.025)
+    for i in range(10):
+        bar(148.0 + i * 0.2, 0.03)
+    for i in range(10):
+        bar(150.0 + i * 0.1, 0.012, vol=600_000.0 if i >= 5 else 1_000_000.0)
+    if first_half_low is not None:
+        l[-15] = first_half_low  # a deep low late in the base, so the second half has the lower low
+    pivot = max(h[-24:])
+    if today == "breakout":
+        oo, hh, ll, cc = bo or (0.5, 6.0, -1.0, 5.0)
+        o.append(pivot + oo); h.append(pivot + hh); l.append(pivot + ll); c.append(pivot + cc); v.append(2_000_000.0)
+    else:
+        cl = ready_close if ready_close is not None else pivot - 2.0
+        o.append(cl); h.append(min(cl + 1.0, pivot - 0.01)); l.append(cl - 1.0); c.append(cl); v.append(700_000.0)
+    for bar_ in (after or []):
+        o.append(bar_[0]); h.append(bar_[1]); l.append(bar_[2]); c.append(bar_[3]); v.append(1_000_000.0)
+    idx = pd.bdate_range("2025-01-01", periods=len(c))
+    return pd.DataFrame({"open": o, "high": h, "low": l, "close": c, "volume": v}, index=idx), pivot
 
 
-def _scan(frame, fn=setups.scan_qullamaggie, cfg=None):
-    c, h, l, v = _panel(frame)
-    return fn(c, h, l, v, _uni(["AAA"]), cfg)
+def _scan(frame, marios=False, cfg=None, others=None, scores=None):
+    names = ["AAA"] + list((others or {}).keys())
+    uni = pd.DataFrame([{"ticker": t, "company": t + " Co", "sector": "Industrials", "index_membership": "Midcap 150"} for t in names])
+
+    def wide(col):
+        d = frame[[col]].rename(columns={col: "AAA"})
+        for t, f in (others or {}).items():
+            d[t] = f[col].reindex(d.index)
+        return d
+    fn = setups.scan_marios if marios else setups.scan_qullamaggie
+    out = fn(wide("close"), wide("high"), wide("low"), wide("volume"), uni, cfg, opn=wide("open"), scores=scores)
+    return out[out["ticker"] == "AAA"] if len(out) else out
 
 
-def test_breakout_detected_on_big_volume():
-    out = _scan(_tape())
-    assert len(out) == 1
-    row = out.iloc[0]
+def _row(frame, **kw):
+    out = _scan(frame, **kw)
+    assert len(out) == 1, out
+    return out.iloc[0]
+
+
+# Entry
+
+def test_day_high_trigger_fill_and_stop():
+    frame, pivot = _tape()
+    row = _row(frame)
     assert row["status"] == "BROKEN OUT today"
-    assert float(row["pivot"]) == PIVOT
-    # Stop is the breakout-day low, entry is the breakout close, risk shown.
-    assert float(row["stop"]) == PIVOT - 2.0
-    assert float(row["entry"]) == 155.0
-    assert row["stop_basis"] == "breakout-day low"
-    assert abs(float(row["risk_pct"]) - round((155.0 - 150.0) / 155.0 * 100, 1)) < 1e-9
-    assert float(row["run_pct"]) >= 30
-    assert 10 <= int(row["base_days"]) <= 40
-    assert "breakout-day low" in row["reason"]
+    assert abs(float(row["pivot"]) - round(pivot, 2)) < 1e-9
+    assert abs(float(row["entry"]) - round(pivot + 0.5, 2)) < 1e-9  # opened above the base high, so fill is the open
+    assert abs(float(row["stop"]) - round(pivot - 1.0, 2)) < 1e-9  # the day's low
+    assert row["confirmed_close"] == "yes"
+    assert row["volume_flag"] == "yes"
+    assert row["higher_lows"] == "yes"
 
 
-def test_no_breakout_on_low_volume():
-    out = _scan(_tape(last_vol=1_100_000.0))
-    row = out.iloc[0]
-    assert row["status"] == "WATCHING"
-    assert "volume was not 1.5 times" in row["reason"]
+def test_fill_is_the_pivot_when_it_opens_below():
+    frame, pivot = _tape(bo=(-2.0, 3.0, -2.5, -0.5))
+    row = _row(frame)
+    assert row["status"] == "BROKEN OUT today"
+    assert abs(float(row["entry"]) - round(pivot, 2)) < 1e-9
+    assert row["confirmed_close"] == "no"
 
 
-def test_ready_under_the_pivot_uses_todays_low():
-    out = _scan(_tape(last_close=150.0, last_vol=900_000.0))
-    row = out.iloc[0]
+def test_no_trigger_when_yesterday_already_crossed():
+    frame, pivot = _tape(after=[(0, 0, 0, 0)])
+    # Make the new bar another day above the pivot: yesterday's high was already over it.
+    frame.iloc[-1] = [pivot + 6.0, pivot + 8.0, pivot + 5.5, pivot + 7.5, 1_000_000.0]
+    row = _row(frame)
+    assert row["status"] != "BROKEN OUT today"
+
+
+def test_low_volume_breakout_still_counts_but_ranks_lower():
+    frame, _ = _tape()
+    frame.iloc[-1, frame.columns.get_loc("volume")] = 900_000.0
+    row = _row(frame)
+    assert row["status"] == "BROKEN OUT today"
+    assert row["volume_flag"] == "no"
+    assert float(row["strength"]) < float(_row(_tape()[0])["strength"])
+
+
+def test_ready_within_one_adr():
+    frame, pivot = _tape(today="ready", ready_close=None)
+    row = _row(frame)
     assert row["status"] == "READY"
-    assert float(row["entry"]) == PIVOT
-    assert float(row["stop"]) == 148.0
-    assert row["stop_basis"] == "today's low"
-    assert "Stop is today's low" in row["reason"]
+    frame, pivot = _tape(today="ready", ready_close=pivot * 0.88)
+    out = _scan(frame)
+    assert len(out) == 0 or out.iloc[0]["status"] != "READY"
 
 
-def test_no_run_means_no_setup():
-    frame = _tape()
-    frame.iloc[100:140, frame.columns.get_loc("close")] = 140.0
-    frame.iloc[100:140, frame.columns.get_loc("high")] = 141.0
-    frame.iloc[100:140, frame.columns.get_loc("low")] = 139.0
-    frame.iloc[:100, frame.columns.get_loc("low")] = 135.0
-    frame.iloc[:100, frame.columns.get_loc("close")] = 136.0
-    frame.iloc[:100, frame.columns.get_loc("high")] = 137.0
-    assert len(_scan(frame)) == 0
+# Gates
+
+def test_higher_lows_rule_and_switch():
+    frame, _ = _tape(first_half_low=None)
+    assert _row(frame)["status"] == "BROKEN OUT today"
+    frame, _ = _tape(first_half_low=None)
+    # A lower low in the second half of the base breaks the rule.
+    frame.iloc[-5, frame.columns.get_loc("low")] = 140.0
+    out = _scan(frame)
+    assert len(out) == 0 or out.iloc[0]["status"] != "BROKEN OUT today"
+    off = {"qullamaggie": {"higher_lows": False, "base_range_cap": False, "base_start_upper": False, "tighten_check": False}}
+    assert _row(frame, cfg=off)["status"] == "BROKEN OUT today"
 
 
-def test_config_numbers_are_used():
-    cfg = {"qullamaggie": {"run_min_pct": 80}}
-    assert len(_scan(_tape(), cfg=cfg)) == 0
+def test_leader_gate_needs_top_three_percent():
+    frame, _ = _tape()
+    # 40 stocks that all ran harder push AAA out of the top 3% on every window.
+    others = {}
+    for i in range(40):
+        f = frame.copy()
+        f[["open", "high", "low", "close"]] = f[["open", "high", "low", "close"]].mul(np.linspace(1, 3 + i * 0.01, len(f)), axis=0)
+        others["S%02d" % i] = f
+    assert len(_scan(frame, others=others)) == 0
+    row = _row(frame, others=others, cfg={"qullamaggie": {"leader_gate": False}})
+    assert row["status"] == "BROKEN OUT today"
+    assert float(row["leader_top_pct"]) > 3.0
 
+
+def test_adr_and_price_gates():
+    frame, _ = _tape()
+    assert len(_scan(frame, cfg={"qullamaggie": {"adr_min_pct": 9.0}})) == 0
+    assert len(_scan(frame, cfg={"qullamaggie": {"min_price": 500.0}})) == 0
+    assert len(_scan(frame, cfg={"qullamaggie": {"min_price": 500.0, "price_filter": False}})) == 1
+
+
+def test_traded_value_switch_defaults_off():
+    frame, _ = _tape()
+    row = _row(frame)
+    assert float(row["traded_value_cr"]) < 100
+    assert len(_scan(frame, cfg={"qullamaggie": {"traded_value_gate": True, "min_traded_value_cr": 100}})) == 0
+
+
+def test_prior_run_needed():
+    frame, _ = _tape()
+    assert len(_scan(frame, cfg={"qullamaggie": {"run_min_pct": 90}})) == 0
+
+
+def test_desk_base_rules_are_switches():
+    frame, _ = _tape()
+    assert len(_scan(frame, cfg={"qullamaggie": {"base_max_range_pct": 1.0}})) == 0
+    assert len(_scan(frame, cfg={"qullamaggie": {"base_max_range_pct": 1.0, "base_range_cap": False}})) == 1
+
+
+# Stop cap
+
+def test_stop_cap_too_wide_and_a_plus():
+    frame, _ = _tape()
+    assert _row(frame)["stop_check"] == "A+"
+    wide, pivot = _tape(bo=(0.5, 6.0, -12.0, 5.0))
+    row = _row(wide)
+    assert row["status"] == "BROKEN OUT today"
+    assert row["stop_check"] == "Too wide, skip"
+    assert float(row["stop_adr"]) > 1.0
+    assert _row(wide, cfg={"qullamaggie": {"stop_cap": False}})["stop_check"] == "OK"
+
+
+def test_too_wide_is_left_out_of_buy_setups():
+    empty = pd.DataFrame()
+
+    def rec(t, check):
+        return {"ticker": t, "status": "BROKEN OUT today", "pivot": 100.0, "stop": 97.0, "strength": 60, "stop_check": check,
+                "company": t, "sector": "Tech", "index_membership": "Nifty 50", "price": 101, "price_as_of": "2026-10-29"}
+    qm = pd.DataFrame([rec("GOOD", "A+"), rec("WIDE", "Too wide, skip"), dict(rec("OLD", "OK"), status="IN TRADE")])
+    scores = pd.DataFrame([{"ticker": t, "verdict": "BUY", "score": 9} for t in ("GOOD", "WIDE", "OLD")])
+    out = setups.build_buy_setups(empty, empty, empty, empty, scores, sma_ok={"GOOD": True, "WIDE": True, "OLD": True},
+                                  market={"spy": True, "qqq": True}, qullamaggie=qm, marios=qm)
+    assert list(out["ticker"]) == ["GOOD"]
+    assert float(out.iloc[0]["risk_pct"]) <= 8.0
+
+
+# Exits and the trade record
+
+def _qm_after(pivot, closes):
+    return [(c, c + 1.0, c - 1.0, c) for c in closes]
+
+
+def test_qullamaggie_partial_breakeven_then_trail_exit():
+    _, pivot = _tape()
+    frame, _ = _tape(after=_qm_after(pivot, [pivot + 6, pivot + 8, pivot + 10]))
+    row = _row(frame)
+    assert row["status"] == "IN TRADE"
+    assert row["partial_flag"] == "Sell 1/3 to 1/2"
+    assert row["stop_basis"] == "breakeven"
+    assert abs(float(row["stop"]) - float(row["entry"])) < 1e-9
+    down = [pivot + 6, pivot + 8, pivot + 10, pivot + 11, pivot + 12, pivot + 4]
+    frame, _ = _tape(after=[(c, c + 1.0, c - 0.5, c) for c in down])
+    row = _row(frame)
+    assert row["status"] == "CLOSED"
+    assert "10-day" in row["exit_reason"]
+    assert row["exit_date"] == str(frame.index[-1].date())
+
+
+def _between_10_and_20(after):
+    """A close that lands under the 10-day but above the 20-day on the new bar."""
+    for c in np.linspace(175, 140, 351):
+        frame, _ = _tape(after=after + [(c, c + 0.5, c - 0.2, c)])
+        s10 = frame["close"].rolling(10).mean().iloc[-1]
+        s20 = frame["close"].rolling(20).mean().iloc[-1]
+        if s20 < c < s10:
+            return frame
+    raise AssertionError("no close between the averages")
+
+
+def test_qullamaggie_sma20_switch():
+    up = [(c, c + 1.0, c - 0.5, c) for c in (160, 162, 164, 165, 166, 168, 170)]
+    frame = _between_10_and_20(up)
+    row = _row(frame)
+    assert row["status"] == "CLOSED"
+    assert "10-day" in row["exit_reason"]
+    row = _row(frame, cfg={"qullamaggie": {"trail_use_sma20": True}})
+    assert row["status"] == "IN TRADE"
+    assert row["trail_with"] == "20-day"
+
+
+def test_closed_on_stop_with_reason_and_date():
+    frame, _ = _tape(after=[(157.0, 157.5, 147.0, 149.0)])
+    row = _row(frame)
+    assert row["status"] == "CLOSED"
+    assert "low" in row["exit_reason"]
+    assert row["exit_date"] == str(frame.index[-1].date())
+    assert "CLOSED on" in row["reason"]
+
+
+def test_marios_partial_at_adr_then_ladder():
+    frame, pivot = _tape()
+    b = _row(frame, marios=True)
+    lo, hi = float(b["target_low"]), float(b["target_high"])
+    assert hi > lo > float(b["entry"])
+    up = [(pivot + 6, lo + 1.0, pivot + 5, lo - 1.0)]
+    row = _row(_tape(after=up)[0], marios=True)
+    assert row["status"] == "IN TRADE"
+    assert row["partial_hit"] == "yes"
+    assert row["stop_basis"] == "breakeven"
+    # A close under the 20-day ends the trade.
+    frame3, _ = _tape(after=up + [(pivot + 1, pivot + 1.5, pivot + 0.6, pivot + 0.7), (pivot + 0.7, pivot + 0.8, 140.0, 141.0)])
+    row = _row(frame3, marios=True)
+    assert row["status"] == "CLOSED"
+
+
+def test_marios_sell_third_signal():
+    frame, pivot = _tape()
+    up = [(pivot + 6, pivot + 8, pivot + 5.5, pivot + 7)] + [(c, c + 0.5, c - 0.5, c) for c in np.linspace(pivot + 7, pivot + 12, 8)]
+    f1, _ = _tape(after=up)
+    r1 = _row(f1, marios=True)
+    t10, t20 = float(r1["trail10"]), float(r1["trail20"])
+    assert t10 > t20
+    c = t20 + (t10 - t20) * 0.3
+    f2, _ = _tape(after=up + [(c + 0.3, c + 0.5, max(c - 0.3, float(r1["stop"]) + 0.01), c)])
+    r2 = _row(f2, marios=True)
+    assert r2["status"] == "IN TRADE"
+    assert r2["trail_signal"] == "SELL 1/3"
+    assert r2["sold_third_date"] == str(f2.index[-1].date())
+
+
+def test_marios_weak_day_one_close():
+    frame, pivot = _tape(bo=(0.5, 6.0, -1.0, 0.6))
+    assert _row(frame, marios=True)["weak_close"] == "yes"
+    frame, pivot = _tape()
+    assert _row(frame, marios=True)["weak_close"] == "no"
+
+
+def test_marios_settings_differ():
+    p = setups._marios_cfg(None)
+    q = setups._qm_cfg(None)
+    assert p["adr_min_pct"] == 2.5 and q["adr_min_pct"] == 3.5
+    assert p["run_lookback_max"] == 126 and q["run_lookback_max"] == 63
+    assert p["volume_dry_up_gate"] is True and q["volume_dry_up_gate"] is False
+    assert not hasattr(setups, "marios_trail_len")
+
+
+def test_display_cap():
+    after = [(c, c + 1.0, c - 0.5, c) for c in np.linspace(160, 220, 70)]
+    frame, _ = _tape(after=after)
+    out = _scan(frame)
+    assert len(out) == 0 or out.iloc[0]["status"] not in ("IN TRADE", "CLOSED")
+
+
+def test_track_trades_switch():
+    frame, pivot = _tape(after=[(c, c + 1.0, c - 1.0, c) for c in (160, 162, 164)])
+    assert _row(frame)["status"] == "IN TRADE"
+    out = _scan(frame, cfg={"qullamaggie": {"track_trades": False}})
+    assert len(out) == 0 or out.iloc[0]["status"] != "IN TRADE"
+
+
+# Context columns
 
 def test_adr_target_math():
     high = np.full(20, 105.0)
@@ -116,86 +319,47 @@ def test_adr_target_math():
     assert setups.marios_adr_pct(high[:5], low[:5], 20) is None
 
 
-def test_trail_selection():
-    assert setups.marios_trail_len(5.0, 5.0) == 10
-    assert setups.marios_trail_len(7.2, 5.0) == 10
-    assert setups.marios_trail_len(4.99, 5.0) == 20
-    assert setups.marios_trail_len(None, 5.0) == 20
+def test_sizing_and_cap():
+    p = setups._qm_cfg(None)
+    s = setups._sizing(100.0, 98.0, p)  # 5000 risk / 2 = 2500 shares, cap 25% = 2500 shares
+    assert s["shares"] == 2500
+    s = setups._sizing(100.0, 99.5, p)
+    assert s["shares"] == 2500 and s["position_pct"] == 25.0
+    s = setups._sizing(100.0, 90.0, p)
+    assert s["shares"] == 500
 
 
-def test_marios_breakout_row_has_both_targets_and_trail():
-    frame = _tape()
-    out = _scan(frame, setups.scan_marios)
-    row = out.iloc[0]
-    assert row["status"] == "BROKEN OUT today"
-    adr = setups.marios_adr_pct(frame["high"].to_numpy(), frame["low"].to_numpy(), 20)
-    assert abs(float(row["adr_pct"]) - round(adr, 2)) < 1e-9
-    lo, hi = setups.marios_targets(155.0, adr, 2.5, 3.0)
-    assert float(row["target_low"]) == round(lo, 2)
-    assert float(row["target_high"]) == round(hi, 2)
-    assert row["trail_with"] == ("10-day" if adr >= 5 else "20-day")
-
-
-def test_marios_in_trade_partial_and_sell():
-    # Three days up after the breakout, far enough to reach the partial zone.
-    up = [(162.0, 175.0, 160.0), (166.0, 168.0, 163.0), (168.0, 170.0, 166.0)]
-    out = _scan(_tape(after=up), setups.scan_marios)
-    row = out.iloc[0]
-    assert row["status"] == "IN TRADE"
-    assert float(row["entry"]) == 155.0
-    assert row["partial_hit"] == "yes"
-    assert row["trail_signal"] == "HOLD"
-    assert row["breakout_date"] != ""
-    # Then a close far under the trail line.
-    down = up + [(140.0, 151.0, 139.0)]
-    row = _scan(_tape(after=down), setups.scan_marios).iloc[0]
-    assert row["status"] == "IN TRADE"
-    assert row["trail_signal"] == "SELL"
-    assert row["stop_hit"] == "yes"
-
-
-def test_qullamaggie_does_not_show_in_trade():
-    up = [(162.0, 175.0, 160.0)]
-    out = _scan(_tape(after=up))
-    assert "IN TRADE" not in set(out["status"]) if len(out) else True
-
-
-def _ready(t, pivot=100.0, stop=96.0):
-    return {"ticker": t, "status": "READY", "pivot": pivot, "stop": stop, "strength": 60,
-            "company": t, "sector": "Tech", "index_membership": "Nifty 50", "price": 99, "price_as_of": "2026-10-23"}
-
-
-def test_buy_setups_take_the_new_scans_and_keep_the_risk_rule():
-    empty = pd.DataFrame()
-    qm = pd.DataFrame([_ready("QQQM"), _ready("WIDE", stop=80.0)])
-    mar = pd.DataFrame([_ready("QQQM")])
-    scores = pd.DataFrame([{"ticker": "QQQM", "verdict": "BUY", "score": 9}, {"ticker": "WIDE", "verdict": "BUY", "score": 9}])
-    out = setups.build_buy_setups(empty, empty, empty, empty, scores,
-                                  sma_ok={"QQQM": True, "WIDE": True}, market={"spy": True, "qqq": True},
-                                  qullamaggie=qm, marios=mar)
-    by = out.set_index("ticker")
-    assert by.loc["QQQM", "setup_sources"] == "Qullamaggie + Marios"
-    # A 20% setup stop is capped by the 7% desk stop, so risk stays at or under 8%.
-    assert float(by.loc["WIDE", "risk_pct"]) <= 8.0
-    order = list(setups.BUY_SETUP_ORDER)
-    assert order.index("Qullamaggie") == order.index("Flag") + 1
-    assert order.index("Marios") == order.index("Qullamaggie") + 1
+def test_earnings_flag_and_market_light():
+    frame, _ = _tape()
+    nxt = pd.bdate_range(frame.index[-1], periods=3)[-1]
+    row = _row(frame, scores=pd.DataFrame([{"ticker": "AAA", "next_earnings": str(nxt.date())}]))
+    assert row["earnings_soon"] == "yes"
+    close = pd.DataFrame({"^NSEI": np.linspace(100, 130, 80), "^BSESN": np.linspace(100, 130, 80)})
+    light, text = setups.qm_market_light(close, setups._qm_cfg(None))
+    assert light == "green" and "SENSEX" in text
+    close["^CNXSC"] = np.linspace(130, 100, 80)
+    light, text = setups.qm_market_light(close, setups._qm_cfg(None))
+    assert light == "yellow" and "Smallcap 250" in text
 
 
 def test_switches_turn_the_scans_off():
     out = setups.build_setups(
         pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), pd.DataFrame(),
-        _uni(["AAA"]), pd.DataFrame(), pd.DataFrame(), pd.DataFrame(),
+        pd.DataFrame([{"ticker": "AAA"}]), pd.DataFrame(), pd.DataFrame(), pd.DataFrame(),
         {"scanner_vcp": False, "scanner_canslim": False, "scanner_box": False, "scanner_flag": False,
          "scanner_leaders": False, "scanner_qullamaggie": False, "scanner_marios": False},
     )
     assert len(out["scanner_qullamaggie"]) == 0 and len(out["scanner_marios"]) == 0
 
 
-def test_config_has_switches_and_numbers():
+def test_config_has_every_switch_and_number():
     with open(os.path.join(ROOT, "config.json"), encoding="utf-8") as f:
         cfg = json.load(f)
     assert cfg["features"]["scanner_qullamaggie"] is True
     assert cfg["features"]["scanner_marios"] is True
-    assert cfg["qullamaggie"]["run_min_pct"] == 30
-    assert cfg["marios"]["fast_adr_pct"] == 5
+    for k, v in setups.QM_DEFAULTS.items():
+        assert cfg["qullamaggie"][k] == v, k
+    for k, v in setups.MARIOS_DEFAULTS.items():
+        assert cfg["marios"][k] == v, k
+    assert cfg["qullamaggie"]["traded_value_gate"] is False
+    assert cfg["qullamaggie"]["leader_top_pct"] == 3.0

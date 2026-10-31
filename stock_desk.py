@@ -3031,7 +3031,8 @@ def main(argv=None):
         allowed = set(scores.loc[scores["liquid"].astype(str).eq("yes"), "ticker"].astype(str))
         setup_universe = universe[universe["ticker"].astype(str).isin(allowed)]
     if len(close) and len(setup_universe):
-        setup_frames = setups.build_setups(close, high, low, vol, setup_universe, quarters, annual, holders, features, scores=scores, cfg=cfg)
+        opn = wide_from_long(long, "open") if long is not None and len(long) and "open" in long.columns else None
+        setup_frames = setups.build_setups(close, high, low, vol, setup_universe, quarters, annual, holders, features, scores=scores, cfg=cfg, opn=opn)
     else:
         setup_frames = {k: pd.DataFrame() for k in (
             "scanner_vcp", "scanner_canslim", "scanner_box", "scanner_flag", "scanner_leaders",
