@@ -20,7 +20,7 @@ async function loadChromium() {
 const base = process.argv[2] || "http://127.0.0.1:8765/site/";
 const outDir = process.argv[3] || "/opt/cursor/artifacts/site-screenshots-v3";
 const pages = [
-  "index.html", "top-stocks.html", "scorecard.html", "watchlist.html", "alerts.html", "backtest.html",
+  "index.html", "top-stocks.html", "scorecard.html", "watchlist.html", "alerts.html", "backtest.html", "chart-viewer.html",
   "growth.html", "quality.html", "dividend.html", "wheel.html", "vcp.html", "canslim.html",
   "box.html", "flag.html", "qullamaggie.html", "marios.html", "episodic_pivot.html", "leaders.html", "earnings-calendar.html", "earnings-heatmap.html",
   "earnings-cards.html", "put-call.html", "walls.html", "analysts.html", "thirteen-f.html", "aaii.html",
@@ -29,7 +29,7 @@ const pages = [
   "historical-pe.html", "breakouts.html", "trends.html", "pullbacks.html", "gainers.html", "high-volume.html",
   "breadth.html", "sector-performance.html", "heatmaps.html", "updates.html", "help.html",
 ];
-const ipad = new Set(["index.html", "top-stocks.html", "scorecard.html", "watchlist.html", "backtest.html", "vcp.html"]);
+const ipad = new Set(["index.html", "top-stocks.html", "scorecard.html", "watchlist.html", "backtest.html", "vcp.html", "chart-viewer.html"]);
 
 function ignore(text) {
   const t = String(text || "");

@@ -64,7 +64,8 @@
     "page_descriptions": true,
     "scanner_qullamaggie": true,
     "scanner_marios": true,
-    "scanner_episodic_pivot": true
+    "scanner_episodic_pivot": true,
+    "chart_viewer": true
   },
   "qullamaggie": {
     "_note": "Qullamaggie breakout scan on cached daily bars. Every rule has an on/off switch and its numbers here. Percents are whole numbers (3.5 means 3.5%). Marios uses these for the shared rules unless the marios block sets its own.",
@@ -220,6 +221,31 @@
     "nick_min_catalyst_score": 2,
     "nick_require_flat_base": false,
     "nick_flat_base_grade": "A"
+  },
+  "chart_viewer": {
+    "_note": "Chart Viewer page (chart-viewer.html). One chart at a time, full screen, swipe to move. Every option is its own switch. It reads the scanner files and saved daily bars the desk already has, and downloads nothing new. Turn the page off with feature.chart_viewer.",
+    "default_list": "all",
+    "include_watchlist": true,
+    "swipe_right_is_next": true,
+    "show_swipe_toggle": true,
+    "chart_touch_pan": false,
+    "swipe_min_px": 50,
+    "swipe_max_ms": 700,
+    "preload_next": true,
+    "ma10": false,
+    "ma20": false,
+    "ma50": true,
+    "ma150": true,
+    "ma200": true,
+    "volume": true,
+    "reason_box": true,
+    "reason_box_open": false,
+    "reason_max_chars": 120,
+    "arrows": true,
+    "keyboard": true,
+    "counter": true,
+    "scanner_links": true,
+    "right_padding_bars": 8
   },
   "market": {
     "require_both_uptrends": false

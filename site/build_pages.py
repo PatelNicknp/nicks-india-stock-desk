@@ -10,6 +10,7 @@ PAGES = [
     ("watchlist.html", "watchlist", "Watchlist and portfolio"),
     ("alerts.html", "alerts", "Alerts"),
     ("backtest.html", "backtest", "Backtest"),
+    ("chart-viewer.html", "chartviewer", "Chart Viewer"),
     ("growth.html", "growth", "Growth"),
     ("quality.html", "quality", "Quality"),
     ("dividend.html", "dividend", "Dividend"),
