@@ -68,6 +68,10 @@
     "chart_viewer": true,
     "light_mode": true
   },
+  "vcp": {
+    "_note": "VCP scanner. A stock is listed only when the trend template is 8 of 8, the same rule as the green VCP tag. Set show_weaker_trend to true to also list stocks with tightening pullbacks but a weaker trend, marked WATCHING (trend not 8/8).",
+    "show_weaker_trend": false
+  },
   "qullamaggie": {
     "_note": "Qullamaggie breakout scan on cached daily bars. Every rule has an on/off switch and its numbers here. Percents are whole numbers (3.5 means 3.5%). Marios uses these for the shared rules unless the marios block sets its own.",
     "price_filter": true,

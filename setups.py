@@ -247,6 +247,7 @@ def vcp_last(high, low, close, volume, spy):
     part_done = False
     climax_done = False
     entry_bar = -1
+    entry_score = -1
     prev_pivot = np.nan
     c_depth, c_high = [], []
     cnt = 0
@@ -336,6 +337,7 @@ def vcp_last(high, low, close, volume, spy):
             part_done = False
             climax_done = False
             entry_bar = i
+            entry_score = score_i
         prev_pivot = pivot
 
     rules_now = [bool(r[-1]) for r in trend["rules"]]
@@ -352,6 +354,7 @@ def vcp_last(high, low, close, volume, spy):
         "in_trade": bool(in_trade),
         "entry": float(entry) if np.isfinite(entry) else None,
         "entry_bar": int(entry_bar),
+        "entry_score": int(entry_score),
         "stop": float(stop_lvl) if np.isfinite(stop_lvl) else None,
         "be_done": bool(be_done),
         "part_done": bool(part_done),
@@ -363,17 +366,49 @@ def vcp_last(high, low, close, volume, spy):
     }
 
 
-def _vcp_status(state):
+VCP_DEFAULTS = {
+    # Off: only stocks that would get the green VCP tag are listed (8 of 8 trend rules).
+    # On: stocks with tightening pullbacks but a weaker trend come back as WEAK_TREND_STATUS.
+    "show_weaker_trend": False,
+}
+WEAK_TREND_STATUS = "WATCHING (trend not 8/8)"
+
+
+def _vcp_cfg(cfg=None):
+    out = dict(VCP_DEFAULTS)
+    block = (cfg or {}).get("vcp") or {}
+    if isinstance(block, dict):
+        out.update({k: v for k, v in block.items() if k in VCP_DEFAULTS})
+    out["show_weaker_trend"] = bool(out["show_weaker_trend"])
+    return out
+
+
+def _vcp_status(state, show_weaker_trend=False):
+    """Nick's rule: list a stock only when it has the 8 of 8 trend template.
+
+    READY: 8 of 8, two or more tightening pullbacks, price at or under the buy line.
+    BROKEN OUT today: the indicator printed a buy today (8 of 8 is part of that check).
+    WATCHING: 8 of 8 and price over the buy line on low volume, or only one pullback so far,
+    or a trade that is still open from a buy that printed with 8 of 8.
+    The weaker rows (tightening pullbacks, trend under 8 of 8) only come back with
+    vcp.show_weaker_trend, labelled WEAK_TREND_STATUS.
+    """
     if state["cnt"] <= 0 and not state["in_trade"]:
         return None
     if state["breakout"]:
         return "BROKEN OUT today"
     if state["in_trade"]:
-        return "WATCHING"
-    if state["is_vcp"] and state["pivot"] is not None and state["close"] <= state["pivot"]:
+        # A buy only prints with 8 of 8, so this holds unless the Pine switch is changed.
+        if state.get("entry_score", 8) == 8:
+            return "WATCHING"
+        return WEAK_TREND_STATUS if show_weaker_trend else None
+    full = state["score"] == 8
+    if full and state["is_vcp"] and state["pivot"] is not None and state["close"] <= state["pivot"]:
         return "READY"
-    if state["is_vcp"] or state["cnt"] >= 2 or state["in_trade"] or (state["cnt"] == 1 and state["score"] >= 6):
+    if full and (state["is_vcp"] or state["cnt"] >= 1):
         return "WATCHING"
+    if show_weaker_trend and (state["cnt"] >= 2 or (state["cnt"] == 1 and state["score"] >= 6)):
+        return WEAK_TREND_STATUS
     return None
 
 
@@ -406,6 +441,8 @@ def _vcp_reason(state, status, dates):
         bits.append("Pullbacks are tightening, but the trend template is not 8 of 8. Still open: rule %s." % ", ".join(failed))
     elif state["cnt"] == 1:
         bits.append("One pullback so far. The indicator needs a second, tighter one before it will call this a VCP.")
+    if state["in_trade"] and state["entry"] is not None and score < 8:
+        bits.append("The trend template was 8 of 8 on the buy day. It is %d of 8 today. The row stays while the trade is open, until the stop or the trail sell closes it." % score)
     if state["in_trade"] and state["entry"] is not None:
         when = ""
         if dates is not None and 0 <= state["entry_bar"] < len(dates):
@@ -526,6 +563,7 @@ def _panel_date(close):
 def scan_vcp(close, high, low, vol, universe, cfg=None):
     rows = []
     panel = _panel_date(close)
+    show_weaker = _vcp_cfg(cfg)["show_weaker_trend"]
     names = list(universe["ticker"]) if universe is not None and len(universe) else []
     for ticker in names:
         bench_col, bench_word = _stock_benchmark(close, ticker, universe, cfg)
@@ -540,7 +578,7 @@ def scan_vcp(close, high, low, vol, universe, cfg=None):
         )
         if state is None:
             continue
-        status = _vcp_status(state)
+        status = _vcp_status(state, show_weaker)
         if status is None:
             continue
         stop, target, _, basis = _vcp_levels(state)
@@ -584,7 +622,7 @@ def scan_vcp(close, high, low, vol, universe, cfg=None):
     if not rows:
         return pd.DataFrame()
     out = pd.DataFrame(rows)
-    rank = {"BROKEN OUT today": 0, "READY": 1, "WATCHING": 2}
+    rank = {"BROKEN OUT today": 0, "READY": 1, "WATCHING": 2, WEAK_TREND_STATUS: 3}
     out["_k"] = out["status"].map(rank)
     out = out.sort_values(["_k", "strength"], ascending=[True, False]).drop(columns="_k")
     return out
