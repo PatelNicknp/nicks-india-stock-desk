@@ -202,6 +202,7 @@
           if (pick && !rows.some((r) => r.ticker === pick)) pick = null;
           const selected = rows.find((r) => r.ticker === pick) || strongest(rows);
           pick = selected ? selected.ticker : null;
+          D.setViewerStart(pick);
           D.drawTable(document.getElementById("tbl"), {
             rows: rows, columns: cfg.columns, state: state, pageSize: 12, pick: pick,
             lines: chartsOn ? (cfg.price || setupLines) : null,
@@ -3379,6 +3380,14 @@
       "Checks that the data is fresh. OK means the source answered. CACHED means an older copy was used. MISSING means there is no copy.",
       "It also shows how much of the financials and shareholding is on file, and which page switches are on.",
     ] },
+    chartviewer: { title: "What this page does", lines: [
+      "One big chart at a time. Pick a list at the top: every stock on any scanner, one scanner, or your watchlist.",
+      "All scanner stocks puts the stocks found by the most scanners first, then the strongest.",
+      "Tap Full screen. Swipe right for the next chart and left to go back. The Swipe chip flips that. The arrows and the left and right keys work too.",
+      "Tap the chips to show or hide the 10, 20, 50, 150 and 200-day averages and the volume. Your choice is saved on this device.",
+      "The box in the lower right shows every scanner the stock is on, its status, and the reason. Tap it for more. The Reasons chip hides it.",
+      "It uses the daily prices the desk already saves. Nothing new is downloaded.",
+    ] },
     help: { lines: [
       "Plain-English answers about how the desk works, and a list of every setting.",
       "Start here if a word or label is unclear.",
@@ -3436,6 +3445,7 @@
     highvol: { files: ["high_volume.csv"], optional: ["company_lines.csv"], render: renderHighVolume },
     rotation: { files: ["sector_rotation.csv", "sector_rotation_tails.csv", "sector_rotation_history.csv", "scores.csv"], render: renderRotation },
     help: { files: ["help.csv", "settings.csv"], render: renderHelp },
+    chartviewer: { files: [], optional: D.chartViewerFiles, render: D.renderChartViewer },
   };
   Object.keys(ABOUT).forEach((id) => {
     if (window.DESK_PAGES[id]) window.DESK_PAGES[id].about = ABOUT[id];

@@ -18,6 +18,9 @@
       ["Alerts", "alerts.html", "alerts"],
       ["Backtest", "backtest.html", "backtest"],
     ]],
+    ["Charts", [
+      ["Chart Viewer", "chart-viewer.html", "chartviewer"],
+    ]],
     ["Scanners", [
       ["Growth", "growth.html", "growth"],
       ["Quality", "quality.html", "quality"],
@@ -1814,6 +1817,494 @@
     });
   }
 
+  // ---------------------------------------------------------------- Chart Viewer
+  // One stock at a time, full screen, swipe to move. Every stock comes from the scanner
+  // files the desk already publishes, and the bars come from the saved ohlc files.
+  // No new downloads. Switches live in the chart_viewer block of config.json.
+  const CV_READY = ["READY", "BROKEN OUT today"];
+  const CV_QM = ["READY", "BROKEN OUT today", "IN TRADE"];
+  const CV_EP = ["EP TODAY", "BROKEN OUT today", "IN TRADE", "WATCHING"];
+  const CV_SOURCES = [
+    { id: "buysetups", label: "Buy setups", short: "Buy setups", file: "buy_setups.csv", href: "buy-setups.html", kind: "buy" },
+    { id: "vcp", label: "VCP", short: "VCP", file: "scanner_vcp.csv", href: "vcp.html", kind: "pattern", statuses: CV_READY },
+    { id: "canslim", label: "CANSLIM", short: "CANSLIM", file: "scanner_canslim.csv", href: "canslim.html", kind: "pattern", statuses: CV_READY },
+    { id: "box", label: "Box breakout", short: "Box", file: "scanner_box.csv", href: "box.html", kind: "pattern", statuses: CV_READY },
+    { id: "flag", label: "Flag breakout", short: "Flag", file: "scanner_flag.csv", href: "flag.html", kind: "pattern", statuses: CV_READY },
+    { id: "qullamaggie", label: "Qullamaggie breakout", short: "Qullamaggie", file: "scanner_qullamaggie.csv", href: "qullamaggie.html", kind: "pattern", statuses: CV_QM },
+    { id: "marios", label: "Marios breakout", short: "Marios", file: "scanner_marios.csv", href: "marios.html", kind: "pattern", statuses: CV_QM },
+    { id: "episodic", label: "Episodic Pivot", short: "EP", file: "scanner_episodic_pivot.csv", href: "episodic_pivot.html", kind: "pattern", statuses: CV_EP },
+    { id: "leaders", label: "Leaders", short: "Leaders", file: "scanner_leaders.csv", href: "leaders.html", kind: "pattern", statuses: CV_READY },
+    { id: "week52", label: "52-week highs and lows", short: "52-week", file: "scanner_52w.csv", href: "52-week.html", kind: "w52" },
+    { id: "breakouts", label: "52-week breakouts", short: "Breakouts", file: "breakouts.csv", href: "breakouts.html", kind: "brk" },
+    { id: "highvol", label: "High volume", short: "High volume", file: "high_volume.csv", href: "high-volume.html", kind: "hv" },
+    { id: "pullbacks", label: "Pullbacks", short: "Pullbacks", file: "pullbacks.csv", href: "pullbacks.html", kind: "passes", word: "PULLBACK" },
+    { id: "growth", label: "Growth", short: "Growth", file: "scanner_growth.csv", href: "growth.html", kind: "passes", word: "PASSES" },
+    { id: "quality", label: "Quality", short: "Quality", file: "scanner_quality.csv", href: "quality.html", kind: "passes", word: "PASSES" },
+    { id: "dividend", label: "Dividend", short: "Dividend", file: "scanner_dividend.csv", href: "dividend.html", kind: "passes", word: "PASSES" },
+    { id: "wheel", label: "Liquid stocks", short: "Liquid", file: "scanner_wheel.csv", href: "wheel.html", kind: "passes", word: "PASSES" },
+  ];
+  const CV_WATCH = { id: "watchlist", label: "Watchlist", short: "Watchlist", file: "watchlist.csv", href: "watchlist.html", kind: "watch" };
+  const CV_FEW = 3;
+  const CV_FILES = CV_SOURCES.concat([CV_WATCH]).map((s) => s.file);
+  const CV_MAS = [
+    { id: "ma10", label: "10", n: 10, color: "#38BDF8" },
+    { id: "ma20", label: "20", n: 20, color: "#7C9CFF" },
+    { id: "ma50", label: "50", n: 50, color: "#C3CBDB" },
+    { id: "ma150", label: "150", n: 150, color: "#F59E0B" },
+    { id: "ma200", label: "200", n: 200, color: "#E879F9" },
+  ];
+  const CV_DEFAULTS = {
+    default_list: "all", include_watchlist: true, swipe_right_is_next: true, show_swipe_toggle: true,
+    chart_touch_pan: false, swipe_min_px: 50, swipe_max_ms: 700, preload_next: true,
+    ma10: false, ma20: false, ma50: true, ma150: true, ma200: true, volume: true,
+    reason_box: true, reason_box_open: false, reason_max_chars: 120, arrows: true, keyboard: true,
+    counter: true, scanner_links: true, right_padding_bars: 8,
+  };
+  function cvOpt(key) {
+    const fallback = CV_DEFAULTS[key];
+    const row = SETTINGS.find((r) => r.setting === "chart_viewer." + key);
+    if (!row || isBlank(row.value)) return fallback;
+    const s = String(row.value).trim();
+    if (typeof fallback === "boolean") return s.toLowerCase() === "true";
+    if (typeof fallback === "number") { const n = Number(s); return Number.isFinite(n) ? n : fallback; }
+    return s;
+  }
+  function cvYes(v) { return String(v || "").toLowerCase() === "yes"; }
+  function cvShort(text, max) {
+    const t = String(text || "").replace(/\s+/g, " ").replace(/\u2014/g, ", ").trim();
+    if (!max || t.length <= max) return t;
+    const cut = t.slice(0, max);
+    const sp = cut.lastIndexOf(" ");
+    return (sp > max * 0.6 ? cut.slice(0, sp) : cut).replace(/[,.;:\s]+$/, "") + "...";
+  }
+  // What one scanner row says: is it in, its status, and its reason.
+  function cvEntry(src, r) {
+    const n = (v, d) => fmt(v, d);
+    switch (src.kind) {
+      case "pattern":
+        if (src.statuses.indexOf(r.status) < 0) return null;
+        return { status: r.status, reason: r.reason || "", strength: num(r.strength) };
+      case "buy":
+        if (!cvYes(r.listed)) return null;
+        return { status: r.best_status || "READY", reason: (r.setup_sources ? r.setup_sources + ". " : "") + (r.reason || ""), strength: null };
+      case "w52": {
+        const hi = cvYes(r.new_high_today), lo = cvYes(r.new_low_today), near = cvYes(r.near_high), vol = cvYes(r.high_on_volume);
+        if (!hi && !lo && !near && !vol) return null;
+        const status = hi ? "NEW HIGH today" : lo ? "NEW LOW today" : vol ? "HIGH ON VOLUME" : "NEAR HIGH";
+        let reason = hi ? "Closed at a new 52-week high today." : lo ? "Closed at a new 52-week low today." :
+          "Close is " + n(Math.abs(num(r.pct_from_high) || 0), 1) + "% under the 52-week high.";
+        if (num(r.volume_ratio) != null) reason += " Volume " + n(r.volume_ratio, 1) + " times the 50-day average.";
+        return { status: status, reason: reason, strength: null };
+      }
+      case "brk": {
+        let reason = "Within " + n(Math.abs(num(r.dist_52w_high_pct) || 0), 1) + "% of the 52-week high.";
+        if (num(r.volume_ratio) != null) reason += " Volume " + n(r.volume_ratio, 1) + " times normal.";
+        return { status: "NEAR 52-WEEK HIGH", reason: reason, strength: null };
+      }
+      case "hv": {
+        if (!cvYes(r.passes_default)) return null;
+        const up = String(r.day_type || "").toLowerCase().indexOf("down") < 0 && (num(r.day_pct) || 0) >= 0;
+        const reason = "Volume " + n(r.volume_ratio, 1) + " times the 50-day average, price " +
+          ((num(r.day_pct) || 0) >= 0 ? "up " : "down ") + n(Math.abs(num(r.day_pct) || 0), 2) + "% today." + (r.meaning ? " " + r.meaning : "");
+        return { status: (up ? "UP DAY " : "DOWN DAY ") + n(r.volume_ratio, 1) + "x", reason: reason, strength: null };
+      }
+      case "passes":
+        if (!cvYes(r.passes)) return null;
+        return { status: src.word, reason: r.why || "", strength: null };
+      case "watch":
+        return { status: "WATCHLIST", reason: "On your watchlist." + (r.timing ? " Trend: " + r.timing + "." : ""), strength: null };
+      default:
+        return null;
+    }
+  }
+  function cvBuild(files) {
+    const lists = {};
+    const all = new Map();
+    const add = (src, into, rows) => {
+      realRows(rows || []).forEach((r) => {
+        const ticker = String(r.ticker || "").trim().toUpperCase();
+        if (!ticker) return;
+        const e = cvEntry(src, r);
+        if (!e) return;
+        const item = { src: src.id, label: src.short, status: e.status, reason: e.reason, strength: e.strength };
+        let rec = into.get(ticker);
+        if (!rec) {
+          rec = { ticker: ticker, company: String(r.company || ""), hits: [], strength: null, score: num(r.score) };
+          into.set(ticker, rec);
+        }
+        if (!rec.company && r.company) rec.company = String(r.company);
+        if (rec.score == null && num(r.score) != null) rec.score = num(r.score);
+        if (rec.hits.some((h) => h.src === src.id)) return;
+        rec.hits.push(item);
+        if (e.strength != null && (rec.strength == null || e.strength > rec.strength)) rec.strength = e.strength;
+      });
+    };
+    const order = (map) => Array.from(map.values()).sort((a, b) =>
+      (b.hits.length - a.hits.length) ||
+      ((b.strength == null ? -1 : b.strength) - (a.strength == null ? -1 : a.strength)) ||
+      ((b.score == null ? -99 : b.score) - (a.score == null ? -99 : a.score)) ||
+      (a.ticker < b.ticker ? -1 : a.ticker > b.ticker ? 1 : 0));
+    const sources = CV_SOURCES.filter((s) => featureOn(FEATURE[s.id]));
+    sources.forEach((src) => {
+      add(src, all, files[src.file]);
+      const one = new Map();
+      add(src, one, files[src.file]);
+      lists[src.id] = order(one);
+    });
+    // The single-scanner lists still show every scanner a stock is in.
+    sources.forEach((src) => { lists[src.id] = lists[src.id].map((rec) => all.get(rec.ticker) || rec); });
+    lists.all = order(all);
+    const choices = [{ id: "all", label: "All scanner stocks" }].concat(sources.map((s) => ({ id: s.id, label: s.label })));
+    if (cvOpt("include_watchlist") && featureOn(FEATURE.watchlist) && realRows(files[CV_WATCH.file] || []).length) {
+      const w = new Map();
+      add(CV_WATCH, w, files[CV_WATCH.file]);
+      lists.watchlist = Array.from(w.values()).map((rec) => {
+        const hit = all.get(rec.ticker);
+        return hit ? Object.assign({}, hit, { hits: rec.hits.concat(hit.hits) }) : rec;
+      });
+      choices.push({ id: "watchlist", label: "Watchlist" });
+    }
+    return { lists: lists, choices: choices };
+  }
+  function cvStore(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) { /* storage can be blocked */ } }
+  function cvRead(key) { try { return JSON.parse(localStorage.getItem(key) || "null"); } catch (e) { return null; } }
+  function cvStatusColor(s) {
+    const t = String(s || "");
+    if (/BROKEN OUT|NEW HIGH|EP TODAY|UP DAY/.test(t)) return UP;
+    if (/READY|NEAR|HIGH ON VOLUME|PULLBACK|WATCHING|SELL PART/.test(t)) return AM;
+    if (/NEW LOW|DOWN DAY/.test(t)) return DN;
+    if (/IN TRADE|PASSES|WATCHLIST/.test(t)) return AC;
+    return MU;
+  }
+  function cvLinkHtml(listId, ticker) {
+    if (!featureOn("feature.chart_viewer") || !cvOpt("scanner_links")) return "";
+    const href = "chart-viewer.html?list=" + encodeURIComponent(listId) + (ticker ? "&t=" + encodeURIComponent(ticker) : "");
+    return '<a class="cvlink" id="cvlink" data-list="' + esc(listId) + '" href="' + esc(href) + '">Open in Chart Viewer</a>';
+  }
+  function placeViewerLink(pageId) {
+    if (pageId !== CV_WATCH.id && !CV_SOURCES.some((s) => s.id === pageId)) return;
+    const html = cvLinkHtml(pageId, "");
+    const page = document.getElementById("page");
+    if (html && page) page.insertAdjacentHTML("beforebegin", '<div class="cvlinkrow">' + html + "</div>");
+  }
+  // A scanner page calls this when the picked row changes, so the link starts there.
+  function setViewerStart(ticker) {
+    const a = document.getElementById("cvlink");
+    if (!a) return;
+    const list = a.getAttribute("data-list");
+    a.setAttribute("href", "chart-viewer.html?list=" + encodeURIComponent(list) + (ticker ? "&t=" + encodeURIComponent(String(ticker).toUpperCase()) : ""));
+  }
+
+  function renderChartViewer(ctx) {
+    const built = cvBuild(ctx.files);
+    const params = new URLSearchParams(location.search);
+    let listId = params.get("list") || cvOpt("default_list");
+    if (!built.lists[listId]) listId = built.lists[cvOpt("default_list")] ? cvOpt("default_list") : "all";
+    const ma = {};
+    const savedMa = cvRead("desk-cv-ma") || {};
+    CV_MAS.forEach((d) => { ma[d.id] = typeof savedMa[d.id] === "boolean" ? savedMa[d.id] : cvOpt(d.id); });
+    const savedVol = cvRead("desk-cv-volume");
+    let volOn = typeof savedVol === "boolean" ? savedVol : cvOpt("volume");
+    const savedSwipe = cvRead("desk-cv-swipe-right-next");
+    let rightIsNext = typeof savedSwipe === "boolean" ? savedSwipe : cvOpt("swipe_right_is_next");
+    const reasonAllowed = cvOpt("reason_box");
+    const savedReason = cvRead("desk-cv-reason");
+    let reasonOn = reasonAllowed && (typeof savedReason === "boolean" ? savedReason : true);
+    let reasonOpen = cvOpt("reason_box_open");
+    const touchPan = cvOpt("chart_touch_pan");
+    const maxChars = cvOpt("reason_max_chars");
+
+    const options = built.choices.map((c) => {
+      const count = (built.lists[c.id] || []).length;
+      return '<option value="' + esc(c.id) + '"' + (c.id === listId ? " selected" : "") + ">" + esc(c.label + " (" + count + ")") + "</option>";
+    }).join("");
+    ctx.page.innerHTML =
+      '<div class="cvbar"><label class="cvpick"><span class="lab">List</span><select id="cvlist" aria-label="Which list">' + options + "</select></label>" +
+      '<button type="button" class="cvbtn cvgo" id="cvfull">Full screen</button></div>' +
+      '<section class="cv-stage" id="cvstage" aria-label="Chart Viewer">' +
+      '<div class="cv-top"><div class="cv-id"><div class="cv-tk" id="cvtk"></div><div class="cv-co" id="cvco"></div></div>' +
+      '<div class="cv-px" id="cvpx"></div>' +
+      '<div class="cv-tools">' + (cvOpt("counter") ? '<span class="cv-count" id="cvcount"></span>' : "") +
+      '<button type="button" class="cvbtn cv-exit" id="cvexit" aria-label="Exit full screen">Exit</button></div></div>' +
+      '<div class="cv-chips" id="cvchips"></div>' +
+      '<div class="cv-plot" id="cvplot"><div class="cv-host" id="cvhost"></div>' +
+      '<div class="cv-msg" id="cvmsg" hidden></div>' +
+      (cvOpt("arrows") ? '<button type="button" class="cv-arrow cv-prev" id="cvprev" aria-label="Previous chart">‹</button>' +
+        '<button type="button" class="cv-arrow cv-next" id="cvnext" aria-label="Next chart">›</button>' : "") +
+      '<div class="cv-reason" id="cvreason" role="button" tabindex="0" aria-label="Why this stock is listed. Tap to open or close." hidden></div>' +
+      "</div></section>" +
+      '<p class="cap">Swipe ' + (rightIsNext ? "right" : "left") + " for the next chart. The box in the lower right says which scanners list the stock and why. Prices are the saved daily bars. Charting by <a href=\"https://www.tradingview.com/\">TradingView</a> Lightweight Charts™.</p>";
+
+    const stage = document.getElementById("cvstage");
+    const plot = document.getElementById("cvplot");
+    const host = document.getElementById("cvhost");
+    const msg = document.getElementById("cvmsg");
+    const reasonEl = document.getElementById("cvreason");
+    const chipsEl = document.getElementById("cvchips");
+    const st = { list: built.lists[listId] || [], i: 0, token: 0, chart: null, price: null, vol: null, mas: {}, bars: [] };
+    stage._cv = st;
+    const start = String(params.get("t") || "").toUpperCase();
+    if (start) {
+      const at = st.list.findIndex((r) => r.ticker === start);
+      if (at >= 0) st.i = at;
+    }
+
+    const chip = (id, label, color, on) =>
+      '<button type="button" class="cvchip' + (on ? " on" : "") + '" data-chip="' + id + '" aria-pressed="' + (on ? "true" : "false") + '">' +
+      (color ? '<i style="background:' + color + '"></i>' : "") + esc(label) + "</button>";
+    const paintChips = () => {
+      chipsEl.innerHTML = '<span class="cv-lab">Averages</span>' + CV_MAS.map((d) => chip(d.id, d.label, d.color, ma[d.id])).join("") +
+        chip("volume", "Volume", "", volOn) +
+        (cvOpt("show_swipe_toggle") ? chip("swipe", "Swipe right: " + (rightIsNext ? "next" : "back"), "", true) : "") +
+        (reasonAllowed ? chip("reason", "Reasons", "", reasonOn) : "");
+    };
+    paintChips();
+    chipsEl.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-chip]");
+      if (!b) return;
+      const id = b.getAttribute("data-chip");
+      if (id === "volume") { volOn = !volOn; cvStore("desk-cv-volume", volOn); }
+      else if (id === "swipe") { rightIsNext = !rightIsNext; cvStore("desk-cv-swipe-right-next", rightIsNext); }
+      else if (id === "reason") { reasonOn = !reasonOn; cvStore("desk-cv-reason", reasonOn); }
+      else { ma[id] = !ma[id]; cvStore("desk-cv-ma", ma); }
+      paintChips();
+      applyToggles();
+      paintReason();
+    });
+
+    const applyToggles = () => {
+      CV_MAS.forEach((d) => { if (st.mas[d.id]) st.mas[d.id].applyOptions({ visible: !!ma[d.id] }); });
+      if (st.vol) st.vol.applyOptions({ visible: !!volOn });
+    };
+    const makeChart = () => {
+      if (st.chart || !tvReady()) return;
+      const LC = LightweightCharts;
+      const chart = LC.createChart(host, {
+        autoSize: true,
+        layout: { background: { type: "solid", color: "#121826" }, textColor: MU, fontFamily: "Roboto, Arial, sans-serif", fontSize: 11, attributionLogo: true },
+        grid: { vertLines: { color: "#1E293B" }, horzLines: { color: "#1E293B" } },
+        crosshair: { mode: LC.CrosshairMode.Magnet },
+        rightPriceScale: { borderColor: "#1E293B", scaleMargins: { top: 0.08, bottom: 0.26 }, minimumWidth: 56 },
+        timeScale: { borderColor: "#1E293B", rightOffset: cvOpt("right_padding_bars") },
+        handleScroll: { mouseWheel: false, pressedMouseMove: true, horzTouchDrag: touchPan, vertTouchDrag: false },
+        handleScale: { mouseWheel: true, pinch: touchPan, axisPressedMouseMove: true, axisDoubleClickReset: true },
+        kineticScroll: { touch: touchPan, mouse: false },
+      });
+      tvCharts.push(chart);
+      st.chart = chart;
+      st.price = chart.addSeries(LC.CandlestickSeries, {
+        upColor: UP, downColor: DN, borderUpColor: UP, borderDownColor: DN, wickUpColor: UP, wickDownColor: DN,
+        priceLineVisible: false, lastValueVisible: true,
+      });
+      st.vol = chart.addSeries(LC.HistogramSeries, {
+        priceFormat: { type: "volume" }, priceScaleId: "cvvol", priceLineVisible: false, lastValueVisible: false,
+      });
+      chart.priceScale("cvvol").applyOptions({ scaleMargins: { top: 0.8, bottom: 0 } });
+      CV_MAS.forEach((d) => {
+        st.mas[d.id] = chart.addSeries(LC.LineSeries, {
+          color: d.color, lineWidth: 1, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false,
+        });
+      });
+    };
+    const seriesFor = (bars) => {
+      const closes = bars.map((b) => b.c);
+      st.price.setData(bars.map((b) => ({ time: b.date, open: b.o, high: b.h, low: b.l, close: b.c })));
+      st.vol.setData(bars.filter((b) => b.v != null).map((b) => ({
+        time: b.date, value: b.v, color: b.c >= b.o ? "rgba(34,197,94,.45)" : "rgba(239,68,68,.45)",
+      })));
+      CV_MAS.forEach((d) => {
+        const vals = smaValues(closes, d.n);
+        const data = [];
+        vals.forEach((v, i) => { if (v != null) data.push({ time: bars[i].date, value: v }); });
+        st.mas[d.id].setData(data);
+      });
+      applyToggles();
+      applyRange(st.chart, bars, priceRange());
+    };
+    const placeReason = () => {
+      if (!st.chart || reasonEl.hidden) return;
+      let right = 64, bottom = 34;
+      try { right = st.chart.priceScale("right").width() + 6; } catch (e) { /* not drawn yet */ }
+      try { bottom = st.chart.timeScale().height() + 6; } catch (e) { /* not drawn yet */ }
+      reasonEl.style.right = right + "px";
+      reasonEl.style.bottom = bottom + "px";
+    };
+    const paintReason = () => {
+      const rec = st.list[st.i];
+      if (!rec || !reasonOn || !rec.hits.length) { reasonEl.hidden = true; return; }
+      reasonEl.hidden = false;
+      reasonEl.classList.toggle("open", reasonOpen);
+      const max = reasonOpen ? maxChars * 3 : maxChars;
+      const few = reasonOpen ? rec.hits : rec.hits.slice(0, CV_FEW);
+      const more = rec.hits.length - few.length;
+      reasonEl.innerHTML = '<div class="cv-rhead">Why it is listed <span>' + esc(reasonOpen ? "Tap to shrink" : "Tap for more") + "</span></div>" +
+        few.map((h) => '<div class="cv-ritem"><b>' + esc(h.label) + '</b> <span class="cv-rst" style="color:' + cvStatusColor(h.status) + '">' + esc(h.status) + "</span>" +
+          (h.reason ? '<div class="cv-rtx">' + esc(cvShort(h.reason, max)) + "</div>" : "") + "</div>").join("") +
+        (more > 0 ? '<div class="cv-rmore">' + esc("+" + more + " more: " + rec.hits.slice(CV_FEW).map((h) => h.label).join(", ")) + "</div>" : "");
+      requestAnimationFrame(placeReason);
+    };
+    const toggleReason = () => { reasonOpen = !reasonOpen; paintReason(); };
+    reasonEl.addEventListener("click", toggleReason);
+    reasonEl.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggleReason(); } });
+
+    const header = (rec, bars) => {
+      document.getElementById("cvtk").textContent = rec ? rec.ticker : "";
+      document.getElementById("cvco").textContent = rec ? rec.company : "";
+      const px = document.getElementById("cvpx");
+      const count = document.getElementById("cvcount");
+      if (count) count.textContent = st.list.length ? (st.i + 1) + " of " + st.list.length : "0 of 0";
+      if (!bars || !bars.length) { px.innerHTML = ""; return; }
+      const last = bars[bars.length - 1];
+      const prev = bars.length > 1 ? bars[bars.length - 2].c : null;
+      const ch = prev ? last.c - prev : null;
+      const pct = prev ? (ch / prev) * 100 : null;
+      px.innerHTML = '<b>₹' + esc(fmt(last.c, 2)) + "</b>" + (ch == null ? "" :
+        ' <span class="' + (ch >= 0 ? "up" : "dn") + '">' + (ch >= 0 ? "+" : "") + esc(fmt(ch, 2)) + " (" + (pct >= 0 ? "+" : "") + esc(fmt(pct, 2)) + "%)</span>") +
+        '<span class="cv-date">' + esc(last.date) + "</span>";
+    };
+    const say = (text) => { msg.hidden = !text; msg.textContent = text || ""; };
+    const preload = () => {
+      if (!cvOpt("preload_next") || st.list.length < 2) return;
+      [1, -1].forEach((step) => {
+        const rec = st.list[(st.i + step + st.list.length) % st.list.length];
+        if (rec) loadTickerBars(rec.ticker).catch(() => {});
+      });
+    };
+    const show = () => {
+      const token = ++st.token;
+      const rec = st.list[st.i];
+      stage.dataset.ticker = rec ? rec.ticker : "";
+      if (rec && history.replaceState) {
+        const q = new URLSearchParams(location.search);
+        q.set("list", listId); q.set("t", rec.ticker);
+        history.replaceState(null, "", location.pathname + "?" + q.toString());
+      }
+      paintReason();
+      if (!rec) {
+        header(null, null);
+        if (st.price) { st.price.setData([]); st.vol.setData([]); CV_MAS.forEach((d) => st.mas[d.id].setData([])); }
+        say("No stocks on this list today. Pick another list.");
+        stage.dataset.state = "empty";
+        return;
+      }
+      header(rec, null);
+      ensureTv().then(() => loadTickerBars(rec.ticker)).then((rows) => {
+        if (token !== st.token) return;
+        makeChart();
+        const bars = barsFromRows(rows);
+        st.bars = bars;
+        header(rec, bars);
+        if (!bars.length) {
+          st.price.setData([]); st.vol.setData([]); CV_MAS.forEach((d) => st.mas[d.id].setData([]));
+          say("No saved chart for " + rec.ticker + ". Swipe for the next one.");
+          stage.dataset.state = "nodata";
+        } else {
+          say("");
+          seriesFor(bars);
+          stage.dataset.state = "ok";
+        }
+        requestAnimationFrame(placeReason);
+        preload();
+      }).catch(() => {
+        if (token !== st.token) return;
+        makeChart();
+        if (st.price) { st.price.setData([]); st.vol.setData([]); CV_MAS.forEach((d) => st.mas[d.id].setData([])); }
+        say("No saved chart for " + rec.ticker + ". Swipe for the next one.");
+        stage.dataset.state = "nodata";
+        preload();
+      });
+    };
+    const go = (step) => {
+      if (!st.list.length) return;
+      st.i = (st.i + step + st.list.length) % st.list.length;
+      show();
+    };
+    st.go = go;
+    const prevBtn = document.getElementById("cvprev");
+    const nextBtn = document.getElementById("cvnext");
+    if (prevBtn) prevBtn.addEventListener("click", () => go(-1));
+    if (nextBtn) nextBtn.addEventListener("click", () => go(1));
+    document.getElementById("cvlist").addEventListener("change", (e) => {
+      listId = e.target.value;
+      st.list = built.lists[listId] || [];
+      st.i = 0;
+      show();
+    });
+
+    // Swipes. With chart_touch_pan off (the default) the chart ignores one-finger drags,
+    // so any mostly sideways swipe moves to another chart. With it on, the chart pans and
+    // only a quick flick counts as a swipe.
+    let touch = null;
+    plot.addEventListener("touchstart", (e) => {
+      if (e.touches.length !== 1 || e.target.closest(".cv-reason, .cv-arrow")) { touch = null; return; }
+      const t = e.touches[0];
+      touch = { x: t.clientX, y: t.clientY, at: Date.now() };
+    }, { passive: true });
+    plot.addEventListener("touchmove", (e) => {
+      if (!touch || touchPan || e.touches.length !== 1) return;
+      const t = e.touches[0];
+      const dx = t.clientX - touch.x, dy = t.clientY - touch.y;
+      if (Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy) && e.cancelable) e.preventDefault();
+    }, { passive: false });
+    plot.addEventListener("touchend", (e) => {
+      if (!touch) return;
+      const t = e.changedTouches[0];
+      const dx = t.clientX - touch.x, dy = t.clientY - touch.y, ms = Date.now() - touch.at;
+      touch = null;
+      const maxMs = touchPan ? Math.min(250, cvOpt("swipe_max_ms")) : cvOpt("swipe_max_ms");
+      if (Math.abs(dx) < cvOpt("swipe_min_px") || Math.abs(dx) < Math.abs(dy) * 1.5 || ms > maxMs) return;
+      const right = dx > 0;
+      go(right === rightIsNext ? 1 : -1);
+    }, { passive: true });
+    plot.addEventListener("touchcancel", () => { touch = null; }, { passive: true });
+
+    // Full screen: the real Fullscreen API where the browser has it. iPhone Safari does
+    // not, so there the viewer fills the screen as a fixed layer over the menu and header.
+    const fsEl = () => document.fullscreenElement || document.webkitFullscreenElement || null;
+    const isFull = () => fsEl() === stage || stage.classList.contains("cv-fixed");
+    const markFull = () => {
+      const on = isFull();
+      stage.classList.toggle("cv-full", on);
+      document.body.classList.toggle("cv-lock", on);
+      document.getElementById("cvfull").textContent = on ? "Exit full screen" : "Full screen";
+      requestAnimationFrame(placeReason);
+    };
+    const enter = () => {
+      const req = stage.requestFullscreen || stage.webkitRequestFullscreen;
+      const fallback = () => { stage.classList.add("cv-fixed"); markFull(); };
+      if (req && (document.fullscreenEnabled || document.webkitFullscreenEnabled)) {
+        try {
+          const p = req.call(stage);
+          if (p && p.catch) p.catch(fallback);
+        } catch (e) { fallback(); }
+      } else fallback();
+    };
+    const leave = () => {
+      if (stage.classList.contains("cv-fixed")) { stage.classList.remove("cv-fixed"); markFull(); }
+      if (fsEl()) {
+        const exit = document.exitFullscreen || document.webkitExitFullscreen;
+        if (exit) { try { const p = exit.call(document); if (p && p.catch) p.catch(() => {}); } catch (e) { /* ignore */ } }
+      }
+    };
+    st.enter = enter;
+    st.leave = leave;
+    document.addEventListener("fullscreenchange", markFull);
+    document.addEventListener("webkitfullscreenchange", markFull);
+    document.getElementById("cvfull").addEventListener("click", () => (isFull() ? leave() : enter()));
+    document.getElementById("cvexit").addEventListener("click", leave);
+    window.addEventListener("resize", () => requestAnimationFrame(placeReason));
+    if (cvOpt("keyboard")) {
+      document.addEventListener("keydown", (e) => {
+        const tag = (e.target && e.target.tagName) || "";
+        if (/INPUT|SELECT|TEXTAREA/.test(tag)) return;
+        if (e.key === "ArrowRight") { e.preventDefault(); go(1); }
+        else if (e.key === "ArrowLeft") { e.preventDefault(); go(-1); }
+        else if (e.key === "Escape" && stage.classList.contains("cv-fixed")) leave();
+      });
+    }
+    show();
+  }
+
   function navOn(items) {
     return items.filter((it) => !FEATURE[it[2]] || featureOn(FEATURE[it[2]]));
   }
@@ -2124,6 +2615,7 @@
     heatmaps: "feature.heatmaps",
     updates: "feature.updates_log",
     help: "feature.help",
+    chartviewer: "feature.chart_viewer",
   };
   let SETTINGS = [];
   function featureOn(key) {
@@ -2181,6 +2673,7 @@
         return;
       }
       placeAbout(spec.about);
+      if (featureOn("feature.chart_viewer")) placeViewerLink(id);
       spec.render({ page: document.getElementById("page"), files: loaded, settings: SETTINGS });
       markReady("1");
     } catch (err) {
@@ -2209,6 +2702,7 @@
     matchText: matchText, matchMin: matchMin,
     destroyCharts: destroyCharts, lineChart: lineChart, barChart: barChart, comboChart: comboChart, makeChart: makeChart,
     lastNDays: lastNDays, seriesNum: seriesNum, retColor: retColor, band: band,
+    renderChartViewer: renderChartViewer, chartViewerFiles: CV_FILES, setViewerStart: setViewerStart,
     boot: boot,
   };
 })();
