@@ -63,12 +63,13 @@ async function waitOk(page) {
 
 async function check(browser, port, name, device, shotDir) {
   const bad = [];
+  const base = process.env.CV_BASE ? process.env.CV_BASE.replace(/\/?$/, "/") : "http://127.0.0.1:" + port + "/site/";
   const ctx = await browser.newContext(device);
   const page = await ctx.newPage();
   const errors = [];
   page.on("pageerror", (e) => errors.push(String(e.message || e)));
   page.on("console", (m) => { if (m.type() === "error" && !/favicon/.test(m.text())) errors.push(m.text()); });
-  await page.goto("http://127.0.0.1:" + port + "/site/chart-viewer.html", { waitUntil: "domcontentloaded" });
+  await page.goto(base + "chart-viewer.html", { waitUntil: "domcontentloaded" });
   await page.waitForSelector("body[data-ready='1']", { timeout: 30000 });
   await waitOk(page);
   const first = await page.evaluate(() => {
@@ -178,11 +179,11 @@ async function check(browser, port, name, device, shotDir) {
   await page.click("#cvexit");
 
   // A scanner page has the link, and it opens the viewer on that list.
-  await page.goto("http://127.0.0.1:" + port + "/site/vcp.html", { waitUntil: "domcontentloaded" });
+  await page.goto(base + "vcp.html", { waitUntil: "domcontentloaded" });
   await page.waitForSelector("body[data-ready='1']", { timeout: 30000 });
   const href = await page.getAttribute("#cvlink", "href");
   if (!/chart-viewer\.html\?list=vcp&t=/.test(href || "")) bad.push(name + ": VCP link is " + href);
-  await page.goto("http://127.0.0.1:" + port + "/site/" + href, { waitUntil: "domcontentloaded" });
+  await page.goto(base + href, { waitUntil: "domcontentloaded" });
   await page.waitForSelector("body[data-ready='1']", { timeout: 30000 });
   await waitOk(page);
   const want = new URLSearchParams(href.split("?")[1]).get("t");
@@ -201,8 +202,10 @@ async function main() {
   }
   const shotDir = process.argv[2] || "";
   if (shotDir) fs.mkdirSync(shotDir, { recursive: true });
-  const server = await serve();
-  const port = server.address().port;
+  // CV_BASE checks a live copy instead, for example https://patelnicknp.github.io/nicks-india-stock-desk/
+  const live = process.env.CV_BASE || "";
+  const server = live ? null : await serve();
+  const port = server ? server.address().port : 0;
   const browser = await pw.chromium.launch({ args: ["--no-sandbox"] });
   const phone = { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true };
   const devices = [
@@ -214,7 +217,7 @@ async function main() {
   let bad = [];
   for (const [name, device] of devices) bad = bad.concat(await check(browser, port, name, device, shotDir));
   await browser.close();
-  server.close();
+  if (server) server.close();
   if (bad.length) {
     console.log(bad.join("\n"));
     process.exit(1);
