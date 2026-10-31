@@ -16,11 +16,13 @@ import build_pages  # noqa: E402
 import tables  # noqa: E402
 
 EXPECTED = {
-    "default_list": "all", "include_watchlist": True, "swipe_right_is_next": True, "show_swipe_toggle": True,
-    "chart_touch_pan": False, "swipe_min_px": 50, "swipe_max_ms": 700, "preload_next": True,
-    "ma10": False, "ma20": False, "ma50": True, "ma150": True, "ma200": True, "volume": True,
-    "reason_box": True, "reason_box_open": False, "reason_max_chars": 120, "arrows": True, "keyboard": True,
-    "counter": True, "scanner_links": True, "right_padding_bars": 8,
+    "list_picker": True, "include_watching": True, "include_closed": False, "include_buy_setups": True,
+    "include_watchlist": True, "scanner_links": True, "fullscreen": True, "swipe": True, "swipe_right_is_next": True,
+    "flip_toggle": True, "chart_touch_pan": False, "swipe_min_px": 50, "swipe_max_ms": 700, "swipe_ratio": 1.5,
+    "arrows": True, "keyboard": True, "counter": True, "preload_next": True, "ma_chips": True,
+    "ma_10": False, "ma_20": False, "ma_50": True, "ma_150": True, "ma_200": True, "volume": True,
+    "volume_toggle": True, "reason_box": True, "reason_box_toggle": True, "reason_max_chars": 110,
+    "reason_collapsed_items": 3, "company_line": True, "day_change": True, "range_months": 6, "range_months_phone": 3,
 }
 
 
@@ -37,7 +39,9 @@ def test_feature_switch_and_config_block():
     cfg = _cfg()
     assert cfg["features"]["chart_viewer"] is True
     block = cfg["chart_viewer"]
-    assert {k: v for k, v in block.items() if not k.startswith("_")} == EXPECTED
+    mine = {k: v for k, v in block.items() if not k.startswith("_")}
+    assert mine == EXPECTED
+    assert list(mine) == list(EXPECTED), "same key order as the US desk"
 
 
 def test_js_defaults_match_config():
@@ -69,6 +73,7 @@ def test_help_row():
     text = topics["Chart Viewer"]
     assert "\u2014" not in text
     for word in ("feature.chart_viewer", "Swipe right for the next chart", "lower right", "Nothing new is downloaded",
+                 "every status except CLOSED", "do not add to the count",
                  "VCP", "CANSLIM", "Box", "Flag", "Qullamaggie", "Marios", "Episodic Pivot", "Buy setups",
                  "52-week breakouts", "Pullbacks", "Leaders", "High volume", "watchlist"):
         assert word in text, word
@@ -92,7 +97,7 @@ def test_page_list_menu_and_description():
 def test_every_scanner_is_a_source():
     desk = _read("site", "js", "desk.js")
     start = desk.index("const CV_SOURCES = [")
-    block = desk[start:desk.index("const CV_FEW", start)]
+    block = desk[start:desk.index("const CV_MAS", start)]
     for f in ("buy_setups.csv", "scanner_vcp.csv", "scanner_canslim.csv", "scanner_box.csv", "scanner_flag.csv",
               "scanner_qullamaggie.csv", "scanner_marios.csv", "scanner_episodic_pivot.csv", "scanner_leaders.csv",
               "scanner_52w.csv", "breakouts.csv", "high_volume.csv", "pullbacks.csv", "scanner_growth.csv",
