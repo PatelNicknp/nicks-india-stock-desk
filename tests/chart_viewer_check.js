@@ -2,6 +2,7 @@
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
+const zlib = require("zlib");
 
 const root = path.resolve(__dirname, "..");
 
@@ -67,6 +68,27 @@ async function realTouch(page, cdp, points, moves, ms) {
   }
   await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
   await page.waitForTimeout(400);
+}
+
+// How many daily bars the desk saved for a ticker (data/ohlc letter files), so the check
+// works for a recently listed or renamed stock with a short history.
+const savedCounts = new Map();
+function savedBars(ticker) {
+  const t = String(ticker || "").toUpperCase();
+  const c = t.charAt(0);
+  const group = c === "^" ? "_indexes" : (c >= "A" && c <= "Z" ? c : "0");
+  if (!savedCounts.has(group)) {
+    const counts = new Map();
+    try {
+      const text = zlib.gunzipSync(fs.readFileSync(path.join(root, "data", "ohlc", group + ".csv.gz"))).toString("utf8");
+      text.split("\n").slice(1).forEach((line) => {
+        const k = (line.split(",")[1] || "").trim().toUpperCase();
+        if (k) counts.set(k, (counts.get(k) || 0) + 1);
+      });
+    } catch (e) { /* no file */ }
+    savedCounts.set(group, counts);
+  }
+  return savedCounts.get(group).get(t) || 0;
 }
 
 async function viewState(page) {
@@ -188,7 +210,8 @@ async function checkTouch(page, ctx, name) {
   const b = await plotBox(page, "#cvplot");
   const cx = b.x + b.w * 0.45, cy = b.y + b.h * 0.45;
   const v0 = await viewState(page);
-  if (v0.bars < 400) bad.push(name + ": only " + v0.bars + " bars loaded, not the full saved history");
+  const saved = savedBars(v0.ticker);
+  if (v0.bars < Math.min(400, saved)) bad.push(name + ": only " + v0.bars + " of " + saved + " saved bars loaded, not the full saved history");
   if (!(v0.from > 1)) bad.push(name + ": first view should not show the whole history " + JSON.stringify(v0));
   // Slow drag to the right: older days come into view, same ticker.
   await realTouch(page, cdp, [[cx - 60, cy]], Array.from({ length: 12 }, () => [[12, 0]]), 60);

@@ -3187,6 +3187,28 @@ def main(argv=None):
             hv_note = "The high volume scan did not run this time. The rest of the desk updated as normal."
             log("High volume scanner", "MISSING", asof, (hv_note + " " + str(exc))[:200])
 
+    # Gap Up scanner. Uses the bars already in memory. Its own try so a
+    # problem here can never stop the rest of the update.
+    gap_on = features.get("scanner_gap_up", True)
+    gap = pd.DataFrame()
+    gap_note = "Gap Up scanner is off."
+    if gap_on:
+        try:
+            import gap_up
+            gap_opn = wide_from_long(long, "open") if long is not None and len(long) and "open" in long.columns else None
+            gap_names = gap_up.pick_universe(universe, long, cfg)
+            gap, gap_note = gap_up.build(close, high, low, vol, gap_opn, gap_names, cfg, scores=scores)
+            if len(gap):
+                also = dict(setup_frames)
+                also["high_volume"] = hv
+                also["buy_setups"] = buy_listed
+                gap = gap_up.add_also_in(gap, also, cfg)
+            log("Gap Up scanner", "OK" if len(gap) else "MISSING", asof, gap_note)
+        except Exception as exc:
+            gap = pd.DataFrame()
+            gap_note = "The Gap Up scan did not run this time. The rest of the desk updated as normal."
+            log("Gap Up scanner", "MISSING", asof, (gap_note + " " + str(exc))[:200])
+
     aaii_note = "There is no free AAII survey for India. India VIX and FII or DII cash were not available, so this page has no number."
     mood = build_mood(close, fii) if features.get("aaii_sentiment", True) else None
 
@@ -3247,6 +3269,7 @@ def main(argv=None):
         "pullbacks": gated(pb, "pullbacks", features.get("pullbacks", True), "No pullback rows."),
         "gainers_losers": gated(gl, "gainers_losers", features.get("gainers_losers", True), "No gainers."),
         "high_volume": gated(hv, "high_volume", hv_on, hv_note),
+        "scanner_gap_up": gated(gap, "scanner_gap_up", gap_on, gap_note),
         "sector_performance": gated(tables.sector_perf(scores), "sector_performance", features.get("sector_performance", True), "No sector performance."),
         "heatmaps": gated(heat, "heatmaps", features.get("heatmaps", True), "No heatmap."),
         "freshness": gated(fresh, "freshness", features.get("freshness_flags", True), "Freshness flags are off."),
