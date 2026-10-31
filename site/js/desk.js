@@ -33,6 +33,7 @@
       ["Qullamaggie breakout", "qullamaggie.html", "qullamaggie"],
       ["Marios breakout", "marios.html", "marios"],
       ["Episodic Pivot", "episodic_pivot.html", "episodic"],
+      ["Gap Up", "gap_up.html", "gapup"],
       ["Leaders", "leaders.html", "leaders"],
       ["52-week", "52-week.html", "week52"],
       ["High volume", "high-volume.html", "highvol"],
@@ -1983,6 +1984,7 @@
   // DELAYED WATCH only with include_watching, CLOSED only with include_closed). Growth,
   // Quality, Dividend, Liquid stocks and Pullbacks count rows that pass. High volume counts
   // the rows its page lists by default. 52-week counts a new high, a new low, or near the high.
+  // Gap Up counts every stock still holding its gap (chart_viewer.include_gap_up).
   // Buy setups and the Watchlist are shown in the reason box but do not add to the count.
   const CV_WATCHING = ["WATCHING", "DELAYED WATCH"];
   const CV_SOURCES = [
@@ -1993,6 +1995,7 @@
     { id: "qullamaggie", label: "Qullamaggie breakout", short: "Qullamaggie", file: "scanner_qullamaggie.csv", href: "qullamaggie.html", kind: "pattern" },
     { id: "marios", label: "Marios breakout", short: "Marios", file: "scanner_marios.csv", href: "marios.html", kind: "pattern" },
     { id: "episodic", label: "Episodic Pivot", short: "EP", file: "scanner_episodic_pivot.csv", href: "episodic_pivot.html", kind: "pattern" },
+    { id: "gapup", label: "Gap Up", short: "Gap Up", file: "scanner_gap_up.csv", href: "gap_up.html", kind: "gap", opt: "include_gap_up" },
     { id: "leaders", label: "Leaders", short: "Leaders", file: "scanner_leaders.csv", href: "leaders.html", kind: "pattern" },
     { id: "week52", label: "52-week highs and lows", short: "52-week", file: "scanner_52w.csv", href: "52-week.html", kind: "w52" },
     { id: "breakouts", label: "52-week breakouts", short: "Breakouts", file: "breakouts.csv", href: "breakouts.html", kind: "brk" },
@@ -2015,7 +2018,7 @@
   ];
   // Same keys and defaults as the US desk.
   const CV_DEFAULTS = {
-    list_picker: true, include_watching: true, include_closed: false, include_buy_setups: true, include_watchlist: true,
+    list_picker: true, include_watching: true, include_closed: false, include_buy_setups: true, include_watchlist: true, include_gap_up: true,
     scanner_links: true, fullscreen: true, native_fullscreen_ios: false, swipe: true, swipe_right_is_next: true, flip_toggle: true,
     chart_touch_pan: true, drag_mode_toggle: true, swipe_min_px: 80, swipe_max_ms: 300, swipe_ratio: 1.5,
     arrows: true, keyboard: true, counter: true, preload_next: true,
@@ -2077,6 +2080,18 @@
           ((num(r.day_pct) || 0) >= 0 ? "up " : "down ") + n(Math.abs(num(r.day_pct) || 0), 2) + "% today." + (r.meaning ? " " + r.meaning : "");
         return { status: (up ? "UP DAY " : "DOWN DAY ") + n(r.volume_ratio, 1) + "x", reason: reason, strength: null };
       }
+      case "gap": {
+        const s = String(r.status || "").trim();
+        if (s !== "GAP UP today" && s !== "GAP HOLDING") return null;
+        const g = num(r.gap_pct);
+        const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(r.gap_date || ""));
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const day = m ? months[Number(m[2]) - 1] + " " + Number(m[3]) : String(r.gap_date || "");
+        let reason = "Gap Up " + (g == null ? "" : n(g, 1) + "% ") + "on " + day + ", holding.";
+        if (num(r.volume_ratio) != null) reason += " Volume " + n(r.volume_ratio, 1) + "x the 50-day average.";
+        if (num(r.hold_level) != null) reason += " Hold level ₹" + n(r.hold_level, 2) + ".";
+        return { status: s, reason: reason, strength: null };
+      }
       case "passes":
         if (!cvYes(r.passes)) return null;
         return { status: src.word, reason: r.why || "", strength: null };
@@ -2116,7 +2131,7 @@
       ((b.strength == null ? -1 : b.strength) - (a.strength == null ? -1 : a.strength)) ||
       ((b.score == null ? -99 : b.score) - (a.score == null ? -99 : a.score)) ||
       (a.ticker < b.ticker ? -1 : a.ticker > b.ticker ? 1 : 0));
-    const sources = CV_SOURCES.filter((s) => featureOn(FEATURE[s.id]));
+    const sources = CV_SOURCES.filter((s) => featureOn(FEATURE[s.id]) && (!s.opt || cvOpt(s.opt)));
     const singles = {};
     sources.forEach((src) => {
       add(src, all, files[src.file]);
@@ -2149,7 +2164,7 @@
   function cvRead(key) { try { return JSON.parse(localStorage.getItem(key) || "null"); } catch (e) { return null; } }
   function cvStatusColor(s) {
     const t = String(s || "");
-    if (/BROKEN OUT|NEW HIGH|EP TODAY|UP DAY/.test(t)) return UP;
+    if (/BROKEN OUT|NEW HIGH|EP TODAY|UP DAY|GAP UP|GAP HOLDING/.test(t)) return UP;
     if (/READY|NEAR|HIGH ON VOLUME|PULLBACK|WATCHING|SELL PART/.test(t)) return AM;
     if (/NEW LOW|DOWN DAY/.test(t)) return DN;
     if (/IN TRADE|PASSES|WATCHLIST/.test(t)) return AC;
@@ -2958,6 +2973,7 @@
     qullamaggie: "feature.scanner_qullamaggie",
     marios: "feature.scanner_marios",
     episodic: "feature.scanner_episodic_pivot",
+    gapup: "feature.scanner_gap_up",
     leaders: "feature.scanner_leaders",
     week52: "feature.scanner_52w",
     highvol: "feature.high_volume_scanner",

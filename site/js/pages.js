@@ -373,6 +373,97 @@
     });
   }
 
+  // Gap Up: stocks that opened above the day before's high on big volume and have held the
+  // gap-day low since. Rows come from gap_up.py. Numbers live in the gap_up block of config.json.
+  const GAP_COLS = [
+    TK,
+    T("company", "Company", "text", { ellipsis: true, width: "200px" }),
+    T("status", "Status", "setup"),
+    T("gap_date", "Gap day", "shortdate"),
+    T("days_ago", "Days ago", "num", { dec: 0 }),
+    T("gap_pct", "Gap %", "pct", { dec: 2, color: true }),
+    T("volume_ratio", "Volume vs 50-day", "ratiox"),
+    T("hold_level", "Hold level (gap-day low)", "num", { dec: 2 }),
+    T("price", "Last close", "num", { dec: 2 }),
+    T("above_hold_pct", "Above hold level", "pct", { dec: 1, color: true }),
+    T("close_pos_pct", "Close in gap-day range", "rangepos"),
+    T("above_sma50", "vs 50-day", "abovema"),
+    T("above_sma200", "vs 200-day", "abovema"),
+    T("also_in", "Also on", "text", { hide: "md" }),
+  ];
+  function gapDay(iso) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(iso || ""));
+    if (!m) return String(iso || "");
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    return months[Number(m[2]) - 1] + " " + Number(m[3]);
+  }
+  function gapDetail(r) {
+    const parts = [];
+    const g = D.num(r.gap_pct);
+    parts.push("On " + gapDay(r.gap_date) + " it opened at ₹" + D.fmt(r.gap_open, 2) + ", above the day before's high of ₹" + D.fmt(r.prev_high, 2) +
+      (g == null ? "." : " (a " + D.fmt(g, 2) + "% gap)."));
+    if (D.num(r.volume_ratio) != null) parts.push("Volume was " + D.fmt(r.volume_ratio, 1) + " times its 50-day average.");
+    parts.push("The gap-day low of ₹" + D.fmt(r.hold_level, 2) + " is the hold level. No close since has been below it.");
+    if (D.num(r.above_hold_pct) != null) parts.push("The last close is " + D.fmt(r.above_hold_pct, 1) + "% above it.");
+    if (!D.isBlank(r.also_in)) parts.push("Also on: " + r.also_in + ".");
+    return '<p class="whytext">' + D.esc(parts.join(" ")) + "</p>";
+  }
+  function gapLines(r) {
+    const lines = [];
+    if (!r) return lines;
+    if (D.num(r.hold_level) != null) lines.push({ value: D.num(r.hold_level), color: "#EF4444", label: "Hold level " + D.fmt(r.hold_level, 2) });
+    if (D.num(r.prev_high) != null) lines.push({ value: D.num(r.prev_high), color: "#F59E0B", label: "High before the gap " + D.fmt(r.prev_high, 2) });
+    return lines;
+  }
+  function renderGapUp(ctx) {
+    const raw = ctx.files["scanner_gap_up.csv"] || [];
+    const all = D.realRows(raw).filter((r) => !D.isBlank(r.ticker) && ["GAP UP today", "GAP HOLDING"].indexOf(String(r.status || "")) >= 0);
+    const asOf = (all[0] && all[0].price_as_of) || "";
+    ctx.page.innerHTML =
+      '<p class="cap">Stocks that opened at least 3% above the day before\'s high on big volume in the last 21 trading days, and have not closed below the gap-day low since. ' +
+      "Newest gaps first, then the biggest." + (asOf ? " Prices to the " + D.esc(gapDay(asOf)) + " close." : "") + " Tap a row to see the chart. Research only.</p>" +
+      '<div class="ctrls" id="ctrls"></div><div class="cards four" id="cards"></div><div class="panel" id="tbl"></div>';
+    const box = document.getElementById("ctrls");
+    box.innerHTML =
+      D.selectHtml("age", "Gap day", [
+        { value: "0", label: "Latest day" }, { value: "4", label: "Last 5 days" }, { value: "9", label: "Last 10 days" },
+      ], "") +
+      D.selectHtml("trend", "Trend", [
+        { value: "50", label: "Above 50-day" }, { value: "200", label: "Above 200-day" }, { value: "both", label: "Above both" },
+      ], "") +
+      D.searchHtml("ticker", "Ticker", "tick-list-gap", D.uniq(all, "ticker"));
+    const state = { sort: "gap_date", dir: "desc", sort2: "gap_pct", dir2: "desc", page: 0 };
+    const emptyAll = all.length ? "" : (D.noteOf(raw) || "No stock has a gap up that is still holding.");
+    const draw = () => {
+      const age = D.fieldVal(box, "age");
+      const trend = D.fieldVal(box, "trend") || "";
+      const ticker = (D.fieldVal(box, "ticker") || "").trim();
+      const rows = all.filter((r) => {
+        if (age !== "" && !((D.num(r.days_ago) ?? 99) <= Number(age))) return false;
+        if ((trend === "50" || trend === "both") && r.above_sma50 !== "yes") return false;
+        if ((trend === "200" || trend === "both") && r.above_sma200 !== "yes") return false;
+        return D.matchText(r, "ticker", ticker);
+      });
+      const today = countWhere(rows, (r) => D.num(r.days_ago) === 0);
+      const both = countWhere(rows, (r) => r.above_sma50 === "yes" && r.above_sma200 === "yes");
+      const top = rows.slice().sort((a, b) => (D.num(b.gap_pct) || 0) - (D.num(a.gap_pct) || 0))[0];
+      document.getElementById("cards").innerHTML =
+        card("Stocks holding", D.esc(String(rows.length)), "gap still holding") +
+        card("Gapped on the latest day", '<span style="color:#22C55E">' + D.esc(String(today)) + "</span>", asOf ? D.esc(gapDay(asOf)) : "") +
+        card("Above 50 and 200-day", D.esc(String(both)), "in an uptrend") +
+        card("Biggest gap", top ? D.esc(top.ticker) : D.na(), top ? D.esc(D.fmt(top.gap_pct, 1) + "% on " + gapDay(top.gap_date)) : "");
+      D.drawTable(document.getElementById("tbl"), {
+        rows: rows, columns: GAP_COLS, state: state, pageSize: 25,
+        detail: gapDetail, lines: gapLines,
+        priceSub: "Daily candles in rupees. Red is the hold level (gap-day low). Orange is the high of the day before the gap.",
+        empty: emptyAll || "No stocks match these filters. Set Gap day and Trend to All.",
+      });
+      if (D.setViewerStart) D.setViewerStart((rows[0] || {}).ticker || "");
+    };
+    hook(box, state, draw);
+    draw();
+  }
+
   function renderToday(ctx) {
     const mt = (ctx.files["market_today.csv"] || [])[0] || {};
     const breadth = D.lastNDays(D.realRows(ctx.files["breadth_history.csv"]), "date", 182);
@@ -3216,6 +3307,14 @@
       "Too wide, skip means the stop is more than 1.5 normal days away. Upper circuit means no one could buy at the close. Base grade A (flat or down before the EP) is listed first.",
       "Prices are end of day only. Check guidance and other news by hand with the announcements link. Market cap is shares times the close, from saved share counts.",
     ] },
+    gapup: { title: SCAN, note: "Only stocks that trade at least ₹1 crore a day on average over the last 50 days are listed, the same ₹1 crore line the Episodic Pivot scan uses.", lines: [
+      "A gap up is a day when a stock opens above the day before's high. Gap % is how far the open is above that high. The gap must be at least 3%.",
+      "The gap day needs at least 1.5 times the average volume of the 50 days before it, and a close of at least ₹20. ETFs and funds are left out.",
+      "The gap-day low is the hold level. A stock stays on the list only while every close since the gap day is at or above it. One close below it and the stock is dropped.",
+      "Only gaps in the last 21 trading days, today included, are shown. If a stock gapped more than once, you see the most recent gap that still holds. Newest gaps come first, then the biggest.",
+      "GAP UP today means the gap was on the latest day. GAP HOLDING means an older gap that still holds. Gap Up does not feed Buy setups.",
+      "Close in gap-day range shows where the gap day closed: 0 is the low of the day and 100 is the high. Also on shows the other scanners that list the same stock.",
+    ] },
     canslim: { title: SCAN, note: LIQUID_LINE, lines: [
       "William O'Neil's method. It checks earnings growth versus a year ago, how close price is to its 52-week high, and trading volume.",
       "It also checks strength versus the Nifty 50 (SENSEX for BSE-only stocks), shareholding changes, and whether the market is in an uptrend.",
@@ -3446,6 +3545,7 @@
     buysetups: { files: ["buy_setups.csv", "backfill_progress.csv"], render: renderBuySetups },
     week52: { files: ["scanner_52w.csv", "highs_lows_history.csv"], render: renderWeek52 },
     highvol: { files: ["high_volume.csv"], optional: ["company_lines.csv"], render: renderHighVolume },
+    gapup: { files: ["scanner_gap_up.csv"], render: renderGapUp },
     rotation: { files: ["sector_rotation.csv", "sector_rotation_tails.csv", "sector_rotation_history.csv", "scores.csv"], render: renderRotation },
     help: { files: ["help.csv", "settings.csv"], render: renderHelp },
     chartviewer: { files: [], optional: D.chartViewerFiles, render: D.renderChartViewer },
