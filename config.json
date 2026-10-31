@@ -65,7 +65,8 @@
     "scanner_qullamaggie": true,
     "scanner_marios": true,
     "scanner_episodic_pivot": true,
-    "chart_viewer": true
+    "chart_viewer": true,
+    "light_mode": true
   },
   "qullamaggie": {
     "_note": "Qullamaggie breakout scan on cached daily bars. Every rule has an on/off switch and its numbers here. Percents are whole numbers (3.5 means 3.5%). Marios uses these for the shared rules unless the marios block sets its own.",
@@ -258,6 +259,11 @@
     "day_change": true,
     "range_months": 6,
     "range_months_phone": 3
+  },
+  "light_mode": {
+    "_note": "Light mode. feature.light_mode shows the Theme toggle (Dark, Light, Match device) at the top of the menu. default_theme is used until a choice is saved on the device: dark, light, or auto (match the device). Dark stays the default. match_device_option shows the Match device button.",
+    "default_theme": "dark",
+    "match_device_option": true
   },
   "market": {
     "require_both_uptrends": false

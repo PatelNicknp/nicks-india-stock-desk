@@ -79,6 +79,163 @@
     ]],
   ];
 
+
+  // Light mode. Dark is the default. The choice (dark, light, or auto to match the device)
+  // is kept in localStorage under desk-theme. CSS colours swap through variables in
+  // desk.css. Colours written into the page by the scripts are swapped by themeRemap,
+  // and chart colours go through tc. Turn the toggle off with feature.light_mode.
+  const LIGHT = {"#0B0F17": "#F3F5F9", "#121826": "#FFFFFF", "#0F1420": "#F7F8FB", "#1A2236": "#E8EDF7", "#1E293B": "#DDE3EC", "#2A3550": "#C5CEDD", "#243049": "#D3DAE6", "#3A4560": "#B3BDCE", "#E6EBF5": "#111827", "#C3CBDB": "#374151", "#C9D2E3": "#374151", "#AEB7C8": "#4B5563", "#8B96AD": "#586174", "#5B6680": "#565E6C", "#7C9CFF": "#3355D6", "#F59E0B": "#9A4A06", "#EF4444": "#B42318", "#22C55E": "#12703A", "#D6A64A": "#865205", "RGBA(0,0,0,.35)": "rgba(15,23,42,.12)", "RGBA(0,0,0,.5)": "rgba(15,23,42,.35)", "RGBA(11,15,23,.9)": "rgba(255,255,255,.94)", "RGBA(11,15,23,.78)": "rgba(255,255,255,.86)", "RGBA(11,15,23,.74)": "rgba(255,255,255,.84)", "RGBA(11,15,23,.55)": "rgba(255,255,255,.7)", "RGBA(42,53,80,.9)": "rgba(148,163,184,.75)", "RGBA(42,53,80,.8)": "rgba(148,163,184,.7)", "RGBA(42,53,80,.7)": "rgba(148,163,184,.55)", "#283146": "#E3E8F0", "#7F1D1D": "#FECACA", "#B91C1C": "#FCA5A5", "#14532D": "#DCFCE7", "#166534": "#BBF7D0", "#38BDF8": "#0369A1", "#E879F9": "#A21CAF", "#A78BFA": "#6D28D9", "#FBBF24": "#9A4A06", "#FB923C": "#C2410C", "#F472B6": "#BE185D", "#34D399": "#047857", "#2DD4BF": "#0F766E", "#C084FC": "#7E22CE", "#FB7185": "#BE123C", "#94A3B8": "#526070", "#1F9D55": "#12703A", "#D14343": "#B42318", "RGBA(34,197,94,.65)": "rgba(22,163,74,.45)", "RGBA(239,68,68,.65)": "rgba(220,38,38,.4)", "RGBA(34,197,94,.45)": "rgba(22,163,74,.4)", "RGBA(239,68,68,.45)": "rgba(220,38,38,.35)", "RGBA(124,156,255,.10)": "rgba(51,85,214,.10)"};
+  const THEME_KEY = "desk-theme";
+  const THEMES = ["dark", "light", "auto"];
+  function storedTheme() {
+    try { const v = localStorage.getItem(THEME_KEY); if (THEMES.indexOf(v) >= 0) return v; } catch (e) { /* storage can be blocked */ }
+    return "";
+  }
+  function deviceLight() {
+    try { return !!(window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches); } catch (e) { return false; }
+  }
+  function resolveTheme(choice) {
+    return choice === "light" || (choice === "auto" && deviceLight()) ? "light" : "dark";
+  }
+  let themeChoice = storedTheme() || "dark";
+  let THEME = resolveTheme(themeChoice);
+  function setThemeAttr() {
+    const root = document.documentElement;
+    if (THEME === "light") root.setAttribute("data-theme", "light");
+    else root.removeAttribute("data-theme");
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute("content", THEME === "light" ? LIGHT["#0B0F17"] : "#0B0F17");
+  }
+  setThemeAttr();
+  const COLOR_RE = /#[0-9a-fA-F]{6}\b|rgba?\([^)]*\)/g;
+  function hex2(n) { return ("0" + Math.max(0, Math.min(255, Number(n) || 0)).toString(16)).slice(-2).toUpperCase(); }
+  function lightOf(m) {
+    const key = m.toUpperCase().replace(/\s+/g, "");
+    if (LIGHT[key]) return LIGHT[key];
+    const rgb = /^RGB\((\d+),(\d+),(\d+)\)$/.exec(key);
+    if (rgb) { const h = "#" + hex2(rgb[1]) + hex2(rgb[2]) + hex2(rgb[3]); if (LIGHT[h]) return LIGHT[h]; }
+    const rgba = /^RGBA\((\d+),(\d+),(\d+),([\d.]+)\)$/.exec(key);
+    if (rgba) {
+      const a = String(Number(rgba[4])).replace(/^0\./, ".");
+      const k2 = "RGBA(" + rgba[1] + "," + rgba[2] + "," + rgba[3] + "," + a + ")";
+      if (LIGHT[k2]) return LIGHT[k2];
+    }
+    return m;
+  }
+  function tc(c) {
+    if (THEME !== "light" || typeof c !== "string") return c;
+    return c.replace(COLOR_RE, lightOf);
+  }
+  // Swap colours inside a chart config in place. Functions and canvases are left alone.
+  function tcDeep(obj, seen) {
+    if (THEME !== "light" || !obj || typeof obj !== "object") return obj;
+    seen = seen || new Set();
+    if (seen.has(obj) || (typeof Node !== "undefined" && obj instanceof Node)) return obj;
+    seen.add(obj);
+    const keys = Array.isArray(obj) ? obj.keys() : Object.keys(obj);
+    for (const k of keys) {
+      const v = obj[k];
+      if (typeof v === "string") obj[k] = tc(v);
+      else if (v && typeof v === "object" && (Array.isArray(v) || Object.getPrototypeOf(v) === Object.prototype)) tcDeep(v, seen);
+    }
+    return obj;
+  }
+  const THEME_ATTRS = ["style", "fill", "stroke", "stop-color"];
+  function remapEl(el) {
+    if (!el || el.nodeType !== 1) return;
+    THEME_ATTRS.forEach((a) => {
+      const v = el.getAttribute(a);
+      if (v) { const nv = tc(v); if (nv !== v) el.setAttribute(a, nv); }
+    });
+  }
+  function remapTree(root) {
+    if (!root || root.nodeType !== 1) return;
+    remapEl(root);
+    root.querySelectorAll("[style],[fill],[stroke],[stop-color]").forEach(remapEl);
+  }
+  let themeObserver = null;
+  function themeRemap() {
+    if (THEME !== "light" || themeObserver || typeof MutationObserver === "undefined") return;
+    remapTree(document.body);
+    themeObserver = new MutationObserver((list) => {
+      list.forEach((m) => {
+        if (m.type === "attributes") remapEl(m.target);
+        else m.addedNodes.forEach((n) => remapTree(n));
+      });
+    });
+    themeObserver.observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: THEME_ATTRS });
+  }
+  function applyTheme() {
+    if (!featureOn("feature.light_mode")) themeChoice = "dark";
+    else if (!storedTheme()) {
+      const row = SETTINGS.find((r) => r.setting === "light_mode.default_theme");
+      const d = row ? String(row.value || "").trim().toLowerCase() : "";
+      themeChoice = THEMES.indexOf(d) >= 0 ? d : "dark";
+    }
+    if (themeChoice === "auto" && !matchDeviceOn()) themeChoice = "dark";
+    THEME = resolveTheme(themeChoice);
+    setThemeAttr();
+    if (typeof Chart !== "undefined") {
+      Chart.defaults.color = tc(MU);
+      Chart.defaults.borderColor = tc("#1E293B");
+    }
+    themeRemap();
+  }
+  function matchDeviceOn() {
+    const row = SETTINGS.find((r) => r.setting === "light_mode.match_device_option");
+    return !row || String(row.value).toLowerCase() !== "false";
+  }
+  function themeToggleHtml() {
+    if (!featureOn("feature.light_mode")) return "";
+    const b = (v, label) => '<button type="button" data-theme-pick="' + v + '"' + (themeChoice === v ? ' class="on" aria-pressed="true"' : ' aria-pressed="false"') + ">" + esc(label) + "</button>";
+    return '<div class="themerow" id="themerow"><span class="lab">Theme</span><div class="seg">' +
+      b("dark", "Dark") + b("light", "Light") + (matchDeviceOn() ? b("auto", "Match device") : "") + "</div></div>";
+  }
+  function wireThemeToggle() {
+    const row = document.getElementById("themerow");
+    if (row) {
+      row.addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-theme-pick]");
+        if (!btn) return;
+        const v = btn.getAttribute("data-theme-pick");
+        try { localStorage.setItem(THEME_KEY, v); } catch (err) { /* storage can be blocked */ }
+        if (resolveTheme(v) === THEME) {
+          themeChoice = v;
+          row.querySelectorAll("[data-theme-pick]").forEach((x) => {
+            const on = x.getAttribute("data-theme-pick") === v;
+            x.classList.toggle("on", on);
+            x.setAttribute("aria-pressed", on ? "true" : "false");
+          });
+          return;
+        }
+        location.reload();
+      });
+    }
+    if (themeChoice === "auto" && window.matchMedia) {
+      const mq = window.matchMedia("(prefers-color-scheme: light)");
+      const onChange = () => { if (resolveTheme("auto") !== THEME) location.reload(); };
+      if (mq.addEventListener) mq.addEventListener("change", onChange);
+      else if (mq.addListener) mq.addListener(onChange);
+    }
+  }
+  // Lightweight Charts with the theme colours applied to the chart, its series, and its data.
+  function tvCreate(host, opts) {
+    const chart = LightweightCharts.createChart(host, tcDeep(opts));
+    if (THEME !== "light") return chart;
+    const add = chart.addSeries.bind(chart);
+    chart.addSeries = (type, o, pane) => {
+      const series = pane == null ? add(type, tcDeep(o || {})) : add(type, tcDeep(o || {}), pane);
+      const setData = series.setData.bind(series);
+      series.setData = (data) => setData((data || []).map((p) => (p && typeof p.color === "string" ? Object.assign({}, p, { color: tc(p.color) }) : p)));
+      const line = series.createPriceLine.bind(series);
+      series.createPriceLine = (o2) => line(tcDeep(Object.assign({}, o2)));
+      const apply = series.applyOptions.bind(series);
+      series.applyOptions = (o2) => apply(tcDeep(Object.assign({}, o2)));
+      return series;
+    };
+    return chart;
+  }
+
   const cache = new Map();
   const charts = [];
   const SPD = {
@@ -1094,6 +1251,7 @@
     // Draw the final values immediately. The default entrance animation
     // starts every point at 0, so a breadth line of 68% first appears near 15%.
     config.options.animation = false;
+    tcDeep(config);
     const c = new Chart(canvas, config);
     charts.push(c);
     return c;
@@ -1258,7 +1416,7 @@
           const top = Math.max(area.top, Math.min(y1, y2));
           const bot = Math.min(area.bottom, Math.max(y1, y2));
           ctx.save();
-          ctx.fillStyle = ln.color || "rgba(124,156,255,.10)";
+          ctx.fillStyle = tc(ln.color || "rgba(124,156,255,.10)");
           ctx.fillRect(area.left, top, area.right - area.left, Math.max(1, bot - top));
           ctx.restore();
           labels.push({ yy: (top + bot) / 2, text: ln.label || "", color: ln.labelColor || "#7C9CFF" });
@@ -1268,7 +1426,7 @@
         const yy = y.getPixelForValue(ln.value);
         if (yy < area.top || yy > area.bottom) return;
         ctx.save();
-        ctx.strokeStyle = ln.color;
+        ctx.strokeStyle = tc(ln.color);
         ctx.setLineDash([5, 4]);
         ctx.beginPath();
         ctx.moveTo(area.left, yy);
@@ -1288,7 +1446,7 @@
         if (yy - last < 13) yy = last + 13;
         if (yy > area.bottom) yy = area.bottom;
         last = yy;
-        ctx.fillStyle = lb.color;
+        ctx.fillStyle = tc(lb.color);
         ctx.fillText(lb.text, area.right - 6, yy);
       });
       ctx.restore();
@@ -1324,15 +1482,15 @@
           let text;
           if (opt.level) {
             text = levelText(v, opt);
-            ctx.fillStyle = "#C3CBDB";
+            ctx.fillStyle = tc("#C3CBDB");
           } else {
             const body = Math.abs(v) >= 1000 ? compact(v) : v.toFixed(dec);
             text = (v > 0 ? "+" : v < 0 ? "−" : "") + String(body).replace(/^-/, "") + (opt.suffix || "");
-            ctx.fillStyle = v > 0 ? UP : v < 0 ? DN : MU;
+            ctx.fillStyle = tc(v > 0 ? UP : v < 0 ? DN : MU);
           }
           if (horizontal && area) {
             // Light grey, just outside the bar tip, so a red bar does not hide red text.
-            ctx.fillStyle = "#C3CBDB";
+            ctx.fillStyle = tc("#C3CBDB");
             const textW = ctx.measureText(text).width;
             if (v < 0) {
               ctx.textAlign = "right";
@@ -1599,7 +1757,7 @@
       MA_DEFS.forEach((def) => { averages[def.id] = maSeries(closes, def); });
       const byDate = new Map();
       bars.forEach((b, i) => byDate.set(b.date, i));
-      const chart = LC.createChart(host, {
+      const chart = tvCreate(host, {
         autoSize: true,
         layout: {
           background: { type: "solid", color: "#121826" },
@@ -2103,7 +2261,7 @@
     const makeChart = () => {
       if (st.chart || !tvReady()) return;
       const LC = LightweightCharts;
-      const chart = LC.createChart(host, {
+      const chart = tvCreate(host, {
         autoSize: true,
         layout: { background: { type: "solid", color: "#121826" }, textColor: MU, fontFamily: "Roboto, Arial, sans-serif", fontSize: 11, attributionLogo: true },
         grid: { vertLines: { color: "#1E293B" }, horzLines: { color: "#1E293B" } },
@@ -2548,7 +2706,7 @@
       '<div class="scrim" id="scrim"></div>' +
       '<div class="app"><nav class="nav" id="nav"><a class="brand" href="index.html"><span class="logo">N</span><span>Nick\'s India Stock Desk</span></a>' +
       '<div id="qslot"><div class="qwrap" id="search"><input id="q" type="search" placeholder="Search stocks" autocomplete="off" spellcheck="false" enterkeyhint="search" aria-label="Search stocks" role="combobox" aria-autocomplete="list" aria-controls="qlist" aria-expanded="false" title="Search stocks. Press / or Ctrl+K">' +
-      '<div class="qpop" id="qlist" role="listbox" hidden></div></div></div>' +
+      '<div class="qpop" id="qlist" role="listbox" hidden></div></div></div>' + themeToggleHtml() +
       groups + "</nav><div class=\"main\"><div class=\"hdr\">" +
       '<button type="button" class="menu-btn" id="menu" aria-label="Open menu" aria-controls="nav" aria-expanded="false">☰</button>' +
       '<button type="button" class="search-btn" id="qbtn" aria-label="Search stocks" aria-expanded="false" aria-controls="q">' + SEARCH_ICON + "</button>" +
@@ -2597,6 +2755,7 @@
       if (e.target.closest("a.item")) setNav(false);
     });
     wireSearch(setNav);
+    wireThemeToggle();
   }
 
   function findPage(id) {
@@ -2706,6 +2865,7 @@
         try { loaded[n] = await loadCsv(n); } catch (err) { loaded[n] = []; }
       }));
       SETTINGS = loaded["settings.csv"] || [];
+      applyTheme();
       renderShell(meta);
       const mt = loaded["market_today.csv"];
       const stamp = (mt && mt[0] && mt[0].updated_pt) || latestChecked(loaded["updates_log.csv"]);
@@ -2746,6 +2906,7 @@
     destroyCharts: destroyCharts, lineChart: lineChart, barChart: barChart, comboChart: comboChart, makeChart: makeChart,
     lastNDays: lastNDays, seriesNum: seriesNum, retColor: retColor, band: band,
     renderChartViewer: renderChartViewer, chartViewerFiles: CV_FILES, setViewerStart: setViewerStart,
+    tc: tc, theme: () => THEME,
     boot: boot,
   };
 })();

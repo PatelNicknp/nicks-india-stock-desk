@@ -3004,7 +3004,7 @@
           fill(area.left, y0, x0, area.bottom, "#EF4444");
           fill(area.left, area.top, x0, y0, "#7C9CFF");
           ctx2.globalAlpha = 1;
-          ctx2.strokeStyle = "#94A3B8";
+          ctx2.strokeStyle = D.tc("#94A3B8");
           ctx2.lineWidth = 1.25;
           ctx2.beginPath();
           ctx2.moveTo(x0, area.top); ctx2.lineTo(x0, area.bottom);

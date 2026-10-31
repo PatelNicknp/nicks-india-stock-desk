@@ -64,6 +64,7 @@ feature.scanner_qullamaggie,True
 feature.scanner_marios,True
 feature.scanner_episodic_pivot,True
 feature.chart_viewer,True
+feature.light_mode,True
 buy_setups.market_filter,True
 buy_setups.chart_setups_only,True
 buy_setups.full_rules_at_coverage_pct,80
@@ -89,6 +90,8 @@ episodic_pivot.nick_require_catalyst,False
 episodic_pivot.nick_min_catalyst_score,2
 episodic_pivot.nick_require_flat_base,False
 episodic_pivot.nick_flat_base_grade,A
+light_mode.default_theme,dark
+light_mode.match_device_option,True
 chart_viewer.list_picker,True
 chart_viewer.include_watching,True
 chart_viewer.include_closed,False
