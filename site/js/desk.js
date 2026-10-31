@@ -2336,18 +2336,44 @@
       }
       const pad = cvPadBars(last - from + 1, w, reasonOpen ? Math.min(boxPad(), 260) : boxPad());
       let lo = from - 0.5, hi = last + pad;
-      // All on a phone can need bars thinner than the chart allows (0.5 px). Then show as much
+      // All on a phone can need bars thinner than the chart allows (0.3 px). Then show as much
       // history as fits and keep the newest candle in the same spot left of the Why box.
       const sp = w / (hi - lo);
-      if (sp < 0.5) { hi = last + (pad * sp) / 0.5; lo = hi - w / 0.5; }
+      if (sp < 0.3) { hi = last + (pad * sp) / 0.3; lo = hi - w / 0.3; }
       st.pad = hi - last;
-      try { st.chart.timeScale().setVisibleLogicalRange({ from: lo, to: hi }); } catch (e) { /* chart is gone */ }
+      setRange({ from: lo, to: hi });
     };
-    const applyView = () => {
+    // A range the user dragged or pinched to on this chart (same as the US desk). It is read when a
+    // finger or the mouse lets go of the chart, and only counts when it differs from the view set
+    // last. A resize, a turn of the device or full screen keeps it; a new chart or a range chip
+    // clears it and puts the first view back. Turning Vol on or off keeps it.
+    let userRange = null;
+    let carryRange = null;
+    let lastSet = null;
+    let pressTimer = 0;
+    const setRange = (r) => {
+      lastSet = { from: r.from, to: r.to };
+      try { st.chart.timeScale().setVisibleLogicalRange(lastSet); } catch (e) { /* chart is gone */ }
+    };
+    const readUserRange = () => {
+      if (!st.chart || !lastSet) return;
+      let lr = null;
+      try { lr = st.chart.timeScale().getVisibleLogicalRange(); } catch (e) { return; }
+      if (lr && (Math.abs(lr.from - lastSet.from) > 0.5 || Math.abs(lr.to - lastSet.to) > 0.5)) {
+        userRange = { from: lr.from, to: lr.to };
+        lastSet = { from: lr.from, to: lr.to };
+      }
+    };
+    st.userRange = () => userRange;
+    // Put the right view back: the dragged range if there is one, else the first view, but only once
+    // the chart is at least 120 px wide. A chart still being laid out waits for the next resize.
+    const applyView = (fresh) => {
       if (!st.chart || !st.bars.length) return;
       placeReason();
+      if (fresh) userRange = null;
       let w = 0;
       try { w = st.chart.timeScale().width(); } catch (e) { w = 0; }
+      if (userRange && Number.isFinite(userRange.from) && Number.isFinite(userRange.to) && userRange.to > userRange.from) { setRange(userRange); return; }
       if (w < 120) { viewW = 0; return; }
       viewW = w;
       cvRange(st.bars, w);
@@ -2356,10 +2382,15 @@
     let viewRaf = 0;
     const viewSoon = () => {
       cancelAnimationFrame(viewRaf);
-      viewRaf = requestAnimationFrame(() => { viewRaf = requestAnimationFrame(applyView); });
+      viewRaf = requestAnimationFrame(() => { viewRaf = requestAnimationFrame(() => applyView()); });
     };
     if (typeof ResizeObserver !== "undefined") new ResizeObserver(viewSoon).observe(host);
-    window.addEventListener("orientationchange", viewSoon);
+    window.addEventListener("orientationchange", () => setTimeout(() => applyView(), 250));
+    const pressOn = () => { clearTimeout(pressTimer); };
+    const pressOff = () => { clearTimeout(pressTimer); pressTimer = setTimeout(readUserRange, 120); };
+    ["pointerdown", "touchstart"].forEach((ev) => host.addEventListener(ev, pressOn, { passive: true, capture: true }));
+    ["pointerup", "pointercancel", "touchend", "touchcancel"].forEach((ev) => host.addEventListener(ev, pressOff, { passive: true, capture: true }));
+    host.addEventListener("wheel", pressOff, { passive: true, capture: true });
 
     // ---- The chart: made new for each stock, like the US desk, so nothing carries over.
     const panOptions = () => ({
@@ -2387,10 +2418,13 @@
         grid: { vertLines: { color: "#161E2E" }, horzLines: { color: "#161E2E" } },
         crosshair: { mode: LC.CrosshairMode.Magnet },
         rightPriceScale: { borderColor: "#1E293B", scaleMargins: { top: 0.08, bottom: 0.06 } },
-        timeScale: { borderColor: "#1E293B", rightOffset: 4 },
+        timeScale: { borderColor: "#1E293B", rightOffset: 4, minBarSpacing: 0.3 },
       }, panOptions()));
       tvCharts.push(chart);
       st.chart = chart;
+      userRange = carryRange;
+      carryRange = null;
+      lastSet = null;
       st.price = chart.addSeries(LC.CandlestickSeries, {
         upColor: UP, downColor: DN, borderUpColor: UP, borderDownColor: DN, wickUpColor: UP, wickDownColor: DN,
         priceLineVisible: false, lastValueVisible: true,
@@ -2414,7 +2448,7 @@
         if (panes[0]) panes[0].setStretchFactor(4);
         if (panes[1]) panes[1].setStretchFactor(1);
       }
-      requestAnimationFrame(applyView);
+      requestAnimationFrame(() => applyView());
     };
 
     const header = (rec, bars) => {
@@ -2519,8 +2553,8 @@
       if (!b) return;
       const id = b.getAttribute("data-chip");
       const range = CV_RANGES.find((r) => r.id === id);
-      if (range) { rangePick = range.months; paintChips(); applyView(); return; }
-      if (id === "volume") { volOn = !volOn; cvStore("desk-cv-volume", volOn); paintChips(); if (st.bars.length && st.chart) draw(st.bars); return; }
+      if (range) { rangePick = range.months; paintChips(); applyView(true); return; }
+      if (id === "volume") { volOn = !volOn; cvStore("desk-cv-volume", volOn); paintChips(); if (st.bars.length && st.chart) { carryRange = userRange; draw(st.bars); } return; }
       if (id === "reason") { reasonOn = !reasonOn; cvStore("desk-cv-reason", reasonOn); paintChips(); paintReason(); return; }
       if (id === "swipe") { rightIsNext = !rightIsNext; cvStore("desk-cv-swipe-right-next", rightIsNext); }
       else if (id === "drag") { dragPan = !dragPan; cvStore("desk-cv-drag-pan", dragPan); applyPan(); }

@@ -132,6 +132,43 @@ async function checkSameSpot(page, name) {
   return bad;
 }
 
+// A range the user dragged to stays after a turn of the device (a resize), like the US desk.
+// A new chart and a range chip still put the first view back.
+async function checkKeepRange(page, ctx, name) {
+  const bad = [];
+  const cdp = await ctx.newCDPSession(page);
+  const b = await plotBox(page, "#cvplot");
+  const cx = b.x + b.w * 0.45, cy = b.y + b.h * 0.45;
+  const v0 = await viewState(page);
+  await realTouch(page, cdp, [[cx - 60, cy]], Array.from({ length: 12 }, () => [[12, 0]]), 60);
+  const v1 = await viewState(page);
+  if (!(v1.from < v0.from - 3) || v1.ticker !== v0.ticker) bad.push(name + ": drag did not pan before the turn " + JSON.stringify([v0, v1]));
+  const size = page.viewportSize();
+  await page.setViewportSize({ width: size.height, height: size.width });
+  await page.waitForTimeout(700);
+  const v2 = await viewState(page);
+  await page.setViewportSize(size);
+  await page.waitForTimeout(700);
+  const v3 = await viewState(page);
+  if (Math.abs(v2.from - v1.from) > 0.6 || Math.abs(v2.to - v1.to) > 0.6) bad.push(name + ": turning the device threw away the dragged range " + JSON.stringify([v1, v2]));
+  if (Math.abs(v3.from - v1.from) > 0.6 || Math.abs(v3.to - v1.to) > 0.6) bad.push(name + ": turning back threw away the dragged range " + JSON.stringify([v1, v3]));
+  // A range chip clears the dragged range.
+  await realTouch(page, cdp, [[cx - 60, cy]], Array.from({ length: 10 }, () => [[12, 0]]), 60);
+  await page.click('[data-chip="r6"]');
+  await page.waitForTimeout(300);
+  if (await page.evaluate(() => !!(document.getElementById("cvstage")._cv.userRange && document.getElementById("cvstage")._cv.userRange()))) bad.push(name + ": range chip kept the dragged range");
+  bad.push(...(await checkFill(page, name, "6M chip after a drag", false)));
+  // A new chart opens on the first view.
+  await realTouch(page, cdp, [[cx - 60, cy]], Array.from({ length: 10 }, () => [[12, 0]]), 60);
+  await page.click("#cvnext");
+  await waitOk(page);
+  bad.push(...(await checkFill(page, name, "next chart after a drag", false)));
+  await page.click("#cvprev");
+  await waitOk(page);
+  await cdp.detach();
+  return bad;
+}
+
 async function plotBox(page, sel) {
   return page.evaluate((sel) => {
     const r = document.querySelector(sel).getBoundingClientRect();
@@ -370,6 +407,8 @@ async function check(browser, port, name, device, shotDir) {
       nav: getComputedStyle(document.querySelector(".hdr")).visibility };
   });
   if (!fb.fixed || fb.pos !== "fixed" || Math.abs(fb.h - fb.vh) > 2 || fb.nav !== "hidden") bad.push(name + ": iPhone fallback " + JSON.stringify(fb));
+  await waitOk(page);
+  bad.push(...(await checkKeepRange(page, ctx, name)));
   await page.click("#cvexit");
 
   // A scanner page has the link, and it opens the viewer on that list.
