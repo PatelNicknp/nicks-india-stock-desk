@@ -1279,6 +1279,73 @@
     },
   });
 
+  // Episodic Pivot: a big jump on news, end-of-day only. Rows come from setups.scan_episodic_pivot.
+  const epStatus = ["EP TODAY", "BROKEN OUT today", "IN TRADE", "WATCHING"];
+  function epLines(row) {
+    const lines = [];
+    if (!row) return lines;
+    if (D.num(row.pivot) != null) lines.push({ value: D.num(row.pivot), color: "#F59E0B", label: "Buy above " + D.fmt(row.pivot, 2) });
+    if (D.num(row.stop) != null) lines.push({ value: D.num(row.stop), color: "#EF4444", label: "Stop " + D.fmt(row.stop, 2) });
+    if (D.num(row.trail) != null) lines.push({ value: D.num(row.trail), color: "#7C9CFF", label: "Trail " + (row.trail_with || "") + " " + D.fmt(row.trail, 2) });
+    return lines;
+  }
+  function epFacts(row) {
+    if (!row) return "";
+    const facts = [
+      ["EP day", row.ep_date], ["Why it counts", row.ep_trigger], ["Catalyst", row.catalyst_tag],
+      ["Results timing", row.report_timing], ["Catalyst score (0 to 4)", row.catalyst_score],
+      ["Base grade", row.neglect_grade], ["Market cap Rs Cr", D.isBlank(row.market_cap_cr) ? "" : D.fmt(row.market_cap_cr, 0)],
+      ["Share count from", row.mcap_source], ["Upper circuit", row.circuit_flag],
+      ["Nifty 50 trend", row.nifty_trend], ["3 months vs Nifty 50, points", D.isBlank(row.rs_63d_vs_nifty) ? "" : D.fmt(row.rs_63d_vs_nifty, 1)],
+    ].filter((f) => !D.isBlank(f[1]));
+    const items = facts.map((f) => '<div class="why"><span class="m2">' + D.esc(f[0]) + "</span><span>" + D.esc(f[1]) + "</span></div>").join("");
+    const link = /^https:\/\/www\.(nseindia|bseindia)\.com\//.test(String(row.news_link || "")) ?
+      '<p class="cap"><a href="' + D.esc(row.news_link) + '" target="_blank" rel="noopener">Company announcements and news</a></p>' : "";
+    return '<div class="panel pad"><div class="ptitle">EP facts</div>' + items +
+      '<p class="cap">' + D.esc(row.manual_check || "") + "</p>" + link + "</div>";
+  }
+  const episodic = patternPage({
+    file: "scanner_episodic_pivot.csv",
+    caption: "",
+    filters: { status: true, statusDefault: epStatus, index: true, sector: true, ticker: true,
+      single: [{ key: "stop_check", label: "Stop check" }, { key: "signal", label: "Signal" },
+        { key: "neglect_grade", label: "Base grade" }, { key: "catalyst_tag", label: "Catalyst" }] },
+    columns: [TK, CO, T("status", "Status", "setup"), PR,
+      T("pivot", "Buy above", "num", { dec: 2 }), T("stop", "Stop", "num", { dec: 2, tone: "stop" }),
+      T("risk_pct", "Risk %", "pct", { dec: 1, color: false }), T("stop_check", "Stop check", "setup"),
+      T("signal", "Signal", "setup"), T("strength", "Strength", "strengthbar"),
+      T("ep_date", "EP day"), T("days_since_ep", "Days since EP", "num", { dec: 0 }), T("ep_trigger", "Why it counts"),
+      T("gap_pct", "Gap %", "pct", { dec: 1 }), T("change_pct", "Day move %", "pct", { dec: 1 }),
+      T("rvol", "Volume vs 50-day", "volx", { dec: 1 }), T("dcr_pct", "Close in day range %", "num", { dec: 0 }),
+      T("neglect_grade", "Base grade"), T("ret_63d_prior", "3 months before %", "pct", { dec: 1 }),
+      T("first_ep_6m", "First EP in 6 months", "flag"),
+      T("catalyst_tag", "Catalyst"), T("surprise_pct", "EPS beat %", "pct", { dec: 1 }),
+      T("catalyst_score", "Catalyst score", "num", { dec: 0 }),
+      T("market_cap_cr", "Market cap Rs Cr", "num", { dec: 0 }), T("small_young", "Under Rs 88,000 Cr", "flag"),
+      T("circuit_flag", "Upper circuit"), T("adr_pct", "ADR %", "pct", { dec: 2, color: false }),
+      T("risk_vs_adr", "Risk in ADRs", "num", { dec: 2 }),
+      T("entry", "Entry (fill)", "num", { dec: 2 }), T("entry_date", "Bought on"),
+      T("days_in_trade", "Days in trade", "num", { dec: 0 }), T("partial_window", "Sell 1/3 to 1/2"),
+      T("trail_with", "Trail with"), T("trail", "Trail line", "num", { dec: 2 }),
+      T("result_pct", "Result %", "pct", { dec: 1 }), T("exit_date", "Closed on"), T("exit_reason", "Closed because"),
+      T("freshness", "Data", "fresh")],
+    price: epLines,
+    priceSub: "Buy level, stop, and trail line",
+    cards(all) {
+      return card("EP today", String(countWhere(all, (r) => r.status === "EP TODAY")),
+        String(countWhere(all, (r) => r.status === "EP FADED")) + " faded") +
+        card("Broken out today", String(countWhere(all, (r) => r.status === "BROKEN OUT today"))) +
+        card("In a trade", String(countWhere(all, (r) => r.status === "IN TRADE")),
+          String(countWhere(all, (r) => r.signal === "SELL PART")) + " sell part") +
+        card("Watching, day 2 to 5", String(countWhere(all, (r) => r.status === "WATCHING"))) +
+        card("Delayed watch", String(countWhere(all, (r) => r.status === "DELAYED WATCH"))) +
+        card("Closed", String(countWhere(all, (r) => r.status === "CLOSED")));
+    },
+    detail(row) {
+      return '<div class="panel pad"><div class="ptitle">Why this name</div>' + whyLines(row ? [row] : []) + "</div>" + epFacts(row);
+    },
+  });
+
   const leaders = patternPage({
     file: "scanner_leaders.csv",
     caption: "Leaders is the overlap of a ready or just-broken VCP and a strict CANSLIM qualify. A name on only one of those still appears.",
@@ -2685,12 +2752,12 @@
       '<div class="cards" id="cards"></div>' +
       '<div class="ctrls" id="ctrls"></div>' +
       '<div class="panel" id="tbl"></div>' +
-      '<p class="cap">A name is listed when at least one of VCP, Box, Flag, Qullamaggie, Marios, and CANSLIM is ready or broke out today, the close is above the 50-day and 200-day averages, and the risk from the entry to the stop is 8% or less. Chart setups only also keeps a BUY or a Not scored yet label, and tags the unscored rows Financials pending. A scored AVOID stays off. With the switch off, only BUY remains. The market check passes when the Nifty 50 or SENSEX is in an uptrend. When that check fails, Show anyway lists every name that passes the chart rules, greyed out, with its real verdict: BUY, HOLD, AVOID, or Not scored yet. Tap a row for the reason, the trade plan, and the daily price chart. Many breakouts fail, which is why the stop is always shown. Nothing here is an alert.</p>';
+      '<p class="cap">A name is listed when at least one of VCP, Box, Flag, Qullamaggie, Marios, Episodic Pivot (EP), and CANSLIM is ready or broke out today, the close is above the 50-day and 200-day averages, and the risk from the entry to the stop is 8% or less. Chart setups only also keeps a BUY or a Not scored yet label, and tags the unscored rows Financials pending. A scored AVOID stays off. With the switch off, only BUY remains. The market check passes when the Nifty 50 or SENSEX is in an uptrend. When that check fails, Show anyway lists every name that passes the chart rules, greyed out, with its real verdict: BUY, HOLD, AVOID, or Not scored yet. Tap a row for the reason, the trade plan, and the daily price chart. Many breakouts fail, which is why the stop is always shown. Nothing here is an alert.</p>';
     const box = document.getElementById("ctrls");
     box.innerHTML =
       D.multiHtml("index", "Index", D.indexTokens(named)) +
       D.multiHtml("sector", "Sector", D.uniq(named, "sector")) +
-      D.multiHtml("source", "Setup", ["VCP", "Box", "Flag", "Qullamaggie", "Marios", "CANSLIM"]) +
+      D.multiHtml("source", "Setup", ["VCP", "Box", "Flag", "Qullamaggie", "Marios", "EP", "CANSLIM"]) +
       D.multiHtml("status", "Status", D.uniq(named, "status")) +
       D.searchHtml("ticker", "Ticker", "tick-list-buy", D.uniq(named, "ticker")) +
       '<div class="rrgtabs" id="chartsw"><span class="lab">Chart setups only</span><button type="button" id="chartonly">' + (chartOnly ? "On" : "Off") + "</button></div>";
@@ -3138,6 +3205,15 @@
       "Selling: sell 1/4 to 1/3 when the high reaches the entry plus 2.5 ADRs (the 3 ADR level is shown too), then move the stop to breakeven. A close under the 10-day sells 1/3 of the rest. A close under the 20-day sells the rest and the trade shows as CLOSED with the reason and date.",
       "Extra columns, not rules: market light, results within 5 days, 20-day traded value, price band, and shares for 0.5% risk of a Rs 10 lakh account, at most 25% of it.",
     ] },
+    episodic: { title: SCAN, note: LIQUID_LINE, lines: [
+      "An Episodic Pivot (EP) is a big jump on surprise news, like strong results. These are Qullamaggie and Stockbee's own rules.",
+      "EP day: a gap up of 10% or more at the open, or a close 8% or more above the day before, on at least 3 times normal volume (the 50-day average). Price at least ₹20. ETFs and funds are left out.",
+      "EP TODAY means a strong close. Buy above the EP-day high in the next sessions. The stop is the EP-day low. EP FADED means a weak close, so no buy. WATCHING is day 2 to 5.",
+      "DELAYED WATCH is day 6 to 20 (day 2 to 20 after a fade). It waits for a tight 5-day range and buys above its high. BROKEN OUT today means the price went above the buy level today.",
+      "IN TRADE: on day 3 to 5 sell 1/3 to 1/2 and move the stop to breakeven. Sell the rest on the first close under the 10-day average (20-day if the stock moves less than 5% a day). CLOSED shows the result for 10 sessions.",
+      "Too wide, skip means the stop is more than 1.5 normal days away. Upper circuit means no one could buy at the close. Base grade A (flat or down before the EP) is listed first.",
+      "Prices are end of day only. Check guidance and other news by hand with the announcements link. Market cap is shares times the close, from saved share counts.",
+    ] },
     canslim: { title: SCAN, note: LIQUID_LINE, lines: [
       "William O'Neil's method. It checks earnings growth versus a year ago, how close price is to its 52-week high, and trading volume.",
       "It also checks strength versus the Nifty 50 (SENSEX for BSE-only stocks), shareholding changes, and whether the market is in an uptrend.",
@@ -3147,7 +3223,8 @@
       "The best names are on both. Use the On VCP and On CANSLIM filters to see only the stocks on both lists.",
     ] },
     buysetups: { title: SCAN, note: LIQUID_LINE, lines: [
-      "The main shortlist. A stock is listed when VCP, Box, Flag, Qullamaggie, Marios or CANSLIM is ready or broke out today, price is above the 50-day and 200-day averages, and the stop is 8% or less away. Qullamaggie and Marios names marked Too wide, skip are left out.",
+      "The main shortlist. A stock is listed when VCP, Box, Flag, Qullamaggie, Marios, Episodic Pivot (EP) or CANSLIM is ready or broke out today, price is above the 50-day and 200-day averages, and the stop is 8% or less away. Qullamaggie, Marios and EP names marked Too wide, skip are left out.",
+      "An EP counts as ready on the EP day and days 2 to 5, with the buy above the EP-day high. Faded EPs, delayed EPs and stocks locked at the upper circuit are left out.",
       "It is also checked against the company score and the market trend. Show anyway lists the greyed-out ones.",
     ] },
     week52: { title: SCAN, note: LIQUID_LINE, lines: [
@@ -3326,6 +3403,7 @@
     flag: flag,
     qullamaggie: qullamaggie,
     marios: marios,
+    episodic: episodic,
     leaders: leaders,
     calendar: { files: ["earnings_calendar.csv"], render: renderCalendar },
     heatmap: { files: ["earnings_heatmap.csv"], render: renderHeat },

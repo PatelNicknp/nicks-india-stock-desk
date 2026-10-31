@@ -65,7 +65,7 @@ BUY_STOP_PCT = PINE["stop_pct"]
 BUY_PART_PCT = PINE["part_pct"]
 BUY_MAX_RISK_PCT = 8.0
 BUY_TARGET2_R = 3.0
-BUY_SETUP_ORDER = ("VCP", "Box", "Flag", "Qullamaggie", "Marios", "CANSLIM")
+BUY_SETUP_ORDER = ("VCP", "Box", "Flag", "Qullamaggie", "Marios", "EP", "CANSLIM")
 BUY_LIVE_STATUS = ("READY", "BROKEN OUT today")
 
 VCP_NOTE = (
@@ -2145,6 +2145,779 @@ def scan_marios(close, high, low, vol, universe, cfg=None, opn=None, scores=None
     return _qm_rows(close, high, low, vol, universe, cfg, marios=True, opn=opn, scores=scores)
 
 
+# ---------------------------------------------------------------- Episodic Pivot
+# Qullamaggie and Stockbee's Episodic Pivot (EP), on end-of-day bars only.
+# EP day: a gap up of 10%+ (Qullamaggie) or a close-to-close move of 8%+ (Stockbee),
+# on volume at least 3 times the prior 50-day average. Entry for the next sessions is the
+# EP-day high, stop is the EP-day low. Every rule has a switch and its number in the
+# episodic_pivot block of config.json. Nick's own filters are switches, off by default.
+EP_DEFAULTS = {
+    # EP day
+    "gap_trigger": True, "gap_min_pct": 10.0,
+    "close_change_trigger": True, "close_change_min_pct": 8.0,
+    "rvol_filter": True, "rvol_min": 3.0, "rvol_avg_days": 50,
+    "price_floor": True, "min_price": 20.0,
+    "liquid_universe_only": True, "skip_etfs_and_funds": True,
+    "confirm_close_upper_half": True, "confirm_close_above_open": True,
+    "upper_circuit_flag": True, "circuit_bands_pct": [5, 10, 20], "circuit_tolerance_pct": 0.25,
+    # Stop check
+    "adr_days": 20, "stop_width_check": True, "max_stop_adr_mult": 1.5,
+    # Ranking and context
+    "neglect_rank": True, "neglect_a_max_63d_pct": 10.0, "neglect_a_max_126d_pct": 20.0, "neglect_b_max_63d_pct": 30.0,
+    "first_ep_lookback_days": 126,
+    "catalyst_check": True, "surprise_min_pct": 10.0, "growth_min_pct": 25.0, "few_analysts_max": 5,
+    "benchmark": "^NSEI",
+    "small_young_tag": True, "small_young_max_cr": 88000,
+    # After the EP day
+    "watch_days": 5,
+    "delayed_watch": True, "delayed_watch_days": 20, "delayed_range_days": 5, "delayed_range_max_adr": 1.5,
+    "track_trades": True, "partial_day_min": 3, "partial_day_max": 5, "breakeven_after_partial": True,
+    "trail_fast_adr_pct": 5.0, "trail_fast_ma": 10, "trail_slow_ma": 20, "trail_after_partial_only": True,
+    "time_stop_flag": True, "time_stop_days": 5, "time_stop_adr_mult": 1.0,
+    "closed_keep_days": 10, "display_cap_days": 60,
+    # Market cap (saved in cache/market_cap.csv)
+    "market_cap": True, "market_cap_fetch_missing": True, "market_cap_fetch_max_per_run": 5, "market_cap_refetch_days": 30,
+    "feed_buy_setups": True,
+    # Nick's own filters. Off by default. Each one drops names that fail it.
+    "nick_gap_filter": False, "nick_gap_min_pct": 10.0,
+    "nick_rvol_filter": False, "nick_rvol_min": 3.0,
+    "nick_price_floor": False, "nick_min_price": 20.0,
+    "nick_min_mcap": False, "nick_min_mcap_cr": 4400,
+    "nick_min_avg_volume": False, "nick_avg_volume_days": 30, "nick_min_avg_volume_shares": 500000,
+    "nick_max_perf_3m": False, "nick_max_perf_3m_pct": 30.0,
+    "nick_require_earnings": False,
+    "nick_require_catalyst": False, "nick_min_catalyst_score": 2,
+    "nick_require_flat_base": False, "nick_flat_base_grade": "A",
+}
+EP_NOTE = (
+    "Qullamaggie and Stockbee's Episodic Pivot on end-of-day prices. EP day: a 10%+ gap up or an 8%+ close-to-close day "
+    "on 3 times the 50-day volume. Next-session entry is the EP-day high, stop is the EP-day low. "
+    "No intraday data: the opening range high, pre-market volume, guidance and revenue beats are not checked here."
+)
+EP_STATUS_RANK = {"EP TODAY": 0, "BROKEN OUT today": 1, "IN TRADE": 2, "WATCHING": 3, "EP FADED": 4,
+                  "DELAYED WATCH": 5, "CLOSED": 6}
+EP_MANUAL = "Check by hand: raised guidance, a revenue beat, or other news. Use the announcements link."
+EP_UC_TEXT = "Upper circuit, no entry possible"
+
+
+def _ep_cfg(cfg):
+    out = dict(EP_DEFAULTS)
+    out.update(_clean_cfg((cfg or {}).get("episodic_pivot")))
+    return out
+
+
+def ep_neglect_grade(ret63, ret126, p=None):
+    """A: flat or down (63-day <= +10% and 126-day <= +20%). B: 63-day <= +30%. C: already ran."""
+    p = p or EP_DEFAULTS
+    r63, r126 = _num(ret63), _num(ret126)
+    if r63 is None:
+        return ""
+    if r63 <= float(p["neglect_a_max_63d_pct"]) and (r126 is None or r126 <= float(p["neglect_a_max_126d_pct"])):
+        return "A"
+    if r63 <= float(p["neglect_b_max_63d_pct"]):
+        return "B"
+    return "C"
+
+
+def ep_upper_circuit(prev_close, high, close, p=None):
+    """Band in percent when the close is the day's high and sits on a 5, 10 or 20% price band. 0 when not locked."""
+    p = p or EP_DEFAULTS
+    pc, h, c = _num(prev_close), _num(high), _num(close)
+    if pc is None or h is None or c is None or pc <= 0 or h <= 0:
+        return 0
+    if abs(h - c) > max(0.05, c * 0.0005):
+        return 0
+    move = (c / pc - 1.0) * 100.0
+    tol = float(p["circuit_tolerance_pct"])
+    for band in sorted(float(b) for b in p["circuit_bands_pct"]):
+        if abs(move - band) <= tol:
+            return int(band) if band == int(band) else band
+    return 0
+
+
+def ep_trigger_kind(gap_pct, chg_pct, p=None):
+    """'gap', 'close', 'gap + close' or '' for the EP-day price rule."""
+    p = p or EP_DEFAULTS
+    gap, chg = _num(gap_pct), _num(chg_pct)
+    g = bool(p["gap_trigger"]) and gap is not None and gap >= float(p["gap_min_pct"])
+    c = bool(p["close_change_trigger"]) and chg is not None and chg >= float(p["close_change_min_pct"])
+    if g and c:
+        return "gap + close"
+    if g:
+        return "gap"
+    if c:
+        return "close"
+    return ""
+
+
+def ep_trail_len(adr_pct, p=None):
+    p = p or EP_DEFAULTS
+    adr = _num(adr_pct)
+    return int(p["trail_fast_ma"]) if adr is not None and adr >= float(p["trail_fast_adr_pct"]) else int(p["trail_slow_ma"])
+
+
+def _ep_earnings_index(earnings):
+    """{ticker: DataFrame(day, time, eps_actual, eps_estimate, surprise_pct)} in India time."""
+    if earnings is None or len(earnings) == 0 or "ticker" not in earnings.columns or "earnings_dt" not in earnings.columns:
+        return {}
+    e = earnings.copy()
+    ts = pd.to_datetime(e["earnings_dt"], utc=True, errors="coerce")
+    e = e.assign(_ts=ts).dropna(subset=["_ts"])
+    if len(e) == 0:
+        return {}
+    local = e["_ts"].dt.tz_convert("Asia/Kolkata")
+    e["_day"] = local.dt.tz_localize(None).dt.normalize()
+    e["_min"] = local.dt.hour * 60 + local.dt.minute
+    return {str(t): g.sort_values("_ts") for t, g in e.groupby("ticker")}
+
+
+def _ep_timing(minute, same_day):
+    when = "on the EP day" if same_day else "the day before"
+    if minute is None:
+        return "results " + when
+    if minute < 9 * 60 + 15:
+        return "results %s, before the open" % when
+    if minute < 15 * 60 + 30:
+        return "results %s, during market hours" % when
+    return "results %s, after the close" % when
+
+
+def _ep_earnings_link(rows, ep_day, prev_day):
+    """Latest results row dated on the EP day or the session before it."""
+    if rows is None or len(rows) == 0:
+        return None
+    days = {pd.Timestamp(ep_day).normalize()}
+    if prev_day is not None:
+        days.add(pd.Timestamp(prev_day).normalize())
+    hit = rows[rows["_day"].isin(days)]
+    if len(hit) == 0:
+        return None
+    r = hit.iloc[-1]
+    return {
+        "same_day": pd.Timestamp(r["_day"]) == pd.Timestamp(ep_day).normalize(),
+        "minute": int(r["_min"]) if np.isfinite(r["_min"]) else None,
+        "eps_actual": _num(r.get("eps_actual")), "eps_estimate": _num(r.get("eps_estimate")),
+        "surprise_pct": _num(r.get("surprise_pct")),
+    }
+
+
+def _ep_quarters_index(quarters):
+    if quarters is None or len(quarters) == 0 or "ticker" not in quarters.columns or "end" not in quarters.columns:
+        return {}
+    q = quarters.copy()
+    q["_end"] = pd.to_datetime(q["end"], errors="coerce")
+    q["_filed"] = pd.to_datetime(q["filed"], errors="coerce") if "filed" in q.columns else pd.NaT
+    q = q.dropna(subset=["_end"])
+    return {str(t): g.sort_values("_end") for t, g in q.groupby("ticker")}
+
+
+def _yoy(cur, old):
+    cur, old = _num(cur), _num(old)
+    if cur is None or old is None or old <= 0:
+        return None
+    return (cur / old - 1.0) * 100.0
+
+
+def _ep_growth(qrows, ep_day):
+    """Year-over-year EPS and revenue growth of the last quarter on file before the EP day, and revenue acceleration."""
+    out = {"eps_yoy": None, "rev_yoy": None, "rev_accel": None, "quarter_end": ""}
+    if qrows is None or len(qrows) == 0:
+        return out
+    d = pd.Timestamp(ep_day).normalize()
+    ok = qrows[(qrows["_end"] < d) & (qrows["_filed"].isna() | (qrows["_filed"] <= d))]
+    if len(ok) == 0:
+        return out
+
+    def year_ago(i):
+        end = ok["_end"].iloc[i]
+        lo, hi = end - pd.Timedelta(days=400), end - pd.Timedelta(days=330)
+        prior = ok[(ok["_end"] >= lo) & (ok["_end"] <= hi)]
+        return prior.iloc[-1] if len(prior) else None
+
+    last = ok.iloc[-1]
+    ya = year_ago(len(ok) - 1)
+    out["quarter_end"] = str(pd.Timestamp(last["_end"]).date())
+    if ya is not None:
+        out["eps_yoy"] = _yoy(last.get("eps"), ya.get("eps"))
+        out["rev_yoy"] = _yoy(last.get("revenue"), ya.get("revenue"))
+    if len(ok) >= 2 and out["rev_yoy"] is not None:
+        ya2 = year_ago(len(ok) - 2)
+        if ya2 is not None:
+            prev = _yoy(ok.iloc[-2].get("revenue"), ya2.get("revenue"))
+            if prev is not None:
+                out["rev_accel"] = bool(out["rev_yoy"] > prev)
+    return out
+
+
+def ep_catalyst_score(link, growth, p=None):
+    """0 to 4: results linked to the EP day, EPS beat, strong growth already, revenue speeding up."""
+    p = p or EP_DEFAULTS
+    pts = 0
+    if link is not None:
+        pts += 1
+        if link.get("surprise_pct") is not None and link["surprise_pct"] >= float(p["surprise_min_pct"]):
+            pts += 1
+    g = float(p["growth_min_pct"])
+    if (growth.get("eps_yoy") is not None and growth["eps_yoy"] >= g) or (growth.get("rev_yoy") is not None and growth["rev_yoy"] >= g):
+        pts += 1
+    if growth.get("rev_accel"):
+        pts += 1
+    return pts
+
+
+def _ep_news_link(ticker, universe):
+    t = str(ticker).strip().upper()
+    exch, nse = "", ""
+    if universe is not None and len(universe) and "ticker" in universe.columns:
+        row = universe[universe["ticker"].astype(str) == t]
+        if len(row):
+            r = row.iloc[-1]
+            exch = str(r.get("exchange") or "").upper()
+            nse = str(r.get("nse_symbol") or "").strip().upper()
+            if nse == "NAN":
+                nse = ""
+    if exch == "BSE" and not nse:
+        return "https://www.bseindia.com/corporates/ann.html"
+    return "https://www.nseindia.com/get-quotes/equity?symbol=" + (nse or t)
+
+
+def _ep_arrays(frame, p):
+    o = frame["open"].to_numpy(dtype=float)
+    h = frame["high"].to_numpy(dtype=float)
+    l = frame["low"].to_numpy(dtype=float)
+    c = frame["close"].to_numpy(dtype=float)
+    v = frame["volume"].to_numpy(dtype=float)
+    n = int(p["rvol_avg_days"])
+    va = pd.Series(v).rolling(n, min_periods=n).mean().shift(1).to_numpy()
+    nd = int(p["nick_avg_volume_days"])
+    va_nick = pd.Series(v).rolling(nd, min_periods=nd).mean().shift(1).to_numpy()
+    pc = np.concatenate([[np.nan], c[:-1]])
+    with np.errstate(divide="ignore", invalid="ignore"):
+        rvol = np.where(np.isfinite(va) & (va > 0), v / va, np.nan)
+        gap = np.where(pc > 0, (o / pc - 1.0) * 100.0, np.nan)
+        chg = np.where(pc > 0, (c / pc - 1.0) * 100.0, np.nan)
+    return {"o": o, "h": h, "l": l, "c": c, "v": v, "va": va, "va_nick": va_nick, "pc": pc,
+            "rvol": rvol, "gap": gap, "chg": chg, "adr": _adr_series(h, l, int(p["adr_days"])),
+            "s_fast": _sma(c, int(p["trail_fast_ma"])), "s_slow": _sma(c, int(p["trail_slow_ma"]))}
+
+
+def _ep_ret(c, i, bars):
+    if i - bars < 0 or not (np.isfinite(c[i]) and np.isfinite(c[i - bars])) or c[i - bars] <= 0:
+        return None
+    return (c[i] / c[i - bars] - 1.0) * 100.0
+
+
+def _ep_is_event(a, i, p):
+    """Price and volume rules for an EP day on bar i (no Nick filters)."""
+    if i < 1 or not np.isfinite(a["c"][i]):
+        return ""
+    kind = ep_trigger_kind(a["gap"][i], a["chg"][i], p)
+    if not kind:
+        return ""
+    if p["rvol_filter"] and not (np.isfinite(a["rvol"][i]) and a["rvol"][i] >= float(p["rvol_min"])):
+        return ""
+    if p["price_floor"] and not a["c"][i] >= float(p["min_price"]):
+        return ""
+    return kind
+
+
+def _ep_event(a, i, kind, p, ctx):
+    """Facts about the EP day on bar i. Returns None when one of Nick's switches drops it."""
+    o, h, l, c = a["o"][i], a["h"][i], a["l"][i], a["c"][i]
+    rng = h - l
+    dcr = 100.0 if rng <= 0 else (c - l) / rng * 100.0
+    upper = dcr >= 50.0
+    above_open = (not np.isfinite(o)) or c >= o
+    band = ep_upper_circuit(a["pc"][i], h, c, p) if p["upper_circuit_flag"] else 0
+    confirmed = bool((upper or not p["confirm_close_upper_half"]) and (above_open or not p["confirm_close_above_open"]))
+    if band:
+        confirmed = True  # A locked upper circuit is not a fade.
+    adr_prior = a["adr"][i - 1] if i >= 1 and np.isfinite(a["adr"][i - 1]) else None
+    risk = (h - l) / h * 100.0 if h > l else None
+    risk_adr = risk / adr_prior if risk is not None and adr_prior else None
+    if p["stop_width_check"] and risk_adr is not None and risk_adr > float(p["max_stop_adr_mult"]):
+        check = "Too wide, skip"
+    elif risk_adr is None:
+        check = ""
+    else:
+        check = "OK"
+    ret63 = _ep_ret(a["c"], i - 1, 63)
+    ret126 = _ep_ret(a["c"], i - 1, 126)
+    lo126 = max(0, i - 126)
+    hh, ll = np.nanmax(a["h"][lo126:i]) if i > lo126 else np.nan, np.nanmin(a["l"][lo126:i]) if i > lo126 else np.nan
+    base_range = (hh - ll) / ll * 100.0 if np.isfinite(hh) and np.isfinite(ll) and ll > 0 else None
+    grade = ep_neglect_grade(ret63, ret126, p)
+    first = True
+    for j in range(max(1, i - int(p["first_ep_lookback_days"])), i):
+        if _ep_is_event(a, j, p):
+            first = False
+            break
+    dates = ctx["dates"]
+    ep_day = dates[i]
+    prev_day = dates[i - 1] if i >= 1 else None
+    link = _ep_earnings_link(ctx["earn_rows"], ep_day, prev_day) if p["catalyst_check"] else None
+    growth = _ep_growth(ctx["q_rows"], ep_day) if p["catalyst_check"] else {"eps_yoy": None, "rev_yoy": None, "rev_accel": None, "quarter_end": ""}
+    score = ep_catalyst_score(link, growth, p) if p["catalyst_check"] else None
+    shares = ctx.get("shares")
+    mcap_ep = shares * c / 1e7 if shares else None
+    avg_nick = a["va_nick"][i] if np.isfinite(a["va_nick"][i]) else None
+    # Nick's switches. Each one drops the EP when it fails.
+    if p["nick_gap_filter"] and not (np.isfinite(a["gap"][i]) and a["gap"][i] >= float(p["nick_gap_min_pct"])):
+        return None
+    if p["nick_rvol_filter"] and not (np.isfinite(a["rvol"][i]) and a["rvol"][i] >= float(p["nick_rvol_min"])):
+        return None
+    if p["nick_price_floor"] and not c >= float(p["nick_min_price"]):
+        return None
+    if p["nick_min_mcap"] and not (mcap_ep is not None and mcap_ep >= float(p["nick_min_mcap_cr"])):
+        return None
+    if p["nick_min_avg_volume"] and not (avg_nick is not None and avg_nick >= float(p["nick_min_avg_volume_shares"])):
+        return None
+    if p["nick_max_perf_3m"] and not (ret63 is not None and ret63 <= float(p["nick_max_perf_3m_pct"])):
+        return None
+    if p["nick_require_earnings"] and link is None:
+        return None
+    if p["nick_require_catalyst"] and not (score is not None and score >= int(p["nick_min_catalyst_score"])):
+        return None
+    if p["nick_require_flat_base"] and not (grade and grade <= str(p["nick_flat_base_grade"]).upper()):
+        return None
+    return {
+        "i": i, "kind": kind, "dcr": dcr, "upper": upper, "above_open": above_open, "band": band,
+        "confirmed": confirmed, "adr_prior": adr_prior, "risk": risk, "risk_adr": risk_adr, "check": check,
+        "ret63": ret63, "ret126": ret126, "base_range": base_range, "grade": grade, "first": first,
+        "link": link, "growth": growth, "score": score, "avg_nick": avg_nick,
+        "entry": float(h), "stop": float(l),
+    }
+
+
+def _ep_locked_bar(a, j):
+    """A bar that opened and stayed at one price (high = low) after a jump: no fill was possible."""
+    return bool(np.isfinite(a["h"][j]) and np.isfinite(a["l"][j]) and a["h"][j] <= a["l"][j] and
+                np.isfinite(a["pc"][j]) and a["c"][j] > a["pc"][j])
+
+
+def _ep_simulate(a, k, fill, stop, adr, p):
+    """Trade from the fill bar k to today. Stop, partial window, breakeven, trail, and the 5-day time stop flag."""
+    c, l, h = a["c"], a["l"], a["h"]
+    n = len(c)
+    trail_n = ep_trail_len(adr, p)
+    sma = a["s_fast"] if trail_n == int(p["trail_fast_ma"]) else a["s_slow"]
+    stop_now = stop
+    partial_bar = None
+    be = False
+    best_close = c[k]
+    for j in range(k + 1, n):
+        if l[j] <= stop_now:
+            return dict(status="CLOSED", exit_bar=j, exit_price=_exit_px(a, j, stop_now),
+                        exit_reason="breakeven stop" if be else "stop hit", partial_bar=partial_bar,
+                        stop_now=stop_now, trail_n=trail_n, no_follow=False)
+        active = partial_bar is not None or not p["trail_after_partial_only"]
+        if active and np.isfinite(sma[j]) and c[j] < sma[j]:
+            return dict(status="CLOSED", exit_bar=j, exit_price=float(c[j]),
+                        exit_reason="first close under the %d-day average" % trail_n, partial_bar=partial_bar,
+                        stop_now=stop_now, trail_n=trail_n, no_follow=False)
+        best_close = max(best_close, c[j])
+        if partial_bar is None and j - k >= int(p["partial_day_min"]):
+            partial_bar = j
+            if p["breakeven_after_partial"]:
+                stop_now = max(stop_now, fill)
+                be = True
+    days = n - 1 - k
+    no_follow = False
+    if p["time_stop_flag"] and days >= int(p["time_stop_days"]) and adr:
+        no_follow = bool(best_close < fill * (1.0 + float(p["time_stop_adr_mult"]) * adr / 100.0))
+    return dict(status="IN TRADE", exit_bar=None, exit_price=None, exit_reason="", partial_bar=partial_bar,
+                stop_now=stop_now, trail_n=trail_n, no_follow=no_follow)
+
+
+def _ep_tight_range(a, j, ev, p):
+    """(high, low) of the last N bars before j when they are tight and all after the EP day, else None."""
+    nb = int(p["delayed_range_days"])
+    s = j - nb
+    if s <= ev["i"]:
+        return None
+    hh = float(np.nanmax(a["h"][s:j]))
+    ll = float(np.nanmin(a["l"][s:j]))
+    adr = a["adr"][j - 1]
+    if not (np.isfinite(adr) and ll > 0):
+        return None
+    if (hh - ll) / ll * 100.0 <= float(p["delayed_range_max_adr"]) * adr:
+        return hh, ll
+    return None
+
+
+def _ep_life(a, ev, p):
+    """Walk the sessions after an EP day. Returns the state to show today."""
+    i = ev["i"]
+    n = len(a["c"])
+    t = n - 1
+    watch_last = i + int(p["watch_days"]) - 1
+    delayed_last = i + int(p["delayed_watch_days"]) - 1
+    if i == t:
+        return {"status": "EP TODAY" if ev["confirmed"] else "EP FADED"}
+    uc_today = False
+    for j in range(i + 1, n):
+        if a["c"][j] < ev["stop"]:
+            return {"status": "CLOSED", "exit_bar": j, "exit_reason": "closed under the EP-day low before a buy", "traded": False}
+        trig = None
+        if ev["confirmed"] and j <= watch_last:
+            if a["h"][j] > ev["entry"]:
+                trig = (ev["entry"], ev["stop"], "EP-day high")
+        elif p["delayed_watch"] and j <= delayed_last:
+            rng = _ep_tight_range(a, j, ev, p)
+            if rng is not None and a["h"][j] > rng[0]:
+                trig = (rng[0], rng[1], "tight range high after the EP")
+        else:
+            return {"status": "CLOSED", "exit_bar": j, "traded": False,
+                    "exit_reason": "no buy within %d sessions" % (int(p["delayed_watch_days"]) if p["delayed_watch"] else int(p["watch_days"]))}
+        if trig is not None and _ep_locked_bar(a, j):
+            if j == t:
+                uc_today = True
+            trig = None
+        if trig is None:
+            continue
+        level, stop, basis = trig
+        o = a["o"][j]
+        fill = max(float(o), level) if np.isfinite(o) else level
+        adr = ev["adr_prior"]
+        if j == t:
+            return {"status": "BROKEN OUT today", "k": j, "fill": fill, "level": level, "stop0": stop, "basis": basis}
+        if not p["track_trades"]:
+            return {"status": "CLOSED", "exit_bar": j, "traded": False, "exit_reason": "went above the buy level (trade tracking is off)"}
+        sim = _ep_simulate(a, j, fill, stop, adr, p)
+        return dict(sim, k=j, fill=fill, level=level, stop0=stop, basis=basis, traded=True)
+    # Still waiting.
+    if ev["confirmed"] and t <= watch_last:
+        return {"status": "WATCHING", "level": ev["entry"], "stop0": ev["stop"], "basis": "EP-day high", "uc_today": uc_today}
+    rng = _ep_tight_range(a, t + 1, ev, p) if p["delayed_watch"] else None
+    return {"status": "DELAYED WATCH", "level": rng[0] if rng else None, "stop0": rng[1] if rng else None,
+            "basis": "tight range high after the EP" if rng else "", "uc_today": uc_today}
+
+
+def _ep_pick(states):
+    """One row per stock: today's EP first, then a buy today, an open trade, a watch, then the latest close."""
+    if not states:
+        return None
+    return sorted(states, key=lambda s: (EP_STATUS_RANK.get(s[1]["status"], 9), -s[0]["i"]))[0]
+
+
+def _fmt_pct(x, nd=1):
+    return "n/a" if x is None else ("%+.*f%%" % (nd, x))
+
+
+def _ep_reason(ev, life, row, frame, p):
+    bits = []
+    kind = ev["kind"]
+    ep_d = row["ep_date"]
+    move = []
+    if "gap" in kind:
+        move.append("gapped up %.1f%%" % row["gap_pct"])
+    if "close" in kind:
+        move.append("closed %.1f%% above the day before" % row["change_pct"])
+    if not move:
+        move.append("moved %.1f%%" % (row["change_pct"] or 0))
+    bits.append("On %s it %s on %s times its 50-day volume." % (ep_d, " and ".join(move), _fmt_mult(round(row["rvol"] or 0, 1))))
+    if ev["link"] is not None:
+        sp = ev["link"].get("surprise_pct")
+        bits.append("Earnings EP: %s." % _ep_timing(ev["link"].get("minute"), ev["link"].get("same_day")) +
+                    (" EPS beat the estimate by %.0f%%." % sp if sp is not None and sp >= 0 else
+                     (" EPS missed the estimate by %.0f%%." % abs(sp) if sp is not None else " EPS versus estimate is not on file yet.")))
+    else:
+        bits.append("No results date on file for that day, so check the news for the reason.")
+    g = ev["growth"]
+    if g.get("eps_yoy") is not None or g.get("rev_yoy") is not None:
+        bits.append("Last quarter on file before it (%s): EPS %s and sales %s versus a year ago%s." % (
+            g.get("quarter_end"), _fmt_pct(g.get("eps_yoy"), 0), _fmt_pct(g.get("rev_yoy"), 0),
+            ", sales growth speeding up" if g.get("rev_accel") else ""))
+    if ev["grade"]:
+        words = {"A": "flat or down before the EP (grade A, the best kind)", "B": "up a little before the EP (grade B)",
+                 "C": "already up a lot before the EP (grade C, fails more often)"}
+        bits.append("It was %s: %s in 3 months, %s in 6 months." % (words[ev["grade"]], _fmt_pct(ev["ret63"], 0), _fmt_pct(ev["ret126"], 0)))
+    if ev["first"]:
+        bits.append("First EP in 6 months.")
+    if ev["band"]:
+        bits.append("It closed locked at the %s%% upper circuit, so no one could buy at the close." % ev["band"])
+    st = life["status"]
+    if st == "EP TODAY":
+        bits.append("The close was strong (%d%% up the day's range). Next session: buy above today's high %s, stop at today's low %s, %.1f%% risk." % (
+            round(ev["dcr"]), _round(ev["entry"]), _round(ev["stop"]), ev["risk"] or 0))
+    elif st == "EP FADED":
+        bits.append("The close was weak (%d%% up the day's range%s), so it is not a buy now. It stays on watch for a tight range for %d sessions." % (
+            round(ev["dcr"]), ", under the open" if not ev["above_open"] else "", int(p["delayed_watch_days"])))
+    elif st == "WATCHING":
+        bits.append("Day %d. Buy above the EP-day high %s, stop at the EP-day low %s." % (row["days_since_ep"] + 1, _round(ev["entry"]), _round(ev["stop"])))
+    elif st == "DELAYED WATCH":
+        if life.get("level"):
+            bits.append("Delayed EP: a tight %d-day range formed. Buy above %s, stop %s." % (int(p["delayed_range_days"]), _round(life["level"]), _round(life["stop0"])))
+        else:
+            bits.append("Delayed EP: still above the EP-day low %s. Waiting for a tight %d-day range." % (_round(ev["stop"]), int(p["delayed_range_days"])))
+    elif st == "BROKEN OUT today":
+        bits.append("Today it went above the %s at %s. Entry %s, stop %s." % (life["basis"], _round(life["level"]), _round(life["fill"]), _round(life["stop0"])))
+    elif st == "IN TRADE":
+        bits.append("Bought on %s at %s above the %s. Stop now %s." % (row["entry_date"], _round(life["fill"]), life["basis"], _round(life["stop_now"])))
+        if row["signal"] == "SELL PART":
+            bits.append("Day 3 to 5 of the trade: sell 1/3 to 1/2 and move the stop to breakeven.")
+        if life.get("no_follow"):
+            bits.append("No follow-through: not up 1 normal day's move after %d sessions (Stockbee's time stop)." % int(p["time_stop_days"]))
+    elif st == "CLOSED":
+        if life.get("traded"):
+            bits.append("Bought on %s at %s, closed on %s at %s (%s): %s." % (row["entry_date"], _round(life["fill"]), row["exit_date"],
+                                                                         row["exit_price"], life["exit_reason"], _fmt_pct(row["result_pct"])))
+        else:
+            bits.append("Closed on %s: %s." % (row["exit_date"], life["exit_reason"]))
+    if str(row.get("stop_check") or "").startswith("Too wide") and st in ("EP TODAY", "WATCHING", "BROKEN OUT today", "DELAYED WATCH"):
+        bits.append("Stop too wide: the risk is %s times the normal daily range, more than %s, so it stays off Buy setups." % (_fmt_mult(round(_num(row["risk_vs_adr"]) or 0, 1)), _fmt_mult(p["max_stop_adr_mult"])))
+    bits.append(EP_MANUAL)
+    return " ".join(bits)
+
+
+def scan_episodic_pivot(close, high, low, vol, universe, cfg=None, opn=None, scores=None, earnings=None,
+                        quarters=None, shares=None):
+    """Episodic Pivot rows, one per stock. shares: {ticker: {"shares", "source", "as_of"}} from market_cap.py."""
+    p = _ep_cfg(cfg)
+    rows = []
+    panel = _panel_date(close)
+    names = list(universe["ticker"]) if universe is not None and len(universe) else []
+    earn_idx = _ep_earnings_index(earnings) if p["catalyst_check"] else {}
+    q_idx = _ep_quarters_index(quarters) if p["catalyst_check"] else {}
+    shares = shares or {}
+    analysts = {}
+    if scores is not None and len(scores) and "analyst_count" in getattr(scores, "columns", []):
+        analysts = dict(zip(scores["ticker"].astype(str), pd.to_numeric(scores["analyst_count"], errors="coerce")))
+    bench = str(p["benchmark"])
+    bench_ret = {}
+    bench_trend = ""
+    if close is not None and bench in close.columns:
+        bs = close[bench].dropna()
+        snap = _market_one(bs, "Nifty 50")
+        bench_trend = (snap or {}).get("label", "")
+        bench_ret = {"series": bs}
+    need = int(p["rvol_avg_days"]) + 2
+    for ticker in names:
+        if close is None or ticker not in close.columns:
+            continue
+        frame = pd.DataFrame({
+            "close": close[ticker],
+            "high": high[ticker] if high is not None and ticker in high.columns else np.nan,
+            "low": low[ticker] if low is not None and ticker in low.columns else np.nan,
+            "volume": vol[ticker] if vol is not None and ticker in vol.columns else np.nan,
+            "open": opn[ticker] if opn is not None and ticker in getattr(opn, "columns", []) else np.nan,
+        }).dropna(subset=["close", "high", "low"])
+        n = len(frame)
+        if n < need:
+            continue
+        a = _ep_arrays(frame, p)
+        t = n - 1
+        dates = [pd.Timestamp(d).normalize() for d in frame.index]
+        sh = (shares.get(ticker) or {}).get("shares") if p["market_cap"] else None
+        ctx = {"dates": dates, "earn_rows": earn_idx.get(ticker), "q_rows": q_idx.get(ticker), "shares": sh}
+        start = max(int(p["rvol_avg_days"]) + 1, t - int(p["display_cap_days"]))
+        states = []
+        for i in range(start, n):
+            kind = _ep_is_event(a, i, p)
+            if not kind:
+                continue
+            ev = _ep_event(a, i, kind, p, ctx)
+            if ev is None:
+                continue
+            life = _ep_life(a, ev, p)
+            if life["status"] == "CLOSED" and t - int(life.get("exit_bar") or 0) >= int(p["closed_keep_days"]):
+                continue
+            states.append((ev, life))
+        best = _ep_pick(states)
+        if best is None:
+            continue
+        ev, life = best
+        row = _ep_row(a, frame, ev, life, p, ticker, universe, sh, shares.get(ticker) or {}, analysts.get(ticker), bench_ret)
+        row["nifty_trend"] = bench_trend
+        row["freshness"] = _freshness(frame.index[-1], panel, n, need)
+        rows.append(row)
+    out = pd.DataFrame(rows)
+    if len(out) == 0:
+        return out
+    out["_k"] = out["status"].map(EP_STATUS_RANK)
+    out["_g"] = out["neglect_grade"].map({"A": 0, "B": 1, "C": 2}).fillna(3) if p["neglect_rank"] else 0
+    out = out.sort_values(["_k", "_g", "strength"], ascending=[True, True, False]).drop(columns=["_k", "_g"])
+    return out.reset_index(drop=True)
+
+
+def _ep_strength(ev, p):
+    rv = min(max((ev.get("rvol") or 0.0) - 1.0, 0.0) / 9.0, 1.0)
+    mv = min(max(ev.get("move") or 0.0, 0.0) / 30.0, 1.0)
+    dcr = (ev["dcr"] or 0.0) / 100.0
+    grade = {"A": 1.0, "B": 0.5}.get(ev["grade"], 0.0)
+    cat = (ev["score"] or 0) / 4.0
+    pts = 0.30 * rv + 0.20 * mv + 0.15 * dcr + 0.20 * grade + 0.15 * cat
+    return round(100.0 * pts, 1)
+
+
+def _ep_row(a, frame, ev, life, p, ticker, universe, sh, sh_info, analyst_count, bench_ret):
+    i = ev["i"]
+    t = len(a["c"]) - 1
+    meta = _meta_row(universe, ticker)
+    st = life["status"]
+    price = float(a["c"][t])
+    mcap = sh * price / 1e7 if sh else None
+    rvol = float(a["rvol"][i]) if np.isfinite(a["rvol"][i]) else None
+    gap = float(a["gap"][i]) if np.isfinite(a["gap"][i]) else None
+    chg = float(a["chg"][i]) if np.isfinite(a["chg"][i]) else None
+    ev = dict(ev, rvol=rvol, move=max(x for x in (gap, chg, 0.0) if x is not None))
+    link = ev["link"]
+    g = ev["growth"]
+    adr_now = a["adr"][t]
+    rs = None
+    s = bench_ret.get("series") if bench_ret else None
+    if s is not None and ev["ret63"] is not None:
+        d0 = frame.index[i - 1]
+        sub = s[s.index <= d0]
+        if len(sub) > 63 and sub.iloc[-64] > 0:
+            rs = ev["ret63"] - (sub.iloc[-1] / sub.iloc[-64] - 1.0) * 100.0
+    row = {
+        "ticker": ticker, "company": meta["company"], "sector": meta["sector"], "index_membership": meta["index_membership"],
+        "status": st, "ep_date": _date_at(frame, i), "days_since_ep": t - i,
+        "ep_trigger": {"gap": "Gap up", "close": "Big up day", "gap + close": "Gap up and big up day"}.get(ev["kind"], ev["kind"]),
+        "catalyst_tag": "Earnings EP" if link is not None else "No results date, check news",
+        "report_timing": _ep_timing(link.get("minute"), link.get("same_day")) if link is not None else "",
+        "gap_pct": _round(gap, 1), "change_pct": _round(chg, 1),
+        "volume": _round(a["v"][i], 0), "avg_volume_50": _round(a["va"][i], 0), "rvol": _round(rvol, 2),
+        "dcr_pct": round(ev["dcr"], 0), "closed_above_open": _yes(ev["above_open"]),
+        "first_ep_6m": _yes(ev["first"]),
+        "ret_63d_prior": _round(ev["ret63"], 1), "ret_126d_prior": _round(ev["ret126"], 1),
+        "rs_63d_vs_nifty": _round(rs, 1),
+        "base_range_pct": _round(ev["base_range"], 1), "neglect_grade": ev["grade"],
+        "eps_actual": _round(link.get("eps_actual")) if link else "", "eps_estimate": _round(link.get("eps_estimate")) if link else "",
+        "surprise_pct": _round(link.get("surprise_pct"), 1) if link else "",
+        "eps_yoy_last_filed": _round(g.get("eps_yoy"), 1), "rev_yoy_last_filed": _round(g.get("rev_yoy"), 1),
+        "rev_accel": "" if g.get("rev_accel") is None else _yes(g.get("rev_accel")),
+        "last_quarter_end": g.get("quarter_end") or "",
+        "analyst_count": "" if analyst_count is None or not np.isfinite(analyst_count) else int(analyst_count),
+        "few_analysts": "" if analyst_count is None or not np.isfinite(analyst_count) else _yes(analyst_count <= float(p["few_analysts_max"])),
+        "catalyst_score": "" if ev["score"] is None else int(ev["score"]),
+        "manual_check": EP_MANUAL,
+        "shares": "" if not sh else int(round(sh)), "market_cap_cr": _round(mcap, 0),
+        "mcap_source": ("%s, %s" % (sh_info.get("source", ""), sh_info.get("as_of", ""))).strip(", ") if sh else "",
+        "small_young": ("" if mcap is None else _yes(mcap < float(p["small_young_max_cr"]))) if p["small_young_tag"] else "",
+        "avg_volume_30": _round(ev["avg_nick"], 0),
+        "adr_pct": _round(ev["adr_prior"], 2), "adr_now": _round(adr_now, 2),
+        "ep_high": _round(ev["entry"]), "ep_low": _round(ev["stop"]),
+        "risk_vs_adr": _round(ev["risk_adr"], 2), "stop_check": ev["check"],
+        "circuit_flag": "",
+        "pivot": "", "entry": "", "entry_basis": "", "stop": "", "stop_basis": "", "risk_pct": "",
+        "partial_window": "", "trail_with": "", "trail": "", "signal": "",
+        "entry_date": "", "days_in_trade": "", "exit_date": "", "exit_price": "", "exit_reason": "", "result_pct": "",
+        "news_link": _ep_news_link(ticker, universe),
+        "strength": _ep_strength(ev, p),
+        "price": _round(price), "price_as_of": str(pd.Timestamp(frame.index[-1]).date()),
+        "data_status": "OK", "note": EP_NOTE,
+    }
+    if ev["band"] and i == t:
+        row["circuit_flag"] = EP_UC_TEXT
+    if life.get("uc_today"):
+        row["circuit_flag"] = EP_UC_TEXT
+    trail_n = ep_trail_len(ev["adr_prior"], p)
+    trail_arr = a["s_fast"] if trail_n == int(p["trail_fast_ma"]) else a["s_slow"]
+    if st in ("EP TODAY", "WATCHING"):
+        risk = (ev["entry"] - ev["stop"]) / ev["entry"] * 100.0 if ev["entry"] > ev["stop"] else None
+        row.update({"pivot": _round(ev["entry"]), "entry": _round(ev["entry"]), "entry_basis": "EP-day high, next session",
+                    "stop": _round(ev["stop"]), "stop_basis": "EP-day low", "risk_pct": _round(risk, 1),
+                    "trail_with": "%d-day" % trail_n})
+    elif st == "DELAYED WATCH" and life.get("level"):
+        lvl, stp = life["level"], life["stop0"]
+        risk = (lvl - stp) / lvl * 100.0 if lvl > stp else None
+        row.update({"pivot": _round(lvl), "entry": _round(lvl), "entry_basis": "tight range high after the EP",
+                    "stop": _round(stp), "stop_basis": "tight range low", "risk_pct": _round(risk, 1),
+                    "trail_with": "%d-day" % trail_n})
+    elif st in ("BROKEN OUT today", "IN TRADE") or (st == "CLOSED" and life.get("traded")):
+        k = life["k"]
+        fill, stop0 = life["fill"], life["stop0"]
+        risk = (fill - stop0) / fill * 100.0 if fill > stop0 else None
+        row.update({"pivot": _round(life["level"]), "entry": _round(fill), "entry_basis": life["basis"],
+                    "stop": _round(life.get("stop_now", stop0)), "risk_pct": _round(risk, 1),
+                    "stop_basis": "breakeven" if life.get("stop_now", stop0) > stop0 else ("EP-day low" if life["basis"] == "EP-day high" else "tight range low"),
+                    "entry_date": _date_at(frame, k), "trail_with": "%d-day" % life.get("trail_n", trail_n),
+                    "partial_window": "%s to %s" % (_date_at(frame, min(k + int(p["partial_day_min"]), t)) if k + int(p["partial_day_min"]) <= t else "day %d" % int(p["partial_day_min"]),
+                                                    _date_at(frame, k + int(p["partial_day_max"])) if k + int(p["partial_day_max"]) <= t else "day %d" % int(p["partial_day_max"]))})
+        if st == "BROKEN OUT today":
+            row.update({"days_in_trade": 0, "signal": "HOLD", "trail": _round(trail_arr[t])})
+        elif st == "IN TRADE":
+            days = t - k
+            if int(p["partial_day_min"]) <= days <= int(p["partial_day_max"]):
+                sig = "SELL PART"
+            elif life.get("no_follow"):
+                sig = "NO FOLLOW-THROUGH"
+            else:
+                sig = "HOLD"
+            row.update({"days_in_trade": days, "signal": sig, "trail": _round(trail_arr[t]),
+                        "result_pct": _round((price / fill - 1.0) * 100.0, 1)})
+        else:
+            xb = life["exit_bar"]
+            row.update({"days_in_trade": xb - k, "exit_date": _date_at(frame, xb), "exit_price": _round(life["exit_price"]),
+                        "exit_reason": life["exit_reason"], "result_pct": _round((life["exit_price"] / fill - 1.0) * 100.0, 1),
+                        "signal": "SELL" if xb == t else ("EXIT" if "average" in life["exit_reason"] else "STOPPED")})
+    elif st == "CLOSED":
+        row.update({"exit_date": _date_at(frame, life["exit_bar"]), "exit_reason": life["exit_reason"]})
+    # Stop check for the level this row actually uses. A delayed entry uses the range low and the ADR before it.
+    if row["entry_basis"] and row["entry_basis"] != "EP-day high, next session" and life.get("basis", "") != "EP-day high":
+        e, s0 = _num(row["entry"]), _num(life.get("stop0"))
+        kb = life.get("k", t + 1) - 1
+        adr_ref = a["adr"][kb] if 0 <= kb < len(a["adr"]) and np.isfinite(a["adr"][kb]) else None
+        if e and s0 is not None and e > s0 and adr_ref:
+            r_adr = (e - s0) / e * 100.0 / adr_ref
+            row["risk_vs_adr"] = _round(r_adr, 2)
+            row["stop_check"] = "Too wide, skip" if p["stop_width_check"] and r_adr > float(p["max_stop_adr_mult"]) else "OK"
+    if st == "EP FADED":
+        row["entry_basis"] = "none yet: weak close"
+    if st in ("EP FADED", "DELAYED WATCH") and not row["entry"]:
+        row["stop_check"] = ""
+        row["risk_vs_adr"] = ""
+    row["reason"] = _ep_reason(ev, life, row, frame, p)
+    return row
+
+
+def ep_fill_market_cap(ep, shares, cfg=None):
+    """Fill market cap on EP rows after new share counts were saved. Market cap = shares x price, in Rs crore."""
+    p = _ep_cfg(cfg)
+    if ep is None or len(ep) == 0 or not shares:
+        return ep
+    out = ep.copy()
+    for col in ("shares", "market_cap_cr", "mcap_source", "small_young"):
+        if col not in out.columns:
+            out[col] = ""
+        out[col] = out[col].astype(object)
+    for i, rec in out.iterrows():
+        info = shares.get(str(rec.get("ticker")))
+        px = _num(rec.get("price"))
+        if not info or px is None or not _cell_blankish(rec.get("market_cap_cr")):
+            continue
+        mcap = info["shares"] * px / 1e7
+        out.at[i, "shares"] = int(round(info["shares"]))
+        out.at[i, "market_cap_cr"] = _round(mcap, 0)
+        out.at[i, "mcap_source"] = ("%s, %s" % (info.get("source", ""), info.get("as_of", ""))).strip(", ")
+        if p["small_young_tag"]:
+            out.at[i, "small_young"] = _yes(mcap < float(p["small_young_max_cr"]))
+    return out
+
+
+def _cell_blankish(v):
+    return v is None or (isinstance(v, float) and not np.isfinite(v)) or str(v).strip() in ("", "nan", "None")
+
+def ep_buy_frame(ep, cfg=None):
+    """EP rows for Buy setups: EP TODAY and WATCHING count as READY at the EP-day high, plus BROKEN OUT today.
+
+    Faded, delayed, in-trade and closed rows, Too wide stops, and upper-circuit locks stay out.
+    """
+    p = _ep_cfg(cfg)
+    if not p["feed_buy_setups"] or ep is None or len(ep) == 0 or "status" not in getattr(ep, "columns", []):
+        return pd.DataFrame()
+    df = ep.copy()
+    df = df[df["status"].isin(["EP TODAY", "WATCHING", "BROKEN OUT today"])]
+    if "circuit_flag" in df.columns:
+        df = df[df["circuit_flag"].astype(str).str.strip() == ""]
+    if len(df) == 0:
+        return df
+    df["status"] = df["status"].map(lambda s: "BROKEN OUT today" if s == "BROKEN OUT today" else "READY")
+    return df
+
+
 def combine_leaders(vcp, canslim):
     """One row per ticker that is a VCP ready/breakout or a strict CANSLIM qualify."""
     v = vcp.copy() if vcp is not None and len(vcp) else pd.DataFrame()
@@ -2616,7 +3389,7 @@ def buy_rows_listed(df):
 
 
 def build_buy_setups(vcp, box, flag, canslim, scores, close=None, week=None, sma_ok=None, market=None, cfg=None,
-                     qullamaggie=None, marios=None):
+                     qullamaggie=None, marios=None, episodic_pivot=None):
     """Names that pass the chart rules, with their real verdict.
 
     No network. Scanners, scores, the 52-week file, and the cached closes are the inputs.
@@ -2625,8 +3398,9 @@ def build_buy_setups(vcp, box, flag, canslim, scores, close=None, week=None, sma
     switch does not delete rows either, so the page can show them greyed.
     """
     grouped = {}
+    ep_rows = ep_buy_frame(episodic_pivot, cfg)
     for source, frame in (("VCP", vcp), ("Box", box), ("Flag", flag), ("Qullamaggie", qullamaggie),
-                          ("Marios", marios), ("CANSLIM", canslim)):
+                          ("Marios", marios), ("EP", ep_rows), ("CANSLIM", canslim)):
         for rec in _setup_records(frame, source):
             grouped.setdefault(rec["ticker"], []).append(rec)
     score_idx = None
@@ -2790,8 +3564,12 @@ def _buy_market_row(snap):
 
 
 
-def build_setups(close, high, low, vol, universe, quarters, annual, holders, features, scores=None, cfg=None, opn=None):
-    """Return the scanner frames. Each is empty when that switch is off."""
+def build_setups(close, high, low, vol, universe, quarters, annual, holders, features, scores=None, cfg=None, opn=None,
+                 earnings=None, shares=None, ep_universe=None):
+    """Return the scanner frames. Each is empty when that switch is off.
+
+    ep_universe: the names the Episodic Pivot scan looks at (the liquid list unless its switch says otherwise).
+    """
     features = features or {}
     want_v = features.get("scanner_vcp", True)
     want_c = features.get("scanner_canslim", True)
@@ -2801,12 +3579,15 @@ def build_setups(close, high, low, vol, universe, quarters, annual, holders, fea
     want_w = features.get("scanner_52w", True)
     want_q = features.get("scanner_qullamaggie", True)
     want_m = features.get("scanner_marios", True)
+    want_ep = features.get("scanner_episodic_pivot", True)
     vcp = scan_vcp(close, high, low, vol, universe, cfg) if (want_v or want_l) else pd.DataFrame()
     canslim, _market = scan_canslim(close, high, low, vol, universe, quarters, annual, holders, cfg) if (want_c or want_l) else (pd.DataFrame(), {})
     box = scan_box(close, high, low, vol, universe) if want_b else pd.DataFrame()
     flag = scan_flag(close, high, low, vol, universe) if want_f else pd.DataFrame()
     qull = scan_qullamaggie(close, high, low, vol, universe, cfg, opn=opn, scores=scores) if want_q else pd.DataFrame()
     mar = scan_marios(close, high, low, vol, universe, cfg, opn=opn, scores=scores) if want_m else pd.DataFrame()
+    ep = scan_episodic_pivot(close, high, low, vol, universe if ep_universe is None else ep_universe, cfg, opn=opn,
+                             scores=scores, earnings=earnings, quarters=quarters, shares=shares) if want_ep else pd.DataFrame()
     leaders = combine_leaders(vcp, canslim) if want_l else pd.DataFrame()
     if want_w:
         week, hist = scan_52w(close, high, low, vol, universe, scores)
@@ -2823,6 +3604,7 @@ def build_setups(close, high, low, vol, universe, quarters, annual, holders, fea
         "scanner_flag": flag,
         "scanner_qullamaggie": qull,
         "scanner_marios": mar,
+        "scanner_episodic_pivot": ep,
         "scanner_leaders": leaders,
         "scanner_52w": week,
         "highs_lows_history": hist,
