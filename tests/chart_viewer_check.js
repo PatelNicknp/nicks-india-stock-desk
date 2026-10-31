@@ -117,15 +117,15 @@ async function check(browser, port, name, device, shotDir) {
     return out;
   });
   const before = await vis();
-  if (before.ma10 || before.ma20 || !before.ma50 || !before.ma150 || !before.ma200 || !before.volume) bad.push(name + ": default averages wrong " + JSON.stringify(before));
-  await page.click('[data-chip="ma10"]');
-  await page.click('[data-chip="ma200"]');
+  if (before.ma_10 || before.ma_20 || !before.ma_50 || !before.ma_150 || !before.ma_200 || !before.volume) bad.push(name + ": default averages wrong " + JSON.stringify(before));
+  await page.click('[data-chip="ma_10"]');
+  await page.click('[data-chip="ma_200"]');
   const after = await vis();
-  if (!after.ma10 || after.ma200) bad.push(name + ": chips did not switch lines " + JSON.stringify(after));
+  if (!after.ma_10 || after.ma_200) bad.push(name + ": chips did not switch lines " + JSON.stringify(after));
   const stored = await page.evaluate(() => JSON.parse(localStorage.getItem("desk-cv-ma") || "{}"));
-  if (!stored.ma10 || stored.ma200) bad.push(name + ": chips not remembered");
-  await page.click('[data-chip="ma10"]');
-  await page.click('[data-chip="ma200"]');
+  if (!stored.ma_10 || stored.ma_200) bad.push(name + ": chips not remembered");
+  await page.click('[data-chip="ma_10"]');
+  await page.click('[data-chip="ma_200"]');
 
   // Flip the swipe direction.
   await page.click('[data-chip="swipe"]');
