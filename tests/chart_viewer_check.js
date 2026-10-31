@@ -6,7 +6,7 @@ const path = require("path");
 const root = path.resolve(__dirname, "..");
 
 function loadPlaywright() {
-  const tries = ["playwright", process.env.PLAYWRIGHT_NODE_PATH, "/tmp/pw/node_modules/playwright"].filter(Boolean);
+  const tries = ["playwright", process.env.PLAYWRIGHT_NODE_PATH, "/tmp/pw/node_modules/playwright", "/workspace/pw/node_modules/playwright"].filter(Boolean);
   for (const name of tries) {
     try { return require(name); } catch (e) { /* next */ }
   }
@@ -78,6 +78,27 @@ async function viewState(page) {
   });
 }
 
+// The first view fills the width: the first bar of the range at the left edge and the last bar
+// about 8 bars from the right edge, not squeezed against the right.
+async function checkFill(page, name, tag, wantShown) {
+  await page.waitForTimeout(400);
+  const f = await page.evaluate(() => {
+    const st = document.getElementById("cvstage")._cv;
+    const ts = st.chart.timeScale();
+    const r = ts.getVisibleLogicalRange();
+    const first = Math.max(0, Math.ceil(r.from));
+    const n = st.bars.length;
+    const sp = ts.options().barSpacing;
+    return { w: ts.width(), sp, from: r.from, to: r.to, first, x0: ts.logicalToCoordinate(first), xl: ts.logicalToCoordinate(n - 1), shown: n - first };
+  });
+  const bad = [];
+  const tol = Math.max(6, f.sp * 1.5);
+  if (!(f.x0 < tol)) bad.push(name + " " + tag + ": first bar is not at the left edge " + JSON.stringify(f));
+  if (!(Math.abs(f.w - 8 * f.sp - f.xl) < tol)) bad.push(name + " " + tag + ": last bar is not 8 bars from the right edge " + JSON.stringify(f));
+  if (wantShown !== false && !(f.shown > 40 && f.shown < 160)) bad.push(name + " " + tag + ": first view shows " + f.shown + " bars " + JSON.stringify(f));
+  return bad;
+}
+
 async function plotBox(page, sel) {
   return page.evaluate((sel) => {
     const r = document.querySelector(sel).getBoundingClientRect();
@@ -130,6 +151,22 @@ async function checkTouch(page, ctx, name) {
   await waitOk(page);
   const v4 = await viewState(page);
   if (v4.i === v3.i) bad.push(name + ": swipe on the header did not change the chart");
+  // Chip bar: when it can scroll sideways (phones), a swipe there scrolls the chips and keeps
+  // the chart. When every chip fits, a swipe there changes the chart.
+  const cb = await page.evaluate(() => { const c = document.getElementById("cvchips"); const r = c.getBoundingClientRect();
+    c.scrollLeft = 0; return { x: r.left, y: r.top, w: r.width, h: r.height, over: c.scrollWidth > c.clientWidth + 1,
+      rows: new Set(Array.from(c.children).map((b) => Math.round(b.getBoundingClientRect().top))).size }; });
+  if (name === "iphone-portrait" && (!cb.over || cb.rows !== 1)) bad.push(name + ": chip bar should be one row that scrolls " + JSON.stringify(cb));
+  const c0 = await viewState(page);
+  await realTouch(page, cdp, [[cb.x + cb.w * 0.8, cb.y + cb.h / 2]], Array.from({ length: 8 }, () => [[-20, 0]]), 60);
+  await waitOk(page);
+  const c1 = await viewState(page);
+  const sl = await page.evaluate(() => document.getElementById("cvchips").scrollLeft);
+  if (cb.over) {
+    if (c1.i !== c0.i || c1.ticker !== c0.ticker) bad.push(name + ": swipe on a scrolling chip bar changed the chart " + JSON.stringify([c0.ticker, c1.ticker]));
+    if (!(sl > 20)) bad.push(name + ": swipe on the chip bar did not scroll the chips, scrollLeft " + sl);
+  } else if (c1.i === c0.i) bad.push(name + ": swipe on a chip bar that fits should change the chart");
+  await page.evaluate(() => { document.getElementById("cvchips").scrollLeft = 0; });
   // Range chips.
   await page.click('[data-chip="rall"]');
   await page.waitForTimeout(200);
@@ -138,6 +175,7 @@ async function checkTouch(page, ctx, name) {
   await page.click('[data-chip="r3"]');
   await page.waitForTimeout(200);
   const m3 = await viewState(page);
+  bad.push(...(await checkFill(page, name, "3M chip", false)));
   if (!(m3.to - m3.from < 90 && m3.from > 1)) bad.push(name + ": 3M chip range " + JSON.stringify(m3));
   // Drag chip: back to Drag: next chart, saved; a slow drag on the chart now changes the chart.
   await page.click('[data-chip="drag"]');
@@ -189,6 +227,7 @@ async function check(browser, port, name, device, shotDir) {
     return { n: st.list.length, i: st.i, ticker: st.list[0] && st.list[0].ticker };
   });
   if (first.n < 2) bad.push(name + ": list has " + first.n + " stocks");
+  bad.push(...(await checkFill(page, name, "first view")));
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   if (overflow > 1) bad.push(name + ": sideways overflow " + overflow);
 
@@ -202,6 +241,7 @@ async function check(browser, port, name, device, shotDir) {
   });
   if (!full.on || Math.abs(full.w - full.vw) > 2 || Math.abs(full.h - full.vh) > 2) bad.push(name + ": full screen did not fill " + JSON.stringify(full));
   await waitOk(page);
+  bad.push(...(await checkFill(page, name, "full screen")));
 
   const right = await swipe(page, 160);
   await waitOk(page);
@@ -357,6 +397,30 @@ async function checkIOS(browser, port, name, device) {
   return bad;
 }
 
+// The chart is drawn while it is still a few pixels wide (as on an iPhone before layout or while
+// the overlay opens), then grows. The first view must still fill the width.
+async function checkNarrowStart(browser, port, name, device) {
+  const base = process.env.CV_BASE ? process.env.CV_BASE.replace(/\/?$/, "/") : "http://127.0.0.1:" + port + "/site/";
+  const ctx = await browser.newContext(device);
+  await ctx.addInitScript(() => {
+    document.addEventListener("DOMContentLoaded", () => {
+      const s = document.createElement("style");
+      s.id = "narrow";
+      s.textContent = ".cv-host{right:auto!important;width:40px!important}";
+      document.head.appendChild(s);
+    });
+  });
+  const page = await ctx.newPage();
+  await page.goto(base + "chart-viewer.html", { waitUntil: "domcontentloaded" });
+  await page.waitForSelector("body[data-ready='1']", { timeout: 30000 });
+  await waitOk(page);
+  await page.waitForTimeout(500);
+  await page.evaluate(() => document.getElementById("narrow").remove());
+  const bad = await checkFill(page, name + " narrow start", "after it grows");
+  await ctx.close();
+  return bad;
+}
+
 async function main() {
   const pw = loadPlaywright();
   if (!pw) {
@@ -379,6 +443,7 @@ async function main() {
   ];
   let bad = [];
   for (const [name, device] of devices) bad = bad.concat(await check(browser, port, name, device, shotDir));
+  for (const [name, device] of devices) bad = bad.concat(await checkNarrowStart(browser, port, name, device));
   const ipadUA = "Mozilla/5.0 (iPad; CPU OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1";
   const ipadOS = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15";
   const iosDevices = [
