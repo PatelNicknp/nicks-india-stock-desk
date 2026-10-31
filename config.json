@@ -228,7 +228,7 @@
     "nick_flat_base_grade": "A"
   },
   "chart_viewer": {
-    "_note": "Chart Viewer page (chart-viewer.html). One chart at a time, full screen, swipe to move. Same keys and defaults as the US desk. Every option is its own switch. It reads the scanner files and saved daily bars the desk already has, and downloads nothing new. Turn the page off with feature.chart_viewer. native_fullscreen_ios stays false so iPhone and iPad use the full-screen layer instead of Safari full screen, whose grey X covers the stock name.",
+    "_note": "Chart Viewer page (chart-viewer.html). One chart at a time, full screen, swipe to move. Same keys and defaults as the US desk. Every option is its own switch. It reads the scanner files and saved daily bars the desk already has, and downloads nothing new. Turn the page off with feature.chart_viewer. chart_touch_pan is true, so a one-finger drag on the chart moves the same chart back and forward in time, and two fingers zoom. A quick flick changes the chart: faster than swipe_max_ms, at least swipe_min_px long, and swipe_ratio times more sideways than up or down. A slow drag never changes the chart. A swipe on the header or chip bar always changes the chart. drag_mode_toggle shows the Drag chip, which switches between Drag: move chart and Drag: next chart (no pinch zoom), and the choice is saved on the device. Only the last 6 charts stay in memory. The chart loads every saved daily bar. Only the first view uses range_months or range_months_phone. range_chips adds 3M, 6M, 1Y and All chips. native_fullscreen_ios stays false so iPhone and iPad use the full-screen layer instead of Safari full screen, whose grey X covers the stock name.",
     "list_picker": true,
     "include_watching": true,
     "include_closed": false,
@@ -236,12 +236,14 @@
     "include_watchlist": true,
     "scanner_links": true,
     "fullscreen": true,
+    "native_fullscreen_ios": false,
     "swipe": true,
     "swipe_right_is_next": true,
     "flip_toggle": true,
-    "chart_touch_pan": false,
-    "swipe_min_px": 50,
-    "swipe_max_ms": 700,
+    "chart_touch_pan": true,
+    "drag_mode_toggle": true,
+    "swipe_min_px": 80,
+    "swipe_max_ms": 300,
     "swipe_ratio": 1.5,
     "arrows": true,
     "keyboard": true,
@@ -263,7 +265,7 @@
     "day_change": true,
     "range_months": 6,
     "range_months_phone": 3,
-    "native_fullscreen_ios": false
+    "range_chips": true
   },
   "light_mode": {
     "_note": "Light mode. feature.light_mode shows the Theme toggle (Dark, Light, Match device) at the top of the menu. default_theme is used until a choice is saved on the device: dark, light, or auto (match the device). Dark stays the default. match_device_option shows the Match device button.",

@@ -3385,6 +3385,8 @@
       "One big chart at a time. Pick a list at the top: every stock on any scanner, one scanner, or your watchlist.",
       "All scanner stocks puts the stocks found by the most scanners first, then the strongest.",
       "Tap Full screen. Swipe right for the next chart and left to go back. The Swipe chip flips that. The arrows and the left and right keys work too.",
+      "Drag the chart slowly to see older days on the same chart, and pinch to zoom. Flick fast, or swipe on the top bar, to change the chart. The Drag chip switches between Drag: move chart and Drag: next chart.",
+      "The 3M, 6M, 1Y and All chips change how much of the saved history shows.",
       "Tap the chips to show or hide the 10, 20, 50, 150 and 200-day averages and the volume. Your choice is saved on this device.",
       "The box in the lower right shows every scanner the stock is on, its status, and the reason. Tap it for more. The Reasons chip hides it.",
       "It uses the daily prices the desk already saves. Nothing new is downloaded.",

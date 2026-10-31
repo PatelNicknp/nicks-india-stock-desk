@@ -99,12 +99,14 @@ chart_viewer.include_buy_setups,True
 chart_viewer.include_watchlist,True
 chart_viewer.scanner_links,True
 chart_viewer.fullscreen,True
+chart_viewer.native_fullscreen_ios,False
 chart_viewer.swipe,True
 chart_viewer.swipe_right_is_next,True
 chart_viewer.flip_toggle,True
-chart_viewer.chart_touch_pan,False
-chart_viewer.swipe_min_px,50
-chart_viewer.swipe_max_ms,700
+chart_viewer.chart_touch_pan,True
+chart_viewer.drag_mode_toggle,True
+chart_viewer.swipe_min_px,80
+chart_viewer.swipe_max_ms,300
 chart_viewer.swipe_ratio,1.5
 chart_viewer.arrows,True
 chart_viewer.keyboard,True
@@ -126,7 +128,7 @@ chart_viewer.company_line,True
 chart_viewer.day_change,True
 chart_viewer.range_months,6
 chart_viewer.range_months_phone,3
-chart_viewer.native_fullscreen_ios,False
+chart_viewer.range_chips,True
 index.nifty50,True
 index.next50,True
 index.midcap150,True

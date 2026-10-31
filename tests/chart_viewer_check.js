@@ -1,4 +1,4 @@
-/* Chart Viewer in a phone and a tablet: no errors, no sideways scroll, swipes, chips, reason box. */
+/* Chart Viewer in a phone and a tablet: no errors, no sideways scroll, swipes, drag to pan, pinch zoom, chips, reason box. */
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
@@ -54,6 +54,118 @@ async function swipe(page, dx) {
   }, dx);
 }
 
+// Real touches through the browser, so Lightweight Charts sees them too.
+// points is a list of [x, y] per finger; steps move each finger by dx, dy; ms is the time between steps.
+async function realTouch(page, cdp, points, moves, ms) {
+  const tp = (pts) => pts.map(([x, y], id) => ({ x, y, id, radiusX: 2, radiusY: 2, force: 1 }));
+  await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: tp(points) });
+  let cur = points;
+  for (const step of moves) {
+    cur = cur.map(([x, y], k) => [x + step[k][0], y + step[k][1]]);
+    if (ms) await page.waitForTimeout(ms);
+    await cdp.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: tp(cur) });
+  }
+  await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+  await page.waitForTimeout(400);
+}
+
+async function viewState(page) {
+  return page.evaluate(() => {
+    const st = document.getElementById("cvstage")._cv;
+    const r = st.chart ? st.chart.timeScale().getVisibleLogicalRange() : null;
+    return { i: st.i, ticker: document.getElementById("cvstage").dataset.ticker, from: r ? r.from : null, to: r ? r.to : null,
+      bars: st.bars.length, first: st.bars.length ? st.bars[0].date : "" };
+  });
+}
+
+async function plotBox(page, sel) {
+  return page.evaluate((sel) => {
+    const r = document.querySelector(sel).getBoundingClientRect();
+    return { x: r.left, y: r.top, w: r.width, h: r.height };
+  }, sel);
+}
+
+// The default: a slow one-finger drag pans the same chart, a quick flick changes it,
+// a swipe on the header changes it, pinch zooms, and the Drag chip switches back.
+async function checkTouch(page, ctx, name) {
+  const bad = [];
+  const cdp = await ctx.newCDPSession(page);
+  await waitOk(page);
+  await page.waitForTimeout(300);
+  const chipText = await page.locator('[data-chip="drag"]').innerText();
+  if (chipText !== "Drag: move chart") bad.push(name + ": drag chip says " + chipText);
+  const b = await plotBox(page, "#cvplot");
+  const cx = b.x + b.w * 0.45, cy = b.y + b.h * 0.45;
+  const v0 = await viewState(page);
+  if (v0.bars < 400) bad.push(name + ": only " + v0.bars + " bars loaded, not the full saved history");
+  if (!(v0.from > 1)) bad.push(name + ": first view should not show the whole history " + JSON.stringify(v0));
+  // Slow drag to the right: older days come into view, same ticker.
+  await realTouch(page, cdp, [[cx - 60, cy]], Array.from({ length: 12 }, () => [[12, 0]]), 60);
+  const v1 = await viewState(page);
+  if (v1.i !== v0.i || v1.ticker !== v0.ticker) bad.push(name + ": slow drag changed the chart " + JSON.stringify([v0, v1]));
+  if (!(v1.from < v0.from - 3)) bad.push(name + ": slow drag did not pan back in time " + JSON.stringify([v0, v1]));
+  // Tapping the reason box (Why) opens and closes it but keeps the panned view.
+  if (await page.evaluate(() => !document.getElementById("cvreason").hidden)) {
+    await page.tap("#cvreason");
+    await page.waitForTimeout(250);
+    await page.tap("#cvreason");
+    await page.waitForTimeout(250);
+    const vr = await viewState(page);
+    if (Math.abs(vr.from - v1.from) > 0.5 || vr.i !== v1.i) bad.push(name + ": tapping the reason box reset the panned chart " + JSON.stringify([v1, vr]));
+  }
+  // Pinch out: fewer bars show.
+  const w1 = v1.to - v1.from;
+  await realTouch(page, cdp, [[cx - 40, cy], [cx + 40, cy]], Array.from({ length: 8 }, () => [[-15, 0], [15, 0]]), 30);
+  const v2 = await viewState(page);
+  if (v2.i !== v0.i) bad.push(name + ": pinch changed the chart");
+  if (!(v2.to - v2.from < w1 * 0.9)) bad.push(name + ": pinch did not zoom " + JSON.stringify([w1, v2.to - v2.from]));
+  // Quick flick right: next chart.
+  await realTouch(page, cdp, [[cx - 80, cy]], [[[60, 0]], [[60, 0]], [[60, 0]]], 0);
+  await waitOk(page);
+  const v3 = await viewState(page);
+  if (v3.i !== (v0.i + 1) % Math.max(1, (await page.evaluate(() => document.getElementById("cvstage")._cv.list.length)))) bad.push(name + ": quick flick did not go to the next chart " + JSON.stringify([v0.i, v3.i]));
+  // Slow swipe on the header: next chart.
+  const h = await plotBox(page, "#cvtk");
+  await realTouch(page, cdp, [[h.x + 4, h.y + h.h / 2]], Array.from({ length: 8 }, () => [[20, 0]]), 60);
+  await waitOk(page);
+  const v4 = await viewState(page);
+  if (v4.i === v3.i) bad.push(name + ": swipe on the header did not change the chart");
+  // Range chips.
+  await page.click('[data-chip="rall"]');
+  await page.waitForTimeout(200);
+  const all = await viewState(page);
+  if (!(all.from <= 0.5)) bad.push(name + ": All chip did not show the whole history " + JSON.stringify(all));
+  await page.click('[data-chip="r3"]');
+  await page.waitForTimeout(200);
+  const m3 = await viewState(page);
+  if (!(m3.to - m3.from < 90 && m3.from > 1)) bad.push(name + ": 3M chip range " + JSON.stringify(m3));
+  // Drag chip: back to Drag: next chart, saved; a slow drag on the chart now changes the chart.
+  await page.click('[data-chip="drag"]');
+  const flip = await page.evaluate(() => ({ text: document.querySelector('[data-chip="drag"]').innerText, saved: localStorage.getItem("desk-cv-drag-pan") }));
+  if (flip.text !== "Drag: next chart" || flip.saved !== "false") bad.push(name + ": drag chip did not switch " + JSON.stringify(flip));
+  const before = await viewState(page);
+  await realTouch(page, cdp, [[cx - 60, cy]], Array.from({ length: 10 }, () => [[14, 0]]), 60);
+  await waitOk(page);
+  const after = await viewState(page);
+  if (after.i === before.i) bad.push(name + ": with Drag: next chart a slow drag should change the chart");
+  // Drag: next chart turns pinch zoom off.
+  const pb = await viewState(page);
+  await realTouch(page, cdp, [[cx - 40, cy - 20], [cx + 40, cy + 20]], Array.from({ length: 8 }, () => [[-15, 0], [15, 0]]), 30);
+  const pa = await viewState(page);
+  if (pa.i !== pb.i || Math.abs((pa.to - pa.from) - (pb.to - pb.from)) > 0.5) bad.push(name + ": pinch should do nothing with Drag: next chart " + JSON.stringify([pb, pa]));
+  await page.click('[data-chip="drag"]');
+  await realTouch(page, cdp, [[cx - 80, cy]], [[[60, 0]], [[60, 0]], [[60, 0]]], 0);
+  await waitOk(page);
+  // Only the last 6 charts stay in memory.
+  for (let k = 0; k < 8; k++) { await page.click("#cvnext"); await waitOk(page); }
+  const mem = await page.evaluate(() => { const st = document.getElementById("cvstage")._cv; return { recent: st.recent, files: st.cached() }; });
+  if (mem.recent.length > 6) bad.push(name + ": more than 6 charts kept " + JSON.stringify(mem.recent));
+  const groups = new Set(mem.recent.map((t) => (/^[A-Z]/.test(t) ? t[0] : "0")));
+  if (mem.files.length > groups.size + 6) bad.push(name + ": bar files not forgotten " + JSON.stringify(mem.files));
+  await cdp.detach();
+  return bad;
+}
+
 async function waitOk(page) {
   await page.waitForFunction(() => {
     const s = document.getElementById("cvstage");
@@ -105,6 +217,9 @@ async function check(browser, port, name, device, shotDir) {
   const key = await page.evaluate(() => document.getElementById("cvstage")._cv.i);
   if (key !== 1) bad.push(name + ": right key should go to the next chart");
   await page.keyboard.press("ArrowLeft");
+  await waitOk(page);
+  bad.push(...(await checkTouch(page, ctx, name)));
+  await page.evaluate(() => document.getElementById("cvstage")._cv.go(-document.getElementById("cvstage")._cv.i));
   await waitOk(page);
   const counter = await page.locator("#cvcount").innerText();
   if (!/^1 of \d+$/.test(counter)) bad.push(name + ": counter says " + counter);

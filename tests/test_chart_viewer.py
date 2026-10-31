@@ -17,13 +17,14 @@ import tables  # noqa: E402
 
 EXPECTED = {
     "list_picker": True, "include_watching": True, "include_closed": False, "include_buy_setups": True,
-    "include_watchlist": True, "scanner_links": True, "fullscreen": True, "swipe": True, "swipe_right_is_next": True,
-    "flip_toggle": True, "chart_touch_pan": False, "swipe_min_px": 50, "swipe_max_ms": 700, "swipe_ratio": 1.5,
+    "include_watchlist": True, "scanner_links": True, "fullscreen": True, "native_fullscreen_ios": False,
+    "swipe": True, "swipe_right_is_next": True, "flip_toggle": True, "chart_touch_pan": True, "drag_mode_toggle": True,
+    "swipe_min_px": 80, "swipe_max_ms": 300, "swipe_ratio": 1.5,
     "arrows": True, "keyboard": True, "counter": True, "preload_next": True, "ma_chips": True,
     "ma_10": False, "ma_20": False, "ma_50": True, "ma_150": True, "ma_200": True, "volume": True,
     "volume_toggle": True, "reason_box": True, "reason_box_toggle": True, "reason_max_chars": 110,
     "reason_collapsed_items": 3, "company_line": True, "day_change": True, "range_months": 6, "range_months_phone": 3,
-    "native_fullscreen_ios": False,
+    "range_chips": True,
 }
 
 
@@ -76,7 +77,10 @@ def test_help_row():
     for word in ("feature.chart_viewer", "Swipe right for the next chart", "lower right", "Nothing new is downloaded",
                  "every status except CLOSED", "do not add to the count",
                  "VCP", "CANSLIM", "Box", "Flag", "Qullamaggie", "Marios", "Episodic Pivot", "Buy setups",
-                 "52-week breakouts", "Pullbacks", "Leaders", "High volume", "watchlist"):
+                 "52-week breakouts", "Pullbacks", "Leaders", "High volume", "watchlist",
+                 "Drag the chart slowly", "pinch", "flick it fast", "A slow drag never changes the chart",
+                 "top bar or the chip bar", "Drag: move chart", "Drag: next chart", "pinch zoom is off", "chart_viewer.drag_mode_toggle", "every saved daily bar",
+                 "3M, 6M, 1Y and All", "chart_viewer.range_chips", "chart_viewer.chart_touch_pan"):
         assert word in text, word
     saved = pd.read_csv(os.path.join(ROOT, "data", "help.csv"))
     assert "Chart Viewer" in set(saved["topic"])
@@ -131,3 +135,22 @@ def test_viewer_in_phone_and_tablet():
     if proc.returncode == 2:
         pytest.skip(out.strip() or "playwright is not installed")
     assert proc.returncode == 0, out
+
+
+def test_drag_pans_and_flick_changes_chart():
+    desk = _read("site", "js", "desk.js")
+    start = desk.index("function renderChartViewer(ctx)")
+    block = desk[start:desk.index("    // Full screen: the real Fullscreen API", start)]
+    assert 'cvRead("desk-cv-drag-pan")' in block and 'cvStore("desk-cv-drag-pan", dragPan)' in block
+    assert '"Drag: " + (dragPan ? "move chart" : "next chart")' in block
+    assert "horzTouchDrag: dragPan" in block and "pinch: dragPan" in block and "kineticScroll: { touch: dragPan" in block
+    assert 'inChart && dragPan && ms > cvOpt("swipe_max_ms")' in block
+    assert 'cvOpt("drag_mode_toggle")' in block and "const CV_KEEP = 6;" in block
+    assert 'stage.addEventListener("touchstart"' in block
+    assert 'cvOpt("range_chips")' in block and '"3M"' in block and '"All"' in block
+    pages = _read("site", "js", "pages.js")
+    i = pages.index("chartviewer: { title:")
+    desc = pages[i:pages.index("] },", i)]
+    assert "\u2014" not in desc
+    assert "Drag the chart slowly" in desc and "3M, 6M, 1Y and All" in desc
+    assert "\u2014" not in _cfg()["chart_viewer"]["_note"]
