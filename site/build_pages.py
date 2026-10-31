@@ -20,6 +20,7 @@ PAGES = [
     ("flag.html", "flag", "Flag breakout"),
     ("qullamaggie.html", "qullamaggie", "Qullamaggie breakout"),
     ("marios.html", "marios", "Marios breakout"),
+    ("episodic_pivot.html", "episodic", "Episodic Pivot"),
     ("leaders.html", "leaders", "Leaders"),
     ("52-week.html", "week52", "52-week"),
     ("high-volume.html", "highvol", "High volume"),

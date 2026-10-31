@@ -3030,22 +3030,71 @@ def main(argv=None):
     if len(universe) and len(scores) and "liquid" in scores.columns and (cfg.get("liquidity") or {}).get("enabled", True):
         allowed = set(scores.loc[scores["liquid"].astype(str).eq("yes"), "ticker"].astype(str))
         setup_universe = universe[universe["ticker"].astype(str).isin(allowed)]
+    ep_cfg = setups._ep_cfg(cfg)
+    ep_on = features.get("scanner_episodic_pivot", True)
+    ep_universe = setup_universe if ep_cfg.get("liquid_universe_only", True) else universe
+    if ep_cfg.get("skip_etfs_and_funds", True) and len(ep_universe):
+        # An EP is about company news, so ETFs and fund units (ISIN starting INF) are left out.
+        funds = set()
+        for src in (long, ep_universe):
+            if src is not None and len(src) and "isin" in src.columns and "ticker" in src.columns:
+                pairs = src[["ticker", "isin"]].dropna().drop_duplicates()
+                funds |= set(pairs.loc[pairs["isin"].astype(str).str.upper().str.startswith("INF"), "ticker"].astype(str))
+        ep_universe = ep_universe[~ep_universe["ticker"].astype(str).isin(funds)]
+    # Saved share counts for market cap (cache/market_cap.csv). Built from the saved statements, no download.
+    mcap_table = pd.DataFrame()
+    shares_by_ticker = {}
+    if ep_on and ep_cfg.get("market_cap", True):
+        try:
+            import market_cap
+            mcap_table = market_cap.build(market_cap.read_cache(cache), annual, quarters, close,
+                                          pd.Timestamp.now(tz=IST).strftime("%Y-%m-%d"))
+            shares_by_ticker = market_cap.shares_map(mcap_table)
+        except Exception as exc:
+            log("Market cap (saved share counts)", "MISSING", "", ("Share counts were not built this run. " + str(exc))[:200])
     if len(close) and len(setup_universe):
         opn = wide_from_long(long, "open") if long is not None and len(long) and "open" in long.columns else None
-        setup_frames = setups.build_setups(close, high, low, vol, setup_universe, quarters, annual, holders, features, scores=scores, cfg=cfg, opn=opn)
+        setup_frames = setups.build_setups(close, high, low, vol, setup_universe, quarters, annual, holders, features, scores=scores, cfg=cfg, opn=opn,
+                                           earnings=earnings, shares=shares_by_ticker, ep_universe=ep_universe)
     else:
         setup_frames = {k: pd.DataFrame() for k in (
             "scanner_vcp", "scanner_canslim", "scanner_box", "scanner_flag", "scanner_leaders",
-            "scanner_qullamaggie", "scanner_marios", "scanner_52w", "highs_lows_history",
+            "scanner_qullamaggie", "scanner_marios", "scanner_episodic_pivot", "scanner_52w", "highs_lows_history",
         )}
+    if ep_on and ep_cfg.get("market_cap", True) and len(mcap_table):
+        try:
+            import market_cap
+            ep_frame = setup_frames.get("scanner_episodic_pivot")
+            asked = found = 0
+            # A tiny Yahoo lookup for EP names with no share count. Price runs only, never on a rescore.
+            if (ep_cfg.get("market_cap_fetch_missing", True) and not light and mode in ("full", "retry")
+                    and ep_frame is not None and len(ep_frame)):
+                today_s = pd.Timestamp.now(tz=IST).strftime("%Y-%m-%d")
+                missing = [t for t in ep_frame["ticker"].astype(str) if t not in shares_by_ticker]
+                mcap_table, asked, found = market_cap.fetch_missing(
+                    mcap_table, missing, universe, today_s,
+                    max_names=int(ep_cfg.get("market_cap_fetch_max_per_run", 5)),
+                    refetch_days=int(ep_cfg.get("market_cap_refetch_days", 30)))
+                if found:
+                    mcap_table = market_cap.refresh_close(mcap_table, close)
+                    shares_by_ticker = market_cap.shares_map(mcap_table)
+                    setup_frames["scanner_episodic_pivot"] = setups.ep_fill_market_cap(ep_frame, shares_by_ticker, cfg)
+            market_cap.save(mcap_table, cache)
+            have = int(pd.to_numeric(mcap_table["shares"], errors="coerce").notna().sum())
+            log("Market cap (saved share counts)", "OK", asof,
+                "%d names have a saved share count in cache/market_cap.csv. Market cap = shares x close, in Rs crore. "
+                "%d asked from Yahoo this run, %d found." % (have, asked, found))
+        except Exception as exc:
+            log("Market cap (saved share counts)", "MISSING", "", ("The saved share counts were not updated. " + str(exc))[:200])
     def _n(frame):
         if frame is None or len(frame) == 0 or "ticker" not in getattr(frame, "columns", []):
             return 0
         return int((frame["ticker"].astype(str) != "").sum())
-    log("Pattern scanners", "OK", asof, "VCP %d, CANSLIM %d, box %d, flag %d, Qullamaggie %d, Marios %d, leaders %d, 52-week %d. No new downloads." % (
+    log("Pattern scanners", "OK", asof, "VCP %d, CANSLIM %d, box %d, flag %d, Qullamaggie %d, Marios %d, Episodic Pivot %d, leaders %d, 52-week %d. No new downloads." % (
         _n(setup_frames.get("scanner_vcp")), _n(setup_frames.get("scanner_canslim")),
         _n(setup_frames.get("scanner_box")), _n(setup_frames.get("scanner_flag")),
         _n(setup_frames.get("scanner_qullamaggie")), _n(setup_frames.get("scanner_marios")),
+        _n(setup_frames.get("scanner_episodic_pivot")),
         _n(setup_frames.get("scanner_leaders")), _n(setup_frames.get("scanner_52w")),
     ))
     buy_on = features.get("buy_setups", True)
@@ -3055,6 +3104,7 @@ def main(argv=None):
             setup_frames.get("scanner_flag"), setup_frames.get("scanner_canslim"),
             scores, close, setup_frames.get("scanner_52w"), cfg=cfg,
             qullamaggie=setup_frames.get("scanner_qullamaggie"), marios=setup_frames.get("scanner_marios"),
+            episodic_pivot=setup_frames.get("scanner_episodic_pivot"),
         )
     else:
         buy = pd.DataFrame()
@@ -3163,6 +3213,7 @@ def main(argv=None):
         "scanner_flag": gated(setup_frames["scanner_flag"], "scanner_flag", features.get("scanner_flag", True), "No flag setups in the cached prices."),
         "scanner_qullamaggie": gated(setup_frames.get("scanner_qullamaggie"), "scanner_qullamaggie", features.get("scanner_qullamaggie", True), "No Qullamaggie setups in the cached prices."),
         "scanner_marios": gated(setup_frames.get("scanner_marios"), "scanner_marios", features.get("scanner_marios", True), "No Marios setups in the cached prices."),
+        "scanner_episodic_pivot": gated(setup_frames.get("scanner_episodic_pivot"), "scanner_episodic_pivot", features.get("scanner_episodic_pivot", True), "No Episodic Pivots in the cached prices. An EP is a 10% gap up or an 8% up day on 3 times normal volume."),
         "scanner_leaders": gated(setup_frames.get("scanner_leaders"), "scanner_leaders", features.get("scanner_leaders", True), "No leaders. A leader is a ready or just-broken VCP, a strict CANSLIM qualify, or both."),
         "scanner_52w": gated(setup_frames.get("scanner_52w"), "scanner_52w", features.get("scanner_52w", True), "No 52-week rows. The scan used cached prices only."),
         "highs_lows_history": gated(setup_frames.get("highs_lows_history"), "highs_lows_history", features.get("scanner_52w", True), "No 52-week history in the cached prices."),

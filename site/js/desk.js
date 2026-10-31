@@ -29,6 +29,7 @@
       ["Flag breakout", "flag.html", "flag"],
       ["Qullamaggie breakout", "qullamaggie.html", "qullamaggie"],
       ["Marios breakout", "marios.html", "marios"],
+      ["Episodic Pivot", "episodic_pivot.html", "episodic"],
       ["Leaders", "leaders.html", "leaders"],
       ["52-week", "52-week.html", "week52"],
       ["High volume", "high-volume.html", "highvol"],
@@ -312,7 +313,8 @@
     return colored(v, map[v] || TX, true);
   }
   function setupHtml(v) {
-    const map = { "BROKEN OUT today": UP, READY: AM, WATCHING: MU, "IN TRADE": AC, CLOSED: MU, SELL: DN, "SELL 1/3": AM, EXIT: DN, STOPPED: DN, HOLD: MU };
+    const map = { "BROKEN OUT today": UP, READY: AM, WATCHING: MU, "IN TRADE": AC, CLOSED: MU, SELL: DN, "SELL 1/3": AM, EXIT: DN, STOPPED: DN, HOLD: MU,
+      "EP TODAY": UP, "EP FADED": AM, "DELAYED WATCH": MU, "SELL PART": AM, "NO FOLLOW-THROUGH": AM, "Too wide, skip": DN, OK: MU };
     return colored(v, map[v] || TX);
   }
   function freshHtml(v) {
@@ -2089,6 +2091,7 @@
     flag: "feature.scanner_flag",
     qullamaggie: "feature.scanner_qullamaggie",
     marios: "feature.scanner_marios",
+    episodic: "feature.scanner_episodic_pivot",
     leaders: "feature.scanner_leaders",
     week52: "feature.scanner_52w",
     highvol: "feature.high_volume_scanner",
