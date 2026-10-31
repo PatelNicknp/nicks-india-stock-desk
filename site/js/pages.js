@@ -3176,9 +3176,10 @@
   const SCAN = "What this scanner does";
   const ABOUT = {
     vcp: { title: SCAN, note: LIQUID_LINE, lines: [
-      "Same rules as Nick's TradingView indicator. The trend template must be 8 of 8, and there must be at least two pullbacks that get smaller.",
+      "Same rules as Nick's TradingView indicator. A stock is listed only when it would get the green VCP tag: all 8 trend rules pass and there are at least two pullbacks that get smaller.",
       "READY means price is still under the buy line. BROKEN OUT today means it closed above the buy line on volume at least 1.5 times the 50-day average.",
-      "WATCHING means it is close but not there yet. For example, price went over the line on low volume, or there is only one pullback so far.",
+      "WATCHING means the trend is 8 of 8 but it is not ready yet. Price went over the line on low volume, or there is only one pullback so far.",
+      "A stock still in a trade stays on the list if its buy printed with 8 of 8. Set vcp.show_weaker_trend to true to also see stocks with a weaker trend. They show as WATCHING (trend not 8/8).",
       "A buy needs a fresh close above the line on big volume. Stops and targets: 7% stop, sell part at +20%.",
     ] },
     box: { title: SCAN, note: LIQUID_LINE, lines: [
