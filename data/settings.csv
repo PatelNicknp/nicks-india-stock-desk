@@ -126,6 +126,7 @@ chart_viewer.company_line,True
 chart_viewer.day_change,True
 chart_viewer.range_months,6
 chart_viewer.range_months_phone,3
+chart_viewer.native_fullscreen_ios,False
 index.nifty50,True
 index.next50,True
 index.midcap150,True

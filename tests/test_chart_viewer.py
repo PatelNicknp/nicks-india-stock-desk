@@ -23,6 +23,7 @@ EXPECTED = {
     "ma_10": False, "ma_20": False, "ma_50": True, "ma_150": True, "ma_200": True, "volume": True,
     "volume_toggle": True, "reason_box": True, "reason_box_toggle": True, "reason_max_chars": 110,
     "reason_collapsed_items": 3, "company_line": True, "day_change": True, "range_months": 6, "range_months_phone": 3,
+    "native_fullscreen_ios": False,
 }
 
 
@@ -115,6 +116,7 @@ def test_viewer_code_rules():
     assert "alert(" not in block and "Notification" not in block
     assert "yahoo" not in block.lower()
     assert "loadTickerBars" in block and "requestFullscreen" in block and "100dvh" not in block
+    assert "native_fullscreen_ios" in block and "maxTouchPoints" in block and "iPad" in block
     css = _read("site", "css", "desk.css")
     assert "100dvh" in css and "safe-area-inset-top" in css and ".cv-stage:fullscreen" in css
 

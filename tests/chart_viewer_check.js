@@ -194,6 +194,54 @@ async function check(browser, port, name, device, shotDir) {
   return bad;
 }
 
+// iPad and iPhone Safari: never the element Fullscreen API (Safari adds a grey X over the
+// stock name in the top left). The fixed layer fills the screen and the name stays clear.
+async function checkIOS(browser, port, name, device) {
+  const bad = [];
+  const base = process.env.CV_BASE ? process.env.CV_BASE.replace(/\/?$/, "/") : "http://127.0.0.1:" + port + "/site/";
+  const ctx = await browser.newContext(device);
+  await ctx.addInitScript(() => {
+    window.__fsCalls = 0;
+    const spy = function () { window.__fsCalls++; return Promise.resolve(); };
+    Element.prototype.requestFullscreen = spy;
+    Element.prototype.webkitRequestFullscreen = spy;
+    if (/Macintosh/.test(navigator.userAgent)) {
+      Object.defineProperty(Navigator.prototype, "platform", { get: () => "MacIntel" });
+      Object.defineProperty(Navigator.prototype, "maxTouchPoints", { get: () => 5 });
+    }
+  });
+  const page = await ctx.newPage();
+  const errors = [];
+  page.on("pageerror", (e) => errors.push(String(e.message || e)));
+  await page.goto(base + "chart-viewer.html", { waitUntil: "domcontentloaded" });
+  await page.waitForSelector("body[data-ready='1']", { timeout: 30000 });
+  await waitOk(page);
+  await page.click("#cvfull");
+  await page.waitForTimeout(400);
+  const r = await page.evaluate(() => {
+    const s = document.getElementById("cvstage");
+    const b = s.getBoundingClientRect();
+    const tk = document.getElementById("cvtk");
+    const t = tk.getBoundingClientRect();
+    const hit = document.elementFromPoint(t.left + 4, t.top + t.height / 2);
+    const ex = document.getElementById("cvexit").getBoundingClientRect();
+    return { calls: window.__fsCalls, fixed: s.classList.contains("cv-fixed"), full: s.classList.contains("cv-full"),
+      native: !!document.fullscreenElement, w: b.width, h: b.height, vw: innerWidth, vh: innerHeight,
+      text: tk.innerText, nameClear: !!hit && tk.contains(hit), exitRight: ex.left > innerWidth / 2 };
+  });
+  if (r.calls !== 0 || r.native) bad.push(name + ": requestFullscreen was called " + JSON.stringify(r));
+  if (!r.fixed || !r.full || Math.abs(r.w - r.vw) > 2 || Math.abs(r.h - r.vh) > 2) bad.push(name + ": overlay did not fill " + JSON.stringify(r));
+  if (!r.text || !r.nameClear) bad.push(name + ": ticker name covered " + JSON.stringify(r));
+  if (!r.exitRight) bad.push(name + ": close X is not on the right " + JSON.stringify(r));
+  if (bad.length) { await ctx.close(); return bad; }
+  await page.click("#cvexit");
+  await page.waitForTimeout(200);
+  if (await page.evaluate(() => document.getElementById("cvstage").classList.contains("cv-full"))) bad.push(name + ": exit did not leave the overlay");
+  if (errors.length) bad.push(name + ": " + errors.join(" | "));
+  await ctx.close();
+  return bad;
+}
+
 async function main() {
   const pw = loadPlaywright();
   if (!pw) {
@@ -216,13 +264,40 @@ async function main() {
   ];
   let bad = [];
   for (const [name, device] of devices) bad = bad.concat(await check(browser, port, name, device, shotDir));
+  const ipadUA = "Mozilla/5.0 (iPad; CPU OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1";
+  const ipadOS = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15";
+  const iosDevices = [
+    ["ipad-ua-landscape", { viewport: { width: 1180, height: 820 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, userAgent: ipadUA }],
+    ["ipad-ua-portrait", { viewport: { width: 820, height: 1180 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, userAgent: ipadUA }],
+    ["ipados-macintel", { viewport: { width: 1180, height: 820 }, deviceScaleFactor: 2, hasTouch: true, userAgent: ipadOS }],
+  ];
+  for (const [name, device] of iosDevices) bad = bad.concat(await checkIOS(browser, port, name, device));
+  // Desktop keeps the real Fullscreen API.
+  {
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+    await ctx.addInitScript(() => {
+      window.__fsCalls = 0;
+      const orig = Element.prototype.requestFullscreen;
+      Element.prototype.requestFullscreen = function () { window.__fsCalls++; return orig.apply(this, arguments); };
+    });
+    const page = await ctx.newPage();
+    const base = process.env.CV_BASE ? process.env.CV_BASE.replace(/\/?$/, "/") : "http://127.0.0.1:" + port + "/site/";
+    await page.goto(base + "chart-viewer.html", { waitUntil: "domcontentloaded" });
+    await page.waitForSelector("body[data-ready='1']", { timeout: 30000 });
+    await waitOk(page);
+    await page.click("#cvfull");
+    await page.waitForTimeout(300);
+    const calls = await page.evaluate(() => window.__fsCalls);
+    if (calls !== 1) bad.push("desktop: requestFullscreen should be called once, got " + calls);
+    await ctx.close();
+  }
   await browser.close();
   if (server) server.close();
   if (bad.length) {
     console.log(bad.join("\n"));
     process.exit(1);
   }
-  console.log("chart viewer ok on " + devices.map((d) => d[0]).join(", "));
+  console.log("chart viewer ok on " + devices.map((d) => d[0]).concat(iosDevices.map((d) => d[0]), ["desktop"]).join(", "));
 }
 
 main().catch((err) => {

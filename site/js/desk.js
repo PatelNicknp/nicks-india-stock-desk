@@ -2022,7 +2022,7 @@
     ma_chips: true, ma_10: false, ma_20: false, ma_50: true, ma_150: true, ma_200: true,
     volume: true, volume_toggle: true, reason_box: true, reason_box_toggle: true,
     reason_max_chars: 110, reason_collapsed_items: 3, company_line: true, day_change: true,
-    range_months: 6, range_months_phone: 3,
+    range_months: 6, range_months_phone: 3, native_fullscreen_ios: false,
   };
   function cvOpt(key) {
     const fallback = CV_DEFAULTS[key];
@@ -2457,8 +2457,8 @@
     }, { passive: true });
     plot.addEventListener("touchcancel", () => { touch = null; }, { passive: true });
 
-    // Full screen: the real Fullscreen API where the browser has it. iPhone Safari does
-    // not, so there the viewer fills the screen as a fixed layer over the menu and header.
+    // Full screen: the real Fullscreen API on desktop. iPhone Safari does not have it
+    // and iPad Safari covers the name with its own X, so there the viewer fills the screen as a fixed layer over the menu and header.
     const fsEl = () => document.fullscreenElement || document.webkitFullscreenElement || null;
     const isFull = () => fsEl() === stage || stage.classList.contains("cv-fixed");
     const markFull = () => {
@@ -2469,10 +2469,18 @@
       if (fb) fb.textContent = on ? "Exit full screen" : "Full screen";
       requestAnimationFrame(placeReason);
     };
+    // iPad and iPhone Safari put their own grey close X in the top left over the stock name,
+    // so there we always use the fixed layer (our close X stays on the right).
+    // iPadOS reports itself as MacIntel, so touch points tell it apart from a Mac.
+    const isIOS = () => {
+      const ua = navigator.userAgent || "";
+      return /iPhone|iPad|iPod/.test(ua) || (navigator.platform === "MacIntel" && (navigator.maxTouchPoints || 0) > 1);
+    };
+    const nativeOk = () => !isIOS() || cvOpt("native_fullscreen_ios");
     const enter = () => {
       const req = stage.requestFullscreen || stage.webkitRequestFullscreen;
       const fallback = () => { stage.classList.add("cv-fixed"); markFull(); };
-      if (req && (document.fullscreenEnabled || document.webkitFullscreenEnabled)) {
+      if (nativeOk() && req && (document.fullscreenEnabled || document.webkitFullscreenEnabled)) {
         try {
           const p = req.call(stage);
           if (p && p.catch) p.catch(fallback);
