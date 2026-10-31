@@ -79,7 +79,7 @@ def test_help_row():
                  "VCP", "CANSLIM", "Box", "Flag", "Qullamaggie", "Marios", "Episodic Pivot", "Buy setups",
                  "52-week breakouts", "Pullbacks", "Leaders", "High volume", "watchlist",
                  "Drag the chart slowly", "pinch", "flick it fast", "A slow drag never changes the chart",
-                 "top bar or the chip bar", "Drag: move chart", "Drag: next chart", "pinch zoom is off", "chart_viewer.drag_mode_toggle", "every saved daily bar",
+                 "top row (ticker, price and counter) always changes the chart", "scrolls the chips", "8 bars on the right", "Drag: move chart", "Drag: next chart", "pinch zoom is off", "chart_viewer.drag_mode_toggle", "every saved daily bar",
                  "3M, 6M, 1Y and All", "chart_viewer.range_chips", "chart_viewer.chart_touch_pan"):
         assert word in text, word
     saved = pd.read_csv(os.path.join(ROOT, "data", "help.csv"))
@@ -143,9 +143,11 @@ def test_drag_pans_and_flick_changes_chart():
     block = desk[start:desk.index("    // Full screen: the real Fullscreen API", start)]
     assert 'cvRead("desk-cv-drag-pan")' in block and 'cvStore("desk-cv-drag-pan", dragPan)' in block
     assert '"Drag: " + (dragPan ? "move chart" : "next chart")' in block
-    assert "horzTouchDrag: dragPan" in block and "pinch: dragPan" in block and "kineticScroll: { touch: dragPan" in block
+    assert "horzTouchDrag: dragPan" in block and "pinch: dragPan" in block and "kineticScroll: { touch: false" in block
     assert 'inChart && dragPan && ms > cvOpt("swipe_max_ms")' in block
-    assert 'cvOpt("drag_mode_toggle")' in block and "const CV_KEEP = 6;" in block
+    assert 'cvOpt("drag_mode_toggle")' in block and "cvSwipeZone(" in block and 'zone === "scroll"' in block
+    assert "setVisibleLogicalRange({ from: from - 0.5, to: last + CV_GAP })" in block and "const CV_GAP = 8;" in block
+    assert "if (w < 120)" in block and "ResizeObserver(viewSoon)" in block and "const CV_KEEP = 6;" in block
     assert 'stage.addEventListener("touchstart"' in block
     assert 'cvOpt("range_chips")' in block and '"3M"' in block and '"All"' in block
     pages = _read("site", "js", "pages.js")

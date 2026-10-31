@@ -84,7 +84,7 @@
   // is kept in localStorage under desk-theme. CSS colours swap through variables in
   // desk.css. Colours written into the page by the scripts are swapped by themeRemap,
   // and chart colours go through tc. Turn the toggle off with feature.light_mode.
-  const LIGHT = {"#0B0F17": "#F3F5F9", "#121826": "#FFFFFF", "#0F1420": "#F7F8FB", "#1A2236": "#E8EDF7", "#1E293B": "#DDE3EC", "#2A3550": "#C5CEDD", "#243049": "#D3DAE6", "#3A4560": "#B3BDCE", "#E6EBF5": "#111827", "#C3CBDB": "#374151", "#C9D2E3": "#374151", "#AEB7C8": "#4B5563", "#8B96AD": "#586174", "#5B6680": "#565E6C", "#7C9CFF": "#3355D6", "#F59E0B": "#9A4A06", "#EF4444": "#B42318", "#22C55E": "#12703A", "#D6A64A": "#865205", "RGBA(0,0,0,.35)": "rgba(15,23,42,.12)", "RGBA(0,0,0,.5)": "rgba(15,23,42,.35)", "RGBA(11,15,23,.9)": "rgba(255,255,255,.94)", "RGBA(11,15,23,.78)": "rgba(255,255,255,.86)", "RGBA(11,15,23,.74)": "rgba(255,255,255,.84)", "RGBA(11,15,23,.55)": "rgba(255,255,255,.7)", "RGBA(42,53,80,.9)": "rgba(148,163,184,.75)", "RGBA(42,53,80,.8)": "rgba(148,163,184,.7)", "RGBA(42,53,80,.7)": "rgba(148,163,184,.55)", "#283146": "#E3E8F0", "#7F1D1D": "#FECACA", "#B91C1C": "#FCA5A5", "#14532D": "#DCFCE7", "#166534": "#BBF7D0", "#38BDF8": "#0369A1", "#E879F9": "#A21CAF", "#A78BFA": "#6D28D9", "#FBBF24": "#9A4A06", "#FB923C": "#C2410C", "#F472B6": "#BE185D", "#34D399": "#047857", "#2DD4BF": "#0F766E", "#C084FC": "#7E22CE", "#FB7185": "#BE123C", "#94A3B8": "#526070", "#1F9D55": "#12703A", "#D14343": "#B42318", "RGBA(34,197,94,.65)": "rgba(22,163,74,.45)", "RGBA(239,68,68,.65)": "rgba(220,38,38,.4)", "RGBA(34,197,94,.45)": "rgba(22,163,74,.4)", "RGBA(239,68,68,.45)": "rgba(220,38,38,.35)", "RGBA(124,156,255,.10)": "rgba(51,85,214,.10)"};
+  const LIGHT = {"#0B0F17": "#F3F5F9", "#121826": "#FFFFFF", "#0F1420": "#F7F8FB", "#1A2236": "#E8EDF7", "#1E293B": "#DDE3EC", "#161E2E": "#E8EDF7", "#2A3550": "#C5CEDD", "#243049": "#D3DAE6", "#3A4560": "#B3BDCE", "#E6EBF5": "#111827", "#C3CBDB": "#374151", "#C9D2E3": "#374151", "#AEB7C8": "#4B5563", "#8B96AD": "#586174", "#5B6680": "#565E6C", "#7C9CFF": "#3355D6", "#F59E0B": "#9A4A06", "#EF4444": "#B42318", "#22C55E": "#12703A", "#D6A64A": "#865205", "RGBA(0,0,0,.35)": "rgba(15,23,42,.12)", "RGBA(0,0,0,.5)": "rgba(15,23,42,.35)", "RGBA(11,15,23,.9)": "rgba(255,255,255,.94)", "RGBA(11,15,23,.78)": "rgba(255,255,255,.86)", "RGBA(11,15,23,.74)": "rgba(255,255,255,.84)", "RGBA(11,15,23,.55)": "rgba(255,255,255,.7)", "RGBA(42,53,80,.9)": "rgba(148,163,184,.75)", "RGBA(42,53,80,.8)": "rgba(148,163,184,.7)", "RGBA(42,53,80,.7)": "rgba(148,163,184,.55)", "#283146": "#E3E8F0", "#7F1D1D": "#FECACA", "#B91C1C": "#FCA5A5", "#14532D": "#DCFCE7", "#166534": "#BBF7D0", "#38BDF8": "#0369A1", "#E879F9": "#A21CAF", "#A78BFA": "#6D28D9", "#FBBF24": "#9A4A06", "#FB923C": "#C2410C", "#F472B6": "#BE185D", "#34D399": "#047857", "#2DD4BF": "#0F766E", "#C084FC": "#7E22CE", "#FB7185": "#BE123C", "#94A3B8": "#526070", "#1F9D55": "#12703A", "#D14343": "#B42318", "RGBA(34,197,94,.65)": "rgba(22,163,74,.45)", "RGBA(239,68,68,.65)": "rgba(220,38,38,.4)", "RGBA(34,197,94,.45)": "rgba(22,163,74,.4)", "RGBA(239,68,68,.45)": "rgba(220,38,38,.35)", "RGBA(124,156,255,.10)": "rgba(51,85,214,.10)"};
   const THEME_KEY = "desk-theme";
   const THEMES = ["dark", "light", "auto"];
   function storedTheme() {
@@ -2174,6 +2174,16 @@
     a.setAttribute("href", "chart-viewer.html?list=" + encodeURIComponent(list) + (ticker ? "&t=" + encodeURIComponent(String(ticker).toUpperCase()) : ""));
   }
 
+  // Looks and works like the US desk's Chart Viewer (site/js/viewer.js there): the same header,
+  // chip bar, reason box, swipes and first view, with the India lists, ₹ prices and NSE bars.
+  // Where a touch started: "bar" (the header row, or a chip bar that fits, so a sideways swipe
+  // changes the chart), "scroll" (a chip bar wider than the screen: it scrolls and never changes
+  // the chart), or "chart" (the chart itself, where only a quick flick changes it).
+  function cvSwipeZone(inHeader, inTools, toolsScrollWidth, toolsClientWidth) {
+    if (inHeader) return "bar";
+    if (inTools) return toolsScrollWidth > toolsClientWidth + 1 ? "scroll" : "bar";
+    return "chart";
+  }
   function renderChartViewer(ctx) {
     const built = cvBuild(ctx.files);
     const params = new URLSearchParams(location.search);
@@ -2182,19 +2192,19 @@
     const ma = {};
     const savedMa = cvRead("desk-cv-ma") || {};
     CV_MAS.forEach((d) => { ma[d.id] = typeof savedMa[d.id] === "boolean" ? savedMa[d.id] : cvOpt(d.id); });
-    const savedVol = cvRead("desk-cv-volume");
+    const savedVol = cvOpt("volume_toggle") ? cvRead("desk-cv-volume") : null;
     let volOn = typeof savedVol === "boolean" ? savedVol : cvOpt("volume");
-    const savedSwipe = cvRead("desk-cv-swipe-right-next");
+    const savedSwipe = cvOpt("flip_toggle") ? cvRead("desk-cv-swipe-right-next") : null;
     let rightIsNext = typeof savedSwipe === "boolean" ? savedSwipe : cvOpt("swipe_right_is_next");
     const reasonAllowed = cvOpt("reason_box");
     const swipeOn = cvOpt("swipe");
     const fewItems = Math.max(1, cvOpt("reason_collapsed_items"));
-    const savedReason = cvRead("desk-cv-reason");
+    const savedReason = reasonAllowed && cvOpt("reason_box_toggle") ? cvRead("desk-cv-reason") : null;
     let reasonOn = reasonAllowed && (typeof savedReason === "boolean" ? savedReason : true);
     let reasonOpen = false;
-    // Drag: move chart (pan back and forward in time, pinch to zoom) or Drag: next chart.
-    // The Drag chip (drag_mode_toggle) flips it and the choice is saved on this device.
-    // Drag: next chart also turns pinch zoom off.
+    // Drag: move chart (pan back and forward in time, pinch to zoom) or Drag: next chart, where
+    // the chart ignores one-finger drags and pinch zoom is off. The Drag chip (drag_mode_toggle)
+    // flips it and the choice is saved on this device.
     const dragToggle = swipeOn && cvOpt("drag_mode_toggle");
     const savedPan = dragToggle ? cvRead("desk-cv-drag-pan") : null;
     let dragPan = typeof savedPan === "boolean" ? savedPan : cvOpt("chart_touch_pan");
@@ -2206,26 +2216,40 @@
       const count = (built.lists[c.id] || []).length;
       return '<option value="' + esc(c.id) + '"' + (c.id === listId ? " selected" : "") + ">" + esc(c.label + " (" + count + ")") + "</option>";
     }).join("");
+    const chip = (id, label, color, on, cls) =>
+      '<button type="button" class="cvchip' + (cls ? " " + cls : "") + (on ? " on" : "") + '" data-chip="' + id + '" aria-pressed="' + (on ? "true" : "false") + '">' +
+      (color ? '<i style="background:' + color + '"></i>' : "") + esc(label) + "</button>";
+    const chipsHtml = () =>
+      (cvOpt("ma_chips") ? CV_MAS.map((d) => chip(d.id, "MA " + d.n, d.color, ma[d.id])).join("") : "") +
+      (cvOpt("volume_toggle") ? chip("volume", "Vol", "", volOn) : "") +
+      (reasonAllowed && cvOpt("reason_box_toggle") ? chip("reason", "Why", "", reasonOn) : "") +
+      (swipeOn && cvOpt("flip_toggle") ? chip("swipe", rightIsNext ? "Swipe right: next" : "Swipe left: next", "", false, "cvflip") : "") +
+      (dragToggle ? chip("drag", "Drag: " + (dragPan ? "move chart" : "next chart"), "", dragPan) : "") +
+      (cvOpt("range_chips") ? CV_RANGES.map((r) => chip(r.id, r.label, "", rangePick === r.months, "cvrange")).join("") : "");
+    const showBlurb = cvOpt("company_line") && featureOn("feature.company_line");
     ctx.page.innerHTML =
       '<div class="cvbar">' + (cvOpt("list_picker") ? '<label class="cvpick"><span class="lab">List</span><select id="cvlist" aria-label="Which list">' + options + "</select></label>" : "") +
       (cvOpt("fullscreen") ? '<button type="button" class="cvbtn cvgo" id="cvfull">Full screen</button>' : "") + "</div>" +
-      '<section class="cv-stage" id="cvstage" aria-label="Chart Viewer">' +
-      '<div class="cv-top"><div class="cv-id"><div class="cv-tk" id="cvtk"></div>' + (cvOpt("company_line") ? '<div class="cv-co" id="cvco"></div>' : "") + '</div>' +
+      '<p class="cap" id="cvsum"></p>' +
+      '<section class="cv-stage" id="cvstage" aria-label="Chart Viewer" tabindex="-1">' +
+      '<div class="cv-top"><div class="cv-id"><div class="cv-line"><span class="cv-tk" id="cvtk"></span><span class="cv-co" id="cvco"></span></div>' +
+      (showBlurb ? '<div class="cv-blurb" id="cvblurb" hidden></div>' : "") + "</div>" +
       '<div class="cv-px" id="cvpx"></div>' +
-      '<div class="cv-tools">' + (cvOpt("counter") ? '<span class="cv-count" id="cvcount"></span>' : "") +
-      '<button type="button" class="cvbtn cv-exit" id="cvexit" aria-label="Exit full screen">Exit</button></div></div>' +
+      (cvOpt("counter") ? '<div class="cv-count" id="cvcount"></div>' : "") +
+      '<button type="button" class="cv-exit" id="cvexit" aria-label="Close full screen">✕</button></div>' +
       '<div class="cv-chips" id="cvchips"></div>' +
       '<div class="cv-plot" id="cvplot"><div class="cv-host" id="cvhost"></div>' +
       '<div class="cv-msg" id="cvmsg" hidden></div>' +
+      (reasonAllowed ? '<div class="cv-reason" id="cvreason" role="button" tabindex="0" aria-expanded="false" aria-label="Why this stock is listed. Tap to open or close." hidden></div>' : "") +
       (cvOpt("arrows") ? '<button type="button" class="cv-arrow cv-prev" id="cvprev" aria-label="Previous chart">‹</button>' +
         '<button type="button" class="cv-arrow cv-next" id="cvnext" aria-label="Next chart">›</button>' : "") +
-      '<div class="cv-reason" id="cvreason" role="button" tabindex="0" aria-label="Why this stock is listed. Tap to open or close." hidden></div>' +
       "</div></section>" +
-      '<p class="cap">' + (swipeOn ? "Swipe " + (rightIsNext ? "right" : "left") + " for the next chart. " +
-        (dragPan ? "Drag the chart slowly to see older days, and flick fast or swipe on the top bar to change the chart. " : "") : "") + "The box in the lower right says which scanners list the stock and why. Prices are the saved daily bars. Charting by <a href=\"https://www.tradingview.com/\">TradingView</a> Lightweight Charts™.</p>";
+      '<p class="cap">Daily bars saved by the desk. Averages are worked out in your browser. ' +
+      (swipeOn ? "Swipe " + (rightIsNext ? "right" : "left") + " for the next chart. " +
+        (dragPan ? "Drag the chart slowly to see older days, and flick fast or swipe on the top row to change the chart. " : "") : "") +
+      'Charting by <a href="https://www.tradingview.com/">TradingView</a> Lightweight Charts™.</p>';
 
     const stage = document.getElementById("cvstage");
-    const plot = document.getElementById("cvplot");
     const host = document.getElementById("cvhost");
     const msg = document.getElementById("cvmsg");
     const reasonEl = document.getElementById("cvreason");
@@ -2237,55 +2261,117 @@
       const at = st.list.findIndex((r) => r.ticker === start);
       if (at >= 0) st.i = at;
     }
-
-    const chip = (id, label, color, on) =>
-      '<button type="button" class="cvchip' + (on ? " on" : "") + '" data-chip="' + id + '" aria-pressed="' + (on ? "true" : "false") + '">' +
-      (color ? '<i style="background:' + color + '"></i>' : "") + esc(label) + "</button>";
+    const summary = () => {
+      const sum = document.getElementById("cvsum");
+      const c = built.choices.find((x) => x.id === listId);
+      const n = st.list.length;
+      sum.textContent = n ? (c ? c.label : "List") + ": " + n + " stock" + (n === 1 ? "" : "s") + (listId === "all" ? ", the ones on the most scanners first." : ".")
+        : "No stocks on this list today.";
+    };
     const paintChips = () => {
-      chipsEl.innerHTML = (cvOpt("ma_chips") ? '<span class="cv-lab">Averages</span>' + CV_MAS.map((d) => chip(d.id, d.label, d.color, ma[d.id])).join("") : "") +
-        (cvOpt("volume_toggle") ? chip("volume", "Volume", "", volOn) : "") +
-        (swipeOn && cvOpt("flip_toggle") ? chip("swipe", "Swipe right: " + (rightIsNext ? "next" : "back"), "", true) : "") +
-        (dragToggle ? chip("drag", "Drag: " + (dragPan ? "move chart" : "next chart"), "", dragPan) : "") +
-        (reasonAllowed && cvOpt("reason_box_toggle") ? chip("reason", "Reasons", "", reasonOn) : "");
-      if (cvOpt("range_chips")) chipsEl.innerHTML += '<span class="cv-lab">Range</span>' + CV_RANGES.map((r) => chip(r.id, r.label, "", rangePick === r.months)).join("");
+      const scroll = chipsEl.scrollLeft;
+      chipsEl.innerHTML = chipsHtml();
       chipsEl.hidden = !chipsEl.innerHTML;
+      chipsEl.scrollLeft = scroll;
     };
-    paintChips();
-    chipsEl.addEventListener("click", (e) => {
-      const b = e.target.closest("[data-chip]");
-      if (!b) return;
-      const id = b.getAttribute("data-chip");
-      if (id === "volume") { volOn = !volOn; cvStore("desk-cv-volume", volOn); }
-      else if (id === "swipe") { rightIsNext = !rightIsNext; cvStore("desk-cv-swipe-right-next", rightIsNext); }
-      else if (id === "drag") { dragPan = !dragPan; cvStore("desk-cv-drag-pan", dragPan); applyPan(); }
-      else if (CV_RANGES.some((r) => r.id === id)) { rangePick = CV_RANGES.find((r) => r.id === id).months; if (st.bars.length && st.chart) cvRange(st.bars); }
-      else if (id === "reason") { reasonOn = !reasonOn; cvStore("desk-cv-reason", reasonOn); }
-      else { ma[id] = !ma[id]; cvStore("desk-cv-ma", ma); }
-      paintChips();
-      applyToggles();
-      paintReason();
-    });
 
-    const applyToggles = () => {
-      CV_MAS.forEach((d) => { if (st.mas[d.id]) st.mas[d.id].applyOptions({ visible: !!ma[d.id] }); });
-      if (st.vol) st.vol.applyOptions({ visible: !!volOn });
+    // ---- Reason box: which scanners list the stock, its status and why.
+    const reasonHtml = (rec) => {
+      if (!rec.hits.length) return '<div class="cv-why-h">Why it is here</div><div class="cv-why-r">Not on a scanner list today.</div>';
+      const count = cvCount(rec);
+      const few = reasonOpen ? rec.hits : rec.hits.slice(0, fewItems);
+      const hidden = rec.hits.length - few.length;
+      return '<div class="cv-why-h">Why it is here' + (count ? " (" + count + " scanner" + (count === 1 ? "" : "s") + ")" : "") + "</div>" +
+        few.map((h) => '<div class="cv-why-i"><span class="cv-why-l">' + esc(h.label) + '</span> <span class="cv-why-s" style="color:' + cvStatusColor(h.status) + '">' +
+          esc(h.status) + "</span>" + (h.reason ? '<div class="cv-why-r">' + esc(reasonOpen ? cvShort(h.reason) : cvShort(h.reason, maxChars)) + "</div>" : "") + "</div>").join("") +
+        '<div class="cv-why-x">' + (reasonOpen ? "Tap to make it small" : (hidden ? "+ " + hidden + " more. " : "") + "Tap to read all") + "</div>";
     };
+    const placeReason = () => {
+      if (!reasonEl || !st.chart || reasonEl.hidden) return;
+      let psw = 56, tsh = 26;
+      try { psw = st.chart.priceScale("right").width() || psw; } catch (e) { /* not drawn yet */ }
+      try { tsh = st.chart.timeScale().height() || tsh; } catch (e) { /* not drawn yet */ }
+      reasonEl.style.right = (psw + 6) + "px";
+      reasonEl.style.bottom = (tsh + 6) + "px";
+    };
+    const paintReason = () => {
+      if (!reasonEl) return;
+      const rec = st.list[st.i];
+      reasonEl.hidden = !reasonOn || !rec;
+      if (reasonEl.hidden) return;
+      reasonEl.classList.toggle("open", reasonOpen);
+      reasonEl.setAttribute("aria-expanded", reasonOpen ? "true" : "false");
+      reasonEl.innerHTML = reasonHtml(rec);
+      requestAnimationFrame(placeReason);
+    };
+
+    // ---- First view. The chart holds every saved daily bar, so a drag can go back in time.
+    // range_months (or range_months_phone when the chart is under 520 pixels wide), or a range chip,
+    // picks the first view: the first bar of the range on the left edge and the last bar CV_GAP
+    // bars from the right edge. It is set with bar numbers
+    // after the data is in and only once the chart has its real width, and set again when the width
+    // changes (rotation, full screen). If it were set while the chart was still a few pixels wide,
+    // the bars would be packed at the smallest spacing and stay squeezed against the right edge.
+    const CV_GAP = 8;
+    let viewW = 0;
+    const cvRange = (bars, w) => {
+      const months = rangePick != null ? rangePick : Math.max(1, w < 520 ? cvOpt("range_months_phone") : cvOpt("range_months"));
+      const last = bars.length - 1;
+      let from = 0;
+      if (months) {
+        const cut = new Date(bars[last].date + "T00:00:00Z");
+        cut.setUTCMonth(cut.getUTCMonth() - months);
+        const iso = cut.toISOString().slice(0, 10);
+        from = Math.max(0, bars.findIndex((b) => b.date >= iso));
+      }
+      try { st.chart.timeScale().setVisibleLogicalRange({ from: from - 0.5, to: last + CV_GAP }); } catch (e) { /* chart is gone */ }
+    };
+    const applyView = () => {
+      if (!st.chart || !st.bars.length) return;
+      placeReason();
+      let w = 0;
+      try { w = st.chart.timeScale().width(); } catch (e) { w = 0; }
+      if (w < 120) { viewW = 0; return; }
+      viewW = w;
+      cvRange(st.bars, w);
+    };
+    st.applyView = applyView;
+    const viewSoon = () => requestAnimationFrame(() => requestAnimationFrame(() => {
+      placeReason();
+      let w = 0;
+      try { w = st.chart ? st.chart.timeScale().width() : 0; } catch (e) { w = 0; }
+      if (Math.abs(w - viewW) > 1) applyView();
+    }));
+    if (typeof ResizeObserver !== "undefined") new ResizeObserver(viewSoon).observe(host);
+    window.addEventListener("orientationchange", viewSoon);
+
+    // ---- The chart: made new for each stock, like the US desk, so nothing carries over.
     const panOptions = () => ({
       handleScroll: { mouseWheel: false, pressedMouseMove: true, horzTouchDrag: dragPan, vertTouchDrag: false },
       handleScale: { mouseWheel: true, pinch: dragPan, axisPressedMouseMove: true, axisDoubleClickReset: true },
-      kineticScroll: { touch: dragPan, mouse: false },
+      kineticScroll: { touch: false, mouse: false },
     });
-    const applyPan = () => { if (st.chart) st.chart.applyOptions(panOptions()); };
-    const makeChart = () => {
-      if (st.chart || !tvReady()) return;
+    const applyPan = () => { if (st.chart) st.chart.applyOptions(panOptions()); stage.classList.toggle("pan", dragPan); };
+    const dropChart = () => {
+      if (st.chart) {
+        try { st.chart.remove(); } catch (e) { /* already gone */ }
+        const k = tvCharts.indexOf(st.chart);
+        if (k >= 0) tvCharts.splice(k, 1);
+      }
+      st.chart = null; st.price = null; st.vol = null; st.mas = {};
+      viewW = 0;
+    };
+    const draw = (bars) => {
+      dropChart();
       const LC = LightweightCharts;
       const chart = tvCreate(host, Object.assign({
         autoSize: true,
-        layout: { background: { type: "solid", color: "#121826" }, textColor: MU, fontFamily: "Roboto, Arial, sans-serif", fontSize: 11, attributionLogo: true },
-        grid: { vertLines: { color: "#1E293B" }, horzLines: { color: "#1E293B" } },
+        layout: { background: { type: "solid", color: "#0B0F17" }, textColor: MU, fontFamily: "Roboto, Arial, sans-serif", fontSize: 11,
+          attributionLogo: false, panes: { separatorColor: "#1E293B", separatorHoverColor: "rgba(0,0,0,0)", enableResize: false } },
+        grid: { vertLines: { color: "#161E2E" }, horzLines: { color: "#161E2E" } },
         crosshair: { mode: LC.CrosshairMode.Magnet },
-        rightPriceScale: { borderColor: "#1E293B", scaleMargins: { top: 0.08, bottom: 0.26 }, minimumWidth: 56 },
-        timeScale: { borderColor: "#1E293B", rightOffset: 8, minBarSpacing: 0.1 },
+        rightPriceScale: { borderColor: "#1E293B", scaleMargins: { top: 0.08, bottom: 0.06 } },
+        timeScale: { borderColor: "#1E293B", rightOffset: 4, minBarSpacing: 0.3 },
       }, panOptions()));
       tvCharts.push(chart);
       st.chart = chart;
@@ -2293,91 +2379,45 @@
         upColor: UP, downColor: DN, borderUpColor: UP, borderDownColor: DN, wickUpColor: UP, wickDownColor: DN,
         priceLineVisible: false, lastValueVisible: true,
       });
-      st.vol = chart.addSeries(LC.HistogramSeries, {
-        priceFormat: { type: "volume" }, priceScaleId: "cvvol", priceLineVisible: false, lastValueVisible: false,
-      });
-      chart.priceScale("cvvol").applyOptions({ scaleMargins: { top: 0.8, bottom: 0 } });
-      CV_MAS.forEach((d) => {
-        st.mas[d.id] = chart.addSeries(LC.LineSeries, {
-          color: d.color, lineWidth: 1, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false,
-        });
-      });
-    };
-    const seriesFor = (bars) => {
-      const closes = bars.map((b) => b.c);
       st.price.setData(bars.map((b) => ({ time: b.date, open: b.o, high: b.h, low: b.l, close: b.c })));
-      st.vol.setData(bars.filter((b) => b.v != null).map((b) => ({
-        time: b.date, value: b.v, color: b.c >= b.o ? "rgba(34,197,94,.45)" : "rgba(239,68,68,.45)",
-      })));
+      const closes = bars.map((b) => b.c);
       CV_MAS.forEach((d) => {
-        const vals = smaValues(closes, d.n);
+        const s = chart.addSeries(LC.LineSeries, { color: d.color, lineWidth: 1, priceLineVisible: false, lastValueVisible: false,
+          crosshairMarkerVisible: false, visible: !!ma[d.id] });
         const data = [];
-        vals.forEach((v, i) => { if (v != null) data.push({ time: bars[i].date, value: v }); });
-        st.mas[d.id].setData(data);
+        smaValues(closes, d.n).forEach((v, i) => { if (v != null) data.push({ time: bars[i].date, value: v }); });
+        s.setData(data);
+        st.mas[d.id] = s;
       });
-      applyToggles();
-      cvRange(bars);
+      if (volOn) {
+        st.vol = chart.addSeries(LC.HistogramSeries, { priceFormat: { type: "volume" }, priceLineVisible: false, lastValueVisible: false }, 1);
+        st.vol.setData(bars.filter((b) => b.v != null).map((b) => ({
+          time: b.date, value: b.v, color: b.c >= b.o ? "rgba(34,197,94,.45)" : "rgba(239,68,68,.45)",
+        })));
+        const panes = chart.panes();
+        if (panes[0]) panes[0].setStretchFactor(4);
+        if (panes[1]) panes[1].setStretchFactor(1);
+      }
+      requestAnimationFrame(applyView);
     };
-    // The chart gets every saved daily bar, so dragging back has data. The first view shows
-    // range_months of bars, or range_months_phone on a phone. A range chip (3M, 6M, 1Y, All) picks
-    // another view, and it stays for the next charts until the page is reloaded.
-    const cvRange = (bars) => {
-      const phone = Math.min(screen.width || innerWidth, screen.height || innerHeight) < 600;
-      const months = rangePick != null ? rangePick : Math.max(1, phone ? cvOpt("range_months_phone") : cvOpt("range_months"));
-      if (!months) { try { st.chart.timeScale().fitContent(); } catch (e) { /* chart is gone */ } return; }
-      const end = bars[bars.length - 1].date;
-      const cut = new Date(end + "T00:00:00Z");
-      cut.setUTCMonth(cut.getUTCMonth() - months);
-      const iso = cut.toISOString().slice(0, 10);
-      const first = bars.find((b) => b.date >= iso) || bars[0];
-      try {
-        if (first.date === bars[0].date) st.chart.timeScale().fitContent();
-        else st.chart.timeScale().setVisibleRange({ from: first.date, to: end });
-      } catch (e) { try { st.chart.timeScale().fitContent(); } catch (err) { /* chart is gone */ } }
-    };
-    const placeReason = () => {
-      if (!st.chart || reasonEl.hidden) return;
-      let right = 64, bottom = 34;
-      try { right = st.chart.priceScale("right").width() + 6; } catch (e) { /* not drawn yet */ }
-      try { bottom = st.chart.timeScale().height() + 6; } catch (e) { /* not drawn yet */ }
-      reasonEl.style.right = right + "px";
-      reasonEl.style.bottom = bottom + "px";
-    };
-    const paintReason = () => {
-      const rec = st.list[st.i];
-      if (!rec || !reasonOn || !rec.hits.length) { reasonEl.hidden = true; return; }
-      reasonEl.hidden = false;
-      reasonEl.classList.toggle("open", reasonOpen);
-      const max = reasonOpen ? maxChars * 3 : maxChars;
-      const few = reasonOpen ? rec.hits : rec.hits.slice(0, fewItems);
-      const more = rec.hits.length - few.length;
-      reasonEl.innerHTML = '<div class="cv-rhead">Why it is listed <span>' + esc(reasonOpen ? "Tap to shrink" : "Tap for more") + "</span></div>" +
-        few.map((h) => '<div class="cv-ritem"><b>' + esc(h.label) + '</b> <span class="cv-rst" style="color:' + cvStatusColor(h.status) + '">' + esc(h.status) + "</span>" +
-          (h.reason ? '<div class="cv-rtx">' + esc(cvShort(h.reason, max)) + "</div>" : "") + "</div>").join("") +
-        (more > 0 ? '<div class="cv-rmore">' + esc("+" + more + " more: " + rec.hits.slice(fewItems).map((h) => h.label).join(", ")) + "</div>" : "");
-      requestAnimationFrame(placeReason);
-    };
-    const toggleReason = () => { reasonOpen = !reasonOpen; paintReason(); };
-    reasonEl.addEventListener("click", toggleReason);
-    reasonEl.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggleReason(); } });
 
     const header = (rec, bars) => {
       document.getElementById("cvtk").textContent = rec ? rec.ticker : "";
-      const co = document.getElementById("cvco");
-      if (co) co.textContent = rec ? rec.company : "";
+      document.getElementById("cvco").textContent = rec ? rec.company : "";
+      const blurb = document.getElementById("cvblurb");
+      if (blurb) fillCompanyLine(blurb, rec ? rec.ticker : "");
       const px = document.getElementById("cvpx");
       const count = document.getElementById("cvcount");
       if (count) count.textContent = st.list.length ? (st.i + 1) + " of " + st.list.length : "0 of 0";
       if (!bars || !bars.length) { px.innerHTML = ""; return; }
       const last = bars[bars.length - 1];
       const prev = bars.length > 1 ? bars[bars.length - 2].c : null;
-      const ch = prev ? last.c - prev : null;
-      const pct = prev ? (ch / prev) * 100 : null;
-      px.innerHTML = '<b>₹' + esc(fmt(last.c, 2)) + "</b>" + (ch == null || !cvOpt("day_change") ? "" :
-        ' <span class="' + (ch >= 0 ? "up" : "dn") + '">' + (ch >= 0 ? "+" : "") + esc(fmt(ch, 2)) + " (" + (pct >= 0 ? "+" : "") + esc(fmt(pct, 2)) + "%)</span>") +
-        '<span class="cv-date">' + esc(last.date) + "</span>";
+      const pct = prev ? (last.c / prev - 1) * 100 : null;
+      px.innerHTML = "<b>₹" + esc(fmt(last.c, 2)) + "</b>" + (pct == null || !cvOpt("day_change") ? "" :
+        ' <span class="' + (pct >= 0 ? "up" : "dn") + '">' + (pct >= 0 ? "+" : "") + esc(fmt(pct, 2)) + "%</span>");
     };
     const say = (text) => { msg.hidden = !text; msg.textContent = text || ""; };
+
     // Keep only the last 6 charts in memory (this one, the next and back ones, and a few just
     // seen), so a long swipe through a list stays light on an iPad. A saved letter file is
     // forgotten once none of the kept charts need it.
@@ -2415,7 +2455,8 @@
       paintReason();
       if (!rec) {
         header(null, null);
-        if (st.price) { st.price.setData([]); st.vol.setData([]); CV_MAS.forEach((d) => st.mas[d.id].setData([])); }
+        dropChart();
+        st.bars = [];
         say("No stocks on this list today. Pick another list.");
         stage.dataset.state = "empty";
         return;
@@ -2424,25 +2465,24 @@
       remember(rec.ticker);
       ensureTv().then(() => loadTickerBars(rec.ticker)).then((rows) => {
         if (token !== st.token) return;
-        makeChart();
         const bars = barsFromRows(rows);
         st.bars = bars;
         header(rec, bars);
         if (!bars.length) {
-          st.price.setData([]); st.vol.setData([]); CV_MAS.forEach((d) => st.mas[d.id].setData([]));
+          dropChart();
           say("No saved chart for " + rec.ticker + ". Swipe for the next one.");
           stage.dataset.state = "nodata";
         } else {
           say("");
-          seriesFor(bars);
+          draw(bars);
           stage.dataset.state = "ok";
         }
         requestAnimationFrame(placeReason);
         preload();
       }).catch(() => {
         if (token !== st.token) return;
-        makeChart();
-        if (st.price) { st.price.setData([]); st.vol.setData([]); CV_MAS.forEach((d) => st.mas[d.id].setData([])); }
+        dropChart();
+        st.bars = [];
         say("No saved chart for " + rec.ticker + ". Swipe for the next one.");
         stage.dataset.state = "nodata";
         preload();
@@ -2451,9 +2491,32 @@
     const go = (step) => {
       if (!st.list.length) return;
       st.i = (st.i + step + st.list.length) % st.list.length;
+      reasonOpen = false;
       show();
     };
     st.go = go;
+
+    paintChips();
+    summary();
+    chipsEl.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-chip]");
+      if (!b) return;
+      const id = b.getAttribute("data-chip");
+      const range = CV_RANGES.find((r) => r.id === id);
+      if (range) { rangePick = range.months; paintChips(); applyView(); return; }
+      if (id === "volume") { volOn = !volOn; cvStore("desk-cv-volume", volOn); paintChips(); if (st.bars.length && st.chart) draw(st.bars); return; }
+      if (id === "reason") { reasonOn = !reasonOn; cvStore("desk-cv-reason", reasonOn); paintChips(); paintReason(); return; }
+      if (id === "swipe") { rightIsNext = !rightIsNext; cvStore("desk-cv-swipe-right-next", rightIsNext); }
+      else if (id === "drag") { dragPan = !dragPan; cvStore("desk-cv-drag-pan", dragPan); applyPan(); }
+      else if (ma[id] != null) { ma[id] = !ma[id]; cvStore("desk-cv-ma", ma); if (st.mas[id]) st.mas[id].applyOptions({ visible: !!ma[id] }); }
+      paintChips();
+    });
+    if (reasonEl) {
+      // Opening or closing the box never moves the chart, so a panned view stays where it is.
+      const toggleReason = (e) => { if (e) e.stopPropagation(); reasonOpen = !reasonOpen; paintReason(); };
+      reasonEl.addEventListener("click", toggleReason);
+      reasonEl.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggleReason(e); } });
+    }
     const prevBtn = document.getElementById("cvprev");
     const nextBtn = document.getElementById("cvnext");
     if (prevBtn) prevBtn.addEventListener("click", () => go(-1));
@@ -2463,6 +2526,8 @@
       listId = e.target.value;
       st.list = built.lists[listId] || [];
       st.i = 0;
+      reasonOpen = false;
+      summary();
       show();
     });
 
@@ -2470,20 +2535,23 @@
     // or down. On the chart itself, with Drag: move chart (chart_touch_pan), a one-finger drag pans
     // the same chart and two fingers zoom, so only a quick flick (faster than swipe_max_ms) changes
     // the chart; a slow drag never does. With Drag: next chart, any swipe on the chart changes it.
-    // A swipe that starts on the header or the chip bar, outside the chart, always changes the chart.
-    // A swipe that starts on the reason box, an arrow or the list picker is ignored. Two fingers
-    // (pinch) never change the chart.
+    // A swipe that starts on the header row (ticker, price and counter) always changes the chart.
+    // On the chip bar it changes the chart only when every chip fits; a chip bar wider than the
+    // screen just scrolls. A swipe that starts on the reason box, an arrow or the list picker is
+    // ignored. Two fingers (pinch) never change the chart.
     let touch = null;
     stage.addEventListener("touchstart", (e) => {
       if (!swipeOn || e.touches.length !== 1 || e.target.closest(".cv-reason, .cv-arrow, select")) { touch = null; return; }
+      const inTools = chipsEl.contains(e.target);
+      const zone = cvSwipeZone(!!e.target.closest(".cv-top"), inTools, inTools ? chipsEl.scrollWidth : 0, inTools ? chipsEl.clientWidth : 0);
+      if (zone === "scroll") { touch = null; return; }
       const t = e.touches[0];
-      touch = { x: t.clientX, y: t.clientY, at: Date.now(), inChart: !!e.target.closest(".cv-plot") };
+      touch = { x: t.clientX, y: t.clientY, at: Date.now(), inChart: zone === "chart" };
     }, { passive: true, capture: true });
     stage.addEventListener("touchmove", (e) => {
       if (!touch) return;
       if (e.touches.length !== 1) { touch = null; return; }
       if (touch.inChart && dragPan) return;
-      if (!touch.inChart && !e.target.closest(".cv-top")) return;
       const t = e.touches[0];
       const dx = t.clientX - touch.x, dy = t.clientY - touch.y;
       if (Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy) && e.cancelable) e.preventDefault();
@@ -2501,6 +2569,7 @@
       go(right === rightIsNext ? 1 : -1);
     }, { passive: true, capture: true });
     stage.addEventListener("touchcancel", () => { touch = null; }, { passive: true, capture: true });
+    stage.classList.toggle("pan", dragPan);
 
     // Full screen: the real Fullscreen API on desktop. iPhone Safari does not have it
     // and iPad Safari covers the name with its own X, so there the viewer fills the screen as a fixed layer over the menu and header.
@@ -2513,6 +2582,7 @@
       const fb = document.getElementById("cvfull");
       if (fb) fb.textContent = on ? "Exit full screen" : "Full screen";
       requestAnimationFrame(placeReason);
+      viewSoon();
     };
     // iPad and iPhone Safari put their own grey close X in the top left over the stock name,
     // so there we always use the fixed layer (our close X stays on the right).
