@@ -450,6 +450,156 @@ async function check(browser, port, name, device, shotDir) {
   return bad;
 }
 
+// Technical | Fundamental switch (feature.split_tech_fund, chart_viewer.group_toggle).
+// Each group's All list is the union of its own scanners with no repeats, the reason box only
+// shows that group's scanners (plus Buy setups and the watchlist), the choice is remembered,
+// swiping stays in the list, and turning the switch off brings back the one combined list.
+const groupCounts = {};
+async function groupState(page) {
+  return page.evaluate(() => {
+    const st = document.getElementById("cvstage")._cv;
+    const built = st.built;
+    const all = built.lists.all || [];
+    const singles = built.choices.map((c) => c.id).filter((id) => id !== "all" && id !== "buysetups" && id !== "watchlist");
+    const union = new Set();
+    singles.forEach((id) => (built.lists[id] || []).forEach((r) => union.add(r.ticker)));
+    const badHits = [];
+    all.forEach((r) => r.hits.forEach((h) => { if (!h.extra && window.Desk.groupOf(h.src) !== st.group) badHits.push(r.ticker + ":" + h.src); }));
+    const sel = document.getElementById("cvlist");
+    const seg = document.getElementById("cvseg");
+    return {
+      group: st.group, seg: seg ? Array.from(seg.querySelectorAll("button.on")).map((b) => b.getAttribute("data-grp")) : null,
+      first: sel ? sel.options[0].textContent : "", value: sel ? sel.value : "",
+      all: all.length, allUnique: new Set(all.map((r) => r.ticker)).size, union: union.size,
+      singleGroups: singles.map((id) => window.Desk.groupOf(id)), badHits: badHits.slice(0, 5),
+      saved: localStorage.getItem("desk-cv-group"),
+    };
+  });
+}
+async function whyLabels(page) {
+  return page.evaluate(() => {
+    const box = document.getElementById("cvreason");
+    if (!box || box.hidden) return null;
+    return Array.from(box.querySelectorAll(".cv-why-l")).map((e) => e.textContent);
+  });
+}
+async function checkGroups(browser, port, name, device) {
+  const bad = [];
+  const base = process.env.CV_BASE ? process.env.CV_BASE.replace(/\/?$/, "/") : "http://127.0.0.1:" + port + "/site/";
+  const ctx = await browser.newContext(device);
+  const page = await ctx.newPage();
+  const errors = [];
+  page.on("pageerror", (e) => errors.push(String(e.message || e)));
+  await page.goto(base + "chart-viewer.html", { waitUntil: "domcontentloaded" });
+  await page.waitForSelector("body[data-ready='1']", { timeout: 30000 });
+  await waitOk(page);
+  const groupLabels = async () => page.evaluate(() => {
+    const st = document.getElementById("cvstage")._cv;
+    const out = ["Buy setups", "Watchlist"];
+    st.list.forEach((r) => r.hits.forEach((h) => { if (window.Desk.groupOf(h.src) === st.group && out.indexOf(h.label) < 0) out.push(h.label); }));
+    return out;
+  });
+  const checkOne = async (want) => {
+    const g = await groupState(page);
+    if (g.group !== want || !g.seg || g.seg.join() !== want) bad.push(name + ": switch shows " + JSON.stringify(g.seg) + " not " + want);
+    const label = "All " + want + " stocks (" + g.all + ")";
+    if (g.first !== label) bad.push(name + ": first list is " + g.first + " not " + label);
+    if (g.all !== g.union || g.all !== g.allUnique) bad.push(name + ": All " + want + " has " + g.all + " rows, " + g.allUnique + " unique, union of its scanners " + g.union);
+    if (g.singleGroups.some((x) => x !== want)) bad.push(name + ": " + want + " list picker has other lists " + JSON.stringify(g.singleGroups));
+    if (g.badHits.length) bad.push(name + ": " + want + " reasons from the other group " + JSON.stringify(g.badHits));
+    if (!g.all) bad.push(name + ": All " + want + " is empty");
+    const ok = await groupLabels();
+    for (let k = 0; k < 3; k++) {
+      const labels = await whyLabels(page);
+      if (labels && labels.some((l) => ok.indexOf(l) < 0)) bad.push(name + ": Why box on " + want + " shows " + JSON.stringify(labels));
+      const before = await page.evaluate(() => { const st = document.getElementById("cvstage")._cv; return { n: st.list.length, i: st.i }; });
+      await page.evaluate(() => document.getElementById("cvnext").click());
+      await waitOk(page);
+      const after = await page.evaluate(() => { const st = document.getElementById("cvstage")._cv; return { n: st.list.length, i: st.i, t: document.getElementById("cvstage").dataset.ticker, inList: st.list.some((r) => r.ticker === document.getElementById("cvstage").dataset.ticker), group: st.group }; });
+      if (after.n !== before.n || !after.inList || after.group !== want) bad.push(name + ": next chart left the " + want + " list " + JSON.stringify([before, after]));
+    }
+    groupCounts[want] = g.all;
+    return g;
+  };
+  // Fresh device: starts on Technical.
+  await checkOne("technical");
+  // Pick Fundamental: lists, counts and reasons change, and the choice is saved.
+  await page.click('#cvseg button[data-grp="fundamental"]');
+  await waitOk(page);
+  const f = await checkOne("fundamental");
+  if (f.saved !== "fundamental") bad.push(name + ": choice not saved, desk-cv-group is " + f.saved);
+  const fundLabels = await page.evaluate(() => Array.from(document.getElementById("cvlist").options).map((o) => o.textContent));
+  if (fundLabels.some((t) => /^(VCP|Gap Up|Episodic Pivot|High volume) \(/.test(t))) bad.push(name + ": fundamental picker lists " + JSON.stringify(fundLabels));
+  // Reload: still Fundamental.
+  await page.reload({ waitUntil: "domcontentloaded" });
+  await page.waitForSelector("body[data-ready='1']", { timeout: 30000 });
+  await waitOk(page);
+  const r = await groupState(page);
+  if (r.group !== "fundamental") bad.push(name + ": reload forgot the group, got " + r.group);
+  // A link to a technical scanner opens Technical even when Fundamental was last.
+  await page.goto(base + "chart-viewer.html?list=vcp", { waitUntil: "domcontentloaded" });
+  await page.waitForSelector("body[data-ready='1']", { timeout: 30000 });
+  await waitOk(page);
+  const v = await groupState(page);
+  if (v.group !== "technical" || v.value !== "vcp") bad.push(name + ": VCP link opened " + JSON.stringify([v.group, v.value]));
+  // Menu: Technical and Fundamental headings, no sideways scroll, dark and light.
+  for (const theme of ["dark", "light"]) {
+    await page.evaluate((t) => localStorage.setItem("desk-theme", t), theme);
+    await page.goto(base + "vcp.html", { waitUntil: "domcontentloaded" });
+    await page.waitForSelector("body[data-ready='1']", { timeout: 30000 });
+    const m = await page.evaluate(() => {
+      const heads = Array.from(document.querySelectorAll("#nav .grp")).map((b) => b.textContent.replace(/[▾▸]/g, "").replace(/\d+$/, "").trim());
+      const items = Array.from(document.querySelectorAll('#nav .group[data-open="1"] a.item')).map((a) => a.textContent);
+      const nav = document.getElementById("nav");
+      return { heads: heads, items: items, over: document.documentElement.scrollWidth - document.documentElement.clientWidth, navOver: nav.scrollWidth - nav.clientWidth };
+    });
+    if (m.heads.indexOf("Technical") < 0 || m.heads.indexOf("Fundamental") < 0 || m.heads.indexOf("Market") < 0 || m.heads.indexOf("Scanners") >= 0 || m.heads.indexOf("Technicals") >= 0) bad.push(name + " " + theme + ": menu headings " + JSON.stringify(m.heads));
+    if (m.items.indexOf("VCP") < 0 || m.items.indexOf("CANSLIM") >= 0 || m.items.indexOf("Gap Up") < 0) bad.push(name + " " + theme + ": Technical menu has " + JSON.stringify(m.items));
+    if (m.over > 1 || m.navOver > 1) bad.push(name + " " + theme + ": menu scrolls sideways " + JSON.stringify(m));
+  }
+  if (errors.length) bad.push(name + ": " + errors.join(" | "));
+  await ctx.close();
+  // Switch off: one combined menu and one All list, as before.
+  const off = await browser.newContext(device);
+  await off.route("**/settings.csv", async (route) => {
+    const res = await route.fetch();
+    const text = (await res.text()).replace(/^feature\.split_tech_fund,True$/m, "feature.split_tech_fund,False");
+    await route.fulfill({ response: res, body: text });
+  });
+  const p2 = await off.newPage();
+  await p2.goto(base + "chart-viewer.html", { waitUntil: "domcontentloaded" });
+  await p2.waitForSelector("body[data-ready='1']", { timeout: 30000 });
+  await waitOk(p2);
+  const o = await groupState(p2);
+  if (o.seg !== null) bad.push(name + ": switch off still shows the Technical | Fundamental switch");
+  if (o.first !== "All scanner stocks (" + o.all + ")") bad.push(name + ": switch off first list is " + o.first);
+  if (o.all !== o.union) bad.push(name + ": switch off All has " + o.all + ", union " + o.union);
+  const heads = await p2.evaluate(() => Array.from(document.querySelectorAll("#nav .grp")).map((b) => b.textContent.replace(/[▾▸]/g, "").replace(/\d+$/, "").trim()));
+  if (heads.indexOf("Scanners") < 0 || heads.indexOf("Technical") >= 0) bad.push(name + ": switch off menu headings " + JSON.stringify(heads));
+  groupCounts.combined = o.all;
+  if (groupCounts.technical && groupCounts.fundamental && (o.all < Math.max(groupCounts.technical, groupCounts.fundamental) || o.all > groupCounts.technical + groupCounts.fundamental))
+    bad.push(name + ": combined " + o.all + " does not fit technical " + groupCounts.technical + " and fundamental " + groupCounts.fundamental);
+  await off.close();
+  // Only the viewer switch off (chart_viewer.group_toggle): the menu stays split, the viewer has one All list.
+  const tog = await browser.newContext(device);
+  await tog.route("**/settings.csv", async (route) => {
+    const res = await route.fetch();
+    const text = (await res.text()).replace(/^chart_viewer\.group_toggle,True$/m, "chart_viewer.group_toggle,False");
+    await route.fulfill({ response: res, body: text });
+  });
+  const p3 = await tog.newPage();
+  await p3.goto(base + "chart-viewer.html", { waitUntil: "domcontentloaded" });
+  await p3.waitForSelector("body[data-ready='1']", { timeout: 30000 });
+  await waitOk(p3);
+  const t = await groupState(p3);
+  if (t.seg !== null || t.first !== "All scanner stocks (" + t.all + ")" || t.all !== groupCounts.combined)
+    bad.push(name + ": group_toggle off " + JSON.stringify([t.seg, t.first, groupCounts.combined]));
+  const heads3 = await p3.evaluate(() => Array.from(document.querySelectorAll("#nav .grp")).map((b) => b.textContent.replace(/[▾▸]/g, "").replace(/\d+$/, "").trim()));
+  if (heads3.indexOf("Technical") < 0 || heads3.indexOf("Fundamental") < 0 || heads3.indexOf("Market") < 0) bad.push(name + ": group_toggle off menu " + JSON.stringify(heads3));
+  await tog.close();
+  return bad;
+}
+
 // iPad and iPhone Safari: never the element Fullscreen API (Safari adds a grey X over the
 // stock name in the top left). The fixed layer fills the screen and the name stays clear.
 async function checkIOS(browser, port, name, device) {
@@ -545,6 +695,7 @@ async function main() {
   let bad = [];
   for (const [name, device] of devices) bad = bad.concat(await check(browser, port, name, device, shotDir));
   for (const [name, device] of devices) bad = bad.concat(await checkNarrowStart(browser, port, name, device));
+  for (const [name, device] of devices) bad = bad.concat(await checkGroups(browser, port, name, device));
   const ipadUA = "Mozilla/5.0 (iPad; CPU OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1";
   const ipadOS = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15";
   const iosDevices = [
@@ -574,6 +725,7 @@ async function main() {
   }
   await browser.close();
   if (server) server.close();
+  console.log("groups: All technical " + groupCounts.technical + ", All fundamental " + groupCounts.fundamental + ", combined " + groupCounts.combined);
   if (bad.length) {
     console.log(bad.join("\n"));
     process.exit(1);

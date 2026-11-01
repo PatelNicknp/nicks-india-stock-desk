@@ -3489,6 +3489,16 @@
       "Tap the chips to show or hide the 10, 20, 50, 150 and 200-day averages and the volume. Your choice is saved on this device.",
       "The box in the lower right shows every scanner the stock is on, its status, and the reason. Tap it for more. The Reasons chip hides it.",
       "It uses the daily prices the desk already saves. Nothing new is downloaded.",
+    ], splitNeedsToggle: true, splitLines: [
+      "One big chart at a time. Pick Technical or Fundamental at the top, then a list: every stock in that group, one scanner, Buy setups, or your watchlist.",
+      "Technical is the chart scanners (VCP, breakouts, Episodic Pivot, Gap Up, 52-week, High volume, Pullbacks, Liquid stocks). Fundamental is CANSLIM, Leaders, Growth, Quality and Dividend. Your last choice is remembered on this device.",
+      "All technical stocks and All fundamental stocks put the stocks found by the most scanners in that group first, then the strongest. The box on the chart shows only that group's reasons, plus Buy setups and your watchlist.",
+      "Tap Full screen. Swipe right for the next chart and left to go back. The Swipe chip flips that. The arrows and the left and right keys work too.",
+      "Drag the chart slowly to see older days on the same chart, and pinch to zoom. Flick fast, or swipe on the top row, to change the chart. On a phone the chip bar scrolls sideways. The Drag chip switches between Drag: move chart and Drag: next chart.",
+      "The 3M, 6M, 1Y and All chips change how much of the saved history shows.",
+      "Tap the chips to show or hide the 10, 20, 50, 150 and 200-day averages and the volume. Your choice is saved on this device.",
+      "The box in the lower right shows every scanner the stock is on, its status, and the reason. Tap it for more. The Reasons chip hides it.",
+      "It uses the daily prices the desk already saves. Nothing new is downloaded.",
     ] },
     help: { lines: [
       "Plain-English answers about how the desk works, and a list of every setting.",

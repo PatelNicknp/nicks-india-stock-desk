@@ -2025,7 +2025,7 @@
     ma_chips: true, ma_10: false, ma_20: false, ma_50: true, ma_150: true, ma_200: true,
     volume: true, volume_toggle: true, reason_box: true, reason_box_toggle: true,
     reason_max_chars: 110, reason_collapsed_items: 3, company_line: true, day_change: true,
-    range_months: 6, range_months_phone: 3, range_chips: true,
+    range_months: 6, range_months_phone: 3, range_chips: true, group_toggle: true, default_group: "technical",
   };
   function cvOpt(key) {
     const fallback = CV_DEFAULTS[key];
@@ -2102,7 +2102,10 @@
     }
   }
   function cvCount(rec) { return rec.hits.filter((h) => !h.extra).length; }
-  function cvBuild(files) {
+  // group: "technical" or "fundamental" keeps only that group's scanners, so the All list, the
+  // counts and the reason box use that group alone. Buy setups and the Watchlist still add their
+  // line to stocks already on the list. No group: every scanner, as before.
+  function cvBuild(files, group) {
     const lists = {};
     const all = new Map();
     const add = (src, into, rows, onlyKnown) => {
@@ -2131,7 +2134,7 @@
       ((b.strength == null ? -1 : b.strength) - (a.strength == null ? -1 : a.strength)) ||
       ((b.score == null ? -99 : b.score) - (a.score == null ? -99 : a.score)) ||
       (a.ticker < b.ticker ? -1 : a.ticker > b.ticker ? 1 : 0));
-    const sources = CV_SOURCES.filter((s) => featureOn(FEATURE[s.id]) && (!s.opt || cvOpt(s.opt)));
+    const sources = CV_SOURCES.filter((s) => featureOn(FEATURE[s.id]) && (!s.opt || cvOpt(s.opt)) && (!group || groupOf(s.id) === group));
     const singles = {};
     sources.forEach((src) => {
       add(src, all, files[src.file]);
@@ -2146,7 +2149,7 @@
     if (watchOn) add(CV_WATCH, all, files[CV_WATCH.file], true);
     lists.all = order(Array.from(all.values()));
     sources.forEach((src) => { lists[src.id] = order(singles[src.id].map((t) => all.get(t))); });
-    const choices = [{ id: "all", label: "All scanner stocks" }];
+    const choices = [{ id: "all", label: group ? "All " + group + " stocks" : "All scanner stocks" }];
     const own = (src) => {
       const m = new Map();
       add(src, m, files[src.file]);
@@ -2206,9 +2209,26 @@
     if (inTools) return toolsScrollWidth > toolsClientWidth + 1 ? "scroll" : "bar";
     return "chart";
   }
+  function cvSavedGroup() {
+    try { const v = localStorage.getItem("desk-cv-group"); return GROUP_IDS.indexOf(v) >= 0 ? v : ""; } catch (e) { return ""; }
+  }
   function renderChartViewer(ctx) {
-    const built = cvBuild(ctx.files);
     const params = new URLSearchParams(location.search);
+    // Technical | Fundamental switch (feature.split_tech_fund and chart_viewer.group_toggle).
+    // The last choice is kept on this device; chart_viewer.default_group is the first choice.
+    // A link from a scanner page opens that scanner's group.
+    const grouped = splitOn() && cvOpt("group_toggle");
+    let group = null;
+    if (grouped) {
+      const def = String(cvOpt("default_group") || "").toLowerCase();
+      group = cvSavedGroup() || (GROUP_IDS.indexOf(def) >= 0 ? def : "technical");
+      const asked = params.get("list") || "";
+      const askedGroup = CV_SOURCES.some((s) => s.id === asked) ? groupOf(asked) : "";
+      if (GROUP_IDS.indexOf(askedGroup) >= 0) group = askedGroup;
+    }
+    const builds = {};
+    const buildFor = (g) => builds[g || "_"] || (builds[g || "_"] = cvBuild(ctx.files, g));
+    let built = buildFor(group);
     let listId = params.get("list") || "all";
     if (!built.lists[listId]) listId = "all";
     const ma = {};
@@ -2234,10 +2254,12 @@
     let rangePick = null;
     const maxChars = cvOpt("reason_max_chars");
 
-    const options = built.choices.map((c) => {
+    const optionsHtml = () => built.choices.map((c) => {
       const count = (built.lists[c.id] || []).length;
       return '<option value="' + esc(c.id) + '"' + (c.id === listId ? " selected" : "") + ">" + esc(c.label + " (" + count + ")") + "</option>";
     }).join("");
+    const segHtml = () => GROUP_IDS.map((g) => '<button type="button" data-grp="' + g + '" class="' + (g === group ? "on" : "") +
+      '" aria-pressed="' + (g === group ? "true" : "false") + '">' + esc(GROUP_NAMES[g]) + "</button>").join("");
     const chip = (id, label, color, on, cls) =>
       '<button type="button" class="cvchip' + (cls ? " " + cls : "") + (on ? " on" : "") + '" data-chip="' + id + '" aria-pressed="' + (on ? "true" : "false") + '">' +
       (color ? '<i style="background:' + color + '"></i>' : "") + esc(label) + "</button>";
@@ -2250,7 +2272,8 @@
       (cvOpt("range_chips") ? CV_RANGES.map((r) => chip(r.id, r.label, "", rangePick === r.months, "cvrange")).join("") : "");
     const showBlurb = cvOpt("company_line") && featureOn("feature.company_line");
     ctx.page.innerHTML =
-      '<div class="cvbar">' + (cvOpt("list_picker") ? '<label class="cvpick"><span class="lab">List</span><select id="cvlist" aria-label="Which list">' + options + "</select></label>" : "") +
+      '<div class="cvbar">' + (grouped ? '<div class="seg cvseg" id="cvseg" role="group" aria-label="Technical or fundamental">' + segHtml() + "</div>" : "") +
+      (cvOpt("list_picker") ? '<label class="cvpick"><span class="lab">List</span><select id="cvlist" aria-label="Which list">' + optionsHtml() + "</select></label>" : "") +
       (cvOpt("fullscreen") ? '<button type="button" class="cvbtn cvgo" id="cvfull">Full screen</button>' : "") + "</div>" +
       '<p class="cap" id="cvsum"></p>' +
       '<section class="cv-stage" id="cvstage" aria-label="Chart Viewer" tabindex="-1">' +
@@ -2276,7 +2299,7 @@
     const msg = document.getElementById("cvmsg");
     const reasonEl = document.getElementById("cvreason");
     const chipsEl = document.getElementById("cvchips");
-    const st = { list: built.lists[listId] || [], i: 0, token: 0, chart: null, price: null, vol: null, mas: {}, bars: [] };
+    const st = { list: built.lists[listId] || [], i: 0, token: 0, chart: null, price: null, vol: null, mas: {}, bars: [], group: group, built: built };
     stage._cv = st;
     const start = String(params.get("t") || "").toUpperCase();
     if (start) {
@@ -2357,6 +2380,13 @@
       if (sp < 0.3) { hi = last + (pad * sp) / 0.3; lo = hi - w / 0.3; }
       st.pad = hi - last;
       setRange({ from: lo, to: hi });
+      const want = lastSet;
+      // The price scale can grow a few pixels once the new range is drawn, which cuts the first
+      // bars off the left (seen with the All chip). Set the same range once more on the next frame.
+      const chart = st.chart;
+      if (typeof requestAnimationFrame === "function") requestAnimationFrame(() => {
+        if (st.chart === chart && lastSet && lastSet.from === want.from && lastSet.to === want.to) setRange(want);
+      });
     };
     // A range the user dragged or pinched to on this chart (same as the US desk). It is read when a
     // finger or the mouse lets go of the chart, and only counts when it differs from the view set
@@ -2587,6 +2617,24 @@
     if (prevBtn) prevBtn.addEventListener("click", () => go(-1));
     if (nextBtn) nextBtn.addEventListener("click", () => go(1));
     const listEl = document.getElementById("cvlist");
+    const segEl = document.getElementById("cvseg");
+    if (segEl) segEl.addEventListener("click", (e) => {
+      const b = e.target.closest("button[data-grp]");
+      if (!b || b.getAttribute("data-grp") === group) return;
+      group = b.getAttribute("data-grp");
+      try { localStorage.setItem("desk-cv-group", group); } catch (err) { /* storage can be blocked */ }
+      built = buildFor(group);
+      if (!built.lists[listId]) listId = "all";
+      st.group = group;
+      st.built = built;
+      segEl.innerHTML = segHtml();
+      if (listEl) { listEl.innerHTML = optionsHtml(); listEl.value = listId; }
+      st.list = built.lists[listId] || [];
+      st.i = 0;
+      reasonOpen = false;
+      summary();
+      show();
+    });
     if (listEl) listEl.addEventListener("change", (e) => {
       listId = e.target.value;
       st.list = built.lists[listId] || [];
@@ -2692,6 +2740,50 @@
       });
     }
     show();
+  }
+
+  // Technical and Fundamental. With feature.split_tech_fund on, the menu shows the screeners
+  // under two headings and the Chart Viewer gets a Technical | Fundamental switch. Each page id
+  // below can be moved with scanner_groups.<id> in config.json ("technical" or "fundamental").
+  // The order here is the menu order. Off: one combined menu and one All list, as before.
+  const GROUP_DEFAULTS = {
+    vcp: "technical", box: "technical", flag: "technical", qullamaggie: "technical", marios: "technical",
+    episodic: "technical", gapup: "technical", week52: "technical", breakouts: "technical", highvol: "technical",
+    pullbacks: "technical", trends: "technical", wheel: "technical",
+    canslim: "fundamental", leaders: "fundamental", growth: "fundamental", quality: "fundamental",
+    dividend: "fundamental", divfund: "fundamental", scorecard: "fundamental", top: "fundamental",
+  };
+  const GROUP_IDS = ["technical", "fundamental"];
+  const GROUP_NAMES = { technical: "Technical", fundamental: "Fundamental" };
+  function splitOn() { return featureOn("feature.split_tech_fund"); }
+  function groupOf(id) {
+    // Any other word keeps that page where it was and out of both groups (same as the US desk).
+    const row = SETTINGS.find((r) => r.setting === "scanner_groups." + id);
+    if (row && !isBlank(row.value)) {
+      const v = String(row.value).trim().toLowerCase();
+      return GROUP_IDS.indexOf(v) >= 0 ? v : "";
+    }
+    return GROUP_DEFAULTS[id] || "";
+  }
+  // The menu. Split: the Scanners heading becomes Technical and Fundamental, and every page in
+  // GROUP_DEFAULTS moves under its group. The rest of the old Technicals heading (gainers and
+  // losers, breadth, sector performance, heatmaps) is market-wide, so it is called Market.
+  function navGroups() {
+    if (!splitOn()) return NAV;
+    const items = {};
+    NAV.forEach((g) => g[1].forEach((it) => { items[it[2]] = it; }));
+    const grouped = new Set(Object.keys(GROUP_DEFAULTS).filter((id) => items[id] && groupOf(id)));
+    const pick = (g) => Object.keys(GROUP_DEFAULTS).filter((id) => items[id] && groupOf(id) === g).map((id) => items[id]);
+    const out = [];
+    NAV.forEach(([name, list]) => {
+      if (name === "Scanners") {
+        GROUP_IDS.forEach((g) => out.push([GROUP_NAMES[g], pick(g)]));
+        return;
+      }
+      const rest = list.filter((it) => !grouped.has(it[2]));
+      if (rest.length) out.push([name === "Technicals" ? "Market" : name, rest]);
+    });
+    return out;
   }
 
   function navOn(items) {
@@ -2878,7 +2970,8 @@
     deskList().catch(() => {});
   }
   function renderShell(page) {
-    const groups = NAV.map(([name, items]) => {
+    const menuGroups = navGroups();
+    const groups = menuGroups.map(([name, items]) => {
       const shown = navOn(items);
       if (!shown.length) return "";
       const open = shown.some((it) => it[2] === page.id);
@@ -2911,7 +3004,7 @@
       const open = items.hasAttribute("hidden");
       if (open) {
         const name = btn.textContent.replace(/[▾▸]/g, "").replace(/\d+$/, "").trim();
-        const spec = NAV.find((g) => g[0] === name);
+        const spec = menuGroups.find((g) => g[0] === name);
         if (spec && !items.childElementCount) {
           items.innerHTML = navOn(spec[1]).map((it) => {
             return '<a class="item' + (it[2] === page.id ? " sel" : "") + '" href="' + it[1] + '">' + esc(it[0]) + "</a>";
@@ -3019,7 +3112,9 @@
   // outside #page so a filter redraw never wipes it. Off with feature.page_descriptions.
   function aboutHtml(about) {
     if (!about || !featureOn("feature.page_descriptions")) return "";
-    const lines = [].concat(about.lines || []).filter((t) => t);
+    // splitLines replace lines while the Technical | Fundamental split is on (feature.split_tech_fund).
+    const split = about.splitLines && splitOn() && (!about.splitNeedsToggle || cvOpt("group_toggle"));
+    const lines = [].concat((split ? about.splitLines : about.lines) || []).filter((t) => t);
     if (!lines.length) return "";
     const body = lines.map((t) => "<p>" + esc(t) + "</p>").join("") +
       (about.note ? '<p class="about-note">' + esc(about.note) + "</p>" : "");
@@ -3095,6 +3190,7 @@
     destroyCharts: destroyCharts, lineChart: lineChart, barChart: barChart, comboChart: comboChart, makeChart: makeChart,
     lastNDays: lastNDays, seriesNum: seriesNum, retColor: retColor, band: band,
     renderChartViewer: renderChartViewer, chartViewerFiles: CV_FILES, setViewerStart: setViewerStart,
+    splitOn: splitOn, groupOf: groupOf,
     tc: tc, theme: () => THEME,
     boot: boot,
   };

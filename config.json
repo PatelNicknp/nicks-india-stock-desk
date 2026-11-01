@@ -66,6 +66,7 @@
     "scanner_marios": true,
     "scanner_episodic_pivot": true,
     "scanner_gap_up": true,
+    "split_tech_fund": true,
     "chart_viewer": true,
     "light_mode": true
   },
@@ -250,8 +251,32 @@
     "skip_etfs_and_funds": true,
     "hold_level": "gap_day_low"
   },
+  "scanner_groups": {
+    "_note": "Technical and Fundamental split (feature.split_tech_fund). With it on, the menu puts every screener page below under a Technical or a Fundamental heading, in the order listed here, and the Chart Viewer gets a Technical | Fundamental switch (chart_viewer.group_toggle) whose list picker, All technical stocks or All fundamental stocks list, and Why box show only that side. Each key is a page id (the name in chart-viewer.html?list=...): vcp (VCP), box (Box breakout), flag (Flag breakout), qullamaggie (Qullamaggie breakout), marios (Marios breakout), episodic (Episodic Pivot), gapup (Gap Up), week52 (52-week), breakouts (52-week breakouts), highvol (High volume), pullbacks (Pullbacks), trends (Trends), wheel (Liquid stocks), canslim (CANSLIM), leaders (Leaders), growth (Growth), quality (Quality), dividend (Dividend), divfund (Dividend fundamentals), scorecard (Stock scorecard), and top (Top stocks). The value is technical or fundamental; any other word leaves that page where it was and out of both. Trends, Dividend fundamentals, Stock scorecard and Top stocks are not on the Chart Viewer, so for them only the menu changes. Buy setups and Watchlist are in both sides of the Chart Viewer. Today, FII and DII, Buy setups, Watchlist, Alerts, Backtest, Earnings, Sentiment, Financials, Macro, and the market pages (Gainers and losers, Breadth, Sector performance, Heatmaps, under Market) are not screeners and stay outside both. With chart_viewer.group_toggle off, the split menu stays and only the Chart Viewer goes back to one list. Turn feature.split_tech_fund off for exactly the old menu and viewer. Nothing new is downloaded.",
+    "vcp": "technical",
+    "box": "technical",
+    "flag": "technical",
+    "qullamaggie": "technical",
+    "marios": "technical",
+    "episodic": "technical",
+    "gapup": "technical",
+    "week52": "technical",
+    "breakouts": "technical",
+    "highvol": "technical",
+    "pullbacks": "technical",
+    "trends": "technical",
+    "wheel": "technical",
+    "canslim": "fundamental",
+    "leaders": "fundamental",
+    "growth": "fundamental",
+    "quality": "fundamental",
+    "dividend": "fundamental",
+    "divfund": "fundamental",
+    "scorecard": "fundamental",
+    "top": "fundamental"
+  },
   "chart_viewer": {
-    "_note": "Chart Viewer page (chart-viewer.html). One chart at a time, full screen, swipe to move. Same keys and defaults as the US desk. Every option is its own switch. It reads the scanner files and saved daily bars the desk already has, and downloads nothing new. Turn the page off with feature.chart_viewer. chart_touch_pan is true, so a one-finger drag on the chart moves the same chart back and forward in time, and two fingers zoom. A quick flick changes the chart: faster than swipe_max_ms, at least swipe_min_px long, and swipe_ratio times more sideways than up or down. A slow drag never changes the chart. A swipe on the header row (ticker, price and counter) always changes the chart. On the chip bar it changes the chart only when every chip fits; a chip bar wider than the screen just scrolls. drag_mode_toggle shows the Drag chip, which switches between Drag: move chart and Drag: next chart (no pinch zoom), and the choice is saved on the device. Only the last 6 charts stay in memory. The chart loads every saved daily bar. Only the first view uses range_months or range_months_phone: the newest candle sits just left of the Why box, in the same spot on every chart, like the US desk. A dragged range stays after a turn of the device or full screen; a new chart or a range chip puts the first view back. The page looks and works like the US desk's Chart Viewer. range_chips adds 3M, 6M, 1Y and All chips. native_fullscreen_ios stays false so iPhone and iPad use the full-screen layer instead of Safari full screen, whose grey X covers the stock name. include_gap_up adds the Gap Up scanner to the list picker, the All scanner stocks count and the reason box.",
+    "_note": "Chart Viewer page (chart-viewer.html). One chart at a time, full screen, swipe to move. Same keys and defaults as the US desk. Every option is its own switch. It reads the scanner files and saved daily bars the desk already has, and downloads nothing new. Turn the page off with feature.chart_viewer. chart_touch_pan is true, so a one-finger drag on the chart moves the same chart back and forward in time, and two fingers zoom. A quick flick changes the chart: faster than swipe_max_ms, at least swipe_min_px long, and swipe_ratio times more sideways than up or down. A slow drag never changes the chart. A swipe on the header row (ticker, price and counter) always changes the chart. On the chip bar it changes the chart only when every chip fits; a chip bar wider than the screen just scrolls. drag_mode_toggle shows the Drag chip, which switches between Drag: move chart and Drag: next chart (no pinch zoom), and the choice is saved on the device. Only the last 6 charts stay in memory. The chart loads every saved daily bar. Only the first view uses range_months or range_months_phone: the newest candle sits just left of the Why box, in the same spot on every chart, like the US desk. A dragged range stays after a turn of the device or full screen; a new chart or a range chip puts the first view back. The page looks and works like the US desk's Chart Viewer. range_chips adds 3M, 6M, 1Y and All chips. native_fullscreen_ios stays false so iPhone and iPad use the full-screen layer instead of Safari full screen, whose grey X covers the stock name. include_gap_up adds the Gap Up scanner to the list picker, the All scanner stocks count and the reason box. group_toggle shows the Technical | Fundamental switch above the list when feature.split_tech_fund is on: the list picker, the All list (All technical stocks or All fundamental stocks) and the reason box then use only that group, and Buy setups and Watchlist lines show in both. default_group is the first choice; after that the last choice is kept on the device.",
     "list_picker": true,
     "include_watching": true,
     "include_closed": false,
@@ -289,7 +314,9 @@
     "day_change": true,
     "range_months": 6,
     "range_months_phone": 3,
-    "range_chips": true
+    "range_chips": true,
+    "group_toggle": true,
+    "default_group": "technical"
   },
   "light_mode": {
     "_note": "Light mode. feature.light_mode shows the Theme toggle (Dark, Light, Match device) at the top of the menu. default_theme is used until a choice is saved on the device: dark, light, or auto (match the device). Dark stays the default. match_device_option shows the Match device button.",
