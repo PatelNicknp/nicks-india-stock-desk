@@ -24,7 +24,7 @@ EXPECTED = {
     "ma_10": False, "ma_20": False, "ma_50": True, "ma_150": True, "ma_200": True, "volume": True,
     "volume_toggle": True, "reason_box": True, "reason_box_toggle": True, "reason_max_chars": 110,
     "reason_collapsed_items": 3, "company_line": True, "day_change": True, "range_months": 6, "range_months_phone": 3,
-    "range_chips": True,
+    "range_chips": True, "group_toggle": True, "default_group": "technical",
 }
 
 
