@@ -1,5 +1,5 @@
 {
- "updated_pt": "2026-11-01 04:12 IST \u00b7 2026-10-31 15:42 PT",
+ "updated_pt": "2026-11-01 05:59 IST \u00b7 2026-10-31 17:29 PT",
  "price_as_of": "2026-10-29",
  "mode": "rescore",
  "label": "Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts.",
@@ -52,6 +52,7 @@
   "scanner_dividend",
   "scanner_episodic_pivot",
   "scanner_flag",
+  "scanner_gap_up",
   "scanner_growth",
   "scanner_leaders",
   "scanner_marios",
