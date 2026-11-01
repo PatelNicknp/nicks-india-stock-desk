@@ -672,6 +672,77 @@ async function checkNarrowStart(browser, port, name, device) {
   return bad;
 }
 
+// Moving average colours (chart_colors.ma_colors, ma_colors_light): the lines drawn and the chip swatches must match
+// the config, in dark and light mode, on the Chart Viewer and on a row chart. Level lines keep their old colours.
+const MA_CFG = JSON.parse(fs.readFileSync(path.join(root, "config.json"), "utf8"));
+const LC_PATCH = "\n;(function(){var L=window.LightweightCharts;if(!L||L.__maPatched)return;L.__maPatched=1;window.__series=[];window.__plines=[];" +
+  "var c=L.createChart;L=window.LightweightCharts=Object.assign({},L);L.__maPatched=1;L.createChart=function(){var ch=c.apply(this,arguments);var a=ch.addSeries.bind(ch);ch.addSeries=function(t,o,p){" +
+  "var s=p==null?a(t,o):a(t,o,p);if(o&&o.color&&o.lineWidth===1)window.__series.push(String(o.color).toLowerCase());" +
+  "var pl=s.createPriceLine.bind(s);s.createPriceLine=function(q){window.__plines.push({title:q.title,color:String(q.color).toLowerCase()});return pl(q);};return s;};return ch;};})();\n";
+function rgbHex(c) {
+  const m = /rgba?\((\d+),\s*(\d+),\s*(\d+)/.exec(c || "");
+  return m ? "#" + [m[1], m[2], m[3]].map((x) => ("0" + Number(x).toString(16)).slice(-2)).join("") : String(c || "").toLowerCase();
+}
+async function checkMaColors(browser, port, name, device) {
+  const bad = [];
+  const base = process.env.CV_BASE ? process.env.CV_BASE.replace(/\/?$/, "/") : "http://127.0.0.1:" + port + "/site/";
+  for (const theme of ["dark", "light"]) {
+    const want = {};
+    const map = MA_CFG.chart_colors[theme === "light" ? "ma_colors_light" : "ma_colors"];
+    Object.keys(map).forEach((k) => { want[k] = String(map[k]).toLowerCase(); });
+    // Level lines are not averages and stay as they were (Nick): dark value, and its light-mode swap.
+    const levels = theme === "light"
+      ? { "Buy point": "#9a4a06", "Stop": "#b42318", "3 ADR": "#12703a", "10-day": "#3355d6", "20-day": "#6d28d9" }
+      : { "Buy point": "#f59e0b", "Stop": "#ef4444", "3 ADR": "#22c55e", "10-day": "#7c9cff", "20-day": "#a78bfa" };
+    const ctx = await browser.newContext(device);
+    await ctx.addInitScript((t) => { try { localStorage.clear(); localStorage.setItem("desk-theme", t); } catch (e) { /* ignore */ } }, theme);
+    await ctx.route("**/lightweight-charts.standalone.production.js", async (route) => {
+      const res = await route.fetch();
+      await route.fulfill({ response: res, body: (await res.text()) + LC_PATCH });
+    });
+    const page = await ctx.newPage();
+    await page.goto(base + "chart-viewer.html", { waitUntil: "domcontentloaded" });
+    await page.waitForSelector("body[data-ready='1']", { timeout: 30000 });
+    await waitOk(page);
+    const cv = await page.evaluate(() => ({
+      chips: Array.from(document.querySelectorAll(".cvchip[data-chip^='ma_'] i")).map((i) => [i.parentElement.getAttribute("data-chip").slice(3), getComputedStyle(i).backgroundColor]),
+      series: window.__series.slice(),
+    }));
+    const cvWant = ["10", "20", "50", "150", "200"].map((k) => want[k]);
+    if (JSON.stringify(cv.series.slice(0, 5)) !== JSON.stringify(cvWant)) bad.push(name + " " + theme + ": Chart Viewer lines " + JSON.stringify(cv.series) + " want " + JSON.stringify(cvWant));
+    cv.chips.forEach(([k, c]) => { if (rgbHex(c) !== want[k]) bad.push(name + " " + theme + ": Chart Viewer chip MA " + k + " is " + rgbHex(c) + " want " + want[k]); });
+    if (cv.chips.length !== 5) bad.push(name + " " + theme + ": Chart Viewer has " + cv.chips.length + " MA chips");
+    // Row chart on Marios: SMA 50 and SMA 200 are on by default; Buy point, Stop, 3 ADR, 10-day and 20-day are level lines.
+    await page.goto(base + "marios.html", { waitUntil: "domcontentloaded" });
+    await page.waitForSelector("body[data-ready='1']", { timeout: 30000 });
+    await page.evaluate(() => { window.__series = []; window.__plines = []; });
+    const btn = await page.$("button.rowexp");
+    if (!btn) { bad.push(name + " " + theme + ": no row chart button on marios.html"); await ctx.close(); continue; }
+    await btn.click();
+    await page.waitForFunction(() => window.__series && window.__series.length >= 2, null, { timeout: 30000 }).catch(() => {});
+    const rc = await page.evaluate(() => ({
+      chips: Array.from(document.querySelectorAll(".machip")).map((b) => [b.textContent.trim(), getComputedStyle(b.querySelector("i")).backgroundColor]),
+      series: window.__series.slice(), plines: window.__plines.slice(),
+    }));
+    const chipWant = { "SMA 50": want["50"], "SMA 150": want["150"], "SMA 200": want["200"] };
+    Object.keys(chipWant).forEach((label) => {
+      const c = rc.chips.find((x) => x[0] === label);
+      if (!c || rgbHex(c[1]) !== chipWant[label]) bad.push(name + " " + theme + ": row chart chip " + label + " " + (c ? rgbHex(c[1]) : "missing") + " want " + chipWant[label]);
+    });
+    if (rc.series.indexOf(want["50"]) < 0 || rc.series.indexOf(want["200"]) < 0) bad.push(name + " " + theme + ": row chart lines " + JSON.stringify(rc.series));
+    let seen = 0;
+    rc.plines.forEach((pl) => {
+      const k = Object.keys(levels).find((x) => String(pl.title || "").indexOf(x) === 0);
+      if (!k) return;
+      seen++;
+      if (pl.color !== levels[k]) bad.push(name + " " + theme + ": level line " + pl.title + " is " + pl.color + " want " + levels[k] + " (unchanged)");
+    });
+    if (!seen) bad.push(name + " " + theme + ": no level lines on the Marios row chart " + JSON.stringify(rc.plines));
+    await ctx.close();
+  }
+  return bad;
+}
+
 async function main() {
   const pw = loadPlaywright();
   if (!pw) {
@@ -696,6 +767,8 @@ async function main() {
   for (const [name, device] of devices) bad = bad.concat(await check(browser, port, name, device, shotDir));
   for (const [name, device] of devices) bad = bad.concat(await checkNarrowStart(browser, port, name, device));
   for (const [name, device] of devices) bad = bad.concat(await checkGroups(browser, port, name, device));
+  for (const [name, device] of devices.filter((d) => /iphone-portrait|ipad-landscape/.test(d[0]))) bad = bad.concat(await checkMaColors(browser, port, name, device));
+  bad = bad.concat(await checkMaColors(browser, port, "desktop", { viewport: { width: 1280, height: 800 } }));
   const ipadUA = "Mozilla/5.0 (iPad; CPU OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1";
   const ipadOS = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15";
   const iosDevices = [

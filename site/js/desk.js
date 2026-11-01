@@ -1564,6 +1564,21 @@
     { id: "ema150", label: "EMA 150", kind: "ema", n: 150, color: "#34D399" },
     { id: "ema200", label: "EMA 200", kind: "ema", n: 200, color: "#FB923C" },
   ];
+  // Moving average colours (chart_colors block of config.json, same as the US desk): MA 10 green, 20 orange,
+  // 50 blue, 150 yellow, 200 red. These defaults match config.json, so a settings file without the rows still
+  // draws the same colours. Light mode uses slightly darker shades so each line shows on white.
+  // A length that is not listed keeps the colour it is given here (the row charts' SMA 21 and the EMA lines).
+  const MA_COLORS = { "10": "#22c55e", "20": "#f97316", "50": "#3b82f6", "150": "#eab308", "200": "#ef4444" };
+  const MA_COLORS_LIGHT = { "10": "#16a34a", "20": "#ea580c", "50": "#2563eb", "150": "#ca8a04", "200": "#dc2626" };
+  function maColor(n, fallback) {
+    const key = String(n);
+    const block = THEME === "light" ? "ma_colors_light" : "ma_colors";
+    const row = SETTINGS.find((r) => r.setting === "chart_colors." + block + "." + key);
+    const v = row ? String(row.value == null ? "" : row.value).trim() : "";
+    if (/^#[0-9a-fA-F]{6}$/.test(v)) return v;
+    return (THEME === "light" ? MA_COLORS_LIGHT : MA_COLORS)[key] || fallback;
+  }
+  function maDefColor(def) { return def.kind === "sma" ? maColor(def.n, def.color) : def.color; }
   const MA_DEFAULT = { sma21: false, sma50: true, sma150: false, sma200: true, ema21: true, ema50: false, ema150: false, ema200: false };
 
   let tvPromise = null;
@@ -1807,7 +1822,7 @@
       MA_DEFS.forEach((def) => {
         if (!mas[def.id]) return;
         const series = chart.addSeries(LC.LineSeries, {
-          color: def.color, lineWidth: 1, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false,
+          color: maDefColor(def), lineWidth: 1, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false,
         });
         const data = [];
         averages[def.id].forEach((value, i) => {
@@ -1822,7 +1837,7 @@
         const bar = bars[i];
         const prev = i > 0 ? bars[i - 1].c : null;
         const shown = MA_DEFS.filter((def) => mas[def.id] && averages[def.id][i] != null).map((def) => ({
-          label: def.label, color: def.color, value: averages[def.id][i],
+          label: def.label, color: maDefColor(def), value: averages[def.id][i],
         }));
         legend.innerHTML = legendHtml(bar, prev, shown);
       };
@@ -1917,7 +1932,7 @@
     if (chips) {
       chips.innerHTML = MA_DEFS.map((def) =>
         '<button type="button" class="machip' + (mas[def.id] ? " on" : "") + '" data-ma="' + def.id + '" aria-pressed="' + (mas[def.id] ? "true" : "false") + '">' +
-        '<i style="background:' + def.color + '"></i>' + esc(def.label) + "</button>"
+        '<i style="background:' + maDefColor(def) + '"></i>' + esc(def.label) + "</button>"
       ).join("");
     }
     const rerun = () => drawPriceChart(panel, opts);
@@ -2264,7 +2279,7 @@
       '<button type="button" class="cvchip' + (cls ? " " + cls : "") + (on ? " on" : "") + '" data-chip="' + id + '" aria-pressed="' + (on ? "true" : "false") + '">' +
       (color ? '<i style="background:' + color + '"></i>' : "") + esc(label) + "</button>";
     const chipsHtml = () =>
-      (cvOpt("ma_chips") ? CV_MAS.map((d) => chip(d.id, "MA " + d.n, d.color, ma[d.id])).join("") : "") +
+      (cvOpt("ma_chips") ? CV_MAS.map((d) => chip(d.id, "MA " + d.n, maColor(d.n, d.color), ma[d.id])).join("") : "") +
       (cvOpt("volume_toggle") ? chip("volume", "Vol", "", volOn) : "") +
       (reasonAllowed && cvOpt("reason_box_toggle") ? chip("reason", "Why", "", reasonOn) : "") +
       (swipeOn && cvOpt("flip_toggle") ? chip("swipe", rightIsNext ? "Swipe right: next" : "Swipe left: next", "", false, "cvflip") : "") +
@@ -2477,7 +2492,7 @@
       st.price.setData(bars.map((b) => ({ time: b.date, open: b.o, high: b.h, low: b.l, close: b.c })));
       const closes = bars.map((b) => b.c);
       CV_MAS.forEach((d) => {
-        const s = chart.addSeries(LC.LineSeries, { color: d.color, lineWidth: 1, priceLineVisible: false, lastValueVisible: false,
+        const s = chart.addSeries(LC.LineSeries, { color: maColor(d.n, d.color), lineWidth: 1, priceLineVisible: false, lastValueVisible: false,
           crosshairMarkerVisible: false, visible: !!ma[d.id] });
         const data = [];
         smaValues(closes, d.n).forEach((v, i) => { if (v != null) data.push({ time: bars[i].date, value: v }); });
@@ -3191,7 +3206,7 @@
     lastNDays: lastNDays, seriesNum: seriesNum, retColor: retColor, band: band,
     renderChartViewer: renderChartViewer, chartViewerFiles: CV_FILES, setViewerStart: setViewerStart,
     splitOn: splitOn, groupOf: groupOf,
-    tc: tc, theme: () => THEME,
+    tc: tc, theme: () => THEME, maColor: maColor,
     boot: boot,
   };
 })();
