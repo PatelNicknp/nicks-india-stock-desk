@@ -1844,14 +1844,15 @@ def build_portfolio(holds, scores, history):
     return port, summary
 
 
-def _week_score(history, ticker):
+def _week_score(history, ticker, today=None):
     if history is None or len(history) == 0:
         return None
     sub = history[history["ticker"] == ticker].copy()
     if not len(sub):
         return None
     sub["date"] = pd.to_datetime(sub["date"])
-    cut = pd.Timestamp.now().normalize() - pd.Timedelta(days=7)
+    now = pd.Timestamp.now() if today is None else pd.Timestamp(today)
+    cut = now.normalize() - pd.Timedelta(days=7)
     old = sub[sub["date"] <= cut]
     if not len(old):
         return None
