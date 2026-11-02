@@ -55,7 +55,7 @@ GitHub's own cron sometimes skips or delays scheduled runs. Three layers keep bo
 1. **The normal crons** in `update.yml` and `fundamentals-backfill.yml`.
 2. **A watchdog** (`.github/workflows/watchdog.yml`). It wakes at 7, 22, 37 and 52 minutes past each hour and looks up the last runs through the GitHub API, using the built-in `GITHUB_TOKEN`. It starts a workflow with "Run workflow" only when nothing for that workflow is queued or running and:
    - **Financials backfill**: no run started in the last 45 minutes. When the last batch found no name due (refresh mode), it leaves the backfill to its cron.
-   - **Daily update**: no close run worked since the latest weekday NSE close (10:30 UTC, checked from 11:30 UTC). It tries at most 3 times per close, 90 minutes apart, so a source that is down is not hammered. A watchdog start runs the full after-close update (`--close`).
+   - **Daily update**: no close run worked since the latest weekday NSE close (10:30 UTC, checked from 11:30 UTC). It tries at most 3 times per close, 90 minutes apart, so a source that is down is not hammered. A watchdog start runs the full after-close update (`--close`). While an Update keeper is live (below), this check steps aside, because the keeper owns the daily slots and their one retry; it only covers for a broken keeper chain.
 3. **Concurrency groups**, so two runs of the same job never overlap or pile up.
 
 Switches in `config.json` under `self_heal_schedule`: `backfill_watchdog` and `daily_update_watchdog` (`true` or `false`), plus `backfill_overdue_minutes`, `backfill_skip_when_nothing_due`, `daily_update_close_utc`, `daily_update_grace_minutes`, `daily_update_retry_gap_minutes` and `daily_update_max_tries`. Set a switch to `false` to go back to GitHub's cron only for that job.
@@ -63,6 +63,20 @@ Switches in `config.json` under `self_heal_schedule`: `backfill_watchdog` and `d
 To test it by hand, open Actions, pick "Schedule watchdog", press "Run workflow", and set a small "backfill_overdue_minutes" (tick "dry_run" to only see what it would do). The run summary lists what it checked and started.
 
 GitHub turns off scheduled workflows in a public repo after 60 days with no repo activity. The backfill and daily update commit data often, so this does not apply while they keep saving data.
+
+## Update keeper (self-starting updates)
+
+Switch: `features.self_heal_keeper`, on by default. Settings in the `keeper` block of `config.json`: `check_after_min` (10), `verify_after_min` (45), `recheck_min` (15), `chunk_min` (330), `min_gap_min` (50), `max_tries` (2). GitHub's cron in this repo often fires hours late (the 16:30 IST close cron has started around 22:30 IST) or not at all, and the watchdog is cron too, so the desk keeps its own clock entirely inside GitHub Actions. `.github/workflows/keeper.yml` runs one long job, `keeper.py keeper`:
+
+| Slot (IST, Mon-Fri) | UTC | Mode | Make-up | Verify at +45 min |
+|---|---|---|---|---|
+| 08:00 | 02:30 | `morning` (news, FII/DII, no prices) | yes | failed: one retry |
+| 16:30 | 11:00 | `close` (`--close`) | yes | failed: one retry; succeeded but `price_as_of` is not that IST date: warning only |
+| 18:30 | 13:00 | `retry` (`--retry`, late bhavcopy) | only while `price_as_of` is still older than that IST date | failed or stale: warning only (it is already the retry) |
+
+NSE trading holidays are skipped (2026 list from NSE's holiday page, segment CM; NSE had not published 2027 by 2 Nov 2026, so 2027 counts every weekday until `NSE_HOLIDAYS` in `keeper.py` is updated). At `check_after_min` past a slot, if no real update started since the slot, none is queued or running, and none started in the last `min_gap_min` minutes, it dispatches exactly one update with that slot's mode (`reason=keeper`). At `verify_after_min` it reads the slot's runs and `data/meta.json` on main; the retry count comes from the GitHub run list, so a restarted keeper never retries a slot twice. A run still going is looked at every `recheck_min` minutes, up to 3 hours. Warnings show as annotations and in the keeper run's summary; nothing is sent. A hosted job lives at most 6 hours, so every `chunk_min` minutes the keeper dispatches the next keeper and exits; the concurrency group `india-update-keeper` keeps one at a time, and a keeper steps aside if a newer one is waiting. Every update run and watchdog run ends with `keeper.py ensure-keeper`, which starts a keeper only if the switch is on and none is queued or running.
+
+The update workflow has a `mode` input (`close` by default, so "Run workflow" and the watchdog still run the close update as before; also `morning` and `retry`) and a first step, `keeper.py guard`. For a scheduled run or a keeper make-up it skips the run when another real update already started for the same slot, so a cron that GitHub fires hours late after the keeper already made it up stops after a few seconds. A scheduled run belongs to the time its cron was due. Manual runs, watchdog starts, and the keeper's one retry are never skipped. If the run list cannot be read, the update runs as before. Turn the switch off and the running keeper stops at its next wake and starts no other; the watchdog's daily update check then works as before.
 
 ## Pages that can say "not available"
 
