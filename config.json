@@ -68,7 +68,8 @@
     "scanner_gap_up": true,
     "split_tech_fund": true,
     "chart_viewer": true,
-    "light_mode": true
+    "light_mode": true,
+    "self_heal_keeper": true
   },
   "vcp": {
     "_note": "VCP scanner. A stock is listed only when the trend template is 8 of 8, the same rule as the green VCP tag. Set show_weaker_trend to true to also list stocks with tightening pullbacks but a weaker trend, marked WATCHING (trend not 8/8).",
@@ -354,6 +355,15 @@
     "daily_update_grace_minutes": 60,
     "daily_update_retry_gap_minutes": 90,
     "daily_update_max_tries": 3
+  },
+  "keeper": {
+    "_note": "Update keeper (.github/workflows/keeper.yml, switch features.self_heal_keeper). One long job sleeps until check_after_min past each India slot (08:00, 16:30, 18:30 IST, weekdays, NSE holidays skipped) and starts that update only if it did not run. At verify_after_min it checks the run succeeded and, for the close and retry runs, that price_as_of reached that IST date; a failed morning or close slot gets one retry (max_tries counts runs), stale data is only logged. A run still going is looked at every recheck_min. Every chunk_min it starts the next keeper. Never two updates within min_gap_min. While a keeper is live the watchdog's daily update check steps aside.",
+    "check_after_min": 10,
+    "verify_after_min": 45,
+    "recheck_min": 15,
+    "chunk_min": 330,
+    "min_gap_min": 50,
+    "max_tries": 2
   },
   "buy_setups": {
     "market_filter": true,

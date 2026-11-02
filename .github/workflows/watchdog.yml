@@ -5,6 +5,9 @@ name: Schedule watchdog
 #   Financials backfill: no run started in the last 45 minutes.
 #   Daily update: no good close run since the latest weekday NSE close.
 # Each check has its own switch under self_heal_schedule in config.json.
+# While an Update keeper (keeper.yml) is live it owns the daily update slots and their single retry,
+# so the daily update check below steps aside and only covers for a broken keeper chain.
+# The last step starts a keeper if none is live. Switch: features.self_heal_keeper.
 on:
   schedule:
     - cron: "7,37 * * * *"
@@ -35,6 +38,7 @@ jobs:
           sparse-checkout: |
             config.json
             data/backfill_progress.csv
+            keeper.py
           sparse-checkout-cone-mode: false
       - name: Start overdue workflows
         env:
@@ -95,10 +99,24 @@ jobs:
             fi
           fi
 
+          # Number of live Update keepers (0 when features.self_heal_keeper is false or the list cannot be read).
+          keepers_live() {
+            if [ "$(jq -r 'if .features.self_heal_keeper == false then "off" else "on" end' config.json)" != "on" ]; then
+              echo 0; return
+            fi
+            local n
+            n=$(gh api "repos/$REPO/actions/workflows/keeper.yml/runs?per_page=20" \
+              -q '[.workflow_runs[] | select(.status != "completed")] | length' 2>/dev/null) || n=0
+            case "$n" in ''|*[!0-9]*) n=0 ;; esac
+            echo "$n"
+          }
+
           # 2. Daily update after the NSE close.
           WF=update.yml
           if [ "$(cfg daily_update_watchdog true)" != "true" ]; then
             note "$WF: watchdog is off in config.json."
+          elif [ "$(keepers_live)" -gt 0 ]; then
+            note "$WF: an Update keeper is live and owns the daily slots and their retry, so the watchdog leaves it."
           else
             close_utc=$(cfg daily_update_close_utc '"10:30"')
             grace=$(cfg daily_update_grace_minutes 60)
@@ -141,3 +159,9 @@ jobs:
               fi
             fi
           fi
+      - name: Start a keeper if none is live
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+        run: python3 keeper.py ensure-keeper
