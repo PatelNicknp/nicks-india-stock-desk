@@ -277,9 +277,15 @@ def test_week_ago_score_needs_seven_days():
         "ticker": ["AAA", "AAA"],
         "score": [7, 9],
     })
-    assert stock_desk._week_score(hist, "AAA") == 7
+    # Fixed "today" so the result does not change with the calendar.
+    today = "2026-10-27"
+    assert stock_desk._week_score(hist, "AAA", today=today) == 7
     recent = hist[hist["date"] >= "2026-10-20"]
-    assert stock_desk._week_score(recent, "AAA") is None
+    assert stock_desk._week_score(recent, "AAA", today=today) is None
+    assert stock_desk._week_score(pd.DataFrame(), "AAA", today=today) is None
+    # Once the newer score is a full week old, it becomes the week-ago score.
+    assert stock_desk._week_score(hist, "AAA", today="2026-10-30") == 9
+    # Default (no today given) still uses the real clock.
     assert stock_desk._week_score(pd.DataFrame(), "AAA") is None
 
 
