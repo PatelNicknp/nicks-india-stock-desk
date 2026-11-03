@@ -19,7 +19,8 @@
   "CHAMBLFERT": "2026-11-04",
   "BAJAJFINSV": "2026-11-04",
   "BAJAJHLDNG": "2026-11-04",
-  "LUPIN": "2026-11-04"
+  "LUPIN": "2026-11-04",
+  "SAHAJDIGI": "2026-11-04"
  },
  "shareholding_retry_after": {
   "08AGG": "2026-10-27",
@@ -38,10 +39,10 @@
   "ABSLBANETF": "2026-10-27",
   "ABSLNN50ET": "2026-10-27"
  },
- "last_batch_at": "2026-11-03T10:08Z",
- "last_statements_ok": 0,
- "last_statements_fail": 0,
- "last_shareholding_ok": 82,
+ "last_batch_at": "2026-11-03T17:29Z",
+ "last_statements_ok": 9,
+ "last_statements_fail": 1,
+ "last_shareholding_ok": 71,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
   "BIRET": "2026-11-03",
@@ -55,7 +56,7 @@
   "APLABPP": "2026-11-03",
   "ATLPP": "2026-11-03",
   "GSAILPP": "2026-11-03",
-  "JAYKAYPP": "2026-11-02",
+  "JAYKAYPP": "2026-11-03",
   "QDLCCPS": "2026-10-29",
   "SURAJINDPP": "2026-11-03",
   "VERTEXPP": "2026-11-03",
@@ -63,8 +64,10 @@
   "ACESEPP": "2026-11-03",
   "SHIVAM-RE1": "2026-11-03",
   "ANIRITPP": "2026-11-03",
-  "CENTEXTPP": "2026-11-03"
+  "CENTEXTPP": "2026-11-03",
+  "BLSPOLY": "2026-11-03",
+  "SFCTECH": "2026-11-03"
  },
- "last_shareholding_empty": 16,
+ "last_shareholding_empty": 18,
  "last_shareholding_skipped": 0
 }
