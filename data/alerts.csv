@@ -1,3 +1,2 @@
 ticker,kind,text,score,score_prev,verdict,verdict_prev,price,data_status,note,disclaimer
-KPIL,score_jump,KPIL score moved from 8 to 6.,6,8,HOLD,HOLD,1328.6,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-KPIL,score_cross,KPIL crossed the buy line (8).,6,8,HOLD,HOLD,1328.6,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+,info,No verdict changes or score crossings this run.,,,,,,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
