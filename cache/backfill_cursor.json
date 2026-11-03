@@ -38,10 +38,10 @@
   "ABSLBANETF": "2026-10-27",
   "ABSLNN50ET": "2026-10-27"
  },
- "last_batch_at": "2026-11-03T02:33Z",
- "last_statements_ok": 9,
+ "last_batch_at": "2026-11-03T02:43Z",
+ "last_statements_ok": 0,
  "last_statements_fail": 0,
- "last_shareholding_ok": 85,
+ "last_shareholding_ok": 82,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
   "BIRET": "2026-11-03",
