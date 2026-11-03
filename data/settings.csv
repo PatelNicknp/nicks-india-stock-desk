@@ -67,6 +67,7 @@ feature.scanner_gap_up,True
 feature.split_tech_fund,True
 feature.chart_viewer,True
 feature.light_mode,True
+feature.self_heal_keeper,True
 buy_setups.market_filter,True
 buy_setups.chart_setups_only,True
 buy_setups.full_rules_at_coverage_pct,80
@@ -174,6 +175,12 @@ chart_viewer.range_months_phone,3
 chart_viewer.range_chips,True
 chart_viewer.group_toggle,True
 chart_viewer.default_group,technical
+keeper.check_after_min,10
+keeper.verify_after_min,45
+keeper.recheck_min,15
+keeper.chunk_min,330
+keeper.min_gap_min,50
+keeper.max_tries,2
 chart_colors.ma_colors.10,#22c55e
 chart_colors.ma_colors.20,#f97316
 chart_colors.ma_colors.50,#3b82f6

@@ -1,12 +1,2 @@
 ticker,company,price,day_pct,score,score_prev,score_change,verdict,data_status,note,disclaimer
-ZBINTXPP,BINAYAK TEX PROCESSORS LTD.,1597.8,0.0,-6.0,-1.0,-5.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-EASTBUILD,EAST BUILDTECH LTD.,61.75,-4.99,-3.0,1.0,-4.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-AGARWAL,AGARWAL FORTUNE INDIA LIMITED,19.6,0.0,-4.0,0.0,-4.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-SARUPINDUS,SARUP INDUSTRIES LTD.,104.8,-0.1,-5.0,-1.0,-4.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-SASHWAT,SASHWAT TECHNOCRATS LIMITED,276.75,-4.99,-3.0,0.0,-3.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-ALFAICA,ALFA ICA (INDIA) LTD.,73.6,4.99,3.0,0.0,3.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-JAYTEX,JAYBHARAT TEXTILES & REAL ESTA,21.4,0.0,-3.0,-1.0,-2.0,Not scored yet,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-SENINFO,SENTHIL INFOTEK LTD,44.06,0.0,0.0,1.0,-1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-MADHURIND,MADHUR INDUSTRIES LTD.,7.49,-2.98,1.0,2.0,-1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-DATIWARE,DATIWARE MARITIME INFRA LIMITE,36.28,0.0,-3.0,-2.0,-1.0,Not scored yet,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-TMTIND-B1,TMT (INDIA) LTD.,8.87,0.0,-2.0,-1.0,-1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+KPIL,Kalpataru Projects International Ltd.,1328.6,-0.68,6.0,8.0,-2.0,HOLD,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
