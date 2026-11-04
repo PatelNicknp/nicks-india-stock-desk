@@ -2238,11 +2238,20 @@
     });
     return out;
   }
-  // Empty bars on the right so the newest candle sits gapPx left of the price axis, in the same
-  // screen spot on every chart (used when the Why box is at the top left).
+  // How many logical bars to leave after the newest candle so its right side sits gapPx left of
+  // the price axis, in the same screen spot on every chart (Why box at the top left).
+  // Lightweight Charts draws bar t at x = width - (to - t + 0.5) * barSpacing - 1,
+  // with barSpacing = width / (to - from + 1). The first view uses from = first - 0.5 and
+  // to = last + pad, so the gap from the last bar's centre to the axis is
+  // (pad + 0.5) * barSpacing + 1. pad is chosen so that equals gapPx plus half a bar.
   function cvGapBars(visibleBars, plotPx, gapPx) {
-    if (!(visibleBars > 0) || !(plotPx > gapPx)) return 1;
-    return Math.max(0.5, 0.5 + (gapPx * visibleBars) / (plotPx - gapPx));
+    const g = Math.max(0, Number(gapPx) || 0);
+    const w = plotPx;
+    const v = visibleBars;
+    if (!(v > 0) || !(w > g + 1)) return 0;
+    const denom = w - (g - 1);
+    if (!(denom > 1)) return 0;
+    return Math.max(0, ((g - 1) * (v + 0.5)) / denom);
   }
   // Where a touch started: "bar" (the header row, or a chip bar that fits, so a sideways swipe
   // changes the chart), "scroll" (a chip bar wider than the screen: it scrolls and never changes
@@ -2435,9 +2444,18 @@
         : cvPadBars(last - from + 1, w, reasonOpen ? Math.min(boxPad(), 260) : boxPad());
       let lo = from - 0.5, hi = last + pad;
       // All on a phone can need bars thinner than the chart allows (0.3 px). Then show as much
-      // history as fits and keep the newest candle in the same spot left of the Why box.
-      const sp = w / (hi - lo);
-      if (sp < 0.3) { hi = last + (pad * sp) / 0.3; lo = hi - w / 0.3; }
+      // history as fits and keep the newest candle in the same spot.
+      if (whyTopLeft) {
+        if (w / (hi - lo + 1) < 0.3) {
+          const g = Math.max(0, cvOpt("last_candle_gap_px"));
+          const p2 = Math.max(0, (g - 1) / 0.3);
+          hi = last + p2;
+          lo = hi - (w / 0.3 - 1);
+        }
+      } else {
+        const sp = w / (hi - lo);
+        if (sp < 0.3) { hi = last + (pad * sp) / 0.3; lo = hi - w / 0.3; }
+      }
       st.pad = hi - last;
       setRange({ from: lo, to: hi });
       const want = lastSet;
@@ -2536,7 +2554,7 @@
       const light = THEME === "light";
       st.price = ohlcBars
         ? chart.addSeries(LC.BarSeries, { upColor: light ? "#1D4ED8" : "#3B82F6", downColor: light ? "#C026D3" : "#EC4899",
-          openVisible: true, thinBars: false, priceLineVisible: false, lastValueVisible: true })
+          openVisible: true, thinBars: true, priceLineVisible: false, lastValueVisible: true })
         : chart.addSeries(LC.CandlestickSeries, {
           upColor: UP, downColor: DN, borderUpColor: UP, borderDownColor: DN, wickUpColor: UP, wickDownColor: DN,
           priceLineVisible: false, lastValueVisible: true,
