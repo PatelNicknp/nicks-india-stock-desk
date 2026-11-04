@@ -2,6 +2,7 @@ ticker,line,source,as_of
 08AGG,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 08GPG,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 08MPD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
+08QPR,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 11AGG,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 11AMD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 11AQD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
@@ -11,6 +12,7 @@ ticker,line,source,as_of
 11MPD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 11MPR,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 11QPD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
+11QPR,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 1STCUS,Provides securities brokerage services in India.,Yahoo,2026-10-26
 20MICRONS,Makes and sells micronized industrial minerals and specialty chemicals in India and abroad.,Yahoo,2026-10-26
 21STCENMGM,Works in the investment business in India.,Yahoo,2026-10-26
@@ -103,7 +105,6 @@ ADCON,Provides loans and advances in India.,Yahoo,2026-10-26
 ADDIND,Makes and sells knitwear fabrics and readymade garments in India.,Yahoo,2026-10-26
 ADFFOODS,Makes and exports ethnic and convenience food products in India and abroad.,Yahoo,2026-10-26
 ADHBHUTIN,Works in the real estate business in India.,Yahoo,2026-10-26
-ADHHATA,Works in the wholesale of wood and textile products.,Yahoo,2026-10-28
 ADINATH,Works in the leasing business in India.,Yahoo,2026-10-26
 ADITYA,Makes and sells bright steel bars and wires in India.,Yahoo,2026-10-26
 ADITYASP,Makes and sells blended yarn products in India.,Yahoo,2026-10-26
@@ -121,6 +122,7 @@ ADVANIHOTR,Works in the hotel business in India.,Yahoo,2026-10-26
 ADVENTHTL,A hospitality company in India.,Yahoo,2026-10-26
 ADVENZYMES,"Works in the research, development, manufacture, and marketing of enzymes and probiotics.",Yahoo,2026-10-26
 ADVIKCA,Works in financial activities in India.,Yahoo,2026-10-26
+ADVLIFE,"Focuses on mining and trading bullion and precious metals, as well as mining, exploration, extraction, processing and more.",Yahoo,2026-10-28
 ADVMULT,Makes and sells rubber products in India.,Yahoo,2026-10-26
 ADVPETR-B,Makes and sells petroleum products in India.,Yahoo,2026-10-26
 AEGISLOG,"An oil, gas, and chemical logistics company in India.",Yahoo,2026-10-26
@@ -230,7 +232,6 @@ AMDIND,Provides packaging solutions in India and abroad.,Yahoo,2026-10-26
 AMERISE,Does not have significant operations.,Yahoo,2026-10-26
 AMFORG,Amforge Industries Limited does not have significant operations.,Yahoo,2026-10-26
 AMINTAN,Works in the manufacture and export of finished leather and leather products in India.,Yahoo,2026-10-26
-AMITSEC,Trades aluminum utensils in India.,Yahoo,2026-10-26
 AMJLAND,Works in development and leasing of real estate properties in India.,Yahoo,2026-10-26
 AMNPLST,Makes and sells specialty chemicals in India.,Yahoo,2026-10-26
 AMPL,A non-deposit accepting non-banking financial company in India and United Kingdom.,Yahoo,2026-10-26
@@ -238,7 +239,6 @@ AMPVOLTS,Sells and services electric vehicle chargers and charging stations in I
 AMRAAGRI,Amraworld Agrico Limited does not have significant operations.,Yahoo,2026-10-26
 AMRAPLIN,Works in the bullion and share trading business in India.,Yahoo,2026-10-26
 AMRUTANJAN,"Makes, supplies, and sells ayurvedic pain balms and women hygiene products in India and abroad.",Yahoo,2026-10-26
-AMS,"Makes and sells, imports, exports, and deals in specialty chemicals in India.",Yahoo,2026-10-26
 AMTL,"Works in energy generation, measurement, and management through renewable sources in India.",Yahoo,2026-10-26
 ANANDRATHI,Works in the distribution and sale of financial products in India.,Yahoo,2026-10-26
 ANANTRAJ,Works in the real estate and infrastructure development business in India and Singapore.,Yahoo,2026-10-26
@@ -250,7 +250,6 @@ ANG,Makes and sells finished pharmaceutical formulations in India and abroad.,Ya
 ANGELONE,"Provides broking and advisory services, margin funding, and financial products to its clients in India and abroad.",Yahoo,2026-10-26
 ANIKINDS,Trades agri-commodities and edible oils in India.,Yahoo,2026-10-26
 ANIRIT,"Works in trading, marketing, and handling of agricultural products, minerals, and energy resources in India.",Yahoo,2026-11-03
-ANIRITPP,"Works in trading, marketing, and handling of agricultural products, minerals, and energy resources in India.",Yahoo,2026-10-27
 ANJANI,"Makes, processes, and sells textile products in India.",Yahoo,2026-10-26
 ANJANIFIN,A non-banking finance company in India.,Yahoo,2026-10-26
 ANJANIFOODS,Makes and sells bakery products in India.,Yahoo,2026-10-26
@@ -340,12 +339,12 @@ ARVINDFASN,Works in the wholesale and retail trading of ready-made garments and 
 ARVSMART,Develops real estate projects in India.,Yahoo,2026-10-26
 ARYACAPM,Sells Limited carries out many fund-based and secondary-market activities in India.,Yahoo,2026-10-26
 ARYAMAN,Provides merchant banking services in India.,Yahoo,2026-10-26
-ARYAN,Works in the stock broking business in India.,Yahoo,2026-10-26
 ASAHIINDIA,Makes and sells glass products in India and abroad.,Yahoo,2026-10-26
 ASAHISONG,Makes and sells color pigments and derivatives in India.,Yahoo,2026-10-26
 ASAL,"Designs, develops, manufactures, assembles, and sells sheet metal stampings, welded assemblies, and modules for passenger and commercial vehicles, and tractors.",Yahoo,2026-10-26
 ASALCBR,"Works in liquor manufacturing, distillation, and bottling activities in India and abroad.",Yahoo,2026-10-26
 ASGARD,Makes and sells alcoholic and non-alcoholic beverages in India.,Yahoo,2026-10-26
+ASHAI,Trades packaging materials for many industries in India.,Yahoo,2026-11-04
 ASHAPURMIN,"Works in the mining, manufacturing, and trading of many minerals and its derivative products in India and abroad.",Yahoo,2026-10-26
 ASHCAP,Works in the investment and lending activities in India.,Yahoo,2026-10-26
 ASHIANA,Works in the real estate development business in India.,Yahoo,2026-10-26
@@ -357,7 +356,6 @@ ASHNOOR,Makes and sells terry towels in India and abroad.,Yahoo,2026-10-26
 ASHOKA,Works in the construction business in India.,Yahoo,2026-10-26
 ASHOKAMET,"Trades steel, goods, and other products in India.",Yahoo,2026-10-26
 ASHOKLEY,Makes and sells commercial vehicles in India.,Yahoo,2026-10-26
-ASHRAM,Works in the trading and marketing of a diverse range of traditional and spiritual products in India.,Yahoo,2026-10-26
 ASHSI,Works in the investment and lending business in India.,Yahoo,2026-10-26
 ASIAN,Provides warehousing services for agricultural products in India.,Yahoo,2026-10-26
 ASIANENE,"Provides services to the energy, mineral, coal, and power sectors in India and abroad.",Yahoo,2026-10-26
@@ -365,10 +363,8 @@ ASIANHOTNR,Works in the hospitality/hotel business in India.,Yahoo,2026-10-26
 ASIANPAINT,"Works in the manufacture, distribution, and sale of paints, coatings and more.",Yahoo,2026-10-29
 ASIANTILES,"Works in the manufacture and trade of tiles, marbles, and allied products in India and abroad.",Yahoo,2026-10-26
 ASIANTNE,"Works in the plantation, manufacture, trade, and export of tea in India and abroad.",Yahoo,2026-10-26
-ASIAPAK,Works in real estate business in India.,Yahoo,2026-10-26
 ASIIL,Works in the mining and processing of natural stones in India and abroad.,Yahoo,2026-10-26
 ASINPET,Makes and sells chemicals based on ethylene oxide in India.,Yahoo,2026-10-26
-ASITCFIN,Provides advisory and consultancy services on fund mobilization and restructuring of companies in India.,Yahoo,2026-10-26
 ASKAUTOLTD,Makes and sells auto components for the automobile industry in India.,Yahoo,2026-10-26
 ASMS,"Sells Stack Limited provides barcoding solutions, Automatic Identification and Data Capture technologies in India and abroad.",Yahoo,2026-10-26
 ASMTEC,Provides consulting and product development services in India and abroad.,Yahoo,2026-10-26
@@ -396,6 +392,7 @@ ATL,Runs container freight stations and logistics business in India and abroad.,
 ATLANTAA,Works in the construction business in India.,Yahoo,2026-10-26
 ATLANTAELE,Makes and sells transformers to institutional and corporate customers in India.,Yahoo,2026-10-26
 ATLASCYCLE,Makes and sells bicycles in India.,Yahoo,2026-10-26
+ATLPP,Runs container freight stations and logistics business in India and abroad.,Yahoo,2026-10-26
 ATUL,Makes and sells chemicals and other chemical products worldwide.,Yahoo,2026-10-26
 ATULAUTO,Makes and sells three-wheeler automobiles in India.,Yahoo,2026-10-26
 ATVOENT,"Works in the manufacture, export, and sale of many textile fabrics in India.",Yahoo,2026-10-26
@@ -415,6 +412,7 @@ AUTOAXLES,Makes and sells automotive components in India.,Yahoo,2026-10-26
 AUTOIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 AUTOIND,"Makes and sells sheet metal stampings, welded assemblies, and molds for the automotive industries in India and abroad.",Yahoo,2026-10-26
 AUTOINT,Works in the car rental business in India.,Yahoo,2026-10-26
+AUTOPINS,"Designs, develops, manufactures, trades in, and sells leaf and parabolic springs, and automotive components under the SIROCCO brand.",Yahoo,2026-10-27
 AVADHSUGAR,Makes and sells sugar and its by-products in India.,Yahoo,2026-10-26
 AVAILFC,Works in the lending and investment activities in India.,Yahoo,2026-10-26
 AVALON,"Provides integrated electronic manufacturing services in India, the United States, and abroad.",Yahoo,2026-10-26
@@ -423,7 +421,6 @@ AVANTEL,Makes wireless communications products in India.,Yahoo,2026-10-26
 AVANTIFEED,"Makes and sells shrimp feeds in India, the United States, and abroad.",Yahoo,2026-10-26
 AVEER,Makes and sells processed food.,Yahoo,2026-10-26
 AVG,Provides logistics services in India.,Yahoo,2026-10-26
-AVIVA,Makes and sells agriculture products in India.,Yahoo,2026-10-26
 AVL,Works in the retail business of consumer durables and electronics in India.,Yahoo,2026-10-26
 AVONMORE,Provides non-banking financial and sub-broker advisory services in India.,Yahoo,2026-10-26
 AVROIND,Makes and sells plastic molded furniture and granules in India.,Yahoo,2026-10-26
@@ -489,6 +486,7 @@ BANKBARODA,"Provides many banking products and services to individuals, governme
 BANKBEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 BANKBETA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 BANKBETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
+BANKCASE,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 BANKETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 BANKIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 BANKINDIA,Provides many banking products and services in India and abroad.,Yahoo,2026-10-26
@@ -533,6 +531,7 @@ BEMHY,Makes and sells hydraulic press machines and related equipment in India an
 BEML,"Provides products and services to the mining and construction, rail and metro, power, and defense and aerospace sectors in India.",Yahoo,2026-10-26
 BENARAS,Runs hotels in India.,Yahoo,2026-10-26
 BENGALASM,An investment company in India and abroad.,Yahoo,2026-10-26
+BENGALT,Works in the tea and real estate businesses in India and abroad.,Yahoo,2026-10-26
 BEPL,Runs a petrochemical company in India and abroad.,Yahoo,2026-10-26
 BERGEPAINT,Makes and sells paints in India and abroad.,Yahoo,2026-10-26
 BERLDRG,Makes and sells pharmaceutical products in India.,Yahoo,2026-10-26
@@ -557,6 +556,7 @@ BHAGGAS,Works in the cleaning of water bodies business in India.,Yahoo,2026-10-2
 BHAGWOX,Makes and supplies industrial gases in India.,Yahoo,2026-10-26
 BHAGYANGR,Makes and sells copper products in India.,Yahoo,2026-10-26
 BHANDARI,A textile and garment manufacturing company in India.,Yahoo,2026-10-26
+BHARAT,Works in the investment and securities trading business in India.,Yahoo,2026-10-26
 BHARATAGRI,Runs theme-based hospitality resort in India.,Yahoo,2026-10-26
 BHARATCOAL,Makes and sells coal in India.,Yahoo,2026-10-26
 BHARATFORG,Makes and sells forged and machined components in India and abroad.,Yahoo,2026-10-26
@@ -626,6 +626,7 @@ BOMBCYC,Works in the automobile and hospitality businesses in India.,Yahoo,2026-
 BOMBWIR,Bombay Wire Ropes Limited does not have significant operations.,Yahoo,2026-10-26
 BOMDYEING,Makes and sells polyester staple fibre products in India and abroad.,Yahoo,2026-10-26
 BOMOXY-B1,A non-banking financial company in India.,Yahoo,2026-10-26
+BOMTALKIES,"Makes movies/serials/soap opera for TV/OTT, and other platforms in India.",Yahoo,2026-10-27
 BONDADA,"Provides engineering, procurement, construction, and operations and maintenance services for telecom and solar sectors in India.",Yahoo,2026-10-29
 BONFIG,"Makes gearboxes, gear motors, and drive systems.",Yahoo,2026-10-26
 BONLON,Makes and sells ferrous and non-ferrous metals in India and abroad.,Yahoo,2026-10-26
@@ -705,7 +706,6 @@ CCLINTER,Works in executing civil engineering works in India.,Yahoo,2026-10-26
 CCME,Does not have significant operations.,Yahoo,2026-10-26
 CDSL,Provides depository services in India.,Yahoo,2026-10-26
 CEATLTD,"Makes automotive tyres, tubes, and flaps in India and abroad.",Yahoo,2026-10-26
-CEEJAY,Provides automobile financing in India.,Yahoo,2026-10-26
 CEENIK,"Works in the real estate development, redevelopment, construction, infrastructure development, and allied activities in India.",Yahoo,2026-10-26
 CEETAIN,Makes and sells packaged food products in India.,Yahoo,2026-10-26
 CEIGALL,"Works in the engineering, procurement, and construction businesses in India.",Yahoo,2026-10-26
@@ -745,7 +745,6 @@ CHEMBONDCH,"Works in the manufacture, trading, and provision of services for spe
 CHEMCON,"Makes and sells specialty chemicals for pharmaceutical, agro-chemical, textile, personal care, construction, automotive, electronics, aromatic chemicals, fine chemical and more.",Yahoo,2026-10-26
 CHEMCRUX,Makes and sells intermediates and chemicals in India.,Yahoo,2026-10-26
 CHEMFAB,Makes and sells basic inorganic chemicals in India and abroad.,Yahoo,2026-10-26
-CHEMIESYNT,Makes and sells dye intermediates and chemicals in India.,Yahoo,2026-10-26
 CHEMPLASTS,Makes and sells specialty chemicals in India.,Yahoo,2026-10-26
 CHEMTECH,Makes and sells industrial valves in India.,Yahoo,2026-10-26
 CHENFERRO,Trades iron and coal-related products in India.,Yahoo,2026-10-26
@@ -762,21 +761,23 @@ CHOLAHLDNG,Provides financial services in India.,Yahoo,2026-10-26
 CHORDIA,Works in the food infrastructure and food business in India.,Yahoo,2026-10-26
 CHOWGULSTM,A shipping company in India.,Yahoo,2026-10-26
 CHROME,Makes ferro alloys in India.,Yahoo,2026-10-26
+CHRTEDCA,Provides consultancy and merchant banking services in India.,Yahoo,2026-10-26
 CIANAGRO,"Works in the agro, healthcare, and infrastructure businesses in India and abroad.",Yahoo,2026-10-26
 CIEINDIA,"Makes and sells automotive components to original equipment manufacturers and other customers in India, Europe, and abroad.",Yahoo,2026-10-26
 CIFL,Works in the lending and forex businesses in India.,Yahoo,2026-10-26
 CILSEC,Provides diversified financial services in India.,Yahoo,2026-10-26
-CINDHO,"Works in the hospitality, travel, and tourism business in India.",Yahoo,2026-10-27
+CINDRELL,Provides financial services in India.,Yahoo,2026-10-29
 CINELINE,Works in the theatrical exhibition and allied activities business under the Movie MAX brand name in India.,Yahoo,2026-10-26
 CINEVISTA,"Works in the production and distribution of television programmes, ad commercials, and feature films in India and abroad.",Yahoo,2026-10-26
 CIPLA,"Makes, develops, sells, and distributes pharmaceutical products in India, the United States, South Africa, and abroad.",Yahoo,2026-10-27
 CITADEL,"Works in the business of construction, development, and sale of residential real estate projects in India.",Yahoo,2026-10-26
 CITIZEN,Trades solar panels and allied products in India.,Yahoo,2026-10-26
+CITYMAN,Makes and sells readymade garments in India.,Yahoo,2026-10-27
+CITYONLINE,"Provides internet and intranet services, data center solutions, custom Wi-Fi solutions, and managed services in India.",Yahoo,2026-11-04
 CJGEL,Makes and sells gelatine and related products in India.,Yahoo,2026-10-26
 CLEAN,"Makes fine and specialty chemicals in India, China, the United States, Europe, and abroad.",Yahoo,2026-11-02
 CLEANMAX,Works in development and maintenance of renewable energy projects and more.,Yahoo,2026-10-26
 CLEDUCATE,Provides education and test preparation training programmes in India and abroad.,Yahoo,2026-10-26
-CLFL,Works in leasing and financing activities in India.,Yahoo,2026-10-26
 CLIOINFO,"Provides software solutions and IT services for the insurance, capital market, and asset and wealth management industries in India.",Yahoo,2026-10-26
 CLSEL,Makes and sells rice in India.,Yahoo,2026-10-26
 CMBL,Works in the trading and investment in shares in India.,Yahoo,2026-10-26
@@ -788,10 +789,10 @@ CMSINFO,Provides cash management and managed services in India.,Yahoo,2026-10-26
 CMXLTD,Does not have significant operations.,Yahoo,2026-10-26
 CNL,"Distributes information technology, gaming, imaging, and lifestyle products in India and abroad.",Yahoo,2026-10-26
 COALINDIA,Makes and sells coal and coal products in India.,Yahoo,2026-10-29
+COARO,Provides road transportation of goods and logistics services in India.,Yahoo,2026-10-27
 COASTCORP,"Works in the process, production, and distribution of sea food products in India.",Yahoo,2026-10-26
 COCHINM,"Works in the manufacturing, marketing, and research activities in the mineral processing sector in India.",Yahoo,2026-10-26
 COCHINSHIP,Works in the building and repair of ships and offshore structures in India and abroad.,Yahoo,2026-10-26
-COCHMAL,The Cochin Malabar Estates And Industries Limited does not have significant operations.,Yahoo,2026-10-26
 COCKERILL,"Works in design, engineering, manufacturing, and installation of components of cold rolling mill complexes, processing lines and more.",Yahoo,2026-10-26
 COFFEEDAY,"Runs Café Coffee Day outlets in India, Europe, and abroad.",Yahoo,2026-10-26
 COFORGE,Provides information technology and IT-enabled services.,Yahoo,2026-10-26
@@ -818,6 +819,7 @@ CONSTRONIC,"Trades construction and building materials, blue metals, m-sand, cru
 CONSUMER,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 CONSUMIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 CONTAINER,Trades aluminum products in India.,Yahoo,2026-10-26
+CONTCHM,"Works in sale, purchase and licensing of Software in India and abroad.",Yahoo,2026-10-26
 CONTICON,Provides advisory services on real estate and technology-driven activities in India.,Yahoo,2026-10-26
 CONTILI,"Works in the sourcing, processing, packaging, and export/trading of food and grocery products in India.",Yahoo,2026-10-26
 CONTPTR,"Makes and sells lubricating oils, greases, specialty oils, SBP-solvents, transformer oils, fuels, and other products for automotive and industrial applications.",Yahoo,2026-10-26
@@ -895,7 +897,6 @@ DARSHANORNA,Trades gold and silver jewelry and ornaments in India.,Yahoo,2026-10
 DATAKOSA,Provides information technology and IT enabling services in India.,Yahoo,2026-10-26
 DATAMATICS,"Provides intelligent solutions for data-driven businesses in the United States, the United Kingdom, Europe, and abroad.",Yahoo,2026-10-26
 DATAPATTNS,Provides defense and aerospace electronics solutions in India.,Yahoo,2026-10-26
-DATIWARE,Works in the aquaculture and maritime infrastructure development.,Yahoo,2026-11-03
 DAULAT,Provides stock broking services in India.,Yahoo,2026-10-26
 DAVANGERE,Makes and sells sugar and molasses in India.,Yahoo,2026-10-26
 DBCORP,"Works in publishing newspapers, radio broadcasting, and digital platforms for news, and event management in India and abroad.",Yahoo,2026-10-26
@@ -921,6 +922,7 @@ DECCANCE,Makes and sells cement in India.,Yahoo,2026-10-26
 DECIPHER,Makes and sells pharmaceutical drugs in India and abroad.,Yahoo,2026-10-26
 DECNGOLD,"Works in the exploration, development, extraction, processing, and sale of gold in India.",Yahoo,2026-10-26
 DECOMIC,Works in the decorative laminated sheet business in India and abroad.,Yahoo,2026-10-26
+DECPO,Deccan Polypacks Limited does not have significant operations.,Yahoo,2026-10-26
 DEEDEV,"Makes and sells prefabricated engineering products, pipe fittings, and piping systems in India and abroad.",Yahoo,2026-10-26
 DEEP,Makes and sells filler masterbatches in India.,Yahoo,2026-10-26
 DEEPA,"Works in designing, processing, and suppling of hallmarked gold and precious stone studded jewellery in India.",Yahoo,2026-10-26
@@ -933,6 +935,7 @@ DEFENCE,"A fund, such as an ETF, that trades on the stock exchange.",Industry fa
 DEL,"Works in the manufacture, supply, marketing, and sale of lighting products under the Rashmi brand in India.",Yahoo,2026-10-26
 DELHIVERY,Provides supply chain solutions in India.,Yahoo,2026-11-04
 DELPHIFX,A foreign exchange services company in India.,Yahoo,2026-10-26
+DELTA,"Trades metals, diamonds, and shares and securities in India.",Yahoo,2026-10-26
 DELTACORP,"Works in the gaming and entertainment, and hospitality businesses in India and abroad.",Yahoo,2026-10-26
 DELTAMAGNT,"Makes and sells hard ferrites, soft ferrites, textile woven labels, heat transfer labels, fabric printed labels, and elastic/woven tape.",Yahoo,2026-10-26
 DEN,Sells television channels to households through a digital cable distribution network in India.,Yahoo,2026-10-26
@@ -951,6 +954,7 @@ DHAMPURE,"Works in manufacturing, processing, dealing, and selling of sugar and 
 DHAMPURSUG,Makes and sells sugar and its byproducts in India.,Yahoo,2026-10-26
 DHANBANK,Provides many banking and financial services in India.,Yahoo,2026-10-26
 DHANCOT,Works in buying and selling of quoted shares in India.,Yahoo,2026-10-26
+DHANFAB,Makes and processes textile and allied products/services in India.,Yahoo,2026-10-26
 DHANROTO,Trades paper and wood pulp in India.,Yahoo,2026-10-26
 DHANSAFAL,Provides retail financial services in India.,Yahoo,2026-10-26
 DHANUKA,An agro-chemical company in India.,Yahoo,2026-10-26
@@ -1020,8 +1024,6 @@ DSSL,Provides IT solutions and related services in India and abroad.,Yahoo,2026-
 DTIL,"Works in the cultivation, manufacture, and sale of loose and packet tea in India and abroad.",Yahoo,2026-10-26
 DUCON,"Provides solutions in the fields of flue gas desulphurization systems, air pollution control system, and material handling systems in India.",Yahoo,2026-10-26
 DUMMYHEG,A company listed on the stock exchange.,Industry fallback,2026-11-04
-DUMMYINGL1,A company in the Health Care sector.,Industry fallback,2026-11-04
-DUMMYINGL2,A company listed on the stock exchange.,Industry fallback,2026-11-04
 DUMMYINXGN,A company listed on the stock exchange.,Industry fallback,2026-11-04
 DUNCANENG,"Makes, assembles, and trades in fluid power and automation products in India and abroad.",Yahoo,2026-10-26
 DUROPACK,Makes and sells flexible packaging laminates in India.,Yahoo,2026-10-26
@@ -1031,6 +1033,8 @@ DVL,"Works in the treasury operations in shares and securities in India, Singapo
 DWARKESH,Makes and sells sugar in India.,Yahoo,2026-10-26
 DYCL,Makes and supplies cables and conductors in India and abroad.,Yahoo,2026-10-26
 DYNAMATECH,"Makes and sells engineered products to the aerospace, automotive, and hydraulic industries in India, the United States and more.",Yahoo,2026-10-26
+DYNAMICP,A non-banking financial company in India.,Yahoo,2026-10-27
+DYNAMIND,"Works in the manufacture and trade of dyes, chemicals, and pigments in India and abroad.",Yahoo,2026-10-26
 DYNAVSN,Works in the leasing of properties in India.,Yahoo,2026-10-26
 DYNPRO,Makes and sells dyes and dye intermediates in India.,Yahoo,2026-10-26
 E2E,Provides cloud computing services in India.,Yahoo,2026-10-26
@@ -1040,6 +1044,7 @@ EASTINDIA,"Makes and sells drums and barrels, and allied products in India.",Yah
 EASTRED,"Makes and sells, and deals in tread rubber, rubber-based adhesives, tyre retreading accessories, and retreading services in India.",Yahoo,2026-10-26
 EASTSILK,Makes and sells textile products under the Eastern brand in India.,Yahoo,2026-10-26
 EASTWEST,Provides logistics services in India and abroad.,Yahoo,2026-10-26
+EBANK10,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 EBGNG,Sells laptops and desktops through its Electronics Bazaar brand in India and abroad.,Yahoo,2026-10-26
 EBIX,"Provides software and e-commerce solutions for the insurance, finance, and healthcare industries.",Yahoo,2026-10-26
 ECAPINSURE,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
@@ -1112,10 +1117,10 @@ ENDURANCE,Makes and sells automotive components for original equipment manufactu
 ENERGY,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 ENERGYAXIS,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 ENERGYDEV,Generates and sells electricity from water and wind to many electricity boards in India.,Yahoo,2026-10-26
-ENEXT50,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 ENGINERSIN,"Provides design, engineering, procurement, construction, and integrated project management services for oil, gas, fertilizers, steel, railways, power, infrastructure and more.",Yahoo,2026-10-26
 ENIL,Runs FM radio broadcasting stations in India and abroad.,Yahoo,2026-10-26
 ENKEIWHEL,Makes and sells aluminium alloy casting wheels for two-wheelers and four-wheelers in India.,Yahoo,2026-10-26
+ENNATURE,A company in the Health Care sector.,Industry fallback,2026-11-04
 ENRIN,Works in energy business.,Yahoo,2026-10-26
 ENTERO,Trades pharmaceutical and surgical products in India.,Yahoo,2026-10-26
 ENTRINT,Trades textile goods in India.,Yahoo,2026-10-26
@@ -1127,7 +1132,7 @@ EPIGRAL,Makes and sells chlor-alkali and derivative products in India and abroad
 EPL,"Makes and sells plastic packaging materials in the Americas, Europe, Africa, the Middle East, South Asia, and East Asia Pacific.",Yahoo,2026-10-26
 EPSOMPRO,Epsom Properties Limited does not have significant operations.,Yahoo,2026-10-26
 EPUJA,A faith-tech platform company in India.,Yahoo,2026-10-26
-EQUAL50,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
+EQUAL200,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 EQUAL50ADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 EQUIPPP,Provides IT solutions and services in India.,Yahoo,2026-10-26
 EQUITASBNK,"Provides many banking products and services to individuals and corporates, and micro, small, and medium enterprises in India.",Yahoo,2026-10-26
@@ -1135,6 +1140,7 @@ ERIS,Provides domestic branded formulations for chronic and sub-chronic therapie
 ESABINDIA,Makes and sells welding and cutting equipment and consumables in India and abroad.,Yahoo,2026-10-26
 ESAFSFB,Provides banking products and services to rural and semi-urban markets in India.,Yahoo,2026-10-26
 ESARIND,Provides asset finance services in India.,Yahoo,2026-10-26
+ESCORP,Provides portfolio management services in India.,Yahoo,2026-10-26
 ESCORTS,Makes and sells agricultural and construction equipment in India and abroad.,Yahoo,2026-11-02
 ESDS,"A provider of cloud and data center services, offering integrated solutions across cloud infrastructure, managed services, and software platforms.",Yahoo,2026-10-26
 ESENSEX,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
@@ -1160,11 +1166,13 @@ EVERFIN,Provides financial services in India.,Yahoo,2026-10-26
 EVEXIA,Trades pharmaceutical chemicals in India.,Yahoo,2026-10-26
 EVIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 EVINDIA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
+EVONILE,Works in Wholesale of pharmaceuticals and medical goods.,Screener About,2026-11-04
 EXCELINDUS,"Makes and sells speciality chemicals, intermediates, and actives in India and abroad.",Yahoo,2026-10-26
 EXCELSOFT,Designs and develops technology-based solutions in the education and e-learning space.,Yahoo,2026-10-26
 EXICOM,Makes and sells electric vehicle chargers and lithium-ion batteries in India and abroad.,Yahoo,2026-10-26
 EXIDEIND,"Designs, manufactures, markets, and sells lead acid batteries and accumulators in India and abroad.",Yahoo,2026-10-26
 EXPLEOSOL,"Provides software validation and verification services to the banking, financial services, and insurance industries worldwide.",Yahoo,2026-10-26
+EXPLICITFIN,A non-banking finance company in India.,Yahoo,2026-10-26
 EXPOEAPL,Makes and sells process plant equipment in India.,Yahoo,2026-10-26
 EXXARO,Works in the manufacture and trade of vitrified tiles used for flooring solutions in India and abroad.,Yahoo,2026-10-26
 EY,Provides custom merchandise solutions in India and abroad.,Yahoo,2026-10-28
@@ -1238,7 +1246,6 @@ FSL,"Provides technology-enabled business process services in Asia, the United K
 FUNDVISER,An investment company in India.,Yahoo,2026-10-26
 FUSION,Provides micro finance and MSME lending services in India.,Yahoo,2026-10-26
 FUSIONCX,"Provides integrated customer experience services in India, the United States, the United Kingdom, Canada, Europe, and abroad.",Yahoo,2026-10-26
-FUTSOL,Provides futuristic solutions of arbitration cases and recovery of disputed debts in India.,Yahoo,2026-10-29
 FYNX,Works in the commercial finance business in India.,Yahoo,2026-10-26
 GABRIEL,"Makes and sells ride control products to the automotive industry in India, the Netherlands, and abroad.",Yahoo,2026-10-26
 GAEL,Works in the agro processing business in India and abroad.,Yahoo,2026-10-26
@@ -1247,7 +1254,6 @@ GAIL,A natural gas processing and distribution company in India and abroad.,Yaho
 GAJA,"A private equity and venture capital firm specializing in turnaround, series C and investments in smaller end of middle market.",Yahoo,2026-10-26
 GAJANANSEC,"Trades shares, securities, and derivatives in India.",Yahoo,2026-10-26
 GALACTICO,Makes and sells packaged drinking water in India.,Yahoo,2026-10-26
-GALADAFIN,Works in the lending business in India.,Yahoo,2026-10-26
 GALAGEX,Makes and sells automotive and industrial bearings and forged rings in India.,Yahoo,2026-10-26
 GALAPREC,Makes and sells precision components in India and abroad.,Yahoo,2026-10-26
 GALAXYSURF,Makes and sells surfactants and other specialty ingredients for the personal and home care industry in India and abroad.,Yahoo,2026-10-26
@@ -1262,7 +1268,6 @@ GANESHBE,"Works in the manufactures and sells specialty chemicals, food preserva
 GANESHCP,A fast-moving consumer goods company in India.,Yahoo,2026-10-26
 GANESHHOU,A real estate company in India.,Yahoo,2026-10-26
 GANGAFORGE,Makes and sells steel forging parts and machine components for automotive and non-automotive sectors in India.,Yahoo,2026-10-26
-GANGAPA,Makes and sells paper products in India.,Yahoo,2026-11-03
 GANGESSECU,Makes and sells tea and other related agricultural produce in India.,Yahoo,2026-10-26
 GANHOLD,Provides non-banking financial services in India.,Yahoo,2026-10-26
 GANONPRO,Works in trading and wholesale of many commodities in India and abroad.,Yahoo,2026-10-26
@@ -1324,6 +1329,7 @@ GINNIFILA,Makes and sells textile products in India and abroad.,Yahoo,2026-10-26
 GIPCL,"Works in the generation, transmission, and distribution of electricity to power purchasing companies in India.",Yahoo,2026-10-26
 GITARENEW,Works in the generation of electricity from non-conventional sources in India.,Yahoo,2026-10-26
 GKB,Makes and sells unfinished ophthalmic lenses in India and abroad.,Yahoo,2026-10-26
+GKCONS,A non-banking financial company in India.,Yahoo,2026-10-26
 GKENERGY,"Works in the design, manufacture, supply, transport, installation, testing, and commissioning of decentralized solar systems in India.",Yahoo,2026-10-26
 GKL,"Makes, wholesales, retails, and trades in gold and silver jewelry in India.",Yahoo,2026-10-26
 GKP,Makes and sells corrugated boxes in India.,Yahoo,2026-10-26
@@ -1370,6 +1376,7 @@ GOKAKTEX,"Makes and sells yarns, fabrics, and garments in India.",Yahoo,2026-10-
 GOKEX,"Designs, manufactures, and sells a range of garments.",Yahoo,2026-10-26
 GOKUL,"Works in the seed processing, solvent extraction, and refining edible and non-edible industrial oils in India and abroad.",Yahoo,2026-10-26
 GOKULAGRO,"Works in the production and distribution of edible, non-edible oils and derivatives, and feed meals in India and abroad.",Yahoo,2026-10-26
+GOLCA,Makes and sells woven carpets in India.,Yahoo,2026-11-04
 GOLDCOINHF,Works in dealing and trading in milk and other related materials in India.,Yahoo,2026-10-26
 GOLDENTOBC,"Works in the manufacturing, purchasing, processing, selling, and marketing tobacco and tobacco related products in India.",Yahoo,2026-10-26
 GOLDIAM,Makes and sells diamond-studded gold and silver jewelry products in India.,Yahoo,2026-10-26
@@ -1382,7 +1389,6 @@ GOODRICKE,Makes and sells tea in India and abroad.,Yahoo,2026-10-26
 GOODYEAR,"Makes and sells tyres, tubes, and flaps under the Goodyear brand in India.",Yahoo,2026-10-26
 GOPAL,"Makes and sells namkeen, gathiya, papad, and western snacks in India and abroad.",Yahoo,2026-10-26
 GORANIN,"Makes, manufactures, and deals in kitchen appliance and kitchenware in India.",Yahoo,2026-10-26
-GOTHIPL,Provides real estate and other related services in India.,Yahoo,2026-10-27
 GOURMET,"Works in the food and beverage industry in India, Sri Lanka, and Maldives.",Yahoo,2026-10-26
 GOWRALE,Works in investment and financing activities in India.,Yahoo,2026-10-26
 GOYALALUM,Trades aluminium and other metals in India.,Yahoo,2026-10-26
@@ -1436,7 +1442,6 @@ GSTL,Provides technology-enabled business enhancement solutions for pharmaceutic
 GTECJAINX,Offers information technology related computer services in India.,Yahoo,2026-10-26
 GTL,Provides network services in India.,Yahoo,2026-10-26
 GTLINFRA,"Owns, builds, operates, and maintains telecom towers and related infrastructure, supporting multiple technologies including 2G, 3G, 4G, 5G and more.",Yahoo,2026-10-26
-GTNINDS,Works in the manufacture and export of cotton yarn in India.,Yahoo,2026-10-26
 GTNTEX,GTN Textiles Limited engages trading of cotton yarn and realty in India.,Yahoo,2026-10-26
 GTPL,Provides digital cable television and broadband services in India.,Yahoo,2026-10-26
 GTTDATA,"Provides services to manufacturing, industrial products, and medical devices technology to develop and build products, processes, and infrastructure.",Yahoo,2026-10-26
@@ -1445,13 +1450,13 @@ GUFICBIO,"Makes and sells active pharmaceutical ingredients, generic pharmaceuti
 GUJALKALI,Makes and sells many chemical products in India.,Yahoo,2026-10-26
 GUJAPOLLO,"Makes and sells crushing and screening equipment for road and building construction, mining, and general infrastructure development.",Yahoo,2026-10-26
 GUJARATPOLY,Makes and sells ceramic capacitors in India and abroad.,Yahoo,2026-10-26
-GUJCONT,Makes and sells steel barrels in India.,Yahoo,2026-10-26
 GUJCOTEX,"Makes, bleaches, weaves, prints, and sells textile fabrics and other materials in India.",Yahoo,2026-10-26
 GUJCRAFT,"Makes, imports, and exports plastic packing materials in India and abroad.",Yahoo,2026-10-26
 GUJENERGY,Sells natural gas in India.,Yahoo,2026-10-26
 GUJHOTE,Works in hotelier business in India.,Yahoo,2026-10-26
 GUJINJEC,A company in Biotechnology (Healthcare sector).,Industry fallback,2026-11-04
 GUJINTRX,"Makes and supplies stainless, non-alloy, and alloy steel castings in India.",Yahoo,2026-10-26
+GUJINV,"Works in the ginning, spinning, weaving, manufacture, and sale of raw fabrics and other fabric materials.",Yahoo,2026-10-26
 GUJJUBHAI,"Trades, retails, produces, and franchises dry fruits under the GujjuBhai Foods in India.",Yahoo,2026-10-26
 GUJPETR,Makes and sells plastic polymers and blends in India.,Yahoo,2026-10-26
 GUJRAFFIA,"Makes and sells HDPE tarpaulin, PP bags, and allied products in India.",Yahoo,2026-10-26
@@ -1531,7 +1536,6 @@ HDFIRE,Makes and supplies fire protection equipment and systems in India.,Yahoo,
 HDIL,"Works in the real estate construction, development, and other related activities in India.",Yahoo,2026-10-26
 HEADSUP,Runs fashion apparels and accessories business in India and abroad.,Yahoo,2026-10-26
 HEALTHADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
-HEALTHAXIS,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 HEALTHCARE,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 HEALTHIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 HEALTHX,Runs a digital network of healthcare and portfolio management services in India.,Yahoo,2026-10-26
@@ -1608,6 +1612,7 @@ HONASA,A digital beauty and personal care company in India and abroad.,Yahoo,202
 HONAUT,Makes and sells industrial process control and automation systems in India and abroad.,Yahoo,2026-10-27
 HONDAPOWER,"Works in the manufacture, marketing, and sale of portable generators, water pumps, general purpose engines, lawn mowers and more.",Yahoo,2026-10-26
 HORIZONIND,"Horizon Industrial Parks Limited engaged in the business of developing, operating, and maintaining industrial and warehousing parks in India.",Yahoo,2026-10-26
+HOTLSILV,Works in the hotels and restaurants business in India.,Yahoo,2026-10-26
 HOWARHO,"Owns, operates, and manages hotels, palaces, and resorts in India.",Yahoo,2026-10-26
 HPAL,Makes and sells adhesives and sealants in India and abroad.,Yahoo,2026-10-26
 HPBL,Provides plastic packaging solutions in India.,Yahoo,2026-10-26
@@ -1656,7 +1661,7 @@ IGCIL,Trades premium agricultural products.,Yahoo,2026-10-26
 IGCL,"Makes and sells crop protection products, plant nutrients, and biological products to retail and institutional customers in India and abroad.",Yahoo,2026-10-26
 IGIL,"Provides independent certification and grading services for diamonds, color gemstones, and jewelry in India and abroad.",Yahoo,2026-10-26
 IGL,Distributes and sells natural gas in India.,Yahoo,2026-10-26
-IGLFXPL-B,Makes industrial and defence explosives and provides technical services related to blasting and mining applications.,Yahoo,2026-11-03
+IGLSPIRITS,A company listed on the stock exchange.,Industry fallback,2026-11-04
 IGPL,Makes and sells chemical products in India and abroad.,Yahoo,2026-10-26
 IIFL,Provides financial services in India and abroad.,Yahoo,2026-10-26
 IIFLCAPS,Provides capital market services in the primary and secondary markets in India.,Yahoo,2026-10-26
@@ -1672,7 +1677,6 @@ IMAGICAA,Develops and operates theme-based entertainment destinations in India.,
 IMEC,Provides management and consultancy services in India.,Yahoo,2026-10-26
 IMFA,Makes and sells ferro chrome in India and abroad.,Yahoo,2026-10-26
 IMPAL,Works in the sale and distribution of automobile spare parts and accessories for the automotive aftermarket in India.,Yahoo,2026-10-26
-IMPERA,Makes and sells textile products.,Yahoo,2026-11-03
 INA,Makes and sells solar panels and modules under INA brand name in India.,Yahoo,2026-10-26
 INANI,"Works in manufacturing, processing, and trading of granite, stone and marble blocks, slabs, tiles, and allied products in India.",Yahoo,2026-10-26
 INCAP,Makes and sells aluminum electrolytic capacitors in India and abroad.,Yahoo,2026-10-26
@@ -1706,7 +1710,6 @@ INDLEASE,"India Lease Development Limited, a non-banking finance company, involv
 INDNIPPON,Makes and sells electronic ignition systems for the automotive industry in India and abroad.,Yahoo,2026-10-26
 INDOAMIN,"Works in the manufacture, distribution, and sale of fine, performance, and specialty chemicals in India and abroad.",Yahoo,2026-10-26
 INDOBORAX,Makes and sells boron-based products in India.,Yahoo,2026-10-26
-INDOCITY,Provides financial services in India.,Yahoo,2026-10-26
 INDOCO,Makes and sells formulations and active pharmaceutical ingredients in India and abroad.,Yahoo,2026-10-26
 INDOEURO,"Trades specialty, organic, and inorganic chemicals in India.",Yahoo,2026-10-26
 INDOFARM,"Makes and sells agricultural, industrial, and construction equipment in India and abroad.",Yahoo,2026-10-26
@@ -1753,11 +1756,9 @@ INOXINDIA,"Makes and supplies cryogenic liquid storage and transport tanks for g
 INOXWIND,"Makes and sells wind turbine generators and components for independent power producers, utilities, public sector undertakings, businesses, and private investors.",Yahoo,2026-10-26
 INSECTICID,"Makes and sells agrochemicals, pesticides, and technical products for agriculture in India and abroad.",Yahoo,2026-10-26
 INSPIRISYS,Provides information technology services in India and abroad.,Yahoo,2026-10-26
-INSURADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 INSUREIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 INTECCAP,Provides loans to small and medium enterprises in India.,Yahoo,2026-10-26
 INTEGFD,Works in the trading and processing of many oil seeds in India.,Yahoo,2026-10-26
-INTEGHIT,"Develops income tax software and services in India, Singapore, and the United States.",Yahoo,2026-10-26
 INTEGRAEN,Makes machineries and components in India and abroad.,Yahoo,2026-10-26
 INTELLECT,"Designs Arena Limited engages in the development, marketing, and sale of integrated banking software systems in India and abroad.",Yahoo,2026-10-26
 INTENTECH,Provides enterprise platform and IP-enabled service organization services in India.,Yahoo,2026-10-26
@@ -1786,6 +1787,7 @@ IRIS,Provides regulatory technology solutions in India and abroad.,Yahoo,2026-10
 IRISDOREME,"Works in the designing, manufacturing, branding, and sale of readymade garments in India.",Yahoo,2026-10-26
 IRMENERGY,"Works in the laying, building, operating, and expanding of city and local natural gas distribution networks in India.",Yahoo,2026-10-26
 IRONWOOD,Provides vocational education services in India and abroad.,Yahoo,2026-10-26
+ISERA,Works in the IT/ITES business in India.,Yahoo,2026-10-26
 ISFL,A non-banking finance company in India.,Yahoo,2026-10-26
 ISFT,Works in the development and delivery of e-commerce and e-cards through internet platforms in India and abroad.,Yahoo,2026-10-26
 ISGEC,Provides engineering solutions worldwide.,Yahoo,2026-10-26
@@ -1825,7 +1827,6 @@ JAIBALAJI,Makes and sells iron and steel products in India.,Yahoo,2026-10-26
 JAICORPLTD,Works in the plastic processing business in India and abroad.,Yahoo,2026-10-26
 JAIHIND,"Works in the manufacturing, dealing, brokering, agency, distribution, dyeing, printing, and bleaching textile fibers, yarn, cloth, cotton, woolen and more.",Yahoo,2026-10-26
 JAIMATAG,Trades glass in India.,Yahoo,2026-10-26
-JAINCO,A non-banking financial company.,Yahoo,2026-10-26
 JAINEX,"Makes and sells gear hobs, special cutting and inspection tools, and precision accessories under the Aamcol brand in India.",Yahoo,2026-10-26
 JAINREC,"Works in the recycling scraps of non-ferrous metals, and non-metallic materials in India and abroad.",Yahoo,2026-10-26
 JAIPAN,Makes and sells electronic household accessories in India.,Yahoo,2026-10-26
@@ -1837,9 +1838,9 @@ JARO,Provides student enrolments and program management services in India.,Yahoo
 JASCH,"Makes and sells coated textiles and synthetic leathers in India, North America, South Africa, and Europe.",Yahoo,2026-10-26
 JASH,"Makes and sells in, and sells many engineering products for general engineering, water and wastewater, power plant and more.",Yahoo,2026-10-26
 JATTAINDUS,"Works in the import, purchase, trading, distribution, supply, sale, and export of agricultural products, edible oils, food products and more.",Yahoo,2026-10-26
+JAUSPOL,"Makes and sells polyethylene terephthalate jars, bottles, and caps in India.",Yahoo,2026-10-26
 JAYAGROGN,Makes and sells castor oil and its derivatives in India and abroad.,Yahoo,2026-10-26
 JAYBARMARU,Makes and sells auto components and assembly systems in India.,Yahoo,2026-10-26
-JAYBHCR,Jayabharat Credit Limited does not have significant operations.,Yahoo,2026-10-27
 JAYCH,Works in the chemical trading business in India.,Yahoo,2026-10-26
 JAYKAY,"Works in additive manufacturing, prototyping, and 3D printing technology business in India.",Yahoo,2026-10-26
 JAYKAYPP,"Works in additive manufacturing, prototyping, and 3D printing technology business in India.",Yahoo,2026-10-26
@@ -1867,7 +1868,6 @@ JIOFIN,"Works in investing and financing, insurance broking, payment bank and pa
 JISLDVREQS,"Makes and sells precision-irrigation systems in India, Europe, North America, and abroad.",Yahoo,2026-10-26
 JISLJALEQS,"Makes and sells precision-irrigation systems in India, Europe, North America, and abroad.",Yahoo,2026-10-26
 JITFINFRA,Develops urban infrastructure and water infrastructure in India.,Yahoo,2026-10-26
-JJFINCOR,Works in the investment and other financing services in India.,Yahoo,2026-10-26
 JKAGRI,"Develops, produces, processes, and markets seeds in India and abroad.",Yahoo,2026-10-26
 JKCEMENT,Makes and sells cement and its related products in India and abroad.,Yahoo,2026-10-26
 JKIL,Works in the construction business in India.,Yahoo,2026-10-26
@@ -1921,7 +1921,6 @@ JWL,"Makes and sells railway wagons, wagon components, and railway transportatio
 JYOTHYLAB,"Makes and sells fabric care, dishwashing, personal care, and household insecticides products in India and abroad.",Yahoo,2026-10-26
 JYOTI,"Designs, manufactures, and sells pumps and EPC pumping systems in India.",Yahoo,2026-10-26
 JYOTICNC,"Makes and sells metal cutting computer numerical control machines in India, rest of Asia, Europe, the Middle East and more.",Yahoo,2026-10-26
-JYOTIN,Works in business of finance and investments.,Screener About,2026-11-03
 JYOTIRES,Makes and sells synthetic wood adhesives and related products under the EURO7000 brand in India.,Yahoo,2026-10-26
 JYOTISTRUC,"Makes and sells transmission line towers, substation structures, tall antenna towers, and masts in India and abroad.",Yahoo,2026-10-26
 KABRADG,Works in the manufacture and trade of pharmaceutical products.,Yahoo,2026-10-26
@@ -1971,6 +1970,7 @@ KARNAWATI,Makes and sells mineral water and PET bottles in India.,Yahoo,2026-10-
 KARTKIN,An investment holding company in India.,Yahoo,2026-10-26
 KARURVYSYA,Provides many banking and financial services for personal and corporate customers in India.,Yahoo,2026-10-26
 KATIPATANG,Works in the manufacture and sale beer under the Katti Patang brand.,Yahoo,2026-10-26
+KATRSPG,Makes and sells cotton yarn in India.,Yahoo,2026-10-26
 KAUSHALYA,Works in executing construction contracts relating to infrastructure and real estate developments in India.,Yahoo,2026-10-26
 KAVDEFENCE,"Works in the design, development, and manufacture subsystem products, antennas and RF components, for defence, railroad transport, airports and more.",Yahoo,2026-10-26
 KAYA,Provides skin and hair care solutions through scientific dermatological procedures and products in India.,Yahoo,2026-10-26
@@ -1987,14 +1987,12 @@ KDGREEN,"Works in the manufacture, import, export, and trading of iron and steel
 KEC,"Works in the engineering, procurement, and construction business.",Yahoo,2026-10-26
 KECL,Makes and sells many electrical equipment in India and abroad.,Yahoo,2026-10-26
 KEEPLEARN,Provides technical services to educational institution in India.,Yahoo,2026-10-26
-KEERTHI,"Works in the manufacturing, sale, and distribution of cement in India, Malaysia, and abroad.",Yahoo,2026-10-26
 KEI,Makes and sells wires and cables in India and abroad.,Yahoo,2026-10-26
 KEIL,"Makes and sells asbestos cement pressure pipes, asbestos cement corrugated roofing sheets, and allied products in India.",Yahoo,2026-10-26
 KEL,Trades bleached hardwood kraft pulp in India.,Yahoo,2026-10-26
 KELENRG,"Makes and sells cartridge explosives, bulk emulsion explosives, mono methyl amine nitrate solutions, expanded perlite products and more.",Yahoo,2026-10-26
 KELLTONTEC,"Provides digital transformation, ERP, and other IT services in APAC, Europe, the United States, and abroad.",Yahoo,2026-10-26
 KEMISTAR,"Works in the manufacture, import, export, and trading of chemicals, dyes, pigments, pesticides, intermediates, and specialty chemicals in India.",Yahoo,2026-10-26
-KENFIN,A non-systemically important non-deposit taking non-banking financial company in India.,Yahoo,2026-10-26
 KENNAMET,Makes and sells hard metal products and machine tools.,Yahoo,2026-10-26
 KENVI,"Works in the designing, manufacturing, retailing, wholesaling, and trading of jewelries in India.",Yahoo,2026-10-26
 KERALAYUR,Makes and sells ayurvedic products in India.,Yahoo,2026-10-26
@@ -2008,7 +2006,6 @@ KEYFINSERV,"Provides investment banking, corporate and ESOP advisory, and broker
 KFBL,Makes and sells yeast and its derivatives in India.,Yahoo,2026-10-26
 KFINTECH,"A corporate registrar and transfer agency in India, the United States, Canada, and abroad.",Yahoo,2026-10-26
 KGDENIM,"Makes and sells denim, apparel, and home fabrics abroad.",Yahoo,2026-10-26
-KGPETRO,Makes and sells textile products in India and abroad.,Yahoo,2026-10-28
 KHADIM,Retails footwear and accessories in India and abroad.,Yahoo,2026-10-26
 KHAICHEM,"Makes and sells single super phosphate, sulphuric acid, and other chemicals in India.",Yahoo,2026-10-26
 KHAITANLTD,Trades electrical goods in the agriculture and sugar sectors in India.,Yahoo,2026-10-26
@@ -2026,6 +2023,7 @@ KINETICENG,"Makes and supplies automotive components for two-wheelers, three-whe
 KINGFA,"Kingfa Science & Technology Limited manufacturing and supply of high-quality reinforced polypropylene compounds, thermoplastics elastomers, and fiber re-enforced composites.",Yahoo,2026-10-26
 KINGSINFR,An aquaculture company in India and abroad.,Yahoo,2026-10-26
 KIOCL,"A flagship company under the Ministry of Steel, GoI, with Miniratna status.",Screener About,2026-10-26
+KIRANPR,Works in trading business in India.,Yahoo,2026-10-26
 KIRANVYPAR,A non-banking financial and non-deposit taking company in India.,Yahoo,2026-10-26
 KIRIINDUS,"Makes and sells dyes, dye intermediates, and basic chemicals in India and abroad.",Yahoo,2026-10-26
 KIRLFER,"Makes and sells iron castings, seamless tubes, and engineering steels in India and abroad.",Yahoo,2026-10-26
@@ -2045,7 +2043,6 @@ KLBRENG-B,"Designs, manufactures, supplies, installs, and commissions customized
 KLRFM,Works in the food processing and engineering businesses in India.,Yahoo,2026-10-26
 KMCSHIL,Provides medical and healthcare services in India.,Yahoo,2026-10-26
 KMEW,Owns and operates marine crafts in India.,Yahoo,2026-10-26
-KMFBLDR,Works in the construction and real estate businesses in India.,Yahoo,2026-10-26
 KMSUGAR,Works in manufacturing and sells of sugar in India.,Yahoo,2026-10-26
 KNACK,A packaging solutions provider.,Yahoo,2026-10-26
 KNAGRI,"Makes and sells edible oils, animal feed ingredients, and soy value added products in India and abroad.",Yahoo,2026-10-26
@@ -2106,6 +2103,7 @@ KTKBANK,Provides many banking and financial services in India.,Yahoo,2026-10-26
 KUANTUM,"Makes and sells agro- and wood-based writing and printing, copier, and specialty paper products in India and abroad.",Yahoo,2026-10-26
 KUBERJI,Works in the trading business India.,Yahoo,2026-10-26
 KUMPFIN,Provides many financial services in India.,Yahoo,2026-10-26
+KUNSTOFF,Works in the polymer processing and related businesses in India.,Yahoo,2026-10-26
 KUSHIND,Works in the textile and ceramic business in India.,Yahoo,2026-10-26
 KUSUMGAR,Makes and sells a range of technical textile fabrics.,Yahoo,2026-10-26
 KUWERIN,Works in metalizing and embossing polyester and BOPP films business in India.,Yahoo,2026-10-26
@@ -2122,7 +2120,6 @@ LAKESHORE,Works in the real estate business in India.,Yahoo,2026-10-26
 LAKHOTIA,Makes and sells metallic yarns and textile fabrics in India and abroad.,Yahoo,2026-10-26
 LAKPRE,Makes and sells high tensile fasteners in India.,Yahoo,2026-10-26
 LAKSELEC,Makes and sells control panels and plastic components in India and abroad.,Yahoo,2026-10-26
-LAKSHMIEW,Provides warehouse rental services in India and abroad.,Yahoo,2026-10-26
 LAKSHMIMIL,Makes and sells yarns and fabrics in India and abroad.,Yahoo,2026-10-26
 LAL,"Designs, manufactures, markets, and distributes ready-made garments in India.",Yahoo,2026-10-26
 LALITHAA,"Designs, manufactures, and sells gold, silver, diamond, and other jewellery products in India and abroad.",Yahoo,2026-10-26
@@ -2169,6 +2166,7 @@ LIBORDFIN,"Works in the financial services, working capital loans, project finan
 LICHSGFIN,"Provides loans for the purchase, construction, repair, and renovation of houses/buildings in India.",Yahoo,2026-10-30
 LICI,"Provides life insurance products in India, Fiji, Mauritius, and the United Kingdom.",Yahoo,2026-10-26
 LICNETFN50,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
+LICNETFSEN,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 LICNMID100,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 LIKHITHA,"Works in laying, erection, testing, and commissioning of oil and gas pipelines in India.",Yahoo,2026-10-26
 LIMECHM,Makes and sells precipitated and coated calcium carbonate in India.,Yahoo,2026-10-26
@@ -2275,6 +2273,7 @@ MANKIND,"Develops, manufactures, and markets pharmaceutical formulations and con
 MANOMAY,Makes and sells denims and denim fabrics in India and abroad.,Yahoo,2026-10-26
 MANORAMA,"Makes, processes, and supplies specialty fats and butters from tree-borne, and plant-based seeds worldwide.",Yahoo,2026-10-26
 MANORG,Makes and sells chemicals for the industrial and consumer markets in India and abroad.,Yahoo,2026-10-26
+MANSIFIN,Works in lending and investment activities in India.,Yahoo,2026-10-27
 MANTRA,Provides investment and financial services in India.,Yahoo,2026-10-26
 MANUFGBEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 MANUGRAPH,Makes and sells printing machines in India and abroad.,Yahoo,2026-10-26
@@ -2298,7 +2297,6 @@ MASKINVEST,Works in the finance and investment activities in India.,Yahoo,2026-1
 MASPTOP50,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 MASTEK,"Provides enterprise technology solutions in India, the United Kingdom, Europe, North America, Middle East region, South-east Asia, India and more.",Yahoo,2026-10-26
 MASTERTR,Provides financial services in India.,Yahoo,2026-10-26
-MATHEWE,Works in the investment and finance activities in India.,Yahoo,2026-10-26
 MATRIMONY,Provides online matchmaking services on internet and mobile platforms in India and abroad.,Yahoo,2026-10-26
 MAWANASUG,Makes and sells sugar products in India.,Yahoo,2026-10-26
 MAXESTATES,Works in Construction and development of residential and commercial properties.,Yahoo,2026-10-26
@@ -2320,6 +2318,7 @@ MCCHRLS-B,Works in the generation of electricity through wind turbine generators
 MCL,Makes and sells copper wires and cables in India.,Yahoo,2026-10-26
 MCLEODRUSS,"Works in the cultivation and production, and sale of tea in India, the United Kingdom, and Europe.",Yahoo,2026-10-26
 MCLOUD,Provides IT solutions in India.,Yahoo,2026-10-26
+MCLTD,Sells and distributes mobile phones and accessories in India.,Yahoo,2026-10-26
 MCX,Provides a platform to facilitate online trading of commodity derivatives in India.,Yahoo,2026-11-03
 MDRNSTL,Works in the steel manufacturing business in India.,Yahoo,2026-10-26
 MEAPL,Works in the construction and development of infrastructure projects in India.,Yahoo,2026-10-26
@@ -2339,7 +2338,10 @@ MEGAMONT,Works in import-export and trading services.,Yahoo,2026-10-26
 MEGASTAR,Works in the bulk food processing and producing a range of wholesome wheat flour products in India.,Yahoo,2026-10-26
 MEGRISOFT,Provides digital solutions and web-based products in India and abroad.,Yahoo,2026-10-26
 MEHAI,"Works in trading, dealing, installation, commission, maintaining and repairing all kinds of electrical and electronic goods.",Yahoo,2026-10-26
+MEHIF,Works in capital market investment and consulting business in India.,Yahoo,2026-10-26
+MEHSECU,Works in share and securities broking and intermediation services in India.,Yahoo,2026-11-04
 MEIL,"Works in the manufacture and trade of electrical transformers, cold rolled grain oriented electrical steel, electrical accessories and more.",Yahoo,2026-10-26
+MELSTAR,Nologies Limited does not have significant operations.,Yahoo,2026-11-04
 MENAMANI,Trades biofuels in India.,Yahoo,2026-10-26
 MENNPIS,Makes and sells auto components in India.,Yahoo,2026-10-26
 MENONBE,Makes and sells auto components in India.,Yahoo,2026-10-26
@@ -2367,7 +2369,6 @@ MHRIL,"Works in the leisure hospitality sector in India, Finland, Sweden, Spain,
 MICEL,"Designs, develops, manufactures, and sells Light-Emitting Diode based street lights and video displays in India.",Yahoo,2026-10-26
 MID150BEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 MID150CASE,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
-MIDAAS,"Makes sodium dichromate, basic chrome sulphate, sodium sulphate anyhydrous and chrome oxide green using rotary batch oil fired technology.",Yahoo,2026-10-26
 MIDBANKADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 MIDCAPADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 MIDCAPETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
@@ -2384,6 +2385,7 @@ MIIL,Works in the real estate development business in India.,Yahoo,2026-10-26
 MIL,Trades pharmaceutical products.,Yahoo,2026-10-26
 MILESTONE,"Makes and sells polished granite monuments and memorials in India, the United States, Europe, Canada, and abroad.",Yahoo,2026-10-26
 MILKYMIST,Makes and supplies dairy products.,Yahoo,2026-10-26
+MILLENNIUM,Provides many services relating to computer hardware and its peripherals India.,Yahoo,2026-10-26
 MINALIND,"A diamantaire, and jewelry and engineering company worldwide.",Yahoo,2026-10-26
 MINAXI,"Works in weaving, manufacturing, and selling cotton and cotton mixture fabrics in India.",Yahoo,2026-10-26
 MINDACORP,"Makes and sells automobile components and parts in India, rest of Asia, America, Europe, and Africa.",Yahoo,2026-10-26
@@ -2397,12 +2399,11 @@ MITCON,Provides consultancy and training services in India.,Yahoo,2026-10-26
 MITSHI,Trades fruits and vegetables products in India.,Yahoo,2026-10-26
 MITSU,Makes plastic blow and injection molded products in India and abroad.,Yahoo,2026-10-26
 MITTAL,Works in supply of bottom weight fabrics and denims in India.,Yahoo,2026-10-26
-MIVENMACH,Makes and sells CNC turning machines and ancillary machines in India.,Yahoo,2026-10-26
 MIZVEN,Works in construction works and infrastructure activities in India.,Yahoo,2026-10-26
 MKEXIM,"Makes and sells fabrics, garments, and jewelry products in India.",Yahoo,2026-10-26
+MKJEWELS,"Works in the retail sale of gold, diamond, and Cubic Zirconia jewellery through its showroom net work.",Screener About,2026-11-04
 MKPL,Makes and sells vegetable refined oil and by-products in India.,Yahoo,2026-10-26
 MKPMOB,Distributes and exports automobile spare parts and lubricants in India and abroad.,Yahoo,2026-10-26
-MKTCREAT,"Sells Creators Limited engages in direct equity broking, trading, and financial products distribution in India.",Yahoo,2026-10-26
 MKVENTURES,Works in the financing and investment business in India.,Yahoo,2026-10-26
 MLKFOOD,Makes and sells dairy products in India.,Yahoo,2026-10-26
 MMFL,Makes and sells steel forgings in India.,Yahoo,2026-10-26
@@ -2424,22 +2425,24 @@ MODIPON,Modipon Limited does not have significant operations.,Yahoo,2026-10-26
 MODIRUBBER,"Makes and sells automobile tyres, tubes, and flaps in India.",Yahoo,2026-10-26
 MODIS,Works in the real estate business in India.,Yahoo,2026-10-26
 MODISONLTD,"Makes and sells electrical contacts for low, medium, and high voltage switchgear industries in India and abroad.",Yahoo,2026-10-26
-MODMA,"Makes accessories and hardware for transmission lines, distribution lines, aerial optical fiber cables, aerial bunched cables and more.",Yahoo,2026-10-26
 MODRNSH,Provides stockbroking services in India.,Yahoo,2026-10-26
 MODTHREAD,Makes and sells wool and blended worsted yarn products in India.,Yahoo,2026-10-26
 MODULEX,"Works in production, building, supplying, fabricating, and manufacturing of modular steel buildings.",Yahoo,2026-10-26
 MOHEALTH,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 MOHITE,Works in the textile and power generation businesses in India.,Yahoo,2026-10-26
 MOHITIND,Works in manufacturing texturized yarn from partially oriented yarn and weaving of yarn to grey cloth in India.,Yahoo,2026-10-26
+MOHITPPR,"Makes writing, printing, and tissue papers in India and abroad.",Yahoo,2026-10-26
 MOIL,"Works in the exploration, exploitation, and marketing of many grades of manganese ores in India and abroad.",Yahoo,2026-10-26
 MOKSH,Makes and sells jewellery in India.,Yahoo,2026-10-26
 MOL,Makes and sells pigments and agrochemicals in India and abroad.,Yahoo,2026-10-26
 MOLBIO,Provides healthcare technologies to diagnose infectious and non-communicable diseases.,Yahoo,2026-10-26
 MOLDTECH,Provides civil and mechanical design engineering services in India and abroad.,Yahoo,2026-10-26
 MOLDTKPAC,Makes and sells plastic packaging containers in India.,Yahoo,2026-10-26
+MOLOWVOL,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 MOM100,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 MOM30IETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 MOM50,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
+MOMENTUM,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 MOMENTUM50,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 MOMMIDCAP,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 MOMOMENTUM,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
@@ -2450,11 +2453,9 @@ MONEYBOXX,Works in the lending and allied activities in India.,Yahoo,2026-10-26
 MONEYVIEW,"Works in the design, development, production, and distribution of many financial products in India.",Yahoo,2026-10-26
 MONGIPA,Provides a suite of financing products in India.,Yahoo,2026-10-26
 MONIFTY500,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
-MONIND,Makes and sells ferro alloys and allied products in India.,Yahoo,2026-10-26
 MONOT,Trades shares and incidental activities in India.,Yahoo,2026-10-26
 MONQ50,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 MONTECARLO,"Makes and sells woolen, cotton, cotton-blended, knitted, and woven garments for men, women, and kids in India and abroad.",Yahoo,2026-10-26
-MOQUALITY,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 MORARJEE,Makes and sells yarns and fabrics in India and abroad.,Yahoo,2026-10-26
 MORARKFI,A non-banking finance company in India.,Yahoo,2026-10-26
 MOREALTY,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
@@ -2490,6 +2491,7 @@ MTARTECH,"Makes and sells high precision, heavy equipment, components, and machi
 MTEDUCARE,Provides education support and coaching services in India and abroad.,Yahoo,2026-10-26
 MTNL,Provides telecommunication services in India.,Yahoo,2026-10-26
 MTPL,Provides financial services in India.,Yahoo,2026-10-26
+MUDUNURU,Provides software services in India.,Yahoo,2026-10-26
 MUFIN,Provides financing and investing services in India.,Yahoo,2026-10-26
 MUFTI,Works in the retail of men's casual wear under the MUFTI brand in India.,Yahoo,2026-10-26
 MUKANDLTD,Makes and sells alloy and stainless steel products in India and abroad.,Yahoo,2026-10-26
@@ -2504,6 +2506,7 @@ MULTIBASE,Makes and sells thermoplastic elastomers and silicone-based products i
 MULTICAP,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 MUNJALAU,Makes and sells auto components for motor vehicles in India.,Yahoo,2026-10-26
 MUNJALSHOW,Makes and sells auto components for the two-wheeler and four-wheeler industry in India and abroad.,Yahoo,2026-10-26
+MUNOTHFI,"Provides stock broking, depository participant, and portfolio management services in India.",Yahoo,2026-10-27
 MURUDCERA,"Makes and sells ceramic and vitrified floor and wall tiles in India, the Americas, Europe, and abroad.",Yahoo,2026-10-26
 MUTHOOTCAP,Provides fund and non-fund-based financial services in India.,Yahoo,2026-10-26
 MUTHOOTFIN,Provides gold loans in India.,Yahoo,2026-10-31
@@ -2516,6 +2519,7 @@ MYMONEY,Works in the stock broking business and financial services in India.,Yah
 MYSORPETRO,Makes and sells petrochemical products in India.,Yahoo,2026-10-26
 MYSTICELE,Provides manufacturing and investment services in electronic products and related activities in India.,Yahoo,2026-10-26
 NACLIND,Makes and sells agrochemicals in India.,Yahoo,2026-10-26
+NAGPI,Makes and sells high/medium/low carbon ferro manganese and silico manganese slag in India.,Yahoo,2026-10-26
 NAGREEKCAP,A publicly owned investment manager.,Yahoo,2026-10-26
 NAGREEKEXP,Works in the manufacturing and export of cotton yarn and other many merchandise in India and abroad.,Yahoo,2026-10-26
 NAGTECH,"Works in plantation, cultivation, and distribution of roses in India.",Yahoo,2026-10-26
@@ -2587,10 +2591,10 @@ NEULANDLAB,"Makes and sells active pharmaceutical ingredients in India, Europe, 
 NEWGEN,"Works in software product development in India, Europe, the Middle East, Africa, the Asia Pacific, Australia, and the United States.",Yahoo,2026-10-26
 NEWINFRA,Works in the real estate development business in India.,Yahoo,2026-10-26
 NEWLIGHT,"Makes and sells garments, tailored apparel and uniforms in India and abroad.",Yahoo,2026-10-26
-NEWMKTAVE,Sells Avenue Limited provides corporate consulting services in India.,Yahoo,2026-10-26
 NEWTRAC,TED does not have significant operations.,Yahoo,2026-10-26
 NEXOME,"Sells Limited engages in the merchant banking, and trading in government securities and shares in India.",Yahoo,2026-10-26
 NEXT50,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
+NEXT50ADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 NEXT50BETA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 NEXT50IETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 NEXTMEDIA,Does not have significant operations.,Yahoo,2026-10-26
@@ -2657,11 +2661,9 @@ NOL,Makes and sells industrial gases in liquid and gaseous forms in India.,Yahoo
 NORBTEAEXP,"Works in the growing, manufacturing, and marketing of tea in India.",Yahoo,2026-10-26
 NORRIS,Makes and sells pharmaceutical formulations in India.,Yahoo,2026-10-26
 NORTHARC,Provides lending and allied services in India.,Yahoo,2026-10-26
-NORTHLINK,Provides loans and other financial services in India.,Yahoo,2026-10-26
 NOUVEAU,Works in the multimedia businesses in India.,Yahoo,2026-10-26
 NOVAAGRI,Makes and sells agricultural inputs in India.,Yahoo,2026-10-26
 NOVAMAT,"Procures, stocks, processes, and supplies papers and paper products, steel, heavy machinery and more.",Yahoo,2026-10-28
-NOVARTIND,Works in the pharmaceutical business in India and abroad.,Yahoo,2026-10-26
 NOVELIX,"Makes and sells pharmaceutical bulk drugs and related products in activities related to healthcare research, analytics, and technology in India.",Yahoo,2026-10-26
 NOVIS,"Makes and sells iron and steel products, and metals in India and abroad.",Yahoo,2026-10-26
 NPL,Makes and sells hydrogen peroxide in India.,Yahoo,2026-10-26
@@ -2680,6 +2682,7 @@ NTPC,An integrated power company in India and Mauritius.,Yahoo,2026-10-31
 NTPCGREEN,Works in the renewable energy generation business in India.,Yahoo,2026-10-26
 NUCLEUS,Provides lending and transaction banking products to the financial services industry.,Yahoo,2026-10-26
 NURECA,Provides home healthcare and wellness products in India.,Yahoo,2026-10-26
+NUTECGLOB,"Makes and sells in, and sells cotton and synthetic fabrics in India.",Yahoo,2026-10-26
 NUVAMA,"Works in wealth management, asset management and services, and capital markets businesses in India and abroad.",Yahoo,2026-10-26
 NUVOCO,Makes and sale of cement and building materials products in India.,Yahoo,2026-10-26
 NV20IETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
@@ -2707,13 +2710,13 @@ OLAELEC,"Develops, manufactures, and sells electric vehicles in India.",Yahoo,20
 OLECTRA,Makes and sells electric buses and trucks in India.,Yahoo,2026-10-26
 OLPCL,"Makes and sells in, and sells cards in India.",Yahoo,2026-10-26
 OLYMPTX,Works in the e-commerce business in India.,Yahoo,2026-10-26
-OLYOI,Olympic Oil Industries Limited does not have significant operations.,Yahoo,2026-10-26
 OMAXAUTO,"Makes and sells automotive sheet metal components, frames, long members, and assemblies in India.",Yahoo,2026-10-26
 OMAXE,Works in real estate development activities in India.,Yahoo,2026-10-26
 OMEAG,Works in the processing and trading of agri seeds in India.,Yahoo,2026-10-26
 OMEGAIN,Works in the information technology business in India.,Yahoo,2026-10-26
 OMFREIGHT,"Provides logistics and allied services through sea, road, rail, and air in India.",Yahoo,2026-10-26
 OMINFRAL,"Works in the design, detail engineering, manufacture, supply, installation, testing and more.",Yahoo,2026-10-26
+OMKARPH,Provides business support services in India.,Yahoo,2026-10-26
 OMNI,Works in the manufacturing and supply of engineered components and assemblies worldwide.,Yahoo,2026-10-26
 OMNIAX,A software service provider in India.,Yahoo,2026-10-26
 OMNITEX,Trades textiles in India.,Yahoo,2026-10-26
@@ -2764,7 +2767,6 @@ OXFORDIN,"Oxford Industries Limited supplies cotton, cotton blended, linen, line
 OXYGENTAPH,"Makes and sells pharmaceutical, medical, and veterinary preparations in India and abroad.",Yahoo,2026-10-26
 PACEDIGITK,"A service providers in power management, optic fiber laying, and energy management solutions in India and abroad.",Yahoo,2026-10-26
 PACIFICI,"Makes and sells granite tiles and slabs, and quartz slabs in India.",Yahoo,2026-10-26
-PADALPO,Makes and sells filled and reinforced thermoplastic compounds and master batches products in India.,Yahoo,2026-10-26
 PADAMCO,Works in lending and investment business in India.,Yahoo,2026-10-26
 PADMAIND,Trades agriculture goods and commodity and agri materials in India.,Yahoo,2026-10-26
 PADMALAYAT,Works in film production and distribution in India.,Yahoo,2026-10-26
@@ -2801,13 +2803,13 @@ PARAS,"Designs, develops, manufactures, and tests defense and space engineering 
 PARASHLTH,Provides tertiary and quaternary healthcare services.,Yahoo,2026-10-28
 PARASPETRO,Paras Petrofils Limited does not have significant operations.,Yahoo,2026-10-26
 PARIN,"Works in the manufacture, supply, and trade of furniture and lifestyle products in India.",Yahoo,2026-10-26
+PARKERAC,Works in storage tank farm rental business in India.,Yahoo,2026-10-26
 PARKHOSPS,Runs a network of hospitals.,Yahoo,2026-10-26
 PARKHOTELS,"Owns, operates, and manages hotels in India.",Yahoo,2026-10-26
 PARLEIND,Works in the infrastructure and real estate businesses.,Yahoo,2026-10-26
 PARMCOS-B,Makes and sells cosmetic products for women in India.,Yahoo,2026-10-26
-PARMSILK,Makes and sells woven fabrics in India.,Yahoo,2026-10-26
 PARNAXLAB,Works in the manufacture and export of pharmaceutical formulations in India and abroad.,Yahoo,2026-10-26
-PARSHWANA,Works in the construction and development of housing projects in India.,Yahoo,2026-10-29
+PARSHVA,"Works in the sales and trade of gold and diamond jewelry, and cut and polished diamonds in India.",Yahoo,2026-10-26
 PARSVNATH,Works in the real estate development business in India.,Yahoo,2026-10-26
 PARVATI,Makes and sells sugar and its by-products in India.,Yahoo,2026-10-26
 PASARI,Pasari Spinning Mills Limited does not have any significant operations.,Yahoo,2026-10-26
@@ -2834,11 +2836,10 @@ PCS,Provides information technology related facility management services in Indi
 PDMJEPAPER,Makes and sells specialty paper products in India.,Yahoo,2026-10-26
 PDSL,"Designs, develops, sources, manufactures, markets, and distributes many readymade garments and other consumer products worldwide.",Yahoo,2026-10-26
 PEARLPOLY,"Makes and sells PET bottles, jars, and containers to consumers and industries in India.",Yahoo,2026-10-26
-PEETISEC,Works in the manufacture and trade of textiles and garments in India.,Yahoo,2026-10-26
 PEIL,"Works in construction, housing development, and energy businesses in India.",Yahoo,2026-10-26
 PENIND,An engineering company in India and abroad.,Yahoo,2026-10-26
 PENINLAND,Works in the real estate development business in India.,Yahoo,2026-10-26
-PEOPLIN,Provides financial consultancy services in India.,Yahoo,2026-10-26
+PERFEPA,Makes and sells corrugated packaging in India.,Yahoo,2026-10-26
 PERMAGN,"Makes and sells cast alloy permanent magnets, parts, and accessories of electricity and electric vehicle worldwide.",Yahoo,2026-10-26
 PERNIASPOP,"A fashion house, acquiring and managing designer brands and running an omni-channel platform for premium fashion retail.",Yahoo,2026-10-26
 PERSISTENT,"Provides software products, services, and technology solutions in India, North America, and abroad.",Yahoo,2026-10-26
@@ -2858,11 +2859,11 @@ PHARMABEES,"A fund, such as an ETF, that trades on the stock exchange.",Industry
 PHARMAID,"Provides contract research and manufacturing services for pharma, biotech, agro, and chemical industries in India.",Yahoo,2026-10-26
 PHARMAIETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 PHCAP,Trades shares and securities in India.,Yahoo,2026-10-26
-PHLSRG,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 PHOENIXLTD,"Works in the operation and management of malls, construction of commercial and residential properties, and hotel business in India.",Yahoo,2026-10-30
 PHOENXINTL,Works in leasing building properties in India.,Yahoo,2026-10-26
 PHOSPHATE,Works in the engages in manufacturing and trading of farm inputs in India.,Yahoo,2026-10-28
 PHOTON,"Works in the software services, information technology, and information technology enabled services in India.",Yahoo,2026-10-26
+PHOTOQUP,Trades digital studio flashlights and photographic accessories in India.,Yahoo,2026-10-26
 PHRMASI,Makes and sells oral contraceptive pills in India.,Yahoo,2026-10-26
 PHYTO,Makes and sells pesticides for the agriculture sector in India.,Yahoo,2026-10-26
 PICCADIL,Makes and sells alcoholic beverages in India and abroad.,Yahoo,2026-10-26
@@ -2898,6 +2899,7 @@ PODDARMENT,Makes and sells color and additive masterbatches for dope dyeing of m
 POEL,"Makes and sells many metals, chemicals, and its oxides in India and abroad.",Yahoo,2026-10-26
 POKARNA,"Works in the quarrying, manufacturing, processing, and selling of granites in India, China, the United States, and abroad.",Yahoo,2026-10-26
 POLICYBZR,Runs an online marketplace for insurance and lending products in India and the United Arab Emirates.,Yahoo,2026-10-30
+POLSON,Makes and sells synthetic organic tanning substances in India and abroad.,Yahoo,2026-10-26
 POLYCAB,Makes and sells wires and cables under the POLYCAB brand in India and abroad.,Yahoo,2026-10-26
 POLYCHEM,"Makes and sells polymers and co-polymers in India, the United Kingdom, the United States, the Netherlands, Germany, Japan, and Hungary.",Yahoo,2026-10-26
 POLYCHMP,Works in the manufacturing and export of many range of plastic processing machines in India and abroad.,Yahoo,2026-10-26
@@ -2910,7 +2912,6 @@ POOJA,Makes and sells brass products in India and abroad.,Yahoo,2026-10-26
 POOJAENT,Works in the film production and other related activities in India and abroad.,Yahoo,2026-10-26
 POONADAL,Makes and sells edible oils and pulses in India.,Yahoo,2026-10-26
 POONAWALLA,Provides consumer and MSME financing services in India.,Yahoo,2026-10-26
-POPEES,"Works in manufacturing, trading, import/export of textiles, yarn, cloth and readymade garments.",Yahoo,2026-10-26
 POPULARES,Works in the construction and development of buildings and infrastructure in India.,Yahoo,2026-10-26
 PORWAL,Makes and sells automobile components in India.,Yahoo,2026-10-26
 POWERGRID,Works in the power transmission business in India and abroad.,Yahoo,2026-11-03
@@ -2966,7 +2967,6 @@ PRITHVIEXCH,Works in the foreign exchange business under the Prithvi Exchange br
 PRITI,"Works in the manufacture, sale, and export of wooden, metal, and textile based furniture and handicraft products in India.",Yahoo,2026-10-26
 PRITIKAUTO,Makes and sells tractor and automobile components in India.,Yahoo,2026-10-26
 PRIVISCL,"Makes, supplies, and trades in aroma and fragrance chemicals in India and abroad.",Yahoo,2026-10-26
-PRIYALT,Trades electronics and chemicals in India.,Yahoo,2026-10-26
 PROCLB,Does not have significant operations.,Yahoo,2026-10-26
 PROFINC,Provides financial services in India.,Yahoo,2026-10-26
 PROMACT,"Works in the rental of godowns, and commission and brokerage business in India.",Yahoo,2026-10-26
@@ -3004,6 +3004,7 @@ PVVINFRA,Works in the steel trading and infrastructure development business.,Yah
 PWASML,Makes and sells mink blankets and bed covers in India.,Yahoo,2026-10-26
 PWL,Offers online and offline coaching and study material for test preparation of many competitive exams in India.,Yahoo,2026-10-26
 PYRAMID,"Makes and sells polymer-based molded products for chemical, agrochemical, specialty chemical, and pharmaceutical companies for their packaging applications in India.",Yahoo,2026-10-26
+QDLCCPS,A company listed on BSE.,Industry fallback,2026-11-04
 QGO,Provides financial services in India.,Yahoo,2026-10-26
 QMSMEDI,Distributes medical and healthcare products in India.,Yahoo,2026-10-26
 QNIFTY,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
@@ -3027,6 +3028,7 @@ RADHIKAJWE,Works in the manufacture and retail of jewelry in India.,Yahoo,2026-1
 RADIANTCMS,Provides cash logistics and other related services in India.,Yahoo,2026-10-26
 RADICO,"Makes and sells Indian made foreign liquor, country liquor, and other alcoholic products.",Yahoo,2026-10-27
 RADIOCITY,Works in the operating of FM radio stations under the Radio City brand name in India.,Yahoo,2026-10-26
+RADIXIND,Makes and sells human hair products in India.,Yahoo,2026-10-26
 RAGHUNAT,Works in real estate development business in India.,Yahoo,2026-10-26
 RAGHUSYN,Works in the manufacturing and processing of textiles in India.,Yahoo,2026-10-26
 RAGHUTOB,Works in the real estate development business in India.,Yahoo,2026-10-26
@@ -3046,7 +3048,6 @@ RAJPUTANA,"Works in the purchase, sale, and exchange of pre-owned luxury cars an
 RAJRATAN,"Makes and sells tyre bead wires in India, Thailand, the United States, and abroad.",Yahoo,2026-10-26
 RAJRILTD,"Works in the manufacture and trade of polyester chips, and polyester and processed yarns in India.",Yahoo,2026-10-26
 RAJSEC,Works in investment and securities trading business in India.,Yahoo,2026-10-26
-RAJSPTR,Works in clearing and forwarding agency and transportation business in India.,Yahoo,2026-11-03
 RAJSREESUG,"Works in the sugar, distillery, power, and biotechnology businesses in India.",Yahoo,2026-10-26
 RAJTUBE,"Makes and sells in, and sells steel tubes and pipes in India.",Yahoo,2026-10-26
 RAJTV,A television satellite broadcaster in India.,Yahoo,2026-10-26
@@ -3055,7 +3056,6 @@ RALEGRA,Makes and sells granite slabs and tiles in India.,Yahoo,2026-10-26
 RALLIS,Makes and sells agri input products in India and abroad.,Yahoo,2026-10-26
 RAMANEWS,Makes and sells packaged water bottles in India.,Yahoo,2026-10-26
 RAMAPHO,"Makes and sales phosphatic fertilizers, chemicals, soya, and micronutrients in India.",Yahoo,2026-10-26
-RAMAPPR-B,"Makes and sells newsprint, duplex board, and tissue papers in India.",Yahoo,2026-10-26
 RAMASTEEL,Makes and sells steel pipes and tubes in India.,Yahoo,2026-10-26
 RAMAVISION,"Works in the import, distribution, and marketing of many consumer products in India.",Yahoo,2026-10-26
 RAMBHAJO,"Designs, manufactures, and sells traditional and contemporary handcrafted fine jewelry.",Yahoo,2026-10-26
@@ -3072,6 +3072,7 @@ RANDER,Works in the financing and securities trading businesses in India.,Yahoo,
 RANEHOLDIN,Makes and sells automotive components for the transportation industry in India and abroad.,Yahoo,2026-10-26
 RAP,"Works in ownership, development, management, and leasing of real estate assets in India.",Yahoo,2026-10-26
 RAPICUT,Makes and sells tungsten carbide products in India and abroad.,Yahoo,2026-10-26
+RASANDIK,"Makes and sells sheet metal components, muffler assemblies, fuel tanks, tools and dies for motor vehicles, and spare parts.",Yahoo,2026-10-26
 RASIELEC,Makes and sells welding electrodes and consumables under the RASI brand in India.,Yahoo,2026-10-26
 RASRESOR,Owns and operates a hotel and resort in India.,Yahoo,2026-10-26
 RATEGAIN,"Provides solutions for hospitality and travel industries in India, North America, the Asia-Pacific, Europe, and abroad.",Yahoo,2026-10-26
@@ -3090,6 +3091,7 @@ RBLBANK,A scheduled commercial bank in India.,Yahoo,2026-10-26
 RBZJEWEL,Makes and sells jewelries and other accessories in India.,Yahoo,2026-10-26
 RCCL,Rajasthan Cylinders and Containers Limited does not have significant operations.,Yahoo,2026-10-26
 RCF,Makes and sells fertilizers and industrial chemicals in India.,Yahoo,2026-10-26
+RCL,Trades fabrics and fabrication materials in India.,Yahoo,2026-10-26
 RCOM,Provides wireline and wireless telecom services to the business and government segments.,Yahoo,2026-10-26
 RDBIPL,A real estate company in India.,Yahoo,2026-10-26
 RDBRL,Makes and sells polymer-based woven bags and flexible intermediate bulk container jumbo bags in India.,Yahoo,2026-10-26
@@ -3154,11 +3156,12 @@ RISHITECH,Makes and sells plastic woven sacks and shade nets in India and abroad
 RITCO,Provides logistics services in India.,Yahoo,2026-10-26
 RITES,"An engineering consultancy company in the field of railways, highways, airports, ports, ropeways, urban transport, and inland waterways.",Yahoo,2026-10-26
 RITESHIN,Makes and sells stearic acids and other non-edible oils for rubber and PVC industries in India.,Yahoo,2026-10-26
-RKDAGRRTL,"Works in the retail and wholesale trade of printing and stationery, and bags products in India.",Yahoo,2026-10-26
+RJSHAH,Works in construction of small and medium size hydroelectric project with EPC contract or civil work with hydro mechanical works.,Yahoo,2026-10-26
 RKDL,Makes and sellsdian made foreign liquors in India.,Yahoo,2026-10-26
 RKEC,Works in the civil and defense construction business in India.,Yahoo,2026-10-26
 RKFORGE,"Makes and sells forged components for automobiles, railway wagons and coaches, and engineering parts in India and abroad.",Yahoo,2026-10-26
 RKSWAMY,Provides integrated marketing services in India and abroad.,Yahoo,2026-10-26
+RLF,Works in the textile business in India.,Yahoo,2026-10-26
 RMC,Works in the switchgear engineering business in India.,Yahoo,2026-10-26
 RMDRIP,"Designs, manufactures, and sells micro irrigation equipment and components in India.",Yahoo,2026-10-26
 RML,Makes and sells auto components for transportation industry in India and abroad.,Yahoo,2026-10-26
@@ -3259,7 +3262,6 @@ SAMBANDAM,Makes and sells yarn and related products in India and abroad.,Yahoo,2
 SAMBHAAV,Works in print media and audio video media business in India.,Yahoo,2026-10-26
 SAMBHV,"Makes and sells electrical resistance welded steel pipes, structural tubes, and stainless-steel coils in India.",Yahoo,2026-10-26
 SAMHI,A hotel development and investment company in India.,Yahoo,2026-10-26
-SAMINDUS,Works in the real estate business in India.,Yahoo,2026-10-26
 SAMKRG,Makes and supplies automotive components in India and abroad.,Yahoo,2026-10-26
 SAMMAANCAP,A non-banking financial company in India.,Yahoo,2026-10-30
 SAMOR,An integrated construction and real estate development company in India.,Yahoo,2026-10-26
@@ -3270,9 +3272,8 @@ SAMRATPH,Makes and sells pharmaceutical chemicals in India.,Yahoo,2026-10-26
 SAMSRITA,A biopharmaceutical company in India.,Yahoo,2026-10-26
 SAMTELIN,Trades electrical and electronic goods.,Yahoo,2026-10-26
 SAMTEX,Makes and sells ready-made garments in India.,Yahoo,2026-10-26
+SAMYAKINT,"Trades many petroleum products, aluminum caps, and other commodities in India.",Yahoo,2026-10-26
 SANATHAN,Makes and sells yarn in India and abroad.,Yahoo,2026-10-26
-SANBLUE,Works in the trading business in India.,Yahoo,2026-10-26
-SANCTRN,Provides logistics services across multimodal transport operators and container freight station operations in India.,Yahoo,2026-10-28
 SANDESH,"Works in the editing, printing, and publishing of newspapers and periodicals in India.",Yahoo,2026-10-26
 SANDHAR,Works in the manufacturing and assembling of automotive components for the automotive industry in India and abroad.,Yahoo,2026-10-26
 SANDUMA,"Works in the mining of manganese and iron ores in Deogiri village of Ballari District, Karnataka.",Yahoo,2026-10-26
@@ -3284,6 +3285,7 @@ SANINFRA,Trades petroleum in India.,Yahoo,2026-10-26
 SANJIVIN,A pharmaceutical company in India.,Yahoo,2026-10-26
 SANOFI,"Makes and sells drugs and pharmaceutical products in India, Singapore and abroad.",Yahoo,2026-10-26
 SANOFICONR,A fast-moving consumer healthcare company in India.,Yahoo,2026-10-26
+SANPA,Makes paper in India.,Yahoo,2026-10-26
 SANSERA,"Makes and sells precision engineered components in India, Europe, the United States, and abroad.",Yahoo,2026-10-26
 SANSTAR,Makes and sells plant-based specialty products and ingredient solutions in India and abroad.,Yahoo,2026-10-26
 SANTETX,Makes and sells industrial fabrics in India and abroad.,Yahoo,2026-10-26
@@ -3294,7 +3296,6 @@ SAPPL,Makes and sells kraft paper in India.,Yahoo,2026-10-26
 SARDAEN,Makes and sells steel products in India and abroad.,Yahoo,2026-10-26
 SAREGAMA,An entertainment company in India and abroad.,Yahoo,2026-10-26
 SARLAPOLY,Makes and sells polyester and nylon yarns in India and abroad.,Yahoo,2026-10-26
-SARTHAKGL,Trades commodities in India.,Yahoo,2026-10-26
 SARTHAKIND,Trades agri and non agri-commodities in India.,Yahoo,2026-10-26
 SARVESHWAR,Makes and sells basmati and non-basmati rice in India and abroad.,Yahoo,2026-10-26
 SARVOTTAM,A non-banking financial company in India.,Yahoo,2026-10-26
@@ -3302,6 +3303,7 @@ SASKEN,"Provides product engineering and digital transformation services in Indi
 SATCH,Works in real estate development in India.,Yahoo,2026-10-26
 SATIA,Makes and sells writing and printing paper in India and abroad.,Yahoo,2026-10-26
 SATIN,Provides micro finance services in India.,Yahoo,2026-10-26
+SAUMYA,Works in the finance and investment activities in India.,Yahoo,2026-10-27
 SAURASHCEM,Makes and sells cement and paints in India.,Yahoo,2026-10-26
 SAVERA,Works in the hoteliering business in India.,Yahoo,2026-10-26
 SAWACA,Trades many chemical products and scrap materials in India.,Yahoo,2026-10-26
@@ -3320,6 +3322,7 @@ SBIDEFETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry 
 SBIEQLWT50,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 SBIFUNDS,A privately owned investment manager.,Yahoo,2026-10-26
 SBILIFE,A life insurance company in India.,Yahoo,2026-10-27
+SBIMID150,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 SBIMIDMOM,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 SBIN,Provides banking products and services in India and abroad.,Yahoo,2026-11-04
 SBINIFTY50,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
@@ -3329,7 +3332,6 @@ SBISMLETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry 
 SBIVALETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 SBL,Engages electric power generation using solar energy.,Yahoo,2026-10-26
 SCAGRO,"Works in seeds, fertilizers, pesticides, contract farming, and agro-processing business in India.",Yahoo,2026-10-26
-SCANPRO,Provides engineering services in India and Nepal.,Yahoo,2026-10-27
 SCANSTL,Makes and sells steel products in India.,Yahoo,2026-10-26
 SCBL,Trades agricultural produce and chemicals in India.,Yahoo,2026-10-26
 SCC,Provides financial services in India.,Yahoo,2026-10-26
@@ -3354,12 +3356,15 @@ SEDEMAC,Provides electronic control units to original equipment manufacturers in
 SEIL,Provides educational services in India.,Yahoo,2026-10-26
 SEJALLTD,Makes and sells value added glass in India and abroad.,Yahoo,2026-10-26
 SEKURITIND,Makes and sells laminated and tempered automotive glass in India.,Yahoo,2026-10-26
+SEL,Works in the real estate development business in India.,Yahoo,2026-10-26
 SELECTIPO,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 SELECTRIC,"Designs, manufactures, and supplies standard and customized enclosure systems in India, Sri Lanka, Bangladesh, Nepal, Europe, Pacific, and North America.",Yahoo,2026-10-26
 SEMAC,"Provides integrated design, engineering, procurement, construction, and consultancy services for commercial and industrial projects in India.",Yahoo,2026-10-26
 SENCO,"Makes and sells jewelry and articles made of gold, silver, platinum, and other precious and semi-precious stones.",Yahoo,2026-10-26
 SENORES,"Develops, manufactures, sells, and trades in pharmaceutical and allied products.",Yahoo,2026-10-26
 SENSEX1,An exchange traded fund launched by Kotak Mahindra Bank Limited.,Yahoo,2026-10-26
+SENSEXADD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
+SENSEXAXIS,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 SENSEXBEES,An exchange traded fund launched by Reliance Capital Ltd. It is managed by Reliance Capital Asset Management Limited.,Yahoo,2026-10-26
 SENSEXBETA,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 SENSEXETF,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
@@ -3421,6 +3426,7 @@ SHEKHAWATI,Works in the textile and real estate operation businesses in India.,Y
 SHEMAROO,Sells content for broadcasting of satellite channels and digital technologies in India.,Yahoo,2026-10-26
 SHERVANI,Works in the real estate business in India.,Yahoo,2026-10-26
 SHETR,Makes and sells metal packaging products in India and abroad.,Yahoo,2026-10-26
+SHGANEL,Invests in capital market and securities in India.,Yahoo,2026-10-26
 SHHARICH,"Makes, supplies, and exports dye intermediates in India and abroad.",Yahoo,2026-10-26
 SHILCTECH,Makes and sells transformers and parts in India and abroad.,Yahoo,2026-10-26
 SHILGRAVQ,"Makes and sells engraved copper rollers using electronic, laser, and chemical etching technologies in India.",Yahoo,2026-10-26
@@ -3431,6 +3437,7 @@ SHISHIND,"Works in the manufacture, trading, and marketing of polypropylene shee
 SHIVA,Provides financial services to businesses and corporates in India.,Yahoo,2026-10-26
 SHIVAAGRO,"Makes and sells fertilizers, soil and crop health products, oils, and de-oiled cakes in India.",Yahoo,2026-10-26
 SHIVACEM,Makes and sells cement and clinker products in India.,Yahoo,2026-10-26
+SHIVAGR,Works in the rolling and forging of agricultural implements and other products in India and abroad.,Yahoo,2026-10-26
 SHIVALIK,Makes and sells chemicals for the protection of plants in India.,Yahoo,2026-10-26
 SHIVAM-RE1,A company listed on the stock exchange.,Industry fallback,2026-11-04
 SHIVAMAUTO,Makes and sells auto transmission components for original equipment manufacturers in India and abroad.,Yahoo,2026-10-26
@@ -3444,6 +3451,7 @@ SHPLPUNE,Owns and operates a hotel.,Yahoo,2026-10-26
 SHRAAITECH,Provides solutions to the complex information management requirements.,Yahoo,2026-10-26
 SHRADDHA,Works in the real estate development business in India.,Yahoo,2026-10-26
 SHRADHA,Works in the real estate development business in India.,Yahoo,2026-10-26
+SHRAJSYNQ,Makes textile products in India.,Yahoo,2026-10-26
 SHRDAIS,Makes and sells alloy steel flat/rolled products for the automobile component industry in India.,Yahoo,2026-10-26
 SHREDIGCEM,Makes and sells cement in India.,Yahoo,2026-10-26
 SHREECEM,Makes and sells cement and clinker in India and abroad.,Yahoo,2026-10-26
@@ -3482,7 +3490,6 @@ SICAGEN,Works in the trade and distribution of building materials in India and a
 SICALLOG,Provides integrated logistics solutions in India.,Yahoo,2026-10-26
 SICAPIT,A money changer in India.,Yahoo,2026-10-26
 SIDDHA,"Works in the share trading, investment, and broking activities in India.",Yahoo,2026-10-26
-SIDDHEGA,Siddheswari Garments Limited does not have significant operations.,Yahoo,2026-11-03
 SIEL,Makes corrugated boxes in India.,Yahoo,2026-10-26
 SIEMENS,"Siemens Limited, a technology company, industry, infrastructure, mobility, and healthcare business in India and abroad.",Yahoo,2026-11-04
 SIGACHI,Makes and sells microcrystalline cellulose and cellulose powder in India.,Yahoo,2026-10-26
@@ -3490,6 +3497,7 @@ SIGIND,Works in the merchant trading of many polymer and plastic granules in Ind
 SIGMA,Works in the enterprise software development business worldwide.,Yahoo,2026-10-26
 SIGMAADV,"Designs, develops, and manufactures mission-critical platforms, sub-systems, and components.",Yahoo,2026-10-26
 SIGNATURE,A real estate development company in India.,Yahoo,2026-10-26
+SIGNGCL,"Makes and sells import, and export soya-based and green food products.",Yahoo,2026-10-28
 SIGNPOST,Provides advertising services in India.,Yahoo,2026-10-26
 SIIL,"Trades mobile phones, tablets, and accessories in India.",Yahoo,2026-10-26
 SIKA,"Works in manufacturing and rendering of services in engineering products and engineering projects/systems for aerospace, defense and space and more.",Yahoo,2026-10-26
@@ -3505,11 +3513,13 @@ SIMBHALS,Makes and sells sugar in India.,Yahoo,2026-10-26
 SIMMOND,Makes and sells industrial fasteners in India and abroad.,Yahoo,2026-10-26
 SIMPLEXCAS,Makes and sells castings and equipment worldwide.,Yahoo,2026-10-26
 SIMPLEXINF,A diversified infrastructure company in India and abroad.,Yahoo,2026-10-26
+SIMPLXPAP,Trades many paper products in India.,Yahoo,2026-10-26
 SIMPLXREA,Works in the real estate development business in India.,Yahoo,2026-10-26
 SIMRAN,Works in the poultry and poultry farming activities in India.,Yahoo,2026-10-26
 SINCLAIR,Works in the hospitality sector in India.,Yahoo,2026-10-26
 SINDHUTRAD,"Trades Links Limited engages in the mining, transportation, and loading services in India.",Yahoo,2026-10-26
 SINGERIND,"Makes and sells sewing machines and related accessories, and home appliances in India.",Yahoo,2026-10-26
+SINNAR,Trades tobacco to bidi manufacturers in India.,Yahoo,2026-10-26
 SINTERCOM,Makes and sells sintered metal components and auto components in India and abroad.,Yahoo,2026-10-26
 SIPL,Works in the infrastructure and real estate businesses in India and abroad.,Yahoo,2026-10-26
 SIRCA,Makes and sells wood coatings and decorative paints in India and abroad.,Yahoo,2026-10-26
@@ -3585,7 +3595,6 @@ SOUTHMG,Makes and sells magnesium metal in India.,Yahoo,2026-10-26
 SOUTHWEST,"Provides drilling, exploration, and allied services to coal, ferrous, non-ferrous, atomic, and base metal mining and more.",Yahoo,2026-10-26
 SOUTLAT,"Makes, processes, and sells rubberized coir and related products.",Yahoo,2026-10-26
 SOVERDIA,"Works in manufacturing, wholesale, export, and selling gold jewelry, diamond studded jewelry, and silver item.",Yahoo,2026-10-26
-SPACAPS,Works in the financial services business in India.,Yahoo,2026-10-26
 SPACEINCUBA,"Offers data communications services, incubation facilities, and training and value-added services in the field of app development in India.",Yahoo,2026-10-26
 SPAL,"Makes and sells knitted garments for infant wear, children's apparel, and intimate wear in India and abroad.",Yahoo,2026-10-26
 SPANDANA,Works in the microfinance business in India.,Yahoo,2026-10-26
@@ -3610,9 +3619,11 @@ SPMLINFRA,An infrastructure development company in India.,Yahoo,2026-10-26
 SPORTKING,"Makes, purchases, and sells textile yarns in India and abroad.",Yahoo,2026-10-26
 SPRAYKING,Makes and sells brass products in India.,Yahoo,2026-10-26
 SPRIGHT,Trades agricultural products in India.,Yahoo,2026-10-26
+SPSL,Works in the real estate business in India.,Yahoo,2026-10-26
 SPTRSHI,Trades mushrooms and other allied agricultural products in India.,Yahoo,2026-10-27
 SRAMSET,A publicly owned investment manager.,Yahoo,2026-10-26
 SRD,"Trades dyes, chemicals, and allied products.",Yahoo,2026-10-26
+SRECR,Makes and sells phenol-based resins and other allied products in India.,Yahoo,2026-11-04
 SREEL,Trades footwear and accessories in India.,Yahoo,2026-10-26
 SRESTHA,"Provides loans, finance, consultancy, and investment services in India.",Yahoo,2026-10-26
 SRF,"Makes, purchases, and sells technical textiles, chemicals, packaging films, and other polymers.",Yahoo,2026-10-26
@@ -3628,14 +3639,12 @@ SRMENERGY,SRM Energy Limited does not have significant operations.,Yahoo,2026-10
 SRTL,Makes and sells cotton yarn.,Yahoo,2026-10-26
 SRUSTEELS,"Trades stainless steel, construction machinery, footwear, and agriculture commodities in India.",Yahoo,2026-10-26
 SSDL,"Works in manufacturing and wholesale trading of sarees, dress materials, and allied women's traditional and ethnic wear garments in India.",Yahoo,2026-10-26
-SSPDL,Builds and develops commercial and residential properties in metropolitan and tier II cities in South India.,Yahoo,2026-10-26
 SSRETAIL,Sales consumer electronics products in India.,Yahoo,2026-10-26
 SSWL,"Works in the design, manufacture, and sale of automotive wheel rims and other auto components in India and abroad.",Yahoo,2026-10-26
 SSWRL,Makes and sells steel wire ropes in India.,Yahoo,2026-10-26
 STALLION,"Works in debulking, blending, and processing of refrigerants and industrial gases in India.",Yahoo,2026-10-26
 STANCAP,Sells Limited operates as a non-banking financial company in India.,Yahoo,2026-10-26
 STANLEY,"Designs, manufactures, sells, trades in, and exports furniture and leather products in India.",Yahoo,2026-10-26
-STANPACK,Makes polypropylene bags in India.,Yahoo,2026-10-26
 STANROS,"Works in inter-corporate investment, capital market, and financing activities.",Yahoo,2026-10-26
 STAR,"Works in the development, manufacturing, and marketing of pharmaceutical products in North America, Australia, Africa, Europe, India and more.",Yahoo,2026-10-26
 STARCEMENT,Makes and supplies cement and clinker products in India and abroad.,Yahoo,2026-10-26
@@ -3669,7 +3678,6 @@ STLTECH,Makes and sells telecom products in India and abroad.,Yahoo,2026-10-26
 STOVACQ,Makes and sells textile machinery and consumables in India and abroad.,Yahoo,2026-10-26
 STOVEKRAFT,Makes and sells kitchen and home solutions in India and abroad.,Yahoo,2026-10-26
 STRATMONT,"Trades coking coal, LAMC, steel, and other products in India.",Yahoo,2026-10-26
-STRGRENWO,Works in the real estate business in India.,Yahoo,2026-10-26
 STUDDS,"Works in the designing, manufacturing, marketing, and sale of helmets and riding accessories in India and abroad.",Yahoo,2026-10-26
 STYL,"Provides payment, communications and fulfilment, and IoT solutions in India.",Yahoo,2026-10-26
 STYLAMIND,Makes and sells laminates and allied products under the STYLAM brand name in India.,Yahoo,2026-10-26
@@ -3695,7 +3703,6 @@ SUMERUIND,Provides management consultancy services in India.,Yahoo,2026-10-26
 SUMICHEM,"Makes and sells household and public health insecticides, agricultural pesticides, and animal nutrition products in India and abroad.",Yahoo,2026-10-26
 SUMIT,Works in the real estate development in India.,Yahoo,2026-10-26
 SUMMITSEC,Works in investment and financial activities.,Yahoo,2026-10-26
-SUNCITYSY,"Makes polyester staple fiber, nylon granules, and PET bottle flakes in India.",Yahoo,2026-10-26
 SUNCLAY,Makes and sells non-ferrous gravity and pressure die castings in India.,Yahoo,2026-10-26
 SUNDARAM,"Designs, manufactures, and markets paper stationery products for students in India.",Yahoo,2026-10-26
 SUNDARMFIN,A non-banking finance company in India.,Yahoo,2026-11-02
@@ -3705,10 +3712,8 @@ SUNDROP,Makes and sells food products and edible oils in India and abroad.,Yahoo
 SUNFLAG,Makes and sells steel rolled products in India and abroad.,Yahoo,2026-10-26
 SUNGOLD,A non-banking finance company in India.,Yahoo,2026-10-26
 SUNILAGR,Trades wheat and wheat products in India.,Yahoo,2026-10-26
-SUNILTX,Makes and sells textiles in India.,Yahoo,2026-10-26
 SUNLOC,"Makes and sells empty hard gelatin, hydroxypropyl methylcellulose, and pullulan capsules shells in India and abroad.",Yahoo,2026-10-26
 SUNPHARMA,"Develops, manufactures, and markets branded and generic formulations, and active pharmaceutical ingredients in India, the United States, and abroad.",Yahoo,2026-10-30
-SUNRAJDI,"Works in manufacturing, trading, and exporting of gems and precious metals in India.",Yahoo,2026-10-26
 SUNRAKSHAK,"Works in the manufacture, processing, and sales of textiles in India.",Yahoo,2026-10-26
 SUNSHIEL,Makes and sells specialty chemicals in India and abroad.,Yahoo,2026-10-26
 SUNSHINE,"Works in film production, content development, media distribution, and allied entertainment services in India.",Yahoo,2026-10-26
@@ -3723,6 +3728,7 @@ SUPERTEX,Makes draw warped and sized yarn beams of polyester and nylon in India 
 SUPHA,Trades and sells active pharmaceutical ingredients and intermediates in India and abroad.,Yahoo,2026-10-26
 SUPRAJIT,"Makes and sells automotive cables, halogen lamps, speedometers, and other automotive components in India, the United States, and abroad.",Yahoo,2026-10-26
 SUPRAPFSL,A non-banking finance company in India.,Yahoo,2026-10-26
+SUPRATRE,Works in the restaurant and food services business in India.,Yahoo,2026-10-26
 SUPREME,Builds and develops commercial and residential projects in India.,Yahoo,2026-10-26
 SUPREMEENG,Makes and sells steel products in India.,Yahoo,2026-10-26
 SUPREMEIND,Makes and sells plastic products in India.,Yahoo,2026-10-26
@@ -3760,6 +3766,7 @@ SVRL,Makes and sells refined and raw oil in India.,Yahoo,2026-10-26
 SW1,Works in investment activities in India.,Yahoo,2026-10-26
 SWADEIN,Trades many and incidental activities products in India.,Yahoo,2026-10-26
 SWADPOL,Works in the real estate development and allied business activities in India.,Yahoo,2026-10-26
+SWAGTAM,"Provides real estate project management, consultancy, and support services in India.",Yahoo,2026-10-26
 SWANCORP,"Makes and sells cotton, polyester cotton, linen and viscose fabrics, and non-lycra products in India and abroad.",Yahoo,2026-10-26
 SWANDEF,"Works in the construction of vessels, repairs, and refits of ships and rigs and heavy engineering in India and abroad.",Yahoo,2026-10-26
 SWARAJ,"Manufacturing ecosystem spans cotton processing, spinning, weaving, yarn dyeing, denim, synthetic, and cotton fabrics.",Yahoo,2026-10-26
@@ -3775,7 +3782,6 @@ SWISSMLTRY,Makes and sells lifestyle products in India.,Yahoo,2026-10-26
 SWITCHTE,Makes and sells electronic components in India.,Yahoo,2026-10-26
 SWOJAS,Trades agricultural and allied products in India.,Yahoo,2026-10-26
 SWORDEDGE,Works in IT support and business support services in India.,Yahoo,2026-10-26
-SWRNASE,Works in the real estate and infra development sector in India.,Yahoo,2026-10-26
 SWSOLAR,"Provides renewable engineering, procurement, and construction services in India, Europe, the Middle East, North Africa, rest of Africa and more.",Yahoo,2026-10-26
 SYLPH,A software technology company in India.,Yahoo,2026-10-26
 SYMBIOTEC,"Develops, manufactures, and markets active pharmaceutical ingredients in India.",Yahoo,2026-10-26
@@ -3788,6 +3794,7 @@ SYSCHEM,"Makes and sells active pharmaceuticals ingredients, intermediates, and 
 SYSTMTXC,Provides merchant banking services in India.,Yahoo,2026-10-26
 TAALTECH,Provides engineering design services in India and abroad.,Yahoo,2026-10-26
 TAHMARENT,Works in the ethanol and distillery operations business in India.,Yahoo,2026-10-26
+TAIIND,"Works in trading, marketing and distribution, and retailing of packaged fruit and vegetable products under the DRUK brand.",Yahoo,2026-10-26
 TAINWALCHM,Makes and sells extruded plastic sheets in India.,Yahoo,2026-10-26
 TAJGVK,An owner and operator of luxury hotels in India.,Yahoo,2026-10-26
 TAKE,Provides domain-intensive services in life sciences and supply chain industries in India.,Yahoo,2026-10-26
@@ -3799,6 +3806,7 @@ TANDHANIN,Makes and sells plastic and polymer-based products in India.,Yahoo,202
 TANFACIND,Makes and sells fluorine chemicals in India.,Yahoo,2026-10-26
 TANLA,Provides cloud communication platforms as a service solution to enterprises in India and abroad.,Yahoo,2026-10-27
 TARACHAND,Provides logistics solutions in India.,Yahoo,2026-10-26
+TARAI,Makes and sells frozen fruits and vegetables using individual quick frozen freezing Technology in India.,Yahoo,2026-10-26
 TARAPUR,"Works in the manufacture, repair, refurbishment, and upliftment of transformers in India.",Yahoo,2026-10-26
 TARC,Works in real estate development in India.,Yahoo,2026-10-26
 TARIL,Makes and sells transformers in India.,Yahoo,2026-10-26
@@ -3825,7 +3833,6 @@ TCI,Provides end-to-end integrated supply chain and logistics solutions in India
 TCIEXP,Provides express delivery solutions in India and abroad.,Yahoo,2026-10-26
 TCIFINANCE,"A is a non-deposit-taking, non-banking financial company in India.",Yahoo,2026-10-26
 TCIIND,"Provides space for film shooting, TV serials, advertisements, and corporate and social events in India.",Yahoo,2026-10-26
-TCMLMTD,Works in the production and sales of cattle feeds in India.,Yahoo,2026-10-26
 TCPLPACK,"Makes and sells paperboard-based packaging, flexible packaging, rigid boxes, and gravure printing cylinders in India.",Yahoo,2026-10-26
 TCS,Provides information technology and IT enabled services.,Yahoo,2026-10-26
 TDPOWERSYS,Makes and sells AC generators and electric motors in India and abroad.,Yahoo,2026-10-26
@@ -3862,7 +3869,6 @@ TGBHOTELS,"Provides restaurant, banquet, and hotel services in India.",Yahoo,202
 TGVSL,"Makes and sells chlor-alkali chemicals, chloromethane, castor oil derivatives, and fatty acids in India and abroad.",Yahoo,2026-10-26
 THACKER,Trades scanners and related products in India.,Yahoo,2026-10-26
 THAKDEV,A real estate and construction company in India.,Yahoo,2026-10-26
-THAKRAL,"Provides electronic security solutions, including CCTV, access control, fire detection, alarms, and intrusion alarms in India.",Yahoo,2026-10-26
 THANGAMAYL,Runs a chain of retail jewelry stores in India.,Yahoo,2026-10-26
 THEINVEST,Provides investment banking and corporate finance activities in India.,Yahoo,2026-10-26
 THEJO,"Designs, develops, manufactures, and supplies rubber and polyurethane based engineering products for bulk material handling systems, mineral processing and more.",Yahoo,2026-10-26
@@ -3894,6 +3900,7 @@ TIPSFILMS,"Works in the production and distribution of films, web-series, and re
 TIPSMUSIC,Works in the acquisition and exploitation of music rights in India and abroad.,Yahoo,2026-10-26
 TIRSARJ,Works in the civil construction and real estate development businesses in India.,Yahoo,2026-10-26
 TIRTPLS,"Trades plastics, plastic materials, and its allied products in India.",Yahoo,2026-10-26
+TIRUFOAM,Makes and sells polyurethane foam and articles in India.,Yahoo,2026-10-28
 TIRUMALCHM,Makes and sells organic chemicals in India and abroad.,Yahoo,2026-10-26
 TIRUPATIFL,"Makes and sells carbon steel forged flanges, forged, and other automotive components in India.",Yahoo,2026-10-26
 TIRUPATIIN,A tyre manufacturer in India with a range of products catering to diverse business segments in the automobile industry.,Yahoo,2026-10-26
@@ -3949,6 +3956,7 @@ TRICOMFRU,Does not have significant operations.,Yahoo,2026-10-26
 TRIDENT,"Makes and sells textiles, Yarn, paper, chemicals, and energy in India, the United States, and abroad.",Yahoo,2026-10-26
 TRIGYN,Provides communications and information technology staffing support services in India and abroad.,Yahoo,2026-10-26
 TRILIANCE,"Works in the manufacturing, buying, selling, indenting, trading, imports, and export of many polymers and other products in India.",Yahoo,2026-10-26
+TRINITYLEA,Works in the management and financial consultancy business in India.,Yahoo,2026-10-27
 TRIOMERC,Works in trading activities in India.,Yahoo,2026-10-26
 TRISHAKT,"Works in heavy equipment hiring, and commission and consultancy business in India.",Yahoo,2026-10-26
 TRITONV,"Makes and sells valves, cores and accessories to tire, tube, and original equipment manufacturers in India and abroad.",Yahoo,2026-10-26
@@ -3965,7 +3973,6 @@ TRUEGREEN,Makes and sells grain based ethanol in India.,Yahoo,2026-10-26
 TRUSTEDGE,Works in the finance and investment businesses in India.,Yahoo,2026-10-26
 TRUSTWAVE,Provides financial services in India.,Yahoo,2026-10-26
 TSFINV,Invests in the auto component sector in India and abroad.,Yahoo,2026-10-26
-TSPIRITUAL,Works in trading business in India.,Yahoo,2026-10-26
 TTFL,Works in the manufacture and wholesale trading of textile fabric cloth in India.,Yahoo,2026-10-26
 TTGIL,An artificial intelligence company.,Yahoo,2026-10-26
 TTIENT,Provides wholesale trading services in India.,Yahoo,2026-10-26
@@ -4020,7 +4027,6 @@ UNIOFFICE,Universal Office Automation Limited does not have significant operatio
 UNIONBANK,Provides banking products and services in India.,Yahoo,2026-10-26
 UNIPARTS,"Makes and supplies engineering systems, solutions, and assemblies for off-highway vehicles.",Yahoo,2026-10-26
 UNIQUEO,"Makes and sells feed, food, and spices products in India and abroad.",Yahoo,2026-10-26
-UNIROYAL,Makes and sells garment accessories in India and abroad.,Yahoo,2026-10-26
 UNISON,Makes and sells stainless steel and ceramic products in India.,Yahoo,2026-10-26
 UNITDCR,"Provides hire purchase, leasing, and other financial services in India.",Yahoo,2026-10-26
 UNITDSPR,Makes and sells alcoholic beverages and other allied spirits in India and abroad.,Yahoo,2026-10-28
@@ -4045,6 +4051,7 @@ URBANCO,Runs an online services marketplace that provides many home and beauty s
 URJA,"Works in the design, consultancy, integration, supply, installation, commissioning and more.",Yahoo,2026-10-26
 URSUGAR,Makes and sells sugar in India.,Yahoo,2026-10-26
 USGTECH,Provides IT solutions and software project development services in India.,Yahoo,2026-10-26
+USHAKIRA,Works in the investments and financing business in India.,Yahoo,2026-10-26
 USHAMART,"Makes and sells steel wires, strands, wire ropes, wire drawing and allied machine, cord, and related accessories.",Yahoo,2026-10-26
 USK,Works in the execution of infrastructure projects in India.,Yahoo,2026-10-26
 UTIAMC,A privately owned investment manager.,Yahoo,2026-10-26
@@ -4068,12 +4075,14 @@ VALIANT,Makes and sells communications equipment.,Yahoo,2026-10-26
 VALIANTLAB,An active pharmaceutical ingredient/bulk drug manufacturing company in India and abroad.,Yahoo,2026-10-26
 VALIANTORG,Makes and sells specialty chemicals in India and abroad.,Yahoo,2026-10-26
 VALLABHSQ,Makes and sells basic iron and steel products in India.,Yahoo,2026-10-26
+VALSONQ,Makes and sells polyester texturized and twisted yarns under the VALSON brand name in India and abroad.,Yahoo,2026-10-26
 VALUE,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 VALUEAXIS,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-04
 VAMA,"Distributes computers and its peripherals, and software products in India and Singapore.",Yahoo,2026-10-26
 VAML,Makes metallurgical grade alumina and aluminium products.,Yahoo,2026-10-26
 VAMSHIRU,Makes and sells tire retreading materials in India.,Yahoo,2026-10-26
 VANICOM,Provides financial services in India.,Yahoo,2026-10-26
+VAPIENTER,Does not have significant operations.,Yahoo,2026-10-29
 VARDHACRLC,Makes and supplies acrylic fibers and tows in India.,Yahoo,2026-10-26
 VARDMNPOLY,Makes and sells yarns and garments in India.,Yahoo,2026-10-26
 VARIMAN,Provides information technology solutions in India.,Yahoo,2026-10-26
@@ -4109,7 +4118,6 @@ VENUSREM,"Works in the pharmaceutical business in India, Latin America, Europe, 
 VERANDA,An education company in India.,Yahoo,2026-10-26
 VERITAS,"Trades and distributes polymers, paper and paper boards, rubber products, heavy distillates, and petrochemicals in India and abroad.",Yahoo,2026-10-26
 VERTEX,"Provides brokerage services for equity, equity derivatives, currency derivatives, and commodities in India.",Yahoo,2026-10-26
-VERTEXPP,"Provides brokerage services for equity, equity derivatives, currency derivatives, and commodities in India.",Yahoo,2026-10-26
 VERTOZ,"A digital advertising and media technology company that provides digital advertising, marketing, media, and monetization solutions in India.",Yahoo,2026-10-26
 VESUVIUS,Makes and sells refractory products and services in India.,Yahoo,2026-10-26
 VETO,"Makes and sells wires and cables, and electrical accessories in India and abroad.",Yahoo,2026-10-26
@@ -4133,9 +4141,9 @@ VIKRAMAR,"Works in the development, manufacturing, and marketing of diphenyl oxi
 VIKRAMSOLR,Makes and sells solar photovoltaic modules/systems in India and abroad.,Yahoo,2026-10-26
 VIKRAMTH,"Works in the manufacture, marketing, and export of pharmaceutical excipients and chemicals in India and abroad.",Yahoo,2026-10-26
 VIKRAN,"An engineering, procurement, and construction company in India.",Yahoo,2026-10-26
-VIKSHEN,Makes and sells iron and steel products in India.,Yahoo,2026-11-03
 VIMTALABS,Provides contract research and testing services in India and abroad.,Yahoo,2026-10-26
 VINATIORGA,Makes and sells specialty organic intermediaries and monomers in India and abroad.,Yahoo,2026-10-26
+VINAYAKPOL,Makes and sells polyethylene terephthalate products in India.,Yahoo,2026-10-26
 VINCOFE,"Works in the manufacture, export, and sale of coffee and beverage products in India and abroad.",Yahoo,2026-10-26
 VINDHYATEL,Makes and sells cables in India.,Yahoo,2026-10-26
 VINEETLAB,"Works in the research, development, manufacture, and sale of active pharmaceutical ingredients, intermediates, and fine chemicals in India.",Yahoo,2026-10-26
@@ -4175,8 +4183,10 @@ VIVIDM,Works in the real estate business in India.,Yahoo,2026-10-26
 VIVIMEDLAB,"Makes and sells active pharmaceutical ingredients, finished dosage formulations, specialty chemicals, and retail branded formulations in India.",Yahoo,2026-10-26
 VIVOBIOT,Provides drug development and discovery services to pharmaceutical and biotech companies worldwide.,Yahoo,2026-10-26
 VIYASH,"A veterinary pharmaceutical Company in India, the United States, Spain, and abroad.",Yahoo,2026-10-26
+VJLAXMIE,Makes and sells cotton yarn and knitted fabrics in India and abroad.,Yahoo,2026-10-26
 VJTFEDU,Works in investment and financial activities in India.,Yahoo,2026-10-26
 VKAL,Provides education services in India.,Yahoo,2026-10-26
+VKGLOBAL,Makes and sells hydroponic farming business in India.,Yahoo,2026-10-27
 VLEGOV,Provides system integration and IT/ITES services for many e-Governance projects in India.,Yahoo,2026-10-26
 VLL,Works in the investment and finance activities in India.,Yahoo,2026-11-03
 VLSFINANCE,Provides stock broking services in India.,Yahoo,2026-10-26
@@ -4189,7 +4199,6 @@ VOEPL,"Works in the manufacturing, selling and marketing of white goods in India
 VOGL,Works in the exploration and production of oil and gas.,Yahoo,2026-10-26
 VOITHPAPR,"Makes and sells paper machine clothing for pulp, and paper and paperboard industries in India and abroad.",Yahoo,2026-10-26
 VOLKAI,Kairosoft AI Solutions engaged in the field of Artificial Intelligence development and related technology solutions in India.,Yahoo,2026-10-26
-VOLLF,Works in financing activities in India.,Yahoo,2026-10-26
 VOLTAMP,Makes and sells electrical transformers in India.,Yahoo,2026-10-26
 VOLTAS,"Runs as air conditioning and engineering solutions in India, the Middle East, Africa, and abroad.",Yahoo,2026-10-26
 VPRPL,"Works in engineering, procurement, and construction of infrastructure projects in India.",Yahoo,2026-10-26
@@ -4197,7 +4206,6 @@ VRAJ,"Makes and sells sponge iron, MS billets, TMT bars, power and others relate
 VRFILMS,Works in film distribution and dubbing in India.,Yahoo,2026-10-26
 VRL,Makes and sells antacids therapeutic category of active pharmaceutical ingredients in India.,Yahoo,2026-10-26
 VRLLOG,A logistics and transport company in India.,Yahoo,2026-10-26
-VSFPROJ,Works in the construction and infrastructure development and execution business in India.,Yahoo,2026-10-26
 VSL,"Makes and sells gold, diamond, and jewellery ornaments in India.",Yahoo,2026-10-26
 VSSL,"Makes and sells billets, steel bars, and bright bars of many categories of special and alloy steels.",Yahoo,2026-10-26
 VSTIND,"Works in the manufacturing, trading, and marketing of cigarettes, tobacco, and tobacco products in India and abroad.",Yahoo,2026-10-26
@@ -4233,6 +4241,7 @@ WELSPLSOL,Makes and sells steel and steel products in India and abroad.,Yahoo,20
 WELSPUNLIV,Makes and sells home textile products in India and abroad.,Yahoo,2026-10-26
 WENDT,"Makes and sells, and services super abrasives, high precision grinding, honing, special purpose machines, and precision components.",Yahoo,2026-10-26
 WEPSOLN,Provides managed printing solutions and digital services in India and abroad.,Yahoo,2026-10-26
+WESTLEIRES,An investment company in India.,Yahoo,2026-10-26
 WESTLIFE,Owns and operates a chain of McDonald's restaurants in Western and Southern India.,Yahoo,2026-10-26
 WEWIN,Provides customer relationship management services in India.,Yahoo,2026-10-26
 WEWORK,Works in the rental and operation of office buildings and coworking spaces in India.,Yahoo,2026-10-26
@@ -4248,6 +4257,7 @@ WINSOMBR,Makes and sells beer in India.,Yahoo,2026-10-26
 WINSOMTX,Works in manufactures and sells yarns and fabrics for knitting and weaving in India.,Yahoo,2026-10-26
 WIPL,"Makes and sells hardboard, plywood, and compreg wood products in India and abroad.",Yahoo,2026-10-26
 WIPRO,"An information technology, consulting, and business process services company worldwide.",Yahoo,2026-10-26
+WIREFABR,Makes and sells paper machine clothing in India and abroad.,Yahoo,2026-10-29
 WOCKPHARMA,"A pharmaceutical and biotech company, in India, the United States, Europe, and abroad.",Yahoo,2026-10-26
 WOMENNET,Trades coal in India.,Yahoo,2026-10-26
 WONDERLA,Works in the amusement park and resort business in India.,Yahoo,2026-10-26
@@ -4257,7 +4267,6 @@ WPIL,"Designs, develops, manufactures, erects, commissions, and services pumps a
 WSFX,Works in the foreign exchange business in India.,Yahoo,2026-10-26
 WSI,Runs as infrastructure development and electrical project handling company in India and abroad.,Yahoo,2026-10-26
 WSTCSTPAPR,"Makes and sells pulp, paper, and paper boards in India and abroad.",Yahoo,2026-10-26
-WWALUM,Trades aluminum coils and related items in India.,Yahoo,2026-10-27
 XCHANGING,"Provides information technology services in India, Europe, the United States, Singapore, and abroad.",Yahoo,2026-10-26
 XELPMOC,"Designs and Tech Limited, a technology-driven company, provides consulting, software development, and digital transformation solutions to enterprises, startups and more.",Yahoo,2026-10-26
 XPROINDIA,Sells polymers in India.,Yahoo,2026-10-26
@@ -4283,6 +4292,7 @@ YUNIKM,Provides consultancy and management advisory services in India.,Yahoo,202
 YURANUS,"Works in the manufacturing, trading, processing, and finishing of cotton bales, seeds oil, and yarn in India and abroad.",Yahoo,2026-10-27
 YUVRAAJHPL,Makes and supplies hygiene and cleaning products in India.,Yahoo,2026-10-26
 ZAGGLE,"Builds financial products and solutions to manage the business expenses of corporates, small and medium-sized enterprises and more.",Yahoo,2026-10-26
+ZBINTXPP,Makes and processes textile fabrics in India and abroad.,Yahoo,2026-11-03
 ZDHJERK,Provides healthcare and hospital services in India.,Yahoo,2026-10-26
 ZEAL,"Works in the farming, producing, and harvesting of prawns in India and abroad.",Yahoo,2026-10-26
 ZEEL,Works in broadcasting satellite television channels and digital media in India and abroad.,Yahoo,2026-11-03
