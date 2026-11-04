@@ -24,7 +24,9 @@ EXPECTED = {
     "ma_10": False, "ma_20": False, "ma_50": True, "ma_150": True, "ma_200": True, "volume": True,
     "volume_toggle": True, "reason_box": True, "reason_box_toggle": True, "reason_max_chars": 110,
     "reason_collapsed_items": 3, "company_line": True, "day_change": True, "range_months": 6, "range_months_phone": 3,
-    "range_chips": True, "group_toggle": True, "default_group": "technical",
+    "range_chips": False, "group_toggle": True, "default_group": "technical",
+    "reason_box_top_left": True, "last_candle_gap_px": 12, "candle_toggle": True, "default_candles": "daily",
+    "style_toggle": True, "default_style": "candles",
 }
 
 
@@ -74,12 +76,12 @@ def test_help_row():
     topics = dict(tables.help_rows())
     text = topics["Chart Viewer"]
     assert "\u2014" not in text
-    for word in ("feature.chart_viewer", "Swipe right for the next chart", "lower right", "Nothing new is downloaded",
+    for word in ("feature.chart_viewer", "Swipe right for the next chart", "top left", "chart_viewer.reason_box_top_left", "chart_viewer.candle_toggle", "chart_viewer.style_toggle", "Weekly", "Nothing new is downloaded",
                  "every status except CLOSED", "do not add to the count",
                  "VCP", "CANSLIM", "Box", "Flag", "Qullamaggie", "Marios", "Episodic Pivot", "Buy setups",
                  "52-week breakouts", "Pullbacks", "Leaders", "High volume", "watchlist",
                  "Drag the chart slowly", "pinch", "flick it fast", "A slow drag never changes the chart",
-                 "top row (ticker, price and counter) always changes the chart", "scrolls the chips", "just left of the Why box", "stays when you turn the device", "Drag: move chart", "Drag: next chart", "pinch zoom is off", "chart_viewer.drag_mode_toggle", "every saved daily bar",
+                 "top row (ticker, price and counter) always changes the chart", "scrolls the chips", "just left of the price axis", "stays when you turn the device", "Drag: move chart", "Drag: next chart", "pinch zoom is off", "chart_viewer.drag_mode_toggle", "every saved daily bar",
                  "3M, 6M, 1Y and All", "chart_viewer.range_chips", "chart_viewer.chart_touch_pan"):
         assert word in text, word
     saved = pd.read_csv(os.path.join(ROOT, "data", "help.csv"))
@@ -151,10 +153,13 @@ def test_drag_pans_and_flick_changes_chart():
     assert "function cvPadBars(" in desk
     assert "const readUserRange = () =>" in block and "userRange = carryRange;" in block and "applyView(true)" in block and "minBarSpacing: 0.3" in block and "const CV_KEEP = 6;" in block
     assert 'stage.addEventListener("touchstart"' in block
+    assert 'cvOpt("candle_toggle")' in block and 'cvRead("desk-cv-weekly")' in block and "function cvWeekly(" in desk
+    assert 'cvOpt("style_toggle")' in block and 'cvRead("desk-cv-ohlc-bars")' in block and "LC.BarSeries" in block
+    assert 'cvOpt("reason_box_top_left")' in block and "cvGapBars(" in block
     assert 'cvOpt("range_chips")' in block and '"3M"' in block and '"All"' in block
     pages = _read("site", "js", "pages.js")
     i = pages.index("chartviewer: { title:")
     desc = pages[i:pages.index("] },", i)]
     assert "\u2014" not in desc
-    assert "Drag the chart slowly" in desc and "3M, 6M, 1Y and All" in desc
+    assert "Drag the chart slowly" in desc and "Daily and Weekly" in desc and "Candles and Bars" in desc
     assert "\u2014" not in _cfg()["chart_viewer"]["_note"]
