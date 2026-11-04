@@ -181,8 +181,10 @@ chart_viewer.candle_toggle,True
 chart_viewer.default_candles,daily
 chart_viewer.style_toggle,True
 chart_viewer.default_style,candles
-chart_viewer.fit_bar_spacing,True
-chart_viewer.bar_spacing,5
+chart_viewer.dense_default,True
+chart_viewer.target_bar_spacing,5.8
+chart_viewer.min_bar_spacing_px,3
+chart_viewer.max_bar_spacing_px,8
 chart_viewer.range_months_weekly,24
 chart_viewer.range_months_weekly_phone,12
 keeper.check_after_min,10
