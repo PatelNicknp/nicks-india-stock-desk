@@ -1,7 +1,2 @@
 ticker,kind,text,score,score_prev,verdict,verdict_prev,price,data_status,note,disclaimer
-GOLCA,verdict_change,GOLCA changed from Not scored yet to AVOID.,3,2,AVOID,Not scored yet,11.0,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-CITYONLINE,verdict_change,CITYONLINE changed from Not scored yet to AVOID.,1,2,AVOID,Not scored yet,8.55,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-SRECR,verdict_change,SRECR changed from Not scored yet to AVOID.,0,-1,AVOID,Not scored yet,21.55,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-MEHSECU,verdict_change,MEHSECU changed from Not scored yet to AVOID.,-2,-1,AVOID,Not scored yet,23.15,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-ASHAI,verdict_change,ASHAI changed from Not scored yet to AVOID.,-3,2,AVOID,Not scored yet,12.5,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-ASHAI,score_jump,ASHAI score moved from 2 to -3.,-3,2,AVOID,Not scored yet,12.5,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+,info,No verdict changes or score crossings this run.,,,,,,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."

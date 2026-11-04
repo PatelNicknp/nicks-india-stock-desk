@@ -1,6 +1,2 @@
 ticker,company,price,day_pct,score,score_prev,score_change,verdict,data_status,note,disclaimer
-ASHAI,ASHIANA AGRO INDUSTRIES LTD.,12.5,0.0,-3.0,2.0,-5.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-GOLCA,GOLDEN CARPETS LTD.,11.0,0.0,3.0,2.0,1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-CITYONLINE,City Online Services Limited,8.55,-5.0,1.0,2.0,-1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-SRECR,SREECHEM RESINS LTD.,21.55,-4.86,0.0,-1.0,1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-MEHSECU,MEHTA SECURITIES LTD.,23.15,4.99,-2.0,-1.0,-1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+,,,,,,,,MISSING,No score changes versus the last run.,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
