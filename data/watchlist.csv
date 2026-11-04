@@ -2,5 +2,5 @@ ticker,company,price,day_pct,score,verdict,entry_low,entry_high,distance_to_entr
 ICICIBANK,ICICI Bank Ltd.,1424.5,2.67,3,AVOID,,,,Sideways,example,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 BHARTIARTL,Bharti Airtel Ltd.,2065.0,3.77,7,HOLD,1860.06,1889.57,9.28,Extended,example,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 LT,Larsen & Toubro Ltd.,3948.2,0.21,10,BUY,3633.58,3716.35,6.24,Sideways,example,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-SBIN,State Bank of India,970.25,-1.7,2,AVOID,,,,Downtrend,example,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+SBIN,State Bank of India,970.25,-1.7,0,AVOID,,,,Downtrend,example,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 ASIANPAINT,Asian Paints Ltd.,2437.8,3.99,7,HOLD,2277.22,2335.56,4.38,Sideways,example,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
