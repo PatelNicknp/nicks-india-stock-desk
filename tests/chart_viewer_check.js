@@ -109,11 +109,12 @@ async function lastCandle(page) {
     const ts = st.chart.timeScale();
     const r = ts.getVisibleLogicalRange();
     const first = Math.max(0, Math.ceil(r.from));
-    const n = st.bars.length;
+    const n = (st.shown && st.shown.length) || st.bars.length;
     const sp = ts.options().barSpacing;
     const w = ts.width();
     const box = document.getElementById("cvreason");
-    const shown = box && !box.hidden;
+    const tl = document.getElementById("cvplot").classList.contains("why-tl");
+    const shown = !tl && box && !box.hidden;
     let B = shown ? box.offsetWidth + 14 : 0;
     if (shown && box.classList.contains("open")) B = Math.min(B, 260);
     if (B && w - B < w * 0.35) B = w * 0.65;
@@ -121,7 +122,7 @@ async function lastCandle(page) {
     const host = document.getElementById("cvhost").getBoundingClientRect();
     const br = shown ? box.getBoundingClientRect() : null;
     return { ticker: document.getElementById("cvstage").dataset.ticker, w, sp, from: r.from, to: r.to, first,
-      x0: ts.logicalToCoordinate(first), xl, gap: w - xl, want: B ? Math.max(B, 3 * sp) : 3 * sp,
+      x0: ts.logicalToCoordinate(first), xl, gap: w - xl, want: tl ? 12 + 0.5 * sp : (B ? Math.max(B, 3 * sp) : 3 * sp),
       pageX: host.left + xl, boxLeft: br ? br.left : null, shownBars: n - first };
   });
 }
@@ -131,7 +132,7 @@ async function checkFill(page, name, tag, wantShown) {
   const bad = [];
   const tol = Math.max(6, f.sp * 1.5);
   if (!(f.x0 < tol)) bad.push(name + " " + tag + ": first bar is not at the left edge " + JSON.stringify(f));
-  if (!(Math.abs(f.gap - f.want) < tol)) bad.push(name + " " + tag + ": last candle is not just left of the Why box (US rule) " + JSON.stringify(f));
+  if (!(Math.abs(f.gap - f.want) < tol)) bad.push(name + " " + tag + ": last candle is not in its fixed spot (12 px left of the price axis, or left of a lower-right Why box) " + JSON.stringify(f));
   if (f.boxLeft != null && !(f.pageX < f.boxLeft)) bad.push(name + " " + tag + ": Why box covers the last candle " + JSON.stringify(f));
   if (wantShown !== false && !(f.shownBars > 40 && f.shownBars < 160)) bad.push(name + " " + tag + ": first view shows " + f.shownBars + " bars " + JSON.stringify(f));
   return bad;
@@ -174,12 +175,8 @@ async function checkKeepRange(page, ctx, name) {
   const v3 = await viewState(page);
   if (Math.abs(v2.from - v1.from) > 0.6 || Math.abs(v2.to - v1.to) > 0.6) bad.push(name + ": turning the device threw away the dragged range " + JSON.stringify([v1, v2]));
   if (Math.abs(v3.from - v1.from) > 0.6 || Math.abs(v3.to - v1.to) > 0.6) bad.push(name + ": turning back threw away the dragged range " + JSON.stringify([v1, v3]));
-  // A range chip clears the dragged range.
-  await realTouch(page, cdp, [[cx - 60, cy]], Array.from({ length: 10 }, () => [[12, 0]]), 60);
-  await page.click('[data-chip="r6"]');
-  await page.waitForTimeout(300);
-  if (await page.evaluate(() => !!(document.getElementById("cvstage")._cv.userRange && document.getElementById("cvstage")._cv.userRange()))) bad.push(name + ": range chip kept the dragged range");
-  bad.push(...(await checkFill(page, name, "6M chip after a drag", false)));
+  // Range chips are off by default (chart_viewer.range_chips false).
+  if (await page.$('[data-chip="r6"]')) bad.push(name + ": range chips should be off");
   // A new chart opens on the first view.
   await realTouch(page, cdp, [[cx - 60, cy]], Array.from({ length: 10 }, () => [[12, 0]]), 60);
   await page.click("#cvnext");
@@ -260,21 +257,27 @@ async function checkTouch(page, ctx, name) {
     if (!(sl > 20)) bad.push(name + ": swipe on the chip bar did not scroll the chips, scrollLeft " + sl);
   } else if (c1.i === c0.i) bad.push(name + ": swipe on a chip bar that fits should change the chart");
   await page.evaluate(() => { document.getElementById("cvchips").scrollLeft = 0; });
-  // Range chips.
-  const pre = await viewState(page);
-  await page.click('[data-chip="rall"]');
-  await page.waitForTimeout(200);
-  const all = await viewState(page);
-  // All shows as much of the saved history as fits (the whole of it on a tablet), with the newest
-  // candle in the same spot left of the Why box.
-  if (!(all.from < pre.from - 100)) bad.push(name + ": All chip did not show more history " + JSON.stringify([pre, all]));
-  if (name.indexOf("ipad") === 0 && !(all.from <= 0.5)) bad.push(name + ": All chip did not show the whole history " + JSON.stringify(all));
-  bad.push(...(await checkFill(page, name, "All chip", false)).filter((t) => t.indexOf("left edge") < 0));
-  await page.click('[data-chip="r3"]');
-  await page.waitForTimeout(200);
-  const m3 = await viewState(page);
-  bad.push(...(await checkFill(page, name, "3M chip", false)));
-  if (!(m3.from > 600 && m3.from < 710)) bad.push(name + ": 3M chip range " + JSON.stringify(m3));
+  // Daily / Weekly: Weekly builds week bars from the daily bars and is saved; the newest bar keeps its spot.
+  if (await page.$('[data-chip="rall"]')) bad.push(name + ": range chips should be off");
+  const d0 = await page.evaluate(() => document.getElementById("cvstage")._cv.shown.length);
+  await page.click('[data-chip="weekly"]');
+  await page.waitForTimeout(400);
+  const wk = await page.evaluate(() => { const st = document.getElementById("cvstage")._cv; return { n: st.shown.length, weekly: st.weekly, saved: localStorage.getItem("desk-cv-weekly"),
+    lastC: st.shown[st.shown.length - 1].c, dayC: st.bars[st.bars.length - 1].c }; });
+  if (!wk.weekly || wk.saved !== "true" || !(wk.n < d0 / 3) || wk.lastC !== wk.dayC) bad.push(name + ": Weekly chip " + JSON.stringify([d0, wk]));
+  bad.push(...(await checkFill(page, name, "Weekly", false)));
+  await page.click("#cvnext"); await waitOk(page);
+  if (!(await page.evaluate(() => document.getElementById("cvstage")._cv.weekly))) bad.push(name + ": Weekly not kept on the next chart");
+  await page.click("#cvprev"); await waitOk(page);
+  // Candles / Bars: OHLC bars, saved, kept on the next chart.
+  await page.click('[data-chip="bars"]');
+  await page.waitForTimeout(300);
+  const bs = await page.evaluate(() => ({ bars: document.getElementById("cvstage")._cv.ohlcBars, saved: localStorage.getItem("desk-cv-ohlc-bars") }));
+  if (!bs.bars || bs.saved !== "true") bad.push(name + ": Bars chip " + JSON.stringify(bs));
+  await page.click('[data-chip="candles"]');
+  await page.click('[data-chip="daily"]');
+  await page.waitForTimeout(300);
+  bad.push(...(await checkFill(page, name, "back to Daily", false)));
   // Drag chip: back to Drag: next chart, saved; a slow drag on the chart now changes the chart.
   await page.click('[data-chip="drag"]');
   const flip = await page.evaluate(() => ({ text: document.querySelector('[data-chip="drag"]').innerText, saved: localStorage.getItem("desk-cv-drag-pan") }));
@@ -391,7 +394,7 @@ async function check(browser, port, name, device, shotDir) {
   await swipe(page, 160);
   await waitOk(page);
 
-  // Reason box: lower right of the chart, left of the price scale.
+  // Reason box: top left of the chart, clear of the price scale.
   await page.waitForTimeout(200);
   const box = await page.evaluate(() => {
     const p = document.getElementById("cvplot").getBoundingClientRect();
@@ -402,8 +405,8 @@ async function check(browser, port, name, device, shotDir) {
   });
   if (!box) bad.push(name + ": reason box missing");
   else {
-    if (box.right > 120 || box.bottom > 70) bad.push(name + ": reason box not in the lower right " + JSON.stringify(box));
-    if (box.w * box.h > box.pw * box.ph * 0.25 || box.w > box.pw * 0.65 || box.top < box.ph * 0.3) bad.push(name + ": reason box too big " + JSON.stringify(box));
+    if (box.left > 12 || box.top > 12) bad.push(name + ": reason box not in the top left " + JSON.stringify(box));
+    if (box.w * box.h > box.pw * box.ph * 0.25 || box.w > box.pw * 0.65 || box.right < 60) bad.push(name + ": reason box too big " + JSON.stringify(box));
     if (box.text.indexOf("\u2014") >= 0) bad.push(name + ": em-dash in reason box");
   }
   await page.click("#cvreason");

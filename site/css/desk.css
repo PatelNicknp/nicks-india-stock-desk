@@ -467,6 +467,11 @@ tr.selrow .rowexp{color:var(--accent)}
   background:var(--glass78);border:1px solid var(--line2);border-radius:8px;font-size:11px;line-height:14px;color:var(--text2);cursor:pointer;
   -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
 .cv-reason[hidden]{display:none}
+/* Why box at the top left (chart_viewer.reason_box_top_left): clear of the price axis on the right
+   and the chip bar above; the back arrow moves below it. */
+.why-tl .cv-reason{right:auto;bottom:auto;left:6px;top:6px}
+.why-tl .cv-reason.open{width:min(420px,calc(100% - 80px))}
+.why-tl .cv-prev{top:62%}
 .cv-reason.open{width:min(420px,calc(100% - 90px));max-height:72%;overflow-y:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y;font-size:12px;line-height:16px}
 .cv-why-h{display:flex;justify-content:space-between;gap:6px;font-weight:700;color:var(--text);margin-bottom:3px}
 .cv-why-i{padding:3px 0;border-top:1px solid var(--line)}

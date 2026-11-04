@@ -172,9 +172,15 @@ chart_viewer.company_line,True
 chart_viewer.day_change,True
 chart_viewer.range_months,6
 chart_viewer.range_months_phone,3
-chart_viewer.range_chips,True
+chart_viewer.range_chips,False
 chart_viewer.group_toggle,True
 chart_viewer.default_group,technical
+chart_viewer.reason_box_top_left,True
+chart_viewer.last_candle_gap_px,12
+chart_viewer.candle_toggle,True
+chart_viewer.default_candles,daily
+chart_viewer.style_toggle,True
+chart_viewer.default_style,candles
 keeper.check_after_min,10
 keeper.verify_after_min,45
 keeper.recheck_min,15

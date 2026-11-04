@@ -2040,7 +2040,8 @@
     ma_chips: true, ma_10: false, ma_20: false, ma_50: true, ma_150: true, ma_200: true,
     volume: true, volume_toggle: true, reason_box: true, reason_box_toggle: true,
     reason_max_chars: 110, reason_collapsed_items: 3, company_line: true, day_change: true,
-    range_months: 6, range_months_phone: 3, range_chips: true, group_toggle: true, default_group: "technical",
+    range_months: 6, range_months_phone: 3, range_chips: false, group_toggle: true, default_group: "technical",
+    reason_box_top_left: true, last_candle_gap_px: 12, candle_toggle: true, default_candles: "daily", style_toggle: true, default_style: "candles",
   };
   function cvOpt(key) {
     const fallback = CV_DEFAULTS[key];
@@ -2216,6 +2217,33 @@
     if (plotPx - boxPx < plotPx * 0.35) boxPx = plotPx * 0.65;
     return Math.max(3, (boxPx * visibleBars) / (plotPx - boxPx));
   }
+  // Weekly candles from daily bars: one bar per week (Monday to Sunday), open of the first day,
+  // highest high, lowest low, close of the last day, volume summed. The last, partial week is kept.
+  // The bar is dated by the first trading day of that week. Nothing new is downloaded.
+  function cvWeekly(bars) {
+    const out = [];
+    let cur = null, key = "";
+    (bars || []).forEach((b) => {
+      const d = new Date(b.date + "T00:00:00Z");
+      d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7));
+      const k = d.toISOString().slice(0, 10);
+      if (!cur || k !== key) {
+        key = k;
+        cur = { date: b.date, o: b.o, h: b.h, l: b.l, c: b.c, v: b.v == null ? null : b.v };
+        out.push(cur);
+        return;
+      }
+      cur.h = Math.max(cur.h, b.h); cur.l = Math.min(cur.l, b.l); cur.c = b.c;
+      if (b.v != null) cur.v = (cur.v || 0) + b.v;
+    });
+    return out;
+  }
+  // Empty bars on the right so the newest candle sits gapPx left of the price axis, in the same
+  // screen spot on every chart (used when the Why box is at the top left).
+  function cvGapBars(visibleBars, plotPx, gapPx) {
+    if (!(visibleBars > 0) || !(plotPx > gapPx)) return 1;
+    return Math.max(0.5, 0.5 + (gapPx * visibleBars) / (plotPx - gapPx));
+  }
   // Where a touch started: "bar" (the header row, or a chip bar that fits, so a sideways swipe
   // changes the chart), "scroll" (a chip bar wider than the screen: it scrolls and never changes
   // the chart), or "chart" (the chart itself, where only a quick flick changes it).
@@ -2267,6 +2295,19 @@
     let dragPan = typeof savedPan === "boolean" ? savedPan : cvOpt("chart_touch_pan");
     const CV_RANGES = [{ id: "r3", label: "3M", months: 3 }, { id: "r6", label: "6M", months: 6 }, { id: "r12", label: "1Y", months: 12 }, { id: "rall", label: "All", months: 0 }];
     let rangePick = null;
+    // Why box at the top left of the chart (reason_box_top_left). Then the newest candle sits
+    // last_candle_gap_px left of the price axis on every chart.
+    const whyTopLeft = cvOpt("reason_box_top_left");
+    // Daily / Weekly candles (candle_toggle). The choice is saved on this device.
+    const candleToggle = cvOpt("candle_toggle");
+    const savedWeekly = candleToggle ? cvRead("desk-cv-weekly") : null;
+    let weekly = typeof savedWeekly === "boolean" ? savedWeekly : String(cvOpt("default_candles")).toLowerCase() === "weekly";
+    // Candles / Bars (style_toggle). Bars are MarketSmith-style OHLC bars: a high-low line, a left
+    // tick for the open and a right tick for the close, blue up and magenta down. Saved on this device.
+    const styleToggle = cvOpt("style_toggle");
+    const savedOhlc = styleToggle ? cvRead("desk-cv-ohlc-bars") : null;
+    let ohlcBars = typeof savedOhlc === "boolean" ? savedOhlc : String(cvOpt("default_style")).toLowerCase() === "bars";
+    const shownBars = (bars) => (weekly ? cvWeekly(bars) : bars);
     const maxChars = cvOpt("reason_max_chars");
 
     const optionsHtml = () => built.choices.map((c) => {
@@ -2284,6 +2325,8 @@
       (reasonAllowed && cvOpt("reason_box_toggle") ? chip("reason", "Why", "", reasonOn) : "") +
       (swipeOn && cvOpt("flip_toggle") ? chip("swipe", rightIsNext ? "Swipe right: next" : "Swipe left: next", "", false, "cvflip") : "") +
       (dragToggle ? chip("drag", "Drag: " + (dragPan ? "move chart" : "next chart"), "", dragPan) : "") +
+      (candleToggle ? chip("daily", "Daily", "", !weekly, "cvrange") + chip("weekly", "Weekly", "", weekly, "cvrange") : "") +
+      (styleToggle ? chip("candles", "Candles", "", !ohlcBars, "cvrange") + chip("bars", "Bars", "", ohlcBars, "cvrange") : "") +
       (cvOpt("range_chips") ? CV_RANGES.map((r) => chip(r.id, r.label, "", rangePick === r.months, "cvrange")).join("") : "");
     const showBlurb = cvOpt("company_line") && featureOn("feature.company_line");
     ctx.page.innerHTML =
@@ -2298,13 +2341,13 @@
       (cvOpt("counter") ? '<div class="cv-count" id="cvcount"></div>' : "") +
       '<button type="button" class="cv-exit" id="cvexit" aria-label="Close full screen">✕</button></div>' +
       '<div class="cv-chips" id="cvchips"></div>' +
-      '<div class="cv-plot" id="cvplot"><div class="cv-host" id="cvhost"></div>' +
+      '<div class="cv-plot' + (whyTopLeft ? " why-tl" : "") + '" id="cvplot"><div class="cv-host" id="cvhost"></div>' +
       '<div class="cv-msg" id="cvmsg" hidden></div>' +
       (reasonAllowed ? '<div class="cv-reason" id="cvreason" role="button" tabindex="0" aria-expanded="false" aria-label="Why this stock is listed. Tap to open or close." hidden></div>' : "") +
       (cvOpt("arrows") ? '<button type="button" class="cv-arrow cv-prev" id="cvprev" aria-label="Previous chart">‹</button>' +
         '<button type="button" class="cv-arrow cv-next" id="cvnext" aria-label="Next chart">›</button>' : "") +
       "</div></section>" +
-      '<p class="cap">Daily bars saved by the desk. Averages are worked out in your browser. ' +
+      '<p class="cap">Daily bars saved by the desk' + (candleToggle ? " (Weekly candles are built from them)" : "") + '. Averages are worked out in your browser. ' +
       (swipeOn ? "Swipe " + (rightIsNext ? "right" : "left") + " for the next chart. " +
         (dragPan ? "Drag the chart slowly to see older days, and flick fast or swipe on the top row to change the chart. " : "") : "") +
       'Charting by <a href="https://www.tradingview.com/">TradingView</a> Lightweight Charts™.</p>';
@@ -2314,7 +2357,7 @@
     const msg = document.getElementById("cvmsg");
     const reasonEl = document.getElementById("cvreason");
     const chipsEl = document.getElementById("cvchips");
-    const st = { list: built.lists[listId] || [], i: 0, token: 0, chart: null, price: null, vol: null, mas: {}, bars: [], group: group, built: built };
+    const st = { list: built.lists[listId] || [], i: 0, token: 0, chart: null, price: null, vol: null, mas: {}, bars: [], shown: [], group: group, built: built };
     stage._cv = st;
     const start = String(params.get("t") || "").toUpperCase();
     if (start) {
@@ -2351,6 +2394,7 @@
       let psw = 56, tsh = 26;
       try { psw = st.chart.priceScale("right").width() || psw; } catch (e) { /* not drawn yet */ }
       try { tsh = st.chart.timeScale().height() || tsh; } catch (e) { /* not drawn yet */ }
+      if (whyTopLeft) { reasonEl.style.left = "6px"; reasonEl.style.top = "6px"; return; }
       reasonEl.style.right = (psw + 6) + "px";
       reasonEl.style.bottom = (tsh + 6) + "px";
     };
@@ -2387,7 +2431,8 @@
         const iso = cut.toISOString().slice(0, 10);
         from = Math.max(0, bars.findIndex((b) => b.date >= iso));
       }
-      const pad = cvPadBars(last - from + 1, w, reasonOpen ? Math.min(boxPad(), 260) : boxPad());
+      const pad = whyTopLeft ? cvGapBars(last - from + 1, w, Math.max(0, cvOpt("last_candle_gap_px")))
+        : cvPadBars(last - from + 1, w, reasonOpen ? Math.min(boxPad(), 260) : boxPad());
       let lo = from - 0.5, hi = last + pad;
       // All on a phone can need bars thinner than the chart allows (0.3 px). Then show as much
       // history as fits and keep the newest candle in the same spot left of the Why box.
@@ -2436,7 +2481,7 @@
       if (userRange && Number.isFinite(userRange.from) && Number.isFinite(userRange.to) && userRange.to > userRange.from) { setRange(userRange); return; }
       if (w < 120) { viewW = 0; return; }
       viewW = w;
-      cvRange(st.bars, w);
+      cvRange(st.shown, w);
     };
     st.applyView = applyView;
     let viewRaf = 0;
@@ -2468,7 +2513,10 @@
       st.chart = null; st.price = null; st.vol = null; st.mas = {};
       viewW = 0;
     };
-    const draw = (bars) => {
+    const draw = (daily) => {
+      const bars = shownBars(daily);
+      st.shown = bars;
+      st.weekly = weekly;
       dropChart();
       const LC = LightweightCharts;
       const chart = tvCreate(host, Object.assign({
@@ -2485,10 +2533,15 @@
       userRange = carryRange;
       carryRange = null;
       lastSet = null;
-      st.price = chart.addSeries(LC.CandlestickSeries, {
-        upColor: UP, downColor: DN, borderUpColor: UP, borderDownColor: DN, wickUpColor: UP, wickDownColor: DN,
-        priceLineVisible: false, lastValueVisible: true,
-      });
+      const light = THEME === "light";
+      st.price = ohlcBars
+        ? chart.addSeries(LC.BarSeries, { upColor: light ? "#1D4ED8" : "#3B82F6", downColor: light ? "#C026D3" : "#EC4899",
+          openVisible: true, thinBars: false, priceLineVisible: false, lastValueVisible: true })
+        : chart.addSeries(LC.CandlestickSeries, {
+          upColor: UP, downColor: DN, borderUpColor: UP, borderDownColor: DN, wickUpColor: UP, wickDownColor: DN,
+          priceLineVisible: false, lastValueVisible: true,
+        });
+      st.ohlcBars = ohlcBars;
       st.price.setData(bars.map((b) => ({ time: b.date, open: b.o, high: b.h, low: b.l, close: b.c })));
       const closes = bars.map((b) => b.c);
       CV_MAS.forEach((d) => {
@@ -2614,6 +2667,18 @@
       const id = b.getAttribute("data-chip");
       const range = CV_RANGES.find((r) => r.id === id);
       if (range) { rangePick = range.months; paintChips(); applyView(true); return; }
+      if (id === "daily" || id === "weekly") {
+        if ((id === "weekly") === weekly) return;
+        weekly = id === "weekly"; cvStore("desk-cv-weekly", weekly); paintChips();
+        if (st.bars.length && st.chart) draw(st.bars);
+        return;
+      }
+      if (id === "candles" || id === "bars") {
+        if ((id === "bars") === ohlcBars) return;
+        ohlcBars = id === "bars"; cvStore("desk-cv-ohlc-bars", ohlcBars); paintChips();
+        if (st.bars.length && st.chart) { carryRange = userRange; draw(st.bars); }
+        return;
+      }
       if (id === "volume") { volOn = !volOn; cvStore("desk-cv-volume", volOn); paintChips(); if (st.bars.length && st.chart) { carryRange = userRange; draw(st.bars); } return; }
       if (id === "reason") { reasonOn = !reasonOn; cvStore("desk-cv-reason", reasonOn); paintChips(); paintReason(); return; }
       if (id === "swipe") { rightIsNext = !rightIsNext; cvStore("desk-cv-swipe-right-next", rightIsNext); }
