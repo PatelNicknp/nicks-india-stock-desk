@@ -61,9 +61,10 @@ def test_gainers_stays_outside_both_and_group_keys_sit_at_the_end():
     cfg = _cfg()
     assert "gainers" not in cfg["scanner_groups"]
     # Group keys stay together. Later Chart Viewer switches (Why box, Daily/Weekly, Candles/Bars) follow them.
-    assert list(cfg["chart_viewer"])[-8:] == [
+    assert list(cfg["chart_viewer"])[-12:] == [
         "group_toggle", "default_group", "reason_box_top_left", "last_candle_gap_px",
         "candle_toggle", "default_candles", "style_toggle", "default_style",
+        "fit_bar_spacing", "bar_spacing", "range_months_weekly", "range_months_weekly_phone",
     ]
     js = _read("site", "js", "desk.js")
     assert 'GROUP_IDS.indexOf(v) >= 0 ? v : ""' in js  # any other word: out of both

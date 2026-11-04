@@ -2042,6 +2042,7 @@
     reason_max_chars: 110, reason_collapsed_items: 3, company_line: true, day_change: true,
     range_months: 6, range_months_phone: 3, range_chips: false, group_toggle: true, default_group: "technical",
     reason_box_top_left: true, last_candle_gap_px: 12, candle_toggle: true, default_candles: "daily", style_toggle: true, default_style: "candles",
+    fit_bar_spacing: true, bar_spacing: 5, range_months_weekly: 24, range_months_weekly_phone: 12,
   };
   function cvOpt(key) {
     const fallback = CV_DEFAULTS[key];
@@ -2431,8 +2432,42 @@
     const boxPad = () => (!reasonEl || reasonEl.hidden || !st.chart ? 0 : reasonEl.offsetWidth + 14);
     let viewW = 0;
     const cvRange = (bars, w) => {
-      const months = rangePick != null ? rangePick : Math.max(1, w < 520 ? cvOpt("range_months_phone") : cvOpt("range_months"));
       const last = bars.length - 1;
+      // Fixed candle width (fit_bar_spacing, bar_spacing). Daily and Weekly use the same width,
+      // so a wide screen shows more months and a phone stays thin. Measured from the US iPad
+      // chart: 5 px from one candle to the next, about 10 to 11 months of daily bars there.
+      // The newest bar still sits last_candle_gap_px left of the price axis. A range chip,
+      // or turning this off, falls back to the month spans below.
+      const targetSp = Number(cvOpt("bar_spacing"));
+      if (rangePick == null && cvOpt("fit_bar_spacing") && targetSp >= 0.5 && w >= 120) {
+        const sp = targetSp;
+        const box = reasonOpen ? Math.min(boxPad(), 260) : boxPad();
+        const pad = whyTopLeft
+          ? Math.max(0, (Math.max(0, Number(cvOpt("last_candle_gap_px")) || 0) - 1) / sp)
+          : (box > 0 ? Math.max(0.5, box / sp) : 3);
+        const hi = last + pad;
+        const lo = hi - (w / sp - 1);
+        st.pad = hi - last;
+        setRange({ from: lo, to: hi });
+        const want = lastSet;
+        const chart = st.chart;
+        if (typeof requestAnimationFrame === "function") requestAnimationFrame(() => {
+          if (st.chart !== chart) return;
+          let w2 = 0;
+          try { w2 = st.chart.timeScale().width(); } catch (e) { w2 = 0; }
+          if (w2 >= 120 && Math.abs(w2 - w) > 2 && (st._spTries || 0) < 2) {
+            st._spTries = (st._spTries || 0) + 1;
+            cvRange(bars, w2);
+            return;
+          }
+          st._spTries = 0;
+          if (lastSet && lastSet.from === want.from && lastSet.to === want.to) setRange(want);
+        });
+        return;
+      }
+      const months = rangePick != null ? rangePick : Math.max(1, weekly
+        ? (w < 520 ? cvOpt("range_months_weekly_phone") : cvOpt("range_months_weekly"))
+        : (w < 520 ? cvOpt("range_months_phone") : cvOpt("range_months")));
       let from = 0;
       if (months) {
         const cut = new Date(bars[last].date + "T00:00:00Z");
@@ -2499,6 +2534,7 @@
       if (userRange && Number.isFinite(userRange.from) && Number.isFinite(userRange.to) && userRange.to > userRange.from) { setRange(userRange); return; }
       if (w < 120) { viewW = 0; return; }
       viewW = w;
+      st._spTries = 0;
       cvRange(st.shown, w);
     };
     st.applyView = applyView;
