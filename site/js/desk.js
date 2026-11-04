@@ -2042,7 +2042,8 @@
     reason_max_chars: 110, reason_collapsed_items: 3, company_line: true, day_change: true,
     range_months: 6, range_months_phone: 3, range_chips: false, group_toggle: true, default_group: "technical",
     reason_box_top_left: true, last_candle_gap_px: 12, candle_toggle: true, default_candles: "daily", style_toggle: true, default_style: "candles",
-    fit_bar_spacing: true, bar_spacing: 5, range_months_weekly: 24, range_months_weekly_phone: 12,
+    dense_default: true, target_bar_spacing: 5.8, min_bar_spacing_px: 3, max_bar_spacing_px: 8,
+    range_months_weekly: 24, range_months_weekly_phone: 12,
   };
   function cvOpt(key) {
     const fallback = CV_DEFAULTS[key];
@@ -2245,6 +2246,34 @@
   // with barSpacing = width / (to - from + 1). The first view uses from = first - 0.5 and
   // to = last + pad, so the gap from the last bar's centre to the axis is
   // (pad + 0.5) * barSpacing + 1. pad is chosen so that equals gapPx plus half a bar.
+  // First view at one candle width, same rule as the US desk (denseRange). The newest bar stays
+  // marginPx from the right edge. Spacing is target, never thinner than minSp or fatter than maxSp.
+  // When fewer bars exist than that width can hold, spacing stops at maxSp and the empty room stays
+  // on the left. Daily and Weekly use the same numbers.
+  function cvDenseRange(last, plotPx, marginPx, target, minSp, maxSp) {
+    const lastN = Number(last);
+    if (!(lastN >= 0) || !(plotPx > 0)) return { from: -0.5, to: (lastN >= 0 ? lastN : 0) + 2 };
+    let s = target > 0 ? target : 5.8;
+    const loS = minSp > 0 ? minSp : 0;
+    const hiS = maxSp > 0 ? maxSp : 0;
+    if (loS) s = Math.max(s, loS);
+    if (hiS) s = Math.min(s, hiS);
+    const m = marginPx >= 0 ? marginPx : 12;
+    const avail = lastN + 1;
+    const count = (plotPx - Math.min(m, plotPx * 0.5)) / s;
+    if (avail < count) {
+      let s2 = avail > 0 ? (plotPx - Math.min(m, plotPx * 0.5)) / avail : s;
+      if (!(s2 > 0)) s2 = s;
+      if (hiS && s2 > hiS) s2 = hiS;
+      if (loS && s2 < loS) s2 = loS;
+      const pad = Math.min(m, plotPx * 0.5) / s2;
+      const hi = lastN + pad;
+      return { from: hi - plotPx / s2, to: hi };
+    }
+    const pad = Math.min(m, plotPx * 0.5) / s;
+    const hi = lastN + pad;
+    return { from: hi - plotPx / s, to: hi };
+  }
   function cvGapBars(visibleBars, plotPx, gapPx) {
     const g = Math.max(0, Number(gapPx) || 0);
     const w = plotPx;
@@ -2433,22 +2462,14 @@
     let viewW = 0;
     const cvRange = (bars, w) => {
       const last = bars.length - 1;
-      // Fixed candle width (fit_bar_spacing, bar_spacing). Daily and Weekly use the same width,
-      // so a wide screen shows more months and a phone stays thin. Measured from the US iPad
-      // chart: 5 px from one candle to the next, about 10 to 11 months of daily bars there.
-      // The newest bar still sits last_candle_gap_px left of the price axis. A range chip,
-      // or turning this off, falls back to the month spans below.
-      const targetSp = Number(cvOpt("bar_spacing"));
-      if (rangePick == null && cvOpt("fit_bar_spacing") && targetSp >= 0.5 && w >= 120) {
-        const sp = targetSp;
-        const box = reasonOpen ? Math.min(boxPad(), 260) : boxPad();
-        const pad = whyTopLeft
-          ? Math.max(0, (Math.max(0, Number(cvOpt("last_candle_gap_px")) || 0) - 1) / sp)
-          : (box > 0 ? Math.max(0.5, box / sp) : 3);
-        const hi = last + pad;
-        const lo = hi - (w / sp - 1);
-        st.pad = hi - last;
-        setRange({ from: lo, to: hi });
+      // dense_default: one candle width on every screen, Daily or Weekly (same as the US desk).
+      // Off, or a range chip, uses the month spans below.
+      if (rangePick == null && cvOpt("dense_default") && w > 0) {
+        let marginPx = whyTopLeft ? Math.max(0, Number(cvOpt("last_candle_gap_px")) || 0) : (reasonOpen ? Math.min(boxPad(), 260) : boxPad());
+        if (!(marginPx > 0)) marginPx = 12;
+        const range = cvDenseRange(last, w, marginPx, cvOpt("target_bar_spacing"), cvOpt("min_bar_spacing_px"), cvOpt("max_bar_spacing_px"));
+        st.pad = range.to - last;
+        setRange(range);
         const want = lastSet;
         const chart = st.chart;
         if (typeof requestAnimationFrame === "function") requestAnimationFrame(() => {

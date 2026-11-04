@@ -131,12 +131,13 @@ async function checkFill(page, name, tag, wantShown) {
   const f = await lastCandle(page);
   const bad = [];
   const tol = Math.max(6, f.sp * 1.5);
-  // First view uses a fixed 5 px candle width (chart_viewer.bar_spacing). When the saved history
-  // is shorter than that width (Weekly on a wide iPad), the first bar sits in from the left.
+  // First view uses target_bar_spacing 5.8 (dense_default). A short history may widen up to 8 px.
+  // When the saved history is shorter than the screen, the first bar sits in from the left.
   if (f.from >= -0.6 && !(f.x0 < tol)) bad.push(name + " " + tag + ": first bar is not at the left edge " + JSON.stringify(f));
   if (!(Math.abs(f.gap - f.want) < tol)) bad.push(name + " " + tag + ": last candle is not in its fixed spot (12 px left of the price axis, or left of a lower-right Why box) " + JSON.stringify(f));
   if (f.boxLeft != null && !(f.pageX < f.boxLeft)) bad.push(name + " " + tag + ": Why box covers the last candle " + JSON.stringify(f));
-  if (Math.abs(f.sp - 5) > 1.25) bad.push(name + " " + tag + ": candle spacing is " + f.sp + " px, want about 5 " + JSON.stringify(f));
+  if (f.sp < 2.9 || f.sp > 8.2) bad.push(name + " " + tag + ": candle spacing is " + f.sp + " px, want 3 to 8 " + JSON.stringify(f));
+  if (f.from >= -0.6 && Math.abs(f.sp - 5.8) > 0.45) bad.push(name + " " + tag + ": candle spacing is " + f.sp + " px, want 5.8 " + JSON.stringify(f));
   if (wantShown !== false && !(f.shownBars > 30)) bad.push(name + " " + tag + ": first view shows " + f.shownBars + " bars " + JSON.stringify(f));
   return bad;
 }

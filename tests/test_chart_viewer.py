@@ -27,7 +27,8 @@ EXPECTED = {
     "range_chips": False, "group_toggle": True, "default_group": "technical",
     "reason_box_top_left": True, "last_candle_gap_px": 12, "candle_toggle": True, "default_candles": "daily",
     "style_toggle": True, "default_style": "candles",
-    "fit_bar_spacing": True, "bar_spacing": 5, "range_months_weekly": 24, "range_months_weekly_phone": 12,
+    "dense_default": True, "target_bar_spacing": 5.8, "min_bar_spacing_px": 3, "max_bar_spacing_px": 8,
+    "range_months_weekly": 24, "range_months_weekly_phone": 12,
 }
 
 
@@ -84,7 +85,7 @@ def test_help_row():
                  "Drag the chart slowly", "pinch", "flick it fast", "A slow drag never changes the chart",
                  "top row (ticker, price and counter) always changes the chart", "scrolls the chips", "just left of the price axis", "stays when you turn the device", "Drag: move chart", "Drag: next chart", "pinch zoom is off", "chart_viewer.drag_mode_toggle", "every saved daily bar",
                  "3M, 6M, 1Y and All", "chart_viewer.range_chips", "chart_viewer.chart_touch_pan",
-                 "chart_viewer.fit_bar_spacing", "chart_viewer.bar_spacing", "5 px", "10 to 11 months",
+                 "chart_viewer.dense_default", "chart_viewer.target_bar_spacing 5.8", "3 pixels", "8 pixels",
                  "chart_viewer.range_months_weekly"):
         assert word in text, word
     saved = pd.read_csv(os.path.join(ROOT, "data", "help.csv"))
@@ -160,7 +161,9 @@ def test_drag_pans_and_flick_changes_chart():
     assert 'cvOpt("style_toggle")' in block and 'cvRead("desk-cv-ohlc-bars")' in block and "LC.BarSeries" in block
     assert 'cvOpt("reason_box_top_left")' in block and "cvGapBars(" in block
     assert 'cvOpt("range_chips")' in block and '"3M"' in block and '"All"' in block
-    assert 'cvOpt("fit_bar_spacing")' in block and 'cvOpt("bar_spacing")' in block
+    assert 'cvOpt("dense_default")' in block and 'cvOpt("target_bar_spacing")' in block
+    assert 'cvOpt("min_bar_spacing_px")' in block and 'cvOpt("max_bar_spacing_px")' in block
+    assert "function cvDenseRange(" in desk
     assert 'cvOpt("range_months_weekly")' in block and 'cvOpt("range_months_weekly_phone")' in block
     pages = _read("site", "js", "pages.js")
     i = pages.index("chartviewer: { title:")
