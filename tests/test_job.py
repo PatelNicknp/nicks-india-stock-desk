@@ -408,6 +408,10 @@ def test_candle_file_publishes_high_low_volume_and_leaves_open_blank():
     long = pd.DataFrame(rows)
     out = stock_desk.candle_file(long, ["AAA", "../nope"], bars=10)
     assert list(out["ticker"].unique()) == ["AAA"]
+    nifty = stock_desk.candle_file(pd.DataFrame([
+        {"date": "2024-01-02", "ticker": "^NSEI", "close": 21000, "high": 21100, "low": 20900, "volume": 0},
+    ]), ["^NSEI", "../nope", "^"])
+    assert list(nifty["ticker"]) == ["^NSEI"]
     assert len(out) == 10
     assert list(out.columns) == ["date", "ticker", "open", "high", "low", "close", "volume"]
     assert out["open"].isna().all()

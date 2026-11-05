@@ -330,6 +330,14 @@
       rows.filter((r) => String(r.ticker || "").trim().toUpperCase() === want)
     ).catch(() => loadCsv("ohlc/" + want + ".csv"));
   }
+  // Nifty 50 closes already saved with the candle files. One load for the whole viewer.
+  let niftyBarsJob = null;
+  function loadNiftyBars() {
+    if (!niftyBarsJob) {
+      niftyBarsJob = loadTickerBars("^NSEI").then((rows) => barsFromRows(rows)).catch(() => []);
+    }
+    return niftyBarsJob;
+  }
 
   function cleanRow(row) {
     const o = {};
@@ -594,6 +602,14 @@
       case "ticker": return tickerHtml(v);
       case "etf": return etfHtml(v);
       case "score": return scoreFill(v);
+      case "rs": {
+        const n = num(v);
+        if (n == null) return na();
+        const shown = String(Math.round(n));
+        const tip = isBlank(row.rs_label) ? "RS " + shown : String(row.rs_label);
+        const hot = n >= rsLeaderMin();
+        return '<span class="rspill' + (hot ? " hot" : "") + '" title="' + esc(tip) + '">' + esc(shown) + "</span>";
+      }
       case "scorejump": {
         const a = isBlank(row.score_prev) ? na() : esc(String(row.score_prev).replace(/\.0$/, ""));
         const b = isBlank(row.score) ? na() : esc(String(row.score).replace(/\.0$/, ""));
@@ -830,14 +846,14 @@
   function align(col) {
     if (col.align) return col.align;
     if (["num", "pct", "money", "compact", "dist", "heatpct", "shares", "ratiox"].indexOf(col.kind) >= 0) return "num";
-    if (["score", "points", "plabel", "grade", "flag", "tone", "signal"].indexOf(col.kind) >= 0) return "c";
+    if (["score", "points", "plabel", "grade", "flag", "tone", "signal", "rs"].indexOf(col.kind) >= 0) return "c";
     return "";
   }
 
   function compare(a, b, col, dir) {
     const va = a[col.key];
     const vb = b[col.key];
-    const numeric = ["num", "pct", "money", "compact", "dollars", "dist", "score", "points", "tone", "signal", "flag", "heatpct", "delta", "multiple", "volx", "retrace", "strengthbar", "daybar", "rangepos", "scorejump", "count", "signedcompact", "of8", "owncap", "ratiox"].indexOf(col.kind) >= 0;
+    const numeric = ["num", "pct", "money", "compact", "dollars", "dist", "score", "points", "tone", "signal", "flag", "heatpct", "delta", "multiple", "volx", "retrace", "strengthbar", "daybar", "rangepos", "scorejump", "count", "signedcompact", "of8", "owncap", "ratiox", "rs"].indexOf(col.kind) >= 0;
     let c = 0;
     if (numeric) {
       const pull = (value) => {
@@ -948,8 +964,10 @@
     const benchLine = benchName ? " Relative strength uses " + benchName + "." : "";
     const sub = (typeof opts.priceSub === "function" ? opts.priceSub(row) : (opts.priceSub || "Daily candles in rupees. Turn the averages on or off above the chart.")) + benchLine;
     const company = isBlank(row.company) ? "" : ' <span class="mut">' + esc(row.company) + "</span>";
+    const rsLine = rsSentence(row);
+    const rsHtml = rsLine ? '<p class="rslab">' + esc(rsLine) + "</p>" : "";
     return '<div class="buydrop"><div class="buyid">' + tickerHtml(row.ticker) + company + "</div>" +
-      expandNotes(row, parked) + expandStory(row, opts, parked) + custom + pricePanel(sub) + "</div>";
+      rsHtml + expandNotes(row, parked) + expandStory(row, opts, parked) + custom + pricePanel(sub) + "</div>";
   }
   if (typeof window !== "undefined" && !window.__rowDropFit) {
     window.__rowDropFit = true;
@@ -995,7 +1013,8 @@
     const head = (hasDetail ? '<th class="exp"></th>' : "") + shown.map((c) => {
       const mark = state.sort === c.key ? '<span class="sort">' + (state.dir === "asc" ? "▲" : "▼") + "</span>" : "";
       const cls = [align(c), c.hide === "md" ? "hide-md" : "", c.ellipsis ? "ellip" : ""].filter(Boolean).join(" ");
-      return '<th class="' + cls + '" data-k="' + esc(c.key) + '">' + esc(c.label) + mark + "</th>";
+      const tip = c.title ? ' title="' + esc(c.title) + '"' : "";
+      return '<th class="' + cls + '"' + tip + ' data-k="' + esc(c.key) + '">' + esc(c.label) + mark + "</th>";
     }).join("");
     const body = view.map((r, i) => {
       const tds = shown.map((c) => {
@@ -2030,7 +2049,7 @@
   ];
   const CV_BUY = { id: "buysetups", label: "Buy setups", short: "Buy setups", file: "buy_setups.csv", href: "buy-setups.html", kind: "buy", extra: true };
   const CV_WATCH = { id: "watchlist", label: "Watchlist", short: "Watchlist", file: "watchlist.csv", href: "watchlist.html", kind: "watch", extra: true };
-  const CV_FILES = CV_SOURCES.concat([CV_BUY, CV_WATCH]).map((s) => s.file);
+  const CV_FILES = CV_SOURCES.concat([CV_BUY, CV_WATCH]).map((s) => s.file).concat(["rs_ratings.csv"]);
   const CV_MAS = [
     { id: "ma_10", label: "10", n: 10, color: "#38BDF8" },
     { id: "ma_20", label: "20", n: 20, color: "#7C9CFF" },
@@ -2047,7 +2066,7 @@
     ma_chips: true, ma_10: false, ma_20: false, ma_50: true, ma_150: true, ma_200: true,
     volume: true, volume_toggle: true, reason_box: true, reason_box_toggle: true,
     reason_max_chars: 110, reason_collapsed_items: 3, company_line: true, day_change: true,
-    range_months: 6, range_months_phone: 3, range_chips: false, group_toggle: true, default_group: "technical",
+    range_months: 6, range_months_phone: 3, range_chips: false, rs_line: true, group_toggle: true, default_group: "technical",
     reason_box_top_left: true, last_candle_gap_px: 12, candle_toggle: true, default_candles: "daily", style_toggle: true, default_style: "candles",
     dense_default: true, target_bar_spacing: 5.8, min_bar_spacing_px: 3, max_bar_spacing_px: 8,
     range_months_weekly: 24, range_months_weekly_phone: 12,
@@ -2155,6 +2174,9 @@
         }
         if (!rec.company && r.company) rec.company = String(r.company);
         if (rec.score == null && num(r.score) != null) rec.score = num(r.score);
+        if (rec.rs == null && num(r.rs) != null) rec.rs = num(r.rs);
+        if (!rec.rs_label && !isBlank(r.rs_label)) rec.rs_label = String(r.rs_label);
+        if (!rec.rs_note && !isBlank(r.rs_note)) rec.rs_note = String(r.rs_note);
         if (rec.hits.some((h) => h.src === src.id)) return;
         if (src.extra) rec.hits.unshift(item);
         else rec.hits.push(item);
@@ -2179,13 +2201,34 @@
     // Buy setups and the Watchlist only add a line to the reason box of stocks already counted.
     if (buyOn) add(CV_BUY, all, files[CV_BUY.file], true);
     if (watchOn) add(CV_WATCH, all, files[CV_WATCH.file], true);
+    const rsMap = new Map();
+    realRows(files["rs_ratings.csv"] || []).forEach((r) => {
+      const ticker = String(r.ticker || "").trim().toUpperCase();
+      if (ticker) rsMap.set(ticker, r);
+    });
+    all.forEach((rec) => {
+      const extra = rsMap.get(rec.ticker);
+      if (!extra) return;
+      if (rec.rs == null && num(extra.rs) != null) rec.rs = num(extra.rs);
+      if (!rec.rs_label && !isBlank(extra.rs_label)) rec.rs_label = String(extra.rs_label);
+      if (!rec.rs_note && !isBlank(extra.rs_note)) rec.rs_note = String(extra.rs_note);
+    });
     lists.all = order(Array.from(all.values()));
     sources.forEach((src) => { lists[src.id] = order(singles[src.id].map((t) => all.get(t))); });
     const choices = [{ id: "all", label: group ? "All " + group + " stocks" : "All scanner stocks" }];
+    const fillRs = (rec) => {
+      if (!rec) return rec;
+      const extra = rsMap.get(rec.ticker);
+      if (!extra) return rec;
+      if (rec.rs == null && num(extra.rs) != null) rec.rs = num(extra.rs);
+      if (!rec.rs_label && !isBlank(extra.rs_label)) rec.rs_label = String(extra.rs_label);
+      if (!rec.rs_note && !isBlank(extra.rs_note)) rec.rs_note = String(extra.rs_note);
+      return rec;
+    };
     const own = (src) => {
       const m = new Map();
       add(src, m, files[src.file]);
-      return Array.from(m.values()).map((rec) => all.get(rec.ticker) || rec);
+      return Array.from(m.values()).map((rec) => fillRs(all.get(rec.ticker) || rec));
     };
     if (buyOn) { lists.buysetups = order(own(CV_BUY)); choices.push({ id: "buysetups", label: "Buy setups" }); }
     sources.forEach((s) => choices.push({ id: s.id, label: s.label }));
@@ -2332,6 +2375,9 @@
     CV_MAS.forEach((d) => { ma[d.id] = typeof savedMa[d.id] === "boolean" ? savedMa[d.id] : cvOpt(d.id); });
     const savedVol = cvOpt("volume_toggle") ? cvRead("desk-cv-volume") : null;
     let volOn = typeof savedVol === "boolean" ? savedVol : cvOpt("volume");
+    const rsLineAllowed = cvOpt("rs_line") !== false;
+    const savedRsLine = rsLineAllowed ? cvRead("desk-cv-rs-line") : null;
+    let rsLineOn = rsLineAllowed && (typeof savedRsLine === "boolean" ? savedRsLine : true);
     const savedSwipe = cvOpt("flip_toggle") ? cvRead("desk-cv-swipe-right-next") : null;
     let rightIsNext = typeof savedSwipe === "boolean" ? savedSwipe : cvOpt("swipe_right_is_next");
     const reasonAllowed = cvOpt("reason_box");
@@ -2375,6 +2421,7 @@
     const chipsHtml = () =>
       (cvOpt("ma_chips") ? CV_MAS.map((d) => chip(d.id, "MA " + d.n, maColor(d.n, d.color), ma[d.id])).join("") : "") +
       (cvOpt("volume_toggle") ? chip("volume", "Vol", "", volOn) : "") +
+      (rsLineAllowed ? chip("rsline", "RS line", "", rsLineOn) : "") +
       (reasonAllowed && cvOpt("reason_box_toggle") ? chip("reason", "Why", "", reasonOn) : "") +
       (swipeOn && cvOpt("flip_toggle") ? chip("swipe", rightIsNext ? "Swipe right: next" : "Swipe left: next", "", false, "cvflip") : "") +
       (dragToggle ? chip("drag", "Drag: " + (dragPan ? "move chart" : "next chart"), "", dragPan) : "") +
@@ -2400,6 +2447,7 @@
       (cvOpt("arrows") ? '<button type="button" class="cv-arrow cv-prev" id="cvprev" aria-label="Previous chart">‹</button>' +
         '<button type="button" class="cv-arrow cv-next" id="cvnext" aria-label="Next chart">›</button>' : "") +
       "</div></section>" +
+      '<p class="cap cv-rsnote" id="cvrsnote" hidden></p>' +
       '<p class="cap">Daily bars saved by the desk' + (candleToggle ? " (Weekly candles are built from them)" : "") + '. Averages are worked out in your browser. ' +
       (swipeOn ? "Swipe " + (rightIsNext ? "right" : "left") + " for the next chart. " +
         (dragPan ? "Drag the chart slowly to see older days, and flick fast or swipe on the top row to change the chart. " : "") : "") +
@@ -2424,20 +2472,40 @@
       sum.textContent = n ? (c ? c.label : "List") + ": " + n + " stock" + (n === 1 ? "" : "s") + (listId === "all" ? ", the ones on the most scanners first." : ".")
         : "No stocks on this list today.";
     };
+    const paintRs = () => {
+      if (!chipsEl || !featureOn("feature.rs_rank")) return;
+      let el = document.getElementById("cvrs");
+      if (!el) {
+        chipsEl.insertAdjacentHTML("afterbegin", '<span class="cvchip rschip" id="cvrs" hidden></span>');
+        el = document.getElementById("cvrs");
+      }
+      const rec = st.list[st.i];
+      const short = rsShort(rec);
+      const full = rsSentence(rec);
+      if (!short) { el.hidden = true; el.textContent = ""; el.removeAttribute("title"); return; }
+      el.hidden = false;
+      el.textContent = short;
+      el.title = full || short;
+      el.classList.toggle("hot", num(rec && rec.rs) >= rsLeaderMin());
+    };
     const paintChips = () => {
       const scroll = chipsEl.scrollLeft;
-      chipsEl.innerHTML = chipsHtml();
-      chipsEl.hidden = !chipsEl.innerHTML;
+      const buttons = chipsHtml();
+      chipsEl.innerHTML = buttons;
+      paintRs();
+      chipsEl.hidden = !buttons && !rsShort(st.list[st.i]);
       chipsEl.scrollLeft = scroll;
     };
 
     // ---- Reason box: which scanners list the stock, its status and why.
     const reasonHtml = (rec) => {
-      if (!rec.hits.length) return '<div class="cv-why-h">Why it is here</div><div class="cv-why-r">Not on a scanner list today.</div>';
+      const rsLine = rsSentence(rec);
+      const rsHtml = rsLine ? '<div class="cv-why-rs">' + esc(rsLine) + "</div>" : "";
+      if (!rec.hits.length) return rsHtml + '<div class="cv-why-h">Why it is here</div><div class="cv-why-r">Not on a scanner list today.</div>';
       const count = cvCount(rec);
       const few = reasonOpen ? rec.hits : rec.hits.slice(0, fewItems);
       const hidden = rec.hits.length - few.length;
-      return '<div class="cv-why-h">Why it is here' + (count ? " (" + count + " scanner" + (count === 1 ? "" : "s") + ")" : "") + "</div>" +
+      return rsHtml + '<div class="cv-why-h">Why it is here' + (count ? " (" + count + " scanner" + (count === 1 ? "" : "s") + ")" : "") + "</div>" +
         few.map((h) => '<div class="cv-why-i"><span class="cv-why-l">' + esc(h.label) + '</span> <span class="cv-why-s" style="color:' + cvStatusColor(h.status) + '">' +
           esc(h.status) + "</span>" + (h.reason ? '<div class="cv-why-r">' + esc(reasonOpen ? cvShort(h.reason) : cvShort(h.reason, maxChars)) + "</div>" : "") + "</div>").join("") +
         '<div class="cv-why-x">' + (reasonOpen ? "Tap to make it small" : (hidden ? "+ " + hidden + " more. " : "") + "Tap to read all") + "</div>";
@@ -2599,7 +2667,7 @@
         const k = tvCharts.indexOf(st.chart);
         if (k >= 0) tvCharts.splice(k, 1);
       }
-      st.chart = null; st.price = null; st.vol = null; st.mas = {};
+      st.chart = null; st.price = null; st.vol = null; st.rs = null; st.mas = {};
       viewW = 0;
     };
     const draw = (daily) => {
@@ -2641,16 +2709,65 @@
         s.setData(data);
         st.mas[d.id] = s;
       });
+      // RS line in its own pane, directly under the price. Volume stays below that.
+      // The line is the same in Candles and Bars. Daily and Weekly both come from these bars.
+      let nextPane = 1;
+      st.rsCount = 0;
+      if (rsLineOn && window.rsLine && (st.nifty || []).length) {
+        const line = window.rsLine.build(daily, st.nifty, { weekly: weekly });
+        st.rsCount = line.points.length;
+        if (line.points.length) {
+          st.rs = chart.addSeries(LC.LineSeries, {
+            color: "#7C9CFF", lineWidth: 1, priceLineVisible: false, lastValueVisible: false,
+            crosshairMarkerVisible: true, title: "RS line",
+            priceFormat: { type: "price", precision: 3, minMove: 0.001 },
+          }, nextPane);
+          st.rs.setData(line.points.map((p) => ({ time: p.time, value: p.value })));
+          if (line.markers.length && LC.createSeriesMarkers) {
+            try {
+              LC.createSeriesMarkers(st.rs, line.markers.map((m) => ({
+                time: m.time, position: "inBar", shape: "circle", size: 2,
+                color: tc(m.kind === "before" ? "#F59E0B" : "#7C9CFF"),
+              })));
+            } catch (e) { /* the line still shows if a dot cannot be drawn */ }
+          }
+          nextPane += 1;
+        }
+      }
       if (volOn) {
-        st.vol = chart.addSeries(LC.HistogramSeries, { priceFormat: { type: "volume" }, priceLineVisible: false, lastValueVisible: false }, 1);
+        st.vol = chart.addSeries(LC.HistogramSeries, { priceFormat: { type: "volume" }, priceLineVisible: false, lastValueVisible: false }, nextPane);
         st.vol.setData(bars.filter((b) => b.v != null).map((b) => ({
           time: b.date, value: b.v, color: b.c >= b.o ? "rgba(34,197,94,.45)" : "rgba(239,68,68,.45)",
         })));
-        const panes = chart.panes();
-        if (panes[0]) panes[0].setStretchFactor(4);
-        if (panes[1]) panes[1].setStretchFactor(1);
       }
+      const panes = chart.panes();
+      if (panes[0]) panes[0].setStretchFactor(st.rs && volOn ? 5 : 4);
+      let paneAt = 1;
+      if (st.rs && panes[paneAt]) {
+        panes[paneAt].setStretchFactor(1.15);
+        try {
+          panes[paneAt].priceScale("right").applyOptions({ scaleMargins: { top: 0.22, bottom: 0.22 }, borderVisible: false });
+        } catch (e) { /* the line still autoscales */ }
+        paneAt += 1;
+      }
+      if (st.vol && panes[paneAt]) panes[paneAt].setStretchFactor(1);
+      paintRsNote();
       requestAnimationFrame(() => applyView());
+    };
+    const paintRsNote = () => {
+      const el = document.getElementById("cvrsnote");
+      if (!el) return;
+      if (!rsLineAllowed || !rsLineOn) { el.hidden = true; el.textContent = ""; return; }
+      el.hidden = false;
+      if (!(st.nifty || []).length) {
+        el.textContent = "RS line: stock vs NIFTY 50. The NIFTY 50 prices are not on this chart yet.";
+        return;
+      }
+      if (!st.rsCount) {
+        el.textContent = "RS line: stock vs NIFTY 50. Not enough overlapping prices to draw it.";
+        return;
+      }
+      el.textContent = "RS line: stock vs NIFTY 50. Blue dot: new 52-week high. Amber dot: the line made that high before the price.";
     };
 
     const header = (rec, bars) => {
@@ -2661,6 +2778,7 @@
       const px = document.getElementById("cvpx");
       const count = document.getElementById("cvcount");
       if (count) count.textContent = st.list.length ? (st.i + 1) + " of " + st.list.length : "0 of 0";
+      paintRs();
       if (!bars || !bars.length) { px.innerHTML = ""; return; }
       const last = bars[bars.length - 1];
       const prev = bars.length > 1 ? bars[bars.length - 2].c : null;
@@ -2715,7 +2833,9 @@
       }
       header(rec, null);
       remember(rec.ticker);
-      ensureTv().then(() => loadTickerBars(rec.ticker)).then((rows) => {
+      ensureTv().then(() => Promise.all([loadTickerBars(rec.ticker), loadNiftyBars()])).then((pair) => {
+        const rows = pair[0];
+        st.nifty = pair[1] || [];
         if (token !== st.token) return;
         const bars = barsFromRows(rows);
         st.bars = bars;
@@ -2769,6 +2889,7 @@
         return;
       }
       if (id === "volume") { volOn = !volOn; cvStore("desk-cv-volume", volOn); paintChips(); if (st.bars.length && st.chart) { carryRange = userRange; draw(st.bars); } return; }
+      if (id === "rsline") { rsLineOn = !rsLineOn; cvStore("desk-cv-rs-line", rsLineOn); paintChips(); paintRsNote(); if (st.bars.length && st.chart) { carryRange = userRange; draw(st.bars); } return; }
       if (id === "reason") { reasonOn = !reasonOn; cvStore("desk-cv-reason", reasonOn); paintChips(); paintReason(); return; }
       if (id === "swipe") { rightIsNext = !rightIsNext; cvStore("desk-cv-swipe-right-next", rightIsNext); }
       else if (id === "drag") { dragPan = !dragPan; cvStore("desk-cv-drag-pan", dragPan); applyPan(); }
@@ -3273,6 +3394,24 @@
     chartviewer: "feature.chart_viewer",
   };
   let SETTINGS = [];
+  function rsLeaderMin() {
+    const row = SETTINGS.find((r) => r.setting === "relative_strength.leader_min");
+    const n = row ? Number(row.value) : 70;
+    return Number.isFinite(n) && n > 0 ? n : 70;
+  }
+  // Plain sentence from the row. Blank when this run has no rank for the stock.
+  function rsSentence(row) {
+    if (!featureOn("feature.rs_rank") || !row) return "";
+    if (!isBlank(row.rs_label)) return String(row.rs_label);
+    if (!isBlank(row.rs_note)) return String(row.rs_note);
+    return "";
+  }
+  function rsShort(row) {
+    if (!featureOn("feature.rs_rank") || !row) return "";
+    const n = num(row.rs);
+    if (n == null) return "";
+    return "RS " + Math.round(n);
+  }
   function featureOn(key) {
     if (!key) return true;
     const row = SETTINGS.find((r) => r.setting === key);
@@ -3289,7 +3428,10 @@
     if (!about || !featureOn("feature.page_descriptions")) return "";
     // splitLines replace lines while the Technical | Fundamental split is on (feature.split_tech_fund).
     const split = about.splitLines && splitOn() && (!about.splitNeedsToggle || cvOpt("group_toggle"));
-    const lines = [].concat((split ? about.splitLines : about.lines) || []).filter((t) => t);
+    let lines = [].concat((split ? about.splitLines : about.lines) || []).filter((t) => t);
+    if (about.rs && featureOn("feature.rs_rank")) {
+      lines = lines.concat(["RS is a 1 to 99 rank for the past year. 99 is the strongest. RS 85 means it beat 85% of stocks over the past year. Under a year of prices, the cell is blank. The filter is RS 70 or higher."]);
+    }
     if (!lines.length) return "";
     const body = lines.map((t) => "<p>" + esc(t) + "</p>").join("") +
       (about.note ? '<p class="about-note">' + esc(about.note) + "</p>" : "");
@@ -3359,7 +3501,7 @@
     selectedMulti: selectedMulti, fieldVal: fieldVal,
     multiHtml: multiHtml, selectHtml: selectHtml, searchHtml: searchHtml, rangeHtml: rangeHtml,
     pairHtml: pairHtml, dateHtml: dateHtml, feedHtml: feedHtml, placeFeed: placeFeed,
-    featureOn: featureOn, settingVal: settingVal, aboutHtml: aboutHtml, marketWord: marketWord, marketColor: marketColor, monthLabel: monthLabel, dateTicks: dateTicks, ptsColor: ptsColor,
+    featureOn: featureOn, settingVal: settingVal, aboutHtml: aboutHtml, rsLeaderMin: rsLeaderMin, rsSentence: rsSentence, marketWord: marketWord, marketColor: marketColor, monthLabel: monthLabel, dateTicks: dateTicks, ptsColor: ptsColor,
     wireFilters: wireFilters, matchMulti: matchMulti, matchContains: matchContains,
     matchText: matchText, matchMin: matchMin,
     destroyCharts: destroyCharts, lineChart: lineChart, barChart: barChart, comboChart: comboChart, makeChart: makeChart,

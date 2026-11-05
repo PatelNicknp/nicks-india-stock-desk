@@ -29,6 +29,8 @@ import india_data
 import fundamentals_backfill
 import trading_floor
 import trading_floor_paper
+import relative_strength
+import sector_leaders
 
 ROOT = None  # set in main so tests can point DESK_ROOT at a temp folder
 PT = "America/Los_Angeles"
@@ -1892,7 +1894,8 @@ def build_watch(watch, scores):
 CHART_BARS = 126
 # About three years of sessions. The browser computes the averages from these bars.
 CANDLE_BARS = india_data.CANDLE_SESSIONS
-_TICKER_FILE = re.compile(r"^[A-Z0-9&][A-Z0-9.&\-]{0,18}$")
+# A leading ^ is an index already in the price cache, such as ^NSEI. Nothing else is added.
+_TICKER_FILE = re.compile(r"^\^?[A-Z0-9&][A-Z0-9.&\-]{0,18}$")
 
 
 def _upside_pct(target_mean, price):
@@ -2067,6 +2070,22 @@ def write_candle_groups(frame, out_dir):
         elif name.endswith(".csv.gz") and name not in keep:
             os.remove(os.path.join(out_dir, name))
     return rewritten
+
+
+def _leader_scanners(frames):
+    """Scanner label and table, in the order a setup tag should prefer."""
+    order = (
+        ("VCP", "scanner_vcp"),
+        ("Box", "scanner_box"),
+        ("Flag", "scanner_flag"),
+        ("Qullamaggie", "scanner_qullamaggie"),
+        ("Marios", "scanner_marios"),
+        ("EP", "scanner_episodic_pivot"),
+        ("CANSLIM", "scanner_canslim"),
+        ("Gap Up", "scanner_gap_up"),
+    )
+    frames = frames or {}
+    return [(label, frames.get(key)) for label, key in order]
 
 
 def news_rows(news, scores):
@@ -3353,6 +3372,58 @@ def main(argv=None):
     aaii_note = "There is no free AAII survey for India. India VIX and FII or DII cash were not available, so this page has no number."
     mood = build_mood(close, fii) if features.get("aaii_sentiment", True) else None
 
+    # Relative strength. Only the after-close main run (mode full, 16:30 IST,
+    # 3:00 AM PT) calculates it, from closes already in memory. No new download.
+    rs_on = features.get("rs_rank", True)
+    rs_table = pd.DataFrame()
+    if rs_on:
+        rs_cache = os.path.join(cache, "rs_ratings.csv")
+        cached_rs = read_csv(rs_cache)
+        names = []
+        if universe is not None and len(universe) and "ticker" in universe.columns:
+            names = [t for t in dict.fromkeys(universe["ticker"].astype(str)) if t and not str(t).startswith("^")]
+        # No prices on a close run: keep the last rank instead of replacing it with blanks.
+        calc_mode = mode if (mode == "full" and close is not None and len(close)) else ("cached" if mode == "full" else mode)
+        rs_table = relative_strength.resolve(close, names, cfg, "full" if calc_mode == "full" else "cached", cached_rs if len(cached_rs) else None)
+        if calc_mode == "full":
+            rs_table.to_csv(rs_cache, index=False)
+            ranked = int(pd.to_numeric(rs_table["rs"], errors="coerce").notna().sum()) if len(rs_table) and "rs" in rs_table.columns else 0
+            log("Relative strength", "OK" if ranked else "MISSING", asof,
+                "%d stocks ranked 1 to 99 from saved daily closes. A name with less than a year of prices is left blank. No new download." % ranked)
+        elif len(rs_table):
+            log("Relative strength", "OK", "", "Reused the last after-close rank. Only the 3:00 AM PT run recalculates it.")
+        else:
+            log("Relative strength", "MISSING", "", "No rank yet. The after-close run (3:00 AM PT) builds it from saved prices.")
+        def _stamp(frame):
+            return relative_strength.attach(frame, rs_table)
+        g, q, d, w = (_stamp(x) for x in (g, q, d, w))
+        br, tr, pb = (_stamp(x) for x in (br, tr, pb))
+        for _rs_key in list(setup_frames):
+            setup_frames[_rs_key] = _stamp(setup_frames.get(_rs_key))
+        buy = _stamp(buy)
+        hv = _stamp(hv)
+        gap = _stamp(gap)
+    else:
+        log("Relative strength", "OK", "", "Switch feature.rs_rank is off.")
+
+    leaders_on = features.get("sector_leaders", True)
+    if leaders_on:
+        try:
+            sector_leaders_frame = sector_leaders.build(
+                scores, rs_table, rot.get("sector_rotation") if isinstance(rot, dict) else None,
+                buy, _leader_scanners(setup_frames), cfg.get("sector_etfs"),
+            )
+        except Exception as exc:
+            sector_leaders_frame = pd.DataFrame()
+            log("Sector leaders", "MISSING", asof, ("The sector leader list was not built. " + str(exc))[:200])
+        else:
+            n_lead = int(sector_leaders_frame["ticker"].astype(str).ne("").sum()) if len(sector_leaders_frame) and "ticker" in sector_leaders_frame.columns else 0
+            log("Sector leaders", "OK" if n_lead else "MISSING", asof,
+                "%d leader stocks. Strong sectors come from the sector index versus the Nifty 50 when that table is on file." % n_lead)
+    else:
+        sector_leaders_frame = pd.DataFrame()
+        log("Sector leaders", "OK", "", "Switch feature.sector_leaders is off.")
+
     files = {
         "scores": gated(scores, "scores", features.get("top_stocks", True) or features.get("scorecard", True), "No scores."),
         "score_details": gated(details, "score_details", features.get("scorecard", True), "No score breakdown."),
@@ -3382,6 +3453,7 @@ def main(argv=None):
         "highs_lows_history": gated(setup_frames.get("highs_lows_history"), "highs_lows_history", features.get("scanner_52w", True), "No 52-week history in the cached prices."),
         "buy_setups": gated(buy, "buy_setups", buy_on, "No buy setups. The list is built from the scanners already on the desk. This desk never places trades."),
         "sector_rotation": gated(rot.get("sector_rotation"), "sector_rotation", features.get("sector_rotation", True), "No sector rotation. The Nifty 50 or the sector indexes were missing from the price cache."),
+        "sector_leaders": gated(sector_leaders_frame, "sector_leaders", leaders_on, "No sector leaders yet. They are built from the sector indexes and the RS rank on the after-close run."),
         "sector_rotation_tails": gated(rot.get("sector_rotation_tails"), "sector_rotation_tails", features.get("sector_rotation", True), "No relative-rotation tails."),
         "sector_rotation_history": gated(rot.get("sector_rotation_history"), "sector_rotation_history", features.get("sector_rotation", True), "No relative-rotation history."),
         "earnings_calendar": gated(earn_pages.get("calendar"), "earnings_calendar", features.get("earnings_calendar", True), "No earnings dates."),
@@ -3411,6 +3483,7 @@ def main(argv=None):
         "gainers_losers": gated(gl, "gainers_losers", features.get("gainers_losers", True), "No gainers."),
         "high_volume": gated(hv, "high_volume", hv_on, hv_note),
         "scanner_gap_up": gated(gap, "scanner_gap_up", gap_on, gap_note),
+        "rs_ratings": gated(rs_table, "rs_ratings", rs_on, "No relative strength rank yet. The after-close run builds it from saved prices."),
         "sector_performance": gated(tables.sector_perf(scores), "sector_performance", features.get("sector_performance", True), "No sector performance."),
         "heatmaps": gated(heat, "heatmaps", features.get("heatmaps", True), "No heatmap."),
         "freshness": gated(fresh, "freshness", features.get("freshness_flags", True), "Freshness flags are off."),

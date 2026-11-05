@@ -36,6 +36,16 @@ The benchmark is the Nifty 50. Bank Nifty is shown beside it. Sector strength us
 
 BUY, HOLD, and AVOID are research labels. They are not orders.
 
+## Relative strength
+
+RS is a 1 to 99 rank of the past year, across every stock the desk covers. 99 is the strongest. RS 85 means the stock beat 85% of that list.
+
+The year is four quarters of 63 trading days. The latest quarter counts 40%. Each older quarter counts 20%. A stock with less than a full year of daily prices is left blank. That blank is not a zero.
+
+The rank is calculated only on the after-close run (16:30 IST, 3:00 AM PT, one hour later in summer) from prices already saved. No new download. The morning run and the late bhavcopy retry reuse it. Turn it off with `feature.rs_rank`.
+
+The VCP trend template still checks whether the stock beat the Nifty 50 over 6 months and over 12 months (SENSEX for a BSE-only stock). That check is not replaced by this rank. CANSLIM's L column is still strength versus the index. Minervini's line is the optional filter, RS 70 or higher.
+
 ## What is fetched, and how often
 
 Daily prices come from the NSE bhavcopy. BSE bhavcopy, then Stooq, then a small Yahoo gap fill are the backups. The history stays in `cache/ohlcv.csv.gz` (about 3 years) and the site reads letter files in `data/ohlc/`. There is no hourly price download.
@@ -98,6 +108,7 @@ python tests/test_fundamentals.py
 python tests/test_universe.py
 python tests/test_job.py
 python tests/test_setups.py
+python tests/test_relative_strength.py
 python stock_desk.py --close
 ```
 
