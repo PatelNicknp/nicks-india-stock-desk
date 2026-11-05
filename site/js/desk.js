@@ -2066,11 +2066,10 @@
     ma_chips: true, ma_10: false, ma_20: false, ma_50: true, ma_150: true, ma_200: true,
     volume: true, volume_toggle: true, reason_box: true, reason_box_toggle: true,
     reason_max_chars: 110, reason_collapsed_items: 3, company_line: true, day_change: true,
-    range_months: 6, range_months_phone: 3, range_chips: false, group_toggle: true, default_group: "technical",
+    range_months: 6, range_months_phone: 3, range_chips: false, rs_line: true, group_toggle: true, default_group: "technical",
     reason_box_top_left: true, last_candle_gap_px: 12, candle_toggle: true, default_candles: "daily", style_toggle: true, default_style: "candles",
     dense_default: true, target_bar_spacing: 5.8, min_bar_spacing_px: 3, max_bar_spacing_px: 8,
     range_months_weekly: 24, range_months_weekly_phone: 12,
-    rs_line: true,
   };
   function cvOpt(key) {
     const fallback = CV_DEFAULTS[key];

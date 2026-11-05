@@ -321,6 +321,7 @@
     "range_months": 6,
     "range_months_phone": 3,
     "range_chips": false,
+    "rs_line": true,
     "group_toggle": true,
     "default_group": "technical",
     "reason_box_top_left": true,
@@ -334,8 +335,7 @@
     "min_bar_spacing_px": 3,
     "max_bar_spacing_px": 8,
     "range_months_weekly": 24,
-    "range_months_weekly_phone": 12,
-    "rs_line": true
+    "range_months_weekly_phone": 12
   },
   "chart_colors": {
     "_note": "Moving average line colours, shared by every price chart: the Chart Viewer (chart-viewer.html) and the expand-in-place row charts on the scanner and list pages. Same keys and values as the US desk. The same colour is used for the line, its toggle chip, and its value in the legend. ma_colors is for dark mode: MA 10 green, MA 20 orange, MA 50 blue, MA 150 yellow, MA 200 red. The row charts' SMA 50, SMA 150, and SMA 200 use the 50, 150, and 200 colours; their SMA 21 and EMA lines keep their own colours. ma_colors_light is used in light mode, with slightly darker shades so each line still shows on white (yellow is #ca8a04). Level lines (Buy point, Entry, Stop, Target, 52w high and low, Hold level, Trail, and the Marios 10-day and 20-day levels) are not moving average lines and keep their colours. Each value is a #RRGGBB colour. A missing or bad value falls back to these defaults. Colours only; nothing new is downloaded.",

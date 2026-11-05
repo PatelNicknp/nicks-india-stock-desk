@@ -24,12 +24,11 @@ EXPECTED = {
     "ma_10": False, "ma_20": False, "ma_50": True, "ma_150": True, "ma_200": True, "volume": True,
     "volume_toggle": True, "reason_box": True, "reason_box_toggle": True, "reason_max_chars": 110,
     "reason_collapsed_items": 3, "company_line": True, "day_change": True, "range_months": 6, "range_months_phone": 3,
-    "range_chips": False, "group_toggle": True, "default_group": "technical",
+    "range_chips": False, "rs_line": True, "group_toggle": True, "default_group": "technical",
     "reason_box_top_left": True, "last_candle_gap_px": 12, "candle_toggle": True, "default_candles": "daily",
     "style_toggle": True, "default_style": "candles",
     "dense_default": True, "target_bar_spacing": 5.8, "min_bar_spacing_px": 3, "max_bar_spacing_px": 8,
     "range_months_weekly": 24, "range_months_weekly_phone": 12,
-    "rs_line": True,
 }
 
 
