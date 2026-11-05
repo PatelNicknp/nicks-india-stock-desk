@@ -57,6 +57,7 @@
     "scanner_52w": true,
     "buy_setups": true,
     "sector_rotation": true,
+    "sector_leaders": true,
     "fundamentals_backfill": true,
     "sensex": true,
     "company_line": true,

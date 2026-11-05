@@ -30,6 +30,7 @@ import fundamentals_backfill
 import trading_floor
 import trading_floor_paper
 import relative_strength
+import sector_leaders
 
 ROOT = None  # set in main so tests can point DESK_ROOT at a temp folder
 PT = "America/Los_Angeles"
@@ -2071,6 +2072,22 @@ def write_candle_groups(frame, out_dir):
     return rewritten
 
 
+def _leader_scanners(frames):
+    """Scanner label and table, in the order a setup tag should prefer."""
+    order = (
+        ("VCP", "scanner_vcp"),
+        ("Box", "scanner_box"),
+        ("Flag", "scanner_flag"),
+        ("Qullamaggie", "scanner_qullamaggie"),
+        ("Marios", "scanner_marios"),
+        ("EP", "scanner_episodic_pivot"),
+        ("CANSLIM", "scanner_canslim"),
+        ("Gap Up", "scanner_gap_up"),
+    )
+    frames = frames or {}
+    return [(label, frames.get(key)) for label, key in order]
+
+
 def news_rows(news, scores):
     rows = []
     if news is None or len(news) == 0:
@@ -3389,6 +3406,24 @@ def main(argv=None):
     else:
         log("Relative strength", "OK", "", "Switch feature.rs_rank is off.")
 
+    leaders_on = features.get("sector_leaders", True)
+    if leaders_on:
+        try:
+            sector_leaders_frame = sector_leaders.build(
+                scores, rs_table, rot.get("sector_rotation") if isinstance(rot, dict) else None,
+                buy, _leader_scanners(setup_frames), cfg.get("sector_etfs"),
+            )
+        except Exception as exc:
+            sector_leaders_frame = pd.DataFrame()
+            log("Sector leaders", "MISSING", asof, ("The sector leader list was not built. " + str(exc))[:200])
+        else:
+            n_lead = int(sector_leaders_frame["ticker"].astype(str).ne("").sum()) if len(sector_leaders_frame) and "ticker" in sector_leaders_frame.columns else 0
+            log("Sector leaders", "OK" if n_lead else "MISSING", asof,
+                "%d leader stocks. Strong sectors come from the sector index versus the Nifty 50 when that table is on file." % n_lead)
+    else:
+        sector_leaders_frame = pd.DataFrame()
+        log("Sector leaders", "OK", "", "Switch feature.sector_leaders is off.")
+
     files = {
         "scores": gated(scores, "scores", features.get("top_stocks", True) or features.get("scorecard", True), "No scores."),
         "score_details": gated(details, "score_details", features.get("scorecard", True), "No score breakdown."),
@@ -3418,6 +3453,7 @@ def main(argv=None):
         "highs_lows_history": gated(setup_frames.get("highs_lows_history"), "highs_lows_history", features.get("scanner_52w", True), "No 52-week history in the cached prices."),
         "buy_setups": gated(buy, "buy_setups", buy_on, "No buy setups. The list is built from the scanners already on the desk. This desk never places trades."),
         "sector_rotation": gated(rot.get("sector_rotation"), "sector_rotation", features.get("sector_rotation", True), "No sector rotation. The Nifty 50 or the sector indexes were missing from the price cache."),
+        "sector_leaders": gated(sector_leaders_frame, "sector_leaders", leaders_on, "No sector leaders yet. They are built from the sector indexes and the RS rank on the after-close run."),
         "sector_rotation_tails": gated(rot.get("sector_rotation_tails"), "sector_rotation_tails", features.get("sector_rotation", True), "No relative-rotation tails."),
         "sector_rotation_history": gated(rot.get("sector_rotation_history"), "sector_rotation_history", features.get("sector_rotation", True), "No relative-rotation history."),
         "earnings_calendar": gated(earn_pages.get("calendar"), "earnings_calendar", features.get("earnings_calendar", True), "No earnings dates."),

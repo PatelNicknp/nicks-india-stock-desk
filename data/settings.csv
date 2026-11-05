@@ -55,6 +55,7 @@ feature.canslim_guide,True
 feature.scanner_52w,True
 feature.buy_setups,True
 feature.sector_rotation,True
+feature.sector_leaders,True
 feature.fundamentals_backfill,True
 feature.sensex,True
 feature.company_line,True

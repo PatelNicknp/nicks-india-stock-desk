@@ -2997,6 +2997,73 @@
     draw();
   }
 
+  function renderLeaders(ctx) {
+    const host = document.getElementById("leaders");
+    if (!host) return;
+    if (!D.featureOn("feature.sector_leaders")) { host.innerHTML = ""; host.hidden = true; return; }
+    host.hidden = false;
+    const rows = D.realRows(ctx.files["sector_leaders.csv"] || []).filter((r) => !D.isBlank(r.ticker));
+    const intro = '<div class="ptitle">Sector leaders</div>' +
+      '<p class="cap">The strongest sectors, then the three stocks in each with the highest RS. Tap a stock to open its chart.</p>';
+    if (!rows.length) {
+      host.innerHTML = '<div class="panel pad">' + intro +
+        '<p class="cap">Sector leaders are not ready yet. They are built on the after-close run.</p></div>';
+      return;
+    }
+    const blurb = String(rows[0].blurb || rows[0].note || "");
+    const groups = [];
+    const seen = new Set();
+    rows.forEach((r) => {
+      const key = String(r.sector_rank || "") + "|" + String(r.sector_name || "");
+      if (!seen.has(key)) { seen.add(key); groups.push(key); }
+    });
+    const cards = groups.map((key) => {
+      const members = rows.filter((r) => (String(r.sector_rank || "") + "|" + String(r.sector_name || "")) === key);
+      const head = members[0] || {};
+      const bits = [head.quadrant, head.index_name ? "Strongest index: " + head.index_name : ""].filter(Boolean);
+      const sub = bits.join(". ");
+      const body = members.map((r) => {
+        const off = D.num(r.off_high_pct);
+        const offText = off == null ? "" : (off <= 0 ? "At the high" : D.fmt(off, 1) + "% off the high");
+        const rs = D.num(r.rs);
+        const hot = rs != null && rs >= (D.rsLeaderMin ? D.rsLeaderMin() : 70);
+        return '<button type="button" class="leadrow" data-ticker="' + D.esc(r.ticker) + '">' +
+          '<span class="leadid"><span class="sym">' + D.esc(r.ticker) + '</span> <span class="nm">' + D.esc(r.company || "") + "</span></span>" +
+          '<span class="leadmeta">' +
+          (rs == null ? "" : '<span class="rspill' + (hot ? " hot" : "") + '">' + D.esc(String(Math.round(rs))) + "</span>") +
+          '<span>₹' + D.esc(D.fmt(r.price, 2) || "") + "</span>" +
+          (offText ? "<span>" + D.esc(offText) + "</span>" : "") +
+          "<span>" + D.esc(r.setup || "No setup") + "</span>" +
+          "</span></button>";
+      }).join("");
+      return '<article class="sectorlead"><h3>' + D.esc(head.sector_name || "") + "</h3>" +
+        (sub ? '<p class="sub">' + D.esc(sub) + "</p>" : "") + body + "</article>";
+    }).join("");
+    host.innerHTML = '<div class="panel pad" style="margin-bottom:12px">' + intro +
+      (blurb ? '<p class="cap">' + D.esc(blurb) + "</p>" : "") +
+      '<div class="leadgrid">' + cards + "</div></div>";
+    host.querySelectorAll(".leadrow").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const ticker = btn.getAttribute("data-ticker");
+        const open = btn.nextElementSibling && btn.nextElementSibling.classList.contains("leadchart");
+        host.querySelectorAll(".leadchart").forEach((el) => {
+          const panel = el.querySelector("[data-px-panel]");
+          if (panel && panel._tv) { try { panel._tv.remove(); } catch (err) { /* already gone */ } }
+          el.remove();
+        });
+        if (open) return;
+        const box = document.createElement("div");
+        box.className = "leadchart";
+        const viewer = D.featureOn("feature.chart_viewer")
+          ? '<p class="cap"><a href="chart-viewer.html?list=all&amp;t=' + encodeURIComponent(ticker) + '">Open in Chart Viewer</a></p>'
+          : "";
+        box.innerHTML = priceShell("Daily candles in rupees.") + viewer;
+        btn.after(box);
+        D.drawPriceChart(box.querySelector("[data-px-panel]"), { ticker: ticker });
+      });
+    });
+  }
+
   function renderRotation(ctx) {
     const raw = ctx.files["sector_rotation.csv"] || [];
     const allRows = D.realRows(raw);
@@ -3027,6 +3094,7 @@
     const sample = rows[0] || {};
     ctx.page.innerHTML =
       '<div class="ctrls" id="ctrls"></div>' +
+      '<div id="leaders"></div>' +
       '<p class="cap" id="rotcap">RS is the sector index divided by the Nifty 50, using daily closes already saved. RS-Ratio is 100 plus the z-score of that ratio, smoothed, versus its rolling mean. RS-Momentum is 100 plus the z-score of how fast RS-Ratio is changing. 100 is the center. Weekly and monthly points are built from those same daily bars. This is a desk calculation, not a commercial indicator. Research only. This desk never places trades.</p>' +
       '<div class="cards" id="cards"></div>' +
       '<div class="panel pad"><div class="ptitle">Relative rotation</div><div class="chart-box rrg-box"><canvas id="rrg"></canvas></div><div class="rrglegend" id="rrglegend"></div><div class="rrgread" id="rrgread">Tap a point to read RS-Ratio and RS-Momentum.</div></div>' +
@@ -3039,6 +3107,7 @@
       '<div class="rrgtabs" id="rrgtail"><span class="lab">Tail</span>' +
       '<button type="button" data-n="4">4</button><button type="button" data-n="8" class="on">8</button><button type="button" data-n="12">12</button></div>';
     D.placeFeed(document.getElementById("ctrls"), raw);
+    renderLeaders(ctx);
     const leadN = countWhere(rows, (r) => r.quadrant_w === "Leading");
     const lagN = countWhere(rows, (r) => r.quadrant_w === "Lagging");
     document.getElementById("cards").innerHTML =
@@ -3763,6 +3832,7 @@
     rotation: { lines: [
       "Which Nifty sectors are leading or lagging the Nifty 50 (you can switch to SENSEX). Leading is top right, Weakening is bottom right, Lagging is bottom left, and Improving is top left.",
       "The table ranks sectors by a score that blends strength, how many stocks are above their averages or near a high, buy setups, and the average desk score.",
+      "Sector leaders, at the top of the page, lists each Leading sector and the three stocks in it with the highest RS. Tap a stock to open its chart.",
     ] },
     updates: { lines: [
       "Checks that the data is fresh. OK means the source answered. CACHED means an older copy was used. MISSING means there is no copy.",
@@ -3854,7 +3924,7 @@
     week52: { files: ["scanner_52w.csv", "highs_lows_history.csv"], render: renderWeek52 },
     highvol: { files: ["high_volume.csv"], optional: ["company_lines.csv"], render: renderHighVolume },
     gapup: { files: ["scanner_gap_up.csv"], render: renderGapUp },
-    rotation: { files: ["sector_rotation.csv", "sector_rotation_tails.csv", "sector_rotation_history.csv", "scores.csv"], render: renderRotation },
+    rotation: { files: ["sector_rotation.csv", "sector_rotation_tails.csv", "sector_rotation_history.csv", "scores.csv", "sector_leaders.csv"], render: renderRotation },
     help: { files: ["help.csv", "settings.csv"], render: renderHelp },
     chartviewer: { files: [], optional: D.chartViewerFiles, render: D.renderChartViewer },
   };
