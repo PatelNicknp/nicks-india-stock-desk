@@ -24,13 +24,22 @@ def _about_block():
 
 
 class PageDescriptionTests(unittest.TestCase):
-    def test_switch_in_config_defaults_on(self):
+    def test_switch_in_config_starts_off(self):
         cfg = json.loads(_read("config.json"))
-        self.assertIs(cfg["features"].get("page_descriptions"), True)
+        self.assertIs(cfg["features"].get("page_descriptions"), False)
 
     def test_desk_js_uses_the_switch(self):
         js = _read("site", "js", "desk.js")
         self.assertIn('featureOn("feature.page_descriptions")', js)
+
+    def test_research_line_starts_off_and_stays_in_the_code(self):
+        cfg = json.loads(_read("config.json"))
+        self.assertIs(cfg["features"].get("research_line"), False)
+        js = _read("site", "js", "desk.js")
+        self.assertIn("Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts.", js)
+        self.assertIn("function researchLineOn()", js)
+        self.assertIn('r.setting === "feature.research_line"', js)
+        self.assertIn("researchLineOn()", js)
 
     def test_every_page_has_a_description(self):
         block = _about_block()
