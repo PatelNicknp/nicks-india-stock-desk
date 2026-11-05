@@ -3281,7 +3281,8 @@
       groups + "</nav><div class=\"main\"><div class=\"hdr\">" +
       '<button type="button" class="menu-btn" id="menu" aria-label="Open menu" aria-controls="nav" aria-expanded="false">☰</button>' +
       '<button type="button" class="search-btn" id="qbtn" aria-label="Search stocks" aria-expanded="false" aria-controls="q">' + SEARCH_ICON + "</button>" +
-      "<div class=\"titles\"><h1>" + esc(page.title) + "</h1><div class=\"rl\">" + esc(RESEARCH) + "</div></div>" +
+      "<div class=\"titles\"><h1>" + esc(page.title) + "</h1>" +
+      (researchLineOn() ? "<div class=\"rl\">" + esc(RESEARCH) + "</div>" : "") + "</div>" +
       '<div class="upd">Updated <b id="updated">…</b></div></div><div id="page"></div></div></div>';
     document.getElementById("nav").addEventListener("click", (e) => {
       const btn = e.target.closest(".grp");
@@ -3417,6 +3418,12 @@
     const row = SETTINGS.find((r) => r.setting === key);
     if (!row) return true;
     return String(row.value).toLowerCase() !== "false";
+  }
+  // The line under the page title. Off unless feature.research_line is true.
+  // A missing row stays off, unlike the other switches.
+  function researchLineOn() {
+    const row = SETTINGS.find((r) => r.setting === "feature.research_line");
+    return !!row && String(row.value).toLowerCase() === "true";
   }
   function settingVal(key) {
     const row = SETTINGS.find((r) => r.setting === key);

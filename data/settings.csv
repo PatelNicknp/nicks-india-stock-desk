@@ -60,7 +60,8 @@ feature.fundamentals_backfill,True
 feature.sensex,True
 feature.company_line,True
 feature.high_volume_scanner,True
-feature.page_descriptions,True
+feature.page_descriptions,False
+feature.research_line,False
 feature.scanner_qullamaggie,True
 feature.scanner_marios,True
 feature.scanner_episodic_pivot,True
