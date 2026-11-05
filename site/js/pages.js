@@ -8,6 +8,20 @@
   const SC = T("score", "Score", "score");
   const VE = T("verdict", "Verdict", "verdict");
   const PR = T("price", "Price", "num", { dec: 2 });
+  const RS_TITLE = "1 to 99. 99 beat the most stocks over the past year.";
+  function withRs(cols) {
+    if (!D.featureOn("feature.rs_rank")) return cols;
+    if ((cols || []).some((c) => c.key === "rs")) return cols;
+    const col = T("rs", "RS", "rs", { dec: 0, title: RS_TITLE });
+    const at = cols.findIndex((c) => c.key === "ticker");
+    if (at < 0) return [col].concat(cols);
+    return cols.slice(0, at + 1).concat([col], cols.slice(at + 1));
+  }
+  function rsFilterHtml() {
+    if (!D.featureOn("feature.rs_rank")) return "";
+    const cut = D.rsLeaderMin();
+    return D.selectHtml("rsmin", "RS", [{ value: String(cut), label: cut + " or higher" }], "");
+  }
 
   function card(label, valueHtml, subHtml, bg) {
     return '<div class="card"' + (bg ? ' style="background:' + bg + '"' : "") + "><div class=\"l\">" +
@@ -95,7 +109,11 @@
     }
     if (opts.trend) bag.timing = D.multiHtml("timing", "Trend", D.uniq(all, "timing"));
     if (opts.ticker) bag.ticker = D.searchHtml("ticker", "Ticker", "tick-list-" + (opts.list || "a"), D.uniq(all, "ticker"));
-    const order = opts.order || ["ticker", "passes", "status", "verdict", "sector", "confidence", "index", "exchange", "liquid", "timing"];
+    if (opts.rs) {
+      const html = rsFilterHtml();
+      if (html) bag.rsmin = html;
+    }
+    const order = opts.order || ["ticker", "passes", "status", "rsmin", "verdict", "sector", "confidence", "index", "exchange", "liquid", "timing"];
     const parts = [];
     order.forEach((k) => { if (bag[k]) parts.push(bag[k]); });
     Object.keys(bag).forEach((k) => { if (order.indexOf(k) < 0) parts.push(bag[k]); });
@@ -122,6 +140,11 @@
     if (!D.matchMulti(row, "exchange", exchange)) return false;
     if (!D.matchMulti(row, "timing", timing)) return false;
     if (!D.matchText(row, "ticker", ticker)) return false;
+    const rsMin = D.fieldVal(box, "rsmin");
+    if (rsMin) {
+      const rs = D.num(row.rs);
+      if (rs == null || rs < Number(rsMin)) return false;
+    }
     const nodes = box.querySelectorAll("select[data-filter]");
     for (let i = 0; i < nodes.length; i++) {
       const key = nodes[i].getAttribute("data-filter");
@@ -152,14 +175,14 @@
           (cfg.captionAbove ? "" : cap);
         if (cfg.noticeAbove) document.getElementById("notice").innerHTML = notice || "";
         const box = document.getElementById("ctrls");
-        standardFilters(box, all, cfg.filters);
+        standardFilters(box, all, Object.assign({ rs: true }, cfg.filters || {}));
         D.placeFeed(box, raw);
         document.getElementById("cards").innerHTML = cfg.cards(all);
         const state = { sort: cfg.sort || "score", dir: cfg.dir || "desc", sort2: cfg.sort2 || "", dir2: cfg.dir2 || "desc", page: 0 };
         const draw = () => {
           const rows = all.filter((r) => readCommon(box, r) && (!cfg.match || cfg.match(r, box)));
           D.drawTable(document.getElementById("tbl"), {
-            rows: rows, columns: cfg.columns, state: state, pageSize: cfg.pageSize || 25, foot: cfg.foot, title: cfg.tableTitle, sub: cfg.tableSub,
+            rows: rows, columns: withRs(cfg.columns), state: state, pageSize: cfg.pageSize || 25, foot: cfg.foot, title: cfg.tableTitle, sub: cfg.tableSub,
           });
         };
         hook(box, state, draw);
@@ -182,7 +205,7 @@
         if (cfg.strip) document.getElementById("strip").innerHTML = cfg.strip(all, ctx);
         ctx.page.querySelector(".cap").textContent = cfg.caption || D.noteOf(raw);
         const box = document.getElementById("ctrls");
-        standardFilters(box, all, cfg.filters);
+        standardFilters(box, all, Object.assign({ rs: true }, cfg.filters || {}));
         if (cfg.chips) box.insertAdjacentHTML("afterbegin", cfg.chips(all, ctx));
         D.placeFeed(box, raw);
         document.getElementById("cards").innerHTML = cfg.cards(all);
@@ -204,7 +227,7 @@
           pick = selected ? selected.ticker : null;
           D.setViewerStart(pick);
           D.drawTable(document.getElementById("tbl"), {
-            rows: rows, columns: cfg.columns, state: state, pageSize: 12, pick: pick,
+            rows: rows, columns: withRs(cfg.columns), state: state, pageSize: 12, pick: pick,
             lines: chartsOn ? (cfg.price || setupLines) : null,
             priceSub: cfg.priceSub || "Buy point, stop, and target when the scan has them",
             empty: "No names match. Open Status and tick WATCHING to see names still forming.",
@@ -267,7 +290,7 @@
   function hvColumns(all) {
     const cols = HV_COLS.slice();
     if (all.some((r) => D.num(r.delivery_pct) != null)) cols.push(T("delivery_pct", "Delivery %", "pct", { dec: 1 }));
-    return cols;
+    return withRs(cols);
   }
   function hvMatch(r, minx, side, exch) {
     const ratio = D.num(r.volume_ratio);
@@ -320,6 +343,7 @@
       ], "2", { all: false }) +
       D.selectHtml("side", "Day", [{ value: "Up", label: "Up only (buying)" }, { value: "Down", label: "Down only (selling)" }], "") +
       D.selectHtml("exch", "Exchange", [{ value: "NSE", label: "NSE" }, { value: "BSE", label: "BSE" }], "") +
+      rsFilterHtml() +
       D.searchHtml("ticker", "Ticker", "tick-list-hv", D.uniq(all, "ticker"));
     const cols = hvColumns(all);
     const state = { sort: "volume_ratio", dir: "desc", page: 0 };
@@ -329,7 +353,7 @@
       const side = D.fieldVal(box, "side") || "";
       const exch = D.fieldVal(box, "exch") || "";
       const ticker = (D.fieldVal(box, "ticker") || "").trim();
-      const rows = all.filter((r) => hvMatch(r, minx, side, exch) && D.matchText(r, "ticker", ticker));
+      const rows = all.filter((r) => hvMatch(r, minx, side, exch) && D.matchText(r, "ticker", ticker) && readCommon(box, r));
       const ups = countWhere(rows, (r) => r.day_type === "Up");
       const downs = countWhere(rows, (r) => r.day_type === "Down");
       const top = rows.slice().sort((a, b) => (D.num(b.volume_ratio) || 0) - (D.num(a.volume_ratio) || 0))[0];
@@ -431,6 +455,7 @@
       D.selectHtml("trend", "Trend", [
         { value: "50", label: "Above 50-day" }, { value: "200", label: "Above 200-day" }, { value: "both", label: "Above both" },
       ], "") +
+      rsFilterHtml() +
       D.searchHtml("ticker", "Ticker", "tick-list-gap", D.uniq(all, "ticker"));
     const state = { sort: "gap_date", dir: "desc", sort2: "gap_pct", dir2: "desc", page: 0 };
     const emptyAll = all.length ? "" : (D.noteOf(raw) || "No stock has a gap up that is still holding.");
@@ -442,7 +467,7 @@
         if (age !== "" && !((D.num(r.days_ago) ?? 99) <= Number(age))) return false;
         if ((trend === "50" || trend === "both") && r.above_sma50 !== "yes") return false;
         if ((trend === "200" || trend === "both") && r.above_sma200 !== "yes") return false;
-        return D.matchText(r, "ticker", ticker);
+        return D.matchText(r, "ticker", ticker) && readCommon(box, r);
       });
       const today = countWhere(rows, (r) => D.num(r.days_ago) === 0);
       const both = countWhere(rows, (r) => r.above_sma50 === "yes" && r.above_sma200 === "yes");
@@ -453,7 +478,7 @@
         card("Above 50 and 200-day", D.esc(String(both)), "in an uptrend") +
         card("Biggest gap", top ? D.esc(top.ticker) : D.na(), top ? D.esc(D.fmt(top.gap_pct, 1) + "% on " + gapDay(top.gap_date)) : "");
       D.drawTable(document.getElementById("tbl"), {
-        rows: rows, columns: GAP_COLS, state: state, pageSize: 25,
+        rows: rows, columns: withRs(GAP_COLS), state: state, pageSize: 25,
         detail: gapDetail, lines: gapLines,
         priceSub: "Daily candles in rupees. Red is the hold level (gap-day low). Orange is the high of the day before the gap.",
         empty: emptyAll || "No stocks match these filters. Set Gap day and Trend to All.",
@@ -909,9 +934,12 @@
     });
   }
   function whyLines(rows) {
-    return (rows || []).filter(Boolean).map((r) => '<div class="why"><span>' + D.tickerHtml(r.ticker) +
-      '</span><span class="m2">' + D.esc(r.reason || "") + "</span></div>").join("") ||
-      '<div class="m2">No names in this view.</div>';
+    return (rows || []).filter(Boolean).map((r) => {
+      const sentence = D.rsSentence(r);
+      const rs = sentence ? '<p class="rslab">' + D.esc(sentence) + "</p>" : "";
+      return rs + '<div class="why"><span>' + D.tickerHtml(r.ticker) +
+        '</span><span class="m2">' + D.esc(r.reason || "") + "</span></div>";
+    }).join("") || '<div class="m2">No names in this view.</div>';
   }
 
   function renderWatch(ctx) {
@@ -2173,12 +2201,12 @@
       card("With volume above average", String(countWhere(all, (r) => (D.num(r.volume_ratio) || 0) >= 1))) +
       card("Of those, BUY", String(countWhere(all, (r) => r.verdict === "BUY")));
     const box = document.getElementById("ctrls");
-    standardFilters(box, all, { sector: true, verdict: true, ticker: true });
+    standardFilters(box, all, { sector: true, verdict: true, ticker: true, rs: true });
     const state = { sort: "dist_52w_high_pct", dir: "asc", page: 0 };
     const draw = () => D.drawTable(document.getElementById("tbl"), {
       rows: all.filter((r) => readCommon(box, r)),
-      columns: [TK, CO, SE, PR, T("dist_52w_high_pct", "From 52-week high %", "pct", { dec: 2, color: false, abs: true }),
-        T("volume_ratio", "Volume vs 50-day", "volx", { dec: 2 }), SC, VE],
+      columns: withRs([TK, CO, SE, PR, T("dist_52w_high_pct", "From 52-week high %", "pct", { dec: 2, color: false, abs: true }),
+        T("volume_ratio", "Volume vs 50-day", "volx", { dec: 2 }), SC, VE]),
       state: state, pageSize: 15,
     });
     hook(box, state, draw);
@@ -2197,6 +2225,7 @@
     const labels = ["Uptrend", "Mixed", "Downtrend"];
     box.innerHTML = '<div class="toggles" data-filter="trend">' + labels.map((o) =>
       '<button type="button" data-v="' + o + '"' + (o === "Uptrend" ? ' class="on"' : "") + ">" + o + "</button>").join("") + "</div>" +
+      rsFilterHtml() +
       D.multiHtml("sector", "Sector", D.uniq(all, "sector")) +
       D.searchHtml("ticker", "Ticker", "trd", D.uniq(all, "ticker"));
     box.querySelectorAll(".toggles button").forEach((btn) => {
@@ -2212,10 +2241,10 @@
       const on = pickedTrend();
       D.drawTable(document.getElementById("tbl"), {
         rows: all.filter((r) => (on.length === labels.length || on.indexOf(r.trend_label) >= 0) &&
-          D.matchMulti(r, "sector", D.selectedMulti(box, "sector")) && D.matchText(r, "ticker", D.fieldVal(box, "ticker"))),
-        columns: [TK, CO, T("trend_label", "Trend", "trend"),
+          D.matchMulti(r, "sector", D.selectedMulti(box, "sector")) && D.matchText(r, "ticker", D.fieldVal(box, "ticker")) && readCommon(box, r)),
+        columns: withRs([TK, CO, T("trend_label", "Trend", "trend"),
           T("above_sma20", "Above 20d", "flag", { no: "#EF4444" }), T("above_sma50", "Above 50d", "flag", { no: "#EF4444" }),
-          T("above_sma100", "Above 100d", "flag", { no: "#EF4444" }), T("above_sma200", "Above 200d", "flag", { no: "#EF4444" }), SC],
+          T("above_sma100", "Above 100d", "flag", { no: "#EF4444" }), T("above_sma200", "Above 200d", "flag", { no: "#EF4444" }), SC]),
         state: state, pageSize: 25,
       });
     };
@@ -2669,19 +2698,19 @@
       vol: "New high on big volume", all: "All stocks",
     };
     const box = document.getElementById("ctrls");
-    standardFilters(box, all, { index: true, sector: true, verdict: true, ticker: true, order: ["index", "sector", "verdict", "ticker"], list: "w52" });
+    standardFilters(box, all, { index: true, sector: true, verdict: true, ticker: true, rs: true, order: ["index", "sector", "verdict", "ticker"], list: "w52" });
     box.insertAdjacentHTML("afterbegin", '<div class="w52tabs" id="w52tabs">' + tabs.map((t, i) =>
       '<button type="button" data-tab="' + t[0] + '"' + (i === 0 ? ' class="on"' : "") + ">" + t[1] + "</button>").join("") + "</div>");
     D.placeFeed(box, raw);
     let tab = "highs";
     let days = 183;
     const state = { sort: "range_position_pct", dir: "desc", sort2: "score", dir2: "desc", page: 0 };
-    const columns = [TK, CO, SE, PR,
+    const columns = withRs([TK, CO, SE, PR,
       T("high_52w", "52w high", "num", { dec: 2 }), T("low_52w", "52w low", "num", { dec: 2 }),
       T("pct_from_high", "% from high", "pct", { dec: 1, color: true }),
       T("pct_above_low", "% above low", "pct", { dec: 1, color: true }),
       T("range_position_pct", "Range", "rangepos"),
-      T("volume_ratio", "Vol x", "volx", { dec: 2 }), SC, VE];
+      T("volume_ratio", "Vol x", "volx", { dec: 2 }), SC, VE]);
     const inTab = (r) => {
       if (tab === "highs") return yes(r, "new_high_today");
       if (tab === "lows") return yes(r, "new_low_today");
@@ -2851,12 +2880,13 @@
       D.multiHtml("sector", "Sector", D.uniq(named, "sector")) +
       D.multiHtml("source", "Setup", ["VCP", "Box", "Flag", "Qullamaggie", "Marios", "EP", "CANSLIM"]) +
       D.multiHtml("status", "Status", D.uniq(named, "status")) +
+      rsFilterHtml() +
       D.searchHtml("ticker", "Ticker", "tick-list-buy", D.uniq(named, "ticker")) +
       '<div class="rrgtabs" id="chartsw"><span class="lab">Chart setups only</span><button type="button" id="chartonly">' + (chartOnly ? "On" : "Off") + "</button></div>";
     D.placeFeed(box, raw);
     let showAnyway = false;
     const state = { sort: "_ord", dir: "asc", page: 0 };
-    const columns = [
+    const columns = withRs([
       T("_ord", "", "num", { hidden: true }),
       TK, T("company", "Company", "text", { ellipsis: true }),
       T("setup_sources", "Setup", "text", { ellipsis: true }),
@@ -2869,7 +2899,7 @@
       T("reward_risk", "Reward/risk", "multiple", { dec: 2 }),
       T("dist_to_entry_pct", "Dist. to entry", "pct", { dec: 1, color: true }),
       SC, VE, T("financials_pending", "Financials", "pending"),
-    ];
+    ]);
     const sourceOk = (row) => {
       const picked = D.selectedMulti(box, "source");
       if (!picked) return true;
@@ -3746,6 +3776,7 @@
       "The Daily and Weekly chips switch the candles. Both open at the same thin width, 5.8 px, on a phone or an iPad. A short history does not stretch past 8 px. Weekly candles are built from the saved daily prices, and the averages then count weeks. The Candles and Bars chips switch the chart style: Bars are OHLC bars, blue up and magenta down. Your choices are saved on this device.",
       "Tap the chips to show or hide the 10, 20, 50, 150 and 200-day averages and the volume. Your choice is saved on this device.",
       "The box in the top left shows every scanner the stock is on, its status, and the reason. Tap it for more. The Reasons chip hides it.",
+      "The RS chip and the Why box show the 1 to 99 rank. RS 85 means it beat 85% of stocks over the past year. A stock with less than a year of prices has no rank.",
       "It uses the daily prices the desk already saves. Nothing new is downloaded.",
     ], splitNeedsToggle: true, splitLines: [
       "One big chart at a time. Pick Technical or Fundamental at the top, then a list: every stock in that group, one scanner, Buy setups, or your watchlist.",
@@ -3756,6 +3787,7 @@
       "The Daily and Weekly chips switch the candles. Both open at the same thin width, 5.8 px, on a phone or an iPad. A short history does not stretch past 8 px. Weekly candles are built from the saved daily prices, and the averages then count weeks. The Candles and Bars chips switch the chart style: Bars are OHLC bars, blue up and magenta down. Your choices are saved on this device.",
       "Tap the chips to show or hide the 10, 20, 50, 150 and 200-day averages and the volume. Your choice is saved on this device.",
       "The box in the top left shows every scanner the stock is on, its status, and the reason. Tap it for more. The Reasons chip hides it.",
+      "The RS chip and the Why box show the 1 to 99 rank. RS 85 means it beat 85% of stocks over the past year. A stock with less than a year of prices has no rank.",
       "It uses the daily prices the desk already saves. Nothing new is downloaded.",
     ] },
     help: { lines: [
@@ -3763,6 +3795,10 @@
       "Start here if a word or label is unclear.",
     ] },
   };
+
+  ["vcp", "box", "flag", "qullamaggie", "marios", "episodic", "gapup", "canslim", "leaders", "buysetups", "week52", "breakouts", "pullbacks", "highvol", "growth", "quality", "dividend", "wheel", "trends"].forEach((id) => {
+    if (ABOUT[id]) ABOUT[id].rs = true;
+  });
 
   window.DESK_PAGES = {
     today: { files: ["market_today.csv", "breadth_history.csv", "sectors.csv", "alerts.csv", "fii_flows.csv"], optional: ["high_volume.csv"], render: renderToday },

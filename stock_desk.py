@@ -29,6 +29,7 @@ import india_data
 import fundamentals_backfill
 import trading_floor
 import trading_floor_paper
+import relative_strength
 
 ROOT = None  # set in main so tests can point DESK_ROOT at a temp folder
 PT = "America/Los_Angeles"
@@ -3353,6 +3354,40 @@ def main(argv=None):
     aaii_note = "There is no free AAII survey for India. India VIX and FII or DII cash were not available, so this page has no number."
     mood = build_mood(close, fii) if features.get("aaii_sentiment", True) else None
 
+    # Relative strength. Only the after-close main run (mode full, 16:30 IST,
+    # 3:00 AM PT) calculates it, from closes already in memory. No new download.
+    rs_on = features.get("rs_rank", True)
+    rs_table = pd.DataFrame()
+    if rs_on:
+        rs_cache = os.path.join(cache, "rs_ratings.csv")
+        cached_rs = read_csv(rs_cache)
+        names = []
+        if universe is not None and len(universe) and "ticker" in universe.columns:
+            names = [t for t in dict.fromkeys(universe["ticker"].astype(str)) if t and not str(t).startswith("^")]
+        # No prices on a close run: keep the last rank instead of replacing it with blanks.
+        calc_mode = mode if (mode == "full" and close is not None and len(close)) else ("cached" if mode == "full" else mode)
+        rs_table = relative_strength.resolve(close, names, cfg, "full" if calc_mode == "full" else "cached", cached_rs if len(cached_rs) else None)
+        if calc_mode == "full":
+            rs_table.to_csv(rs_cache, index=False)
+            ranked = int(pd.to_numeric(rs_table["rs"], errors="coerce").notna().sum()) if len(rs_table) and "rs" in rs_table.columns else 0
+            log("Relative strength", "OK" if ranked else "MISSING", asof,
+                "%d stocks ranked 1 to 99 from saved daily closes. A name with less than a year of prices is left blank. No new download." % ranked)
+        elif len(rs_table):
+            log("Relative strength", "OK", "", "Reused the last after-close rank. Only the 3:00 AM PT run recalculates it.")
+        else:
+            log("Relative strength", "MISSING", "", "No rank yet. The after-close run (3:00 AM PT) builds it from saved prices.")
+        def _stamp(frame):
+            return relative_strength.attach(frame, rs_table)
+        g, q, d, w = (_stamp(x) for x in (g, q, d, w))
+        br, tr, pb = (_stamp(x) for x in (br, tr, pb))
+        for _rs_key in list(setup_frames):
+            setup_frames[_rs_key] = _stamp(setup_frames.get(_rs_key))
+        buy = _stamp(buy)
+        hv = _stamp(hv)
+        gap = _stamp(gap)
+    else:
+        log("Relative strength", "OK", "", "Switch feature.rs_rank is off.")
+
     files = {
         "scores": gated(scores, "scores", features.get("top_stocks", True) or features.get("scorecard", True), "No scores."),
         "score_details": gated(details, "score_details", features.get("scorecard", True), "No score breakdown."),
@@ -3411,6 +3446,7 @@ def main(argv=None):
         "gainers_losers": gated(gl, "gainers_losers", features.get("gainers_losers", True), "No gainers."),
         "high_volume": gated(hv, "high_volume", hv_on, hv_note),
         "scanner_gap_up": gated(gap, "scanner_gap_up", gap_on, gap_note),
+        "rs_ratings": gated(rs_table, "rs_ratings", rs_on, "No relative strength rank yet. The after-close run builds it from saved prices."),
         "sector_performance": gated(tables.sector_perf(scores), "sector_performance", features.get("sector_performance", True), "No sector performance."),
         "heatmaps": gated(heat, "heatmaps", features.get("heatmaps", True), "No heatmap."),
         "freshness": gated(fresh, "freshness", features.get("freshness_flags", True), "Freshness flags are off."),

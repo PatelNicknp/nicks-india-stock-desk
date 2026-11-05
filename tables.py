@@ -82,7 +82,12 @@ def flag_blank_columns(df):
         return df
     if "kind" in df.columns and len(df) == 1 and str(df.iloc[0].get("kind") or "") == "info":
         return df
-    measured = [c for c in df.columns if c not in ("note", "disclaimer", "data_status")]
+    # A blank RS is a real answer: the stock does not have a full year of prices,
+    # or this run is not the after-close run that calculates the rank. It is not a broken feed.
+    measured = [c for c in df.columns if c not in (
+        "note", "disclaimer", "data_status",
+        "rs", "rs_label", "rs_note", "rs_raw", "q1", "q2", "q3", "q4",
+    )]
     blanks = [c for c in measured if df[c].map(_cell_blank).all()]
     if not blanks:
         return df
@@ -326,6 +331,24 @@ COLS["backtest_buckets"] = ["horizon", "bucket", "bucket_order", "n", "avg_retur
 COLS["backtest_equity"] = ["date", "top20", "spy", "bottom20", "data_status", "note", "disclaimer"]
 COLS["backtest_yearly"] = ["year", "top20_pct", "spy_pct", "difference_pct", "hit_rate_12w_pct", "signals", "data_status", "note", "disclaimer"]
 COLS["backtest_notes"] = ["item", "detail", "data_status", "note", "disclaimer"]
+COLS["rs_ratings"] = [
+    "ticker", "rs", "rs_raw", "q1", "q2", "q3", "q4", "bars",
+    "rs_label", "rs_note", "as_of", "data_status", "note", "disclaimer",
+]
+
+# RS sits on the scanner and setup tables. Header names already in use stay as they are.
+_RS_TABLES = (
+    "scanner_growth", "scanner_quality", "scanner_dividend", "scanner_wheel",
+    "scanner_vcp", "scanner_canslim", "scanner_box", "scanner_flag",
+    "scanner_qullamaggie", "scanner_marios", "scanner_episodic_pivot",
+    "scanner_gap_up", "scanner_leaders", "scanner_52w",
+    "breakouts", "trends", "pullbacks", "high_volume", "buy_setups",
+)
+for _rs_name in _RS_TABLES:
+    _rs_cols = list(COLS[_rs_name])
+    if "rs" not in _rs_cols and "data_status" in _rs_cols:
+        _at = _rs_cols.index("data_status")
+        COLS[_rs_name] = _rs_cols[:_at] + ["rs", "rs_label", "rs_note"] + _rs_cols[_at:]
 
 
 def _date_cell(v):
@@ -1054,10 +1077,11 @@ def help_rows():
         ("Rate limits", "The after-close run reads that day's bhavcopy and a slice of statements and shareholding. It does not download every company from Yahoo. A light morning run only refreshes headlines and FII or DII cash. If a source fails, the previous file is kept and the updates log says CACHED."),
         ("The lists", "The desk covers NSE shares and BSE-only shares. Tags are Nifty 50, Next 50, Midcap 150, Smallcap 250, Microcap 250, Total Market, Other NSE, and BSE only. Each tag has a switch. SME is off unless you turn it on. Your holdings, watchlist, and my picks are always included. A company on both exchanges is shown once, under the NSE symbol."),
         ("Liquidity", "Scanners hide names whose 20-day median traded value is under the rupee line in config.json. The line is 1 crore rupees unless you change it. Top stocks can still show the quieter names if you turn the liquid filter off."),
+        ("Relative strength", "RS is a 1 to 99 rank of how the stock's price did over the past year, compared with every stock this desk covers. 99 is the strongest. 1 is the weakest. RS 85 means it beat 85% of stocks over the past year. The year is split into four quarters of 63 trading days. The latest quarter counts double (40%). Each older quarter counts 20%. Stocks with less than a full year of daily prices are left blank. The blank is not a zero. There is no partial-year score, so a new listing is not ranked against stocks that have all four quarters. The rank is calculated on the after-close run only (16:30 IST, 3:00 AM PT, one hour later in summer) from prices already saved. No new download. Morning and the late bhavcopy retry reuse that rank. The optional filter is RS 70 or higher, Mark Minervini's line. The VCP trend template still has its own check: the stock beat the Nifty 50 over 6 months and over 12 months (SENSEX for a BSE-only stock). That check stays. It is not replaced by this rank. CANSLIM's L column is still the separate strength versus the Nifty (or SENSEX). Turn the column and the filter off with feature.rs_rank."),
         ("FII and DII", "The FII and DII page shows cash-market buy and sell in crore rupees. Green is net buying. Red is net selling. The history grows each day. A second block shows index-futures positioning when the NSE participant file answers."),
         ("Times", "Times are shown in India time (IST) and Pacific time (PT)."),
-        ("VCP scanner", "This page follows the same 8-point trend template and pullback count as Nick's indicator. NSE stocks use the Nifty 50 as the benchmark. BSE-only stocks use SENSEX. A stock is listed only when it would get the green VCP tag: all 8 trend rules pass and there are at least two pullbacks that get smaller. READY means price is still under the buy line. BROKEN OUT today means today's close went above the buy line on volume at least 1.5 times the 50-day average. WATCHING means price is above the buy line on low volume, or there is only one pullback so far, and the trend is still 8 of 8. A stock still in a trade stays listed if its buy printed with 8 of 8, even if the trend has slipped since. Set vcp.show_weaker_trend to true to also see stocks with smaller pullbacks but a weaker trend. They show as WATCHING (trend not 8/8)."),
-        ("CANSLIM scanner", "C and A are the year-ago EPS change from the saved statements. N is how close the price is to its 52-week closing high. S is the 20-day average volume. L is the relative-strength percentile versus the Nifty for NSE stocks, and versus SENSEX for BSE-only stocks. I is the shareholding change when we have it. M shows the Nifty 50, SENSEX, and Bank Nifty side by side as Uptrend, Under pressure, or Correction. The market is in an uptrend when the Nifty 50 or SENSEX is in an uptrend. Set market.require_both_uptrends to true to require both. Bank Nifty is shown and does not decide. The What CANSLIM means box explains each letter. A blank that says not verified was not in the cache. It is not a guess."),
+        ("VCP scanner", "This page follows the same 8-point trend template and pullback count as Nick's indicator. NSE stocks use the Nifty 50 as the benchmark. BSE-only stocks use SENSEX. A stock is listed only when it would get the green VCP tag: all 8 trend rules pass and there are at least two pullbacks that get smaller. READY means price is still under the buy line. BROKEN OUT today means today's close went above the buy line on volume at least 1.5 times the 50-day average. WATCHING means price is above the buy line on low volume, or there is only one pullback so far, and the trend is still 8 of 8. A stock still in a trade stays listed if its buy printed with 8 of 8, even if the trend has slipped since. Set vcp.show_weaker_trend to true to also see stocks with smaller pullbacks but a weaker trend. They show as WATCHING (trend not 8/8). Rule 8 still asks whether the stock beat the Nifty 50 over 6 months and over 12 months (SENSEX for a BSE-only stock). The RS column is a separate 1 to 99 rank. It does not replace rule 8."),
+        ("CANSLIM scanner", "C and A are the year-ago EPS change from the saved statements. N is how close the price is to its 52-week closing high. S is the 20-day average volume. L is the relative-strength percentile versus the Nifty for NSE stocks, and versus SENSEX for BSE-only stocks. That L column stays. The RS column next to the ticker is the separate 1 to 99 rank for the past year. I is the shareholding change when we have it. M shows the Nifty 50, SENSEX, and Bank Nifty side by side as Uptrend, Under pressure, or Correction. The market is in an uptrend when the Nifty 50 or SENSEX is in an uptrend. Set market.require_both_uptrends to true to require both. Bank Nifty is shown and does not decide. The What CANSLIM means box explains each letter. A blank that says not verified was not in the cache. It is not a guess."),
         ("Row charts", "On a stock list, the button at the left of a row opens that stock's daily price chart under the row. Only one chart stays open. The caption names the benchmark: Nifty 50 for NSE stocks, SENSEX for BSE-only stocks. The scorecard says the same thing. Turn the charts off with feature.row_charts in config.json."),
         ("52-week highs and lows", "The 52-week high is the highest price of the last 252 trading sessions, and the 52-week low is the lowest. A new high today means the close is at or above the prior 252-session high. A new low today means the close is at or below the prior 252-session low. Near the high means the close is within 5% of that high. A high on volume also needs volume at least 1.5 times the 50-day average. This page is separate from the 52-week breakouts list, which only keeps names within 1% of the high. Research only. Turn it off with feature.scanner_52w."),
         ("Buy setups", "Research list, not a recommendation. This desk never places trades. A stock is listed when VCP, Box, Flag, Qullamaggie, Marios, Episodic Pivot (EP), or CANSLIM is ready or broke out today, the close is above the 50-day and the 200-day averages, and the risk from the entry to the stop is 8% or less. Qullamaggie, Marios, and EP rows marked Too wide, skip are left out. An EP counts as ready on its EP day and days 2 to 5 (buy above the EP-day high), and as broke out today when the price goes above it. EP stocks locked at the upper circuit, faded EPs, and delayed EPs are left out. Chart setups only, on while financials coverage is under 80%, also keeps a BUY or a Not scored yet label and marks the unscored names Financials pending. A scored AVOID stays off the list until you press Show anyway. Turn that switch off and the page keeps only BUY. The market check passes when the Nifty 50 or SENSEX is in an uptrend. Set market.require_both_uptrends to require both. Bank Nifty is shown and does not decide. When the check fails, the list stays empty until you press Show anyway. Show anyway then lists every name that passes the chart rules, greyed out, with its real verdict: BUY, HOLD, AVOID, or Not scored yet. The banner names which index is up or down. The stop is the tighter of 7% under the entry or the setup's own stop. Target 1 is 20% above the entry, or 20% above the breakout close. Target 2 is the entry plus three times the risk. Scores are rebuilt from the saved financials and shareholding at the end of every backfill run, with no new downloads. Turn that off with fundamentals_backfill.rebuild_pages_after_run. Turn the page off with feature.buy_setups."),
@@ -1103,6 +1127,12 @@ def settings_rows(cfg):
     rows.append({"setting": "market.require_both_uptrends", "value": market_cfg.get("require_both_uptrends", False)})
     bench_cfg = cfg.get("benchmark") or {}
     rows.append({"setting": "benchmark.bse_only_uses_sensex", "value": bench_cfg.get("bse_only_uses_sensex", True)})
+    rs_cfg = cfg.get("relative_strength") or {}
+    for key, fallback in (
+        ("quarter_sessions", 63), ("weight_q1", 0.4), ("weight_q2", 0.2),
+        ("weight_q3", 0.2), ("weight_q4", 0.2), ("min_bars", 253), ("leader_min", 70),
+    ):
+        rows.append({"setting": "relative_strength." + key, "value": rs_cfg.get(key, fallback)})
     rot_bench = (cfg.get("sector_rotation") or {}).get("benchmark", "^NSEI")
     rows.append({"setting": "sector_rotation.benchmark", "value": rot_bench})
     ep_cfg = cfg.get("episodic_pivot") or {}
