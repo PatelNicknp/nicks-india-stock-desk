@@ -2049,7 +2049,7 @@
   ];
   const CV_BUY = { id: "buysetups", label: "Buy setups", short: "Buy setups", file: "buy_setups.csv", href: "buy-setups.html", kind: "buy", extra: true };
   const CV_WATCH = { id: "watchlist", label: "Watchlist", short: "Watchlist", file: "watchlist.csv", href: "watchlist.html", kind: "watch", extra: true };
-  const CV_FILES = CV_SOURCES.concat([CV_BUY, CV_WATCH]).map((s) => s.file).concat(["rs_ratings.csv"]);
+  const CV_FILES = CV_SOURCES.concat([CV_BUY, CV_WATCH]).map((s) => s.file).concat(["rs_ratings.csv", "institutional_13f.csv"]);
   const CV_MAS = [
     { id: "ma_10", label: "10", n: 10, color: "#38BDF8" },
     { id: "ma_20", label: "20", n: 20, color: "#7C9CFF" },
@@ -2351,6 +2351,69 @@
   function cvSavedGroup() {
     try { const v = localStorage.getItem("desk-cv-group"); return GROUP_IDS.indexOf(v) >= 0 ? v : ""; } catch (e) { return ""; }
   }
+  // One stock's promoter, FII, DII, and public percent from the shareholding file
+  // the Shareholding page already uses. Pledge is included only when that file has it.
+  const SHARE_FIELDS = [
+    ["Promoter", "promoter_pct", "promoter_chg", true],
+    ["FII", "fii_pct", "fii_chg", true],
+    ["DII", "dii_pct", "dii_chg", true],
+    ["Public", "public_pct", "public_chg", false],
+  ];
+  const PLEDGE_KEYS = ["pledge_pct", "pledged_pct", "promoter_pledge_pct", "pledge"];
+  function shareHasNumbers(row) {
+    if (!row) return false;
+    const keys = SHARE_FIELDS.map((f) => f[1]).concat(PLEDGE_KEYS);
+    return keys.some((k) => !isBlank(row[k]));
+  }
+  function shareChgHtml(chg) {
+    const n = num(chg);
+    if (n == null) return '<span class="sh-na">quarter change n/a</span>';
+    if (n > 0) return '<span class="sh-up">\u25B2 ' + esc(fmt(n, 2)) + " pts</span>";
+    if (n < 0) return '<span class="sh-dn">\u25BC ' + esc(fmt(Math.abs(n), 2)) + " pts</span>";
+    return '<span class="sh-na">flat vs last quarter</span>';
+  }
+  function shareValue(v) {
+    const n = num(v);
+    if (n == null) return isBlank(v) ? na() : esc(String(v));
+    return esc(fmt(n, 2) + "%");
+  }
+  function shareCell(label, pct, chg) {
+    return '<div class="sh-cell"><div class="l">' + esc(label) + '</div><div class="v">' + shareValue(pct) +
+      '</div><div class="s">' + shareChgHtml(chg) + "</div></div>";
+  }
+  function pledgeOf(row) {
+    for (let i = 0; i < PLEDGE_KEYS.length; i++) {
+      const key = PLEDGE_KEYS[i];
+      if (isBlank(row[key])) continue;
+      const chgKey = key === "pledge" ? "pledge_chg" : key.replace(/_pct$/, "_chg");
+      return { pct: row[key], chg: row[chgKey] };
+    }
+    return null;
+  }
+  function shareholdingOf(rows, ticker) {
+    const want = String(ticker || "").toUpperCase();
+    if (!want) return null;
+    const list = rows || [];
+    for (let i = 0; i < list.length; i++) {
+      const r = list[i];
+      if (String(r.ticker || "").toUpperCase() !== want) continue;
+      if (r.row_type && r.row_type !== "summary") continue;
+      return r;
+    }
+    return null;
+  }
+  function shareholdingHtml(row) {
+    if (!shareHasNumbers(row)) {
+      return '<section class="sh-box" aria-label="Shareholding"><div class="sh-head"><span>Shareholding</span></div>' +
+        '<p class="sh-miss">Shareholding is not on file for this stock.</p></section>';
+    }
+    const cells = SHARE_FIELDS.filter((f) => f[3] || !isBlank(row[f[1]])).map((f) => shareCell(f[0], row[f[1]], row[f[2]])).join("");
+    const pledge = pledgeOf(row);
+    const pledgeHtml = pledge ? shareCell("Pledge", pledge.pct, pledge.chg) : "";
+    const asof = isBlank(row.as_of) ? "" : '<span class="sh-asof">as of ' + esc(String(row.as_of).slice(0, 10)) + "</span>";
+    return '<section class="sh-box" aria-label="Shareholding"><div class="sh-head"><span>Shareholding</span>' + asof +
+      '</div><div class="sh-row">' + cells + pledgeHtml + "</div></section>";
+  }
   function renderChartViewer(ctx) {
     const params = new URLSearchParams(location.search);
     // Technical | Fundamental switch (feature.split_tech_fund and chart_viewer.group_toggle).
@@ -2385,6 +2448,8 @@
     const fewItems = Math.max(1, cvOpt("reason_collapsed_items"));
     const savedReason = reasonAllowed && cvOpt("reason_box_toggle") ? cvRead("desk-cv-reason") : null;
     let reasonOn = reasonAllowed && (typeof savedReason === "boolean" ? savedReason : true);
+    // Shareholding stays off the candles until the chip is tapped. Not saved, so the chart opens clean.
+    let holdOn = false;
     let reasonOpen = false;
     // Drag: move chart (pan back and forward in time, pinch to zoom) or Drag: next chart, where
     // the chart ignores one-finger drags and pinch zoom is off. The Drag chip (drag_mode_toggle)
@@ -2423,6 +2488,7 @@
       (cvOpt("volume_toggle") ? chip("volume", "Vol", "", volOn) : "") +
       (rsLineAllowed ? chip("rsline", "RS line", "", rsLineOn) : "") +
       (reasonAllowed && cvOpt("reason_box_toggle") ? chip("reason", "Why", "", reasonOn) : "") +
+      (featureOn("feature.stock_shareholding") ? chip("hold", "Shareholding", "", holdOn) : "") +
       (swipeOn && cvOpt("flip_toggle") ? chip("swipe", rightIsNext ? "Swipe right: next" : "Swipe left: next", "", false, "cvflip") : "") +
       (dragToggle ? chip("drag", "Drag: " + (dragPan ? "move chart" : "next chart"), "", dragPan) : "") +
       (candleToggle ? chip("daily", "Daily", "", !weekly, "cvrange") + chip("weekly", "Weekly", "", weekly, "cvrange") : "") +
@@ -2441,6 +2507,7 @@
       (cvOpt("counter") ? '<div class="cv-count" id="cvcount"></div>' : "") +
       '<button type="button" class="cv-exit" id="cvexit" aria-label="Close full screen">✕</button></div>' +
       '<div class="cv-chips" id="cvchips"></div>' +
+      (featureOn("feature.stock_shareholding") ? '<div class="cv-hold" id="cvhold" hidden></div>' : "") +
       '<div class="cv-plot' + (whyTopLeft ? " why-tl" : "") + '" id="cvplot"><div class="cv-host" id="cvhost"></div>' +
       '<div class="cv-msg" id="cvmsg" hidden></div>' +
       (reasonAllowed ? '<div class="cv-reason" id="cvreason" role="button" tabindex="0" aria-expanded="false" aria-label="Why this stock is listed. Tap to open or close." hidden></div>' : "") +
@@ -2780,6 +2847,8 @@
       const count = document.getElementById("cvcount");
       if (count) count.textContent = st.list.length ? (st.i + 1) + " of " + st.list.length : "0 of 0";
       paintRs();
+      const holdEl = document.getElementById("cvhold");
+      if (holdEl) holdEl.innerHTML = shareholdingHtml(shareholdingOf(ctx.files["institutional_13f.csv"], rec ? rec.ticker : ""));
       if (!bars || !bars.length) { px.innerHTML = ""; return; }
       const last = bars[bars.length - 1];
       const prev = bars.length > 1 ? bars[bars.length - 2].c : null;
@@ -2892,6 +2961,13 @@
       if (id === "volume") { volOn = !volOn; cvStore("desk-cv-volume", volOn); paintChips(); if (st.bars.length && st.chart) { carryRange = userRange; draw(st.bars); } return; }
       if (id === "rsline") { rsLineOn = !rsLineOn; cvStore("desk-cv-rs-line", rsLineOn); paintChips(); paintRsNote(); if (st.bars.length && st.chart) { carryRange = userRange; draw(st.bars); } return; }
       if (id === "reason") { reasonOn = !reasonOn; cvStore("desk-cv-reason", reasonOn); paintChips(); paintReason(); return; }
+      if (id === "hold") {
+        holdOn = !holdOn;
+        const el = document.getElementById("cvhold");
+        if (el) el.hidden = !holdOn;
+        paintChips();
+        return;
+      }
       if (id === "swipe") { rightIsNext = !rightIsNext; cvStore("desk-cv-swipe-right-next", rightIsNext); }
       else if (id === "drag") { dragPan = !dragPan; cvStore("desk-cv-drag-pan", dragPan); applyPan(); }
       else if (ma[id] != null) { ma[id] = !ma[id]; cvStore("desk-cv-ma", ma); if (st.mas[id]) st.mas[id].applyOptions({ visible: !!ma[id] }); }
@@ -2945,7 +3021,7 @@
     // ignored. Two fingers (pinch) never change the chart.
     let touch = null;
     stage.addEventListener("touchstart", (e) => {
-      if (!swipeOn || e.touches.length !== 1 || e.target.closest(".cv-reason, .cv-arrow, select")) { touch = null; return; }
+      if (!swipeOn || e.touches.length !== 1 || e.target.closest(".cv-reason, .cv-arrow, .cv-hold, select")) { touch = null; return; }
       const inTools = chipsEl.contains(e.target);
       const zone = cvSwipeZone(!!e.target.closest(".cv-top"), inTools, inTools ? chipsEl.scrollWidth : 0, inTools ? chipsEl.clientWidth : 0);
       if (zone === "scroll") { touch = null; return; }
@@ -3515,6 +3591,7 @@
     destroyCharts: destroyCharts, lineChart: lineChart, barChart: barChart, comboChart: comboChart, makeChart: makeChart,
     lastNDays: lastNDays, seriesNum: seriesNum, retColor: retColor, band: band,
     renderChartViewer: renderChartViewer, chartViewerFiles: CV_FILES, setViewerStart: setViewerStart,
+    shareholdingHtml: shareholdingHtml, shareholdingOf: shareholdingOf,
     splitOn: splitOn, groupOf: groupOf,
     tc: tc, theme: () => THEME, maColor: maColor,
     boot: boot,

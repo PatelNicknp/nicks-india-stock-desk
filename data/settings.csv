@@ -73,6 +73,7 @@ feature.light_mode,True
 feature.self_heal_keeper,True
 feature.trading_floor,True
 feature.trading_floor_paper,True
+feature.stock_shareholding,True
 buy_setups.market_filter,True
 buy_setups.chart_setups_only,True
 buy_setups.full_rules_at_coverage_pct,80

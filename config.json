@@ -74,7 +74,8 @@
     "light_mode": true,
     "self_heal_keeper": true,
     "trading_floor": true,
-    "trading_floor_paper": true
+    "trading_floor_paper": true,
+    "stock_shareholding": true
   },
   "vcp": {
     "_note": "VCP scanner. A stock is listed only when the trend template is 8 of 8, the same rule as the green VCP tag. Set show_weaker_trend to true to also list stocks with tightening pullbacks but a weaker trend, marked WATCHING (trend not 8/8).",

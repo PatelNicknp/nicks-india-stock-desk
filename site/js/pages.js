@@ -707,6 +707,11 @@
       holdStat("Promoter %", row.promoter_pct, row.promoter_chg) +
       "</div>";
   }
+  function stockShareHtml(ctx, ticker, fallback) {
+    if (panelOff("feature.stock_shareholding")) return holdRow(fallback);
+    const fromFile = D.shareholdingOf(ctx.files["institutional_13f.csv"], ticker);
+    return D.shareholdingHtml(fromFile || fallback || null);
+  }
   function ptsCard(label, v) {
     const n = D.num(v);
     const shown = n == null ? D.na() : D.esc(D.signedPts(n));
@@ -765,7 +770,7 @@
         '<div class="stat"><div class="l">Day %</div><div class="v" style="color:' + D.retColor(day) + '">' + (day == null ? D.na() : D.esc((day > 0 ? "+" : "") + D.fmt(day, 2) + "%")) + "</div></div>" +
         '<div class="stat"><div class="l">Confidence</div><div class="v" style="font-size:16px">' + (D.isBlank(row.confidence) ? D.na() : D.esc(row.confidence)) + '</div><div class="l" style="margin-top:8px">Verdict</div><div class="vpill">' + D.verdictHtml(row.verdict) + "</div></div>" +
         '<div class="stat"><div class="l">Desk score</div><div class="v"><span class="scorepill deskscore" style="background:' + D.band(scoreN || 0) + '">' + D.esc(scoreN == null ? "–" : String(scoreN)) + "</span></div></div></div>" +
-        holdRow(row) +
+        stockShareHtml(ctx, ticker, row) +
         '<div class="panel pad"><p style="font-size:13px;line-height:20px">' + D.esc(row.reason || "") + "</p></div>" +
         '<div class="cards">' +
         ptsCard("Technical", row.pts_tech) + ptsCard("Financials", row.pts_fin) + ptsCard("Sentiment", row.pts_sent) +
@@ -3728,6 +3733,7 @@
     scorecard: { lines: [
       "One stock at a time. Type a ticker to see its total score and how each point was earned, versus its own 3-year average and versus its sector.",
       "It also shows the plan (entry, stop, target), recent earnings surprises, and headlines.",
+      "The Shareholding box shows promoter, FII, and DII percent, plus public when the file has it, and the change versus last quarter. Green is up and red is down. Pledge shows when the file has it. Turn it off with feature.stock_shareholding.",
     ] },
     watchlist: { lines: [
       "Your holdings and your watchlist, with portfolio value, today's profit or loss, total gain, and the desk score of each stock.",
@@ -3876,7 +3882,7 @@
     today: { files: ["market_today.csv", "breadth_history.csv", "sectors.csv", "alerts.csv", "fii_flows.csv"], optional: ["high_volume.csv"], render: renderToday },
     flows: { files: ["fii_flows.csv", "participant_oi.csv"], render: renderFlows },
     top: { files: ["scores.csv"], render: renderTop },
-    scorecard: { files: ["scores.csv", "score_details.csv", "news.csv", "earnings_history.csv"], render: renderScorecard },
+    scorecard: { files: ["scores.csv", "score_details.csv", "news.csv", "earnings_history.csv"], optional: ["institutional_13f.csv"], render: renderScorecard },
     watchlist: { files: ["portfolio.csv", "portfolio_summary.csv", "watchlist.csv"], render: renderWatch },
     alerts: { files: ["alerts.csv", "score_changes.csv"], render: renderAlerts },
     backtest: { files: ["backtest_summary.csv", "backtest_equity.csv", "backtest_buckets.csv", "backtest_yearly.csv", "backtest_notes.csv"], render: renderBacktest },
