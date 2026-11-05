@@ -11,12 +11,12 @@ GitHub Action (stock_desk.py on a schedule)
         |  writes CSVs
         v
 data/*.csv on GitHub
-        |  the site reads the raw files
+        |  Pages publishes data/ next to the html
         v
-GitHub Pages (site/)
+GitHub Pages (site/ and data/)
 ```
 
-The pages do no scoring. The Python job does the work. On github.io the site loads CSVs from raw.githubusercontent.com, so a data update does not need a new site build.
+The pages do no scoring. The Python job does the work. On github.io the site loads `data/<file>` from the published site, including `data/trends.csv`. A data commit publishes the site again.
 
 ## The universe
 
