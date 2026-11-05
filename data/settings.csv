@@ -190,6 +190,7 @@ chart_viewer.min_bar_spacing_px,3
 chart_viewer.max_bar_spacing_px,8
 chart_viewer.range_months_weekly,24
 chart_viewer.range_months_weekly_phone,12
+chart_viewer.rs_line,True
 keeper.check_after_min,10
 keeper.verify_after_min,45
 keeper.recheck_min,15

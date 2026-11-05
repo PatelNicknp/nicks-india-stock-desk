@@ -330,6 +330,14 @@
       rows.filter((r) => String(r.ticker || "").trim().toUpperCase() === want)
     ).catch(() => loadCsv("ohlc/" + want + ".csv"));
   }
+  // Nifty 50 closes already saved with the candle files. One load for the whole viewer.
+  let niftyBarsJob = null;
+  function loadNiftyBars() {
+    if (!niftyBarsJob) {
+      niftyBarsJob = loadTickerBars("^NSEI").then((rows) => barsFromRows(rows)).catch(() => []);
+    }
+    return niftyBarsJob;
+  }
 
   function cleanRow(row) {
     const o = {};
@@ -2062,6 +2070,7 @@
     reason_box_top_left: true, last_candle_gap_px: 12, candle_toggle: true, default_candles: "daily", style_toggle: true, default_style: "candles",
     dense_default: true, target_bar_spacing: 5.8, min_bar_spacing_px: 3, max_bar_spacing_px: 8,
     range_months_weekly: 24, range_months_weekly_phone: 12,
+    rs_line: true,
   };
   function cvOpt(key) {
     const fallback = CV_DEFAULTS[key];
@@ -2367,6 +2376,9 @@
     CV_MAS.forEach((d) => { ma[d.id] = typeof savedMa[d.id] === "boolean" ? savedMa[d.id] : cvOpt(d.id); });
     const savedVol = cvOpt("volume_toggle") ? cvRead("desk-cv-volume") : null;
     let volOn = typeof savedVol === "boolean" ? savedVol : cvOpt("volume");
+    const rsLineAllowed = cvOpt("rs_line") !== false;
+    const savedRsLine = rsLineAllowed ? cvRead("desk-cv-rs-line") : null;
+    let rsLineOn = rsLineAllowed && (typeof savedRsLine === "boolean" ? savedRsLine : true);
     const savedSwipe = cvOpt("flip_toggle") ? cvRead("desk-cv-swipe-right-next") : null;
     let rightIsNext = typeof savedSwipe === "boolean" ? savedSwipe : cvOpt("swipe_right_is_next");
     const reasonAllowed = cvOpt("reason_box");
@@ -2410,6 +2422,7 @@
     const chipsHtml = () =>
       (cvOpt("ma_chips") ? CV_MAS.map((d) => chip(d.id, "MA " + d.n, maColor(d.n, d.color), ma[d.id])).join("") : "") +
       (cvOpt("volume_toggle") ? chip("volume", "Vol", "", volOn) : "") +
+      (rsLineAllowed ? chip("rsline", "RS line", "", rsLineOn) : "") +
       (reasonAllowed && cvOpt("reason_box_toggle") ? chip("reason", "Why", "", reasonOn) : "") +
       (swipeOn && cvOpt("flip_toggle") ? chip("swipe", rightIsNext ? "Swipe right: next" : "Swipe left: next", "", false, "cvflip") : "") +
       (dragToggle ? chip("drag", "Drag: " + (dragPan ? "move chart" : "next chart"), "", dragPan) : "") +
@@ -2435,6 +2448,7 @@
       (cvOpt("arrows") ? '<button type="button" class="cv-arrow cv-prev" id="cvprev" aria-label="Previous chart">‹</button>' +
         '<button type="button" class="cv-arrow cv-next" id="cvnext" aria-label="Next chart">›</button>' : "") +
       "</div></section>" +
+      '<p class="cap cv-rsnote" id="cvrsnote" hidden></p>' +
       '<p class="cap">Daily bars saved by the desk' + (candleToggle ? " (Weekly candles are built from them)" : "") + '. Averages are worked out in your browser. ' +
       (swipeOn ? "Swipe " + (rightIsNext ? "right" : "left") + " for the next chart. " +
         (dragPan ? "Drag the chart slowly to see older days, and flick fast or swipe on the top row to change the chart. " : "") : "") +
@@ -2654,7 +2668,7 @@
         const k = tvCharts.indexOf(st.chart);
         if (k >= 0) tvCharts.splice(k, 1);
       }
-      st.chart = null; st.price = null; st.vol = null; st.mas = {};
+      st.chart = null; st.price = null; st.vol = null; st.rs = null; st.mas = {};
       viewW = 0;
     };
     const draw = (daily) => {
@@ -2696,16 +2710,65 @@
         s.setData(data);
         st.mas[d.id] = s;
       });
+      // RS line in its own pane, directly under the price. Volume stays below that.
+      // The line is the same in Candles and Bars. Daily and Weekly both come from these bars.
+      let nextPane = 1;
+      st.rsCount = 0;
+      if (rsLineOn && window.rsLine && (st.nifty || []).length) {
+        const line = window.rsLine.build(daily, st.nifty, { weekly: weekly });
+        st.rsCount = line.points.length;
+        if (line.points.length) {
+          st.rs = chart.addSeries(LC.LineSeries, {
+            color: "#7C9CFF", lineWidth: 1, priceLineVisible: false, lastValueVisible: false,
+            crosshairMarkerVisible: true, title: "RS line",
+            priceFormat: { type: "price", precision: 3, minMove: 0.001 },
+          }, nextPane);
+          st.rs.setData(line.points.map((p) => ({ time: p.time, value: p.value })));
+          if (line.markers.length && LC.createSeriesMarkers) {
+            try {
+              LC.createSeriesMarkers(st.rs, line.markers.map((m) => ({
+                time: m.time, position: "inBar", shape: "circle", size: 2,
+                color: tc(m.kind === "before" ? "#F59E0B" : "#7C9CFF"),
+              })));
+            } catch (e) { /* the line still shows if a dot cannot be drawn */ }
+          }
+          nextPane += 1;
+        }
+      }
       if (volOn) {
-        st.vol = chart.addSeries(LC.HistogramSeries, { priceFormat: { type: "volume" }, priceLineVisible: false, lastValueVisible: false }, 1);
+        st.vol = chart.addSeries(LC.HistogramSeries, { priceFormat: { type: "volume" }, priceLineVisible: false, lastValueVisible: false }, nextPane);
         st.vol.setData(bars.filter((b) => b.v != null).map((b) => ({
           time: b.date, value: b.v, color: b.c >= b.o ? "rgba(34,197,94,.45)" : "rgba(239,68,68,.45)",
         })));
-        const panes = chart.panes();
-        if (panes[0]) panes[0].setStretchFactor(4);
-        if (panes[1]) panes[1].setStretchFactor(1);
       }
+      const panes = chart.panes();
+      if (panes[0]) panes[0].setStretchFactor(st.rs && volOn ? 5 : 4);
+      let paneAt = 1;
+      if (st.rs && panes[paneAt]) {
+        panes[paneAt].setStretchFactor(1.15);
+        try {
+          panes[paneAt].priceScale("right").applyOptions({ scaleMargins: { top: 0.22, bottom: 0.22 }, borderVisible: false });
+        } catch (e) { /* the line still autoscales */ }
+        paneAt += 1;
+      }
+      if (st.vol && panes[paneAt]) panes[paneAt].setStretchFactor(1);
+      paintRsNote();
       requestAnimationFrame(() => applyView());
+    };
+    const paintRsNote = () => {
+      const el = document.getElementById("cvrsnote");
+      if (!el) return;
+      if (!rsLineAllowed || !rsLineOn) { el.hidden = true; el.textContent = ""; return; }
+      el.hidden = false;
+      if (!(st.nifty || []).length) {
+        el.textContent = "RS line: stock vs NIFTY 50. The NIFTY 50 prices are not on this chart yet.";
+        return;
+      }
+      if (!st.rsCount) {
+        el.textContent = "RS line: stock vs NIFTY 50. Not enough overlapping prices to draw it.";
+        return;
+      }
+      el.textContent = "RS line: stock vs NIFTY 50. Blue dot: new 52-week high. Amber dot: the line made that high before the price.";
     };
 
     const header = (rec, bars) => {
@@ -2771,7 +2834,9 @@
       }
       header(rec, null);
       remember(rec.ticker);
-      ensureTv().then(() => loadTickerBars(rec.ticker)).then((rows) => {
+      ensureTv().then(() => Promise.all([loadTickerBars(rec.ticker), loadNiftyBars()])).then((pair) => {
+        const rows = pair[0];
+        st.nifty = pair[1] || [];
         if (token !== st.token) return;
         const bars = barsFromRows(rows);
         st.bars = bars;
@@ -2825,6 +2890,7 @@
         return;
       }
       if (id === "volume") { volOn = !volOn; cvStore("desk-cv-volume", volOn); paintChips(); if (st.bars.length && st.chart) { carryRange = userRange; draw(st.bars); } return; }
+      if (id === "rsline") { rsLineOn = !rsLineOn; cvStore("desk-cv-rs-line", rsLineOn); paintChips(); paintRsNote(); if (st.bars.length && st.chart) { carryRange = userRange; draw(st.bars); } return; }
       if (id === "reason") { reasonOn = !reasonOn; cvStore("desk-cv-reason", reasonOn); paintChips(); paintReason(); return; }
       if (id === "swipe") { rightIsNext = !rightIsNext; cvStore("desk-cv-swipe-right-next", rightIsNext); }
       else if (id === "drag") { dragPan = !dragPan; cvStore("desk-cv-drag-pan", dragPan); applyPan(); }

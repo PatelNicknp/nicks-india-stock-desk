@@ -464,6 +464,7 @@ tr.selrow .rowexp{color:var(--accent)}
 .cvchip.rschip{cursor:default;font-weight:700;color:var(--text)}
 .cvchip.rschip.hot{color:var(--green);border-color:var(--green)}
 .cv-why-rs{font-weight:700;color:var(--text);margin:0 0 4px;line-height:1.35;overflow-wrap:anywhere}
+.cv-rsnote{margin:8px 0 0;font-size:13px;line-height:18px;color:var(--text2);overflow-wrap:anywhere}
 .cvrange{min-width:40px;justify-content:center}
 .cv-plot{position:relative;flex:1;min-height:0;touch-action:pan-y}
 .cv-host{position:absolute;inset:0}
@@ -514,6 +515,7 @@ body.cv-lock .nav,body.cv-lock .hdr,body.cv-lock .scrim{visibility:hidden}
   .cvchip{height:26px;padding:0 8px;font-size:11px}
   .cv-reason{width:150px;font-size:10.5px;line-height:13px}
   .cv-why-rs{font-size:11px;line-height:14px}
+  .cv-rsnote{font-size:12px;line-height:16px;margin-top:6px}
   .cv-next{right:58px}
 }
 @media (max-height:500px){

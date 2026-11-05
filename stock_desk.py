@@ -1893,7 +1893,8 @@ def build_watch(watch, scores):
 CHART_BARS = 126
 # About three years of sessions. The browser computes the averages from these bars.
 CANDLE_BARS = india_data.CANDLE_SESSIONS
-_TICKER_FILE = re.compile(r"^[A-Z0-9&][A-Z0-9.&\-]{0,18}$")
+# A leading ^ is an index already in the price cache, such as ^NSEI. Nothing else is added.
+_TICKER_FILE = re.compile(r"^\^?[A-Z0-9&][A-Z0-9.&\-]{0,18}$")
 
 
 def _upside_pct(target_mean, price):

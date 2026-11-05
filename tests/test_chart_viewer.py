@@ -29,6 +29,7 @@ EXPECTED = {
     "style_toggle": True, "default_style": "candles",
     "dense_default": True, "target_bar_spacing": 5.8, "min_bar_spacing_px": 3, "max_bar_spacing_px": 8,
     "range_months_weekly": 24, "range_months_weekly_phone": 12,
+    "rs_line": True,
 }
 
 
@@ -158,6 +159,17 @@ def test_viewer_code_rules():
     assert "native_fullscreen_ios" in block and "maxTouchPoints" in block and "iPad" in block
     css = _read("site", "css", "desk.css")
     assert "100dvh" in css and "safe-area-inset-top" in css and ".cv-stage:fullscreen" in css
+
+
+def test_rs_line_math():
+    script = os.path.join(ROOT, "tests", "rs_line_check.js")
+    proc = subprocess.run(["node", script], cwd=ROOT, capture_output=True, text=True, timeout=30)
+    assert proc.returncode == 0, (proc.stdout or "") + (proc.stderr or "")
+    desk = _read("site", "js", "desk.js")
+    assert "RS line: stock vs NIFTY 50." in desk
+    assert "\u2014" not in desk[desk.index("RS line: stock vs NIFTY 50."):desk.index("RS line: stock vs NIFTY 50.") + 220]
+    assert 'chip("rsline", "RS line"' in desk
+    assert "chart_viewer.rs_line" in _read("tables.py")
 
 
 def test_viewer_in_phone_and_tablet():
