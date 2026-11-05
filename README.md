@@ -16,7 +16,7 @@ data/*.csv on GitHub
 GitHub Pages (site/ and data/)
 ```
 
-The pages do no scoring. The Python job does the work. On github.io the site loads `data/<file>` from the published site, including `data/trends.csv`. A data commit publishes the site again.
+The pages do no scoring. The Python job does the work. On github.io the site loads `data/<file>` from the published site, including `data/trends.csv`. The scheduled jobs commit with the Actions token, and that push does not start another workflow, so those jobs start the Pages deploy after a commit that changes `data/` or `site/`. A normal push of those paths still publishes too.
 
 ## The universe
 

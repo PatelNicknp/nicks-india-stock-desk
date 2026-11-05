@@ -1,8 +1,11 @@
 name: Deploy site
 
 # The published site is the html in site/ plus data/ next to it. On github.io the
-# pages fetch data/<file> from that same site, including data/trends.csv. A data
-# commit publishes again so the Chart Viewer list stays current.
+# pages fetch data/<file> from that same site, including data/trends.csv.
+# A normal push of site/ or data/ starts this workflow. A commit made with the
+# Actions token does not: GitHub ignores that push for other workflows. The
+# scheduled data jobs call this workflow themselves after they push data
+# (workflow_call), and pass the new commit.
 on:
   push:
     branches: [main]
@@ -11,6 +14,13 @@ on:
       - "data/**"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
+  workflow_call:
+    inputs:
+      ref:
+        description: "Commit to publish. The data job passes the commit it just pushed."
+        required: false
+        type: string
+        default: ""
 
 permissions:
   contents: read
@@ -29,6 +39,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Push: that commit. A data job: the commit it just pushed. A manual run: the branch tip.
+          ref: ${{ github.event_name == 'workflow_call' && inputs.ref || github.event_name == 'push' && github.sha || github.ref_name }}
       - name: Put the pages and the data files in one folder
         run: |
           rm -rf _site
