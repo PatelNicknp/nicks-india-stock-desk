@@ -1,0 +1,2 @@
+ticker,rs,rs_raw,q1,q2,q3,q4,bars,rs_label,rs_note,as_of,data_status,note,disclaimer
+,,,,,,,,,,,MISSING,No relative strength rank yet. The after-close run builds it from saved prices.,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."

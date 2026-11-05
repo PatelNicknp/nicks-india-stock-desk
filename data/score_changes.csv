@@ -1,2 +1,11 @@
 ticker,company,price,day_pct,score,score_prev,score_change,verdict,data_status,note,disclaimer
-,,,,,,,,MISSING,No score changes versus the last run.,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+UPL,UPL Ltd.,529.0,2.15,7.0,5.0,2.0,HOLD,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+LICI,Life Insurance Corporation of India,408.0,3.16,6.0,4.0,2.0,HOLD,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+NATIONALUM,National Aluminium Co. Ltd.,326.25,2.74,2.0,4.0,-2.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+GLENMARK,Glenmark Pharmaceuticals Ltd.,2504.7,4.02,3.0,5.0,-2.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+GRASIM,Grasim Industries Ltd.,3138.0,1.55,2.0,4.0,-2.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+ABBOTINDIA,Abbott India Ltd.,27120.0,5.12,7.0,8.0,-1.0,HOLD,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+NYKAA,FSN E-Commerce Ventures Ltd.,355.5,0.45,3.0,2.0,1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+AARTIIND,Aarti Industries Ltd.,447.55,1.91,2.0,1.0,1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+MOTHERSON,Samvardhana Motherson International Ltd.,159.49,-0.32,2.0,3.0,-1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+NCC,NCC Ltd.,121.39,3.51,2.0,3.0,-1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
