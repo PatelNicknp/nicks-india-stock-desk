@@ -27,6 +27,7 @@ late-bhavcopy retry. The morning run leaves the saved file alone.
    Qullamaggie, Marios, EP, CANSLIM). Rows marked Too wide are left out. Levels come from
    `setups.buy_levels`.
 3. At most `max_stocks` (15).
+4. `stocks_only` (true) skips ETFs, index funds, and other fund units. A bhavcopy ISIN starting with INF is a fund. A fund series (F, E, G, and the other fund groups) is a fund. When the ISIN and series are missing, a fund name (ETF, BEES, mutual fund, index fund) is enough. The next individual stock in the same order takes the open slot. Set `stocks_only` to false to keep those names.
 
 ## Facts every role reads
 

@@ -384,6 +384,35 @@ def test_listed_rows_market_headlines_flow_and_nifty_words():
     assert "RS score 87." in rs.iloc[0]["charts_line"]
 
 
+def test_stocks_only_skips_funds_and_backfills_the_slot():
+    assert tf.config({})["stocks_only"] is True
+    assert tf.is_non_stock("HEALTHIETF", "ICICI Prudential Mutual Fund", "INF109KC1Q72", "EQ")
+    assert tf.is_non_stock("PHARMABEES", "Nippon India Mutual Fund", "INF204KC1089", "EQ")
+    assert tf.is_non_stock("JUNIORBEES", "NIPPON INDIA ETF JUNIOR BEES", "", "")
+    assert tf.is_non_stock("NEXT50", "Mirae Asset Mutual Fund", "", "")
+    assert tf.is_non_stock("HDFCNIFTY", "", "INF179KC1965", "EQ")
+    assert tf.is_non_stock("NIFTY1", "", "INF174K014P6", "EQ")
+    assert tf.is_non_stock("MOREALTY", "Motilal Oswal Mutual Fund-Perm", "INF247L01CI4", "EQ")
+    assert tf.is_non_stock("FUNDX", "Some product", "", "F")
+    # A share whose ticker merely contains those letters stays. The ISIN says it is a share.
+    assert not tf.is_non_stock("JETFREIGHT", "Jet Freight", "INE123A01012", "EQ")
+    assert not tf.is_non_stock("TITAN", "Titan Company Ltd.", "INE280A01028", "EQ")
+    assert not tf.is_non_stock("HEALTHIETF", "ICICI Prudential Mutual Fund", "INF1", "EQ", stocks_only=False)
+    rows = []
+    for t, co in (("HEALTHIETF", "ICICI Prudential Mutual Fund"), ("PHARMABEES", "Nippon"), ("AAA", "Alpha Ltd"),
+                  ("JUNIORBEES", "NIPPON INDIA ETF"), ("BBB", "Beta Ltd")):
+        rows.append({"ticker": t, "listed": "yes", "verdict": "BUY", "company": co, "entry": 10, "stop": 9,
+                     "target1": 12, "market_ok": "yes"})
+    inst = {t: {"isin": "INF00000000" + str(i), "series": "EQ", "company": ""} for i, t in enumerate(("HEALTHIETF", "PHARMABEES", "JUNIORBEES"))}
+    inst["AAA"] = {"isin": "INE000000001", "series": "EQ", "company": "Alpha Ltd"}
+    inst["BBB"] = {"isin": "INE000000002", "series": "EQ", "company": "Beta Ltd"}
+    p = tf.config({"trading_floor": {"max_stocks": 2, "fill_from_scanners": False, "stocks_only": True}})
+    got = tf.pick_stocks(pd.DataFrame(rows), None, None, p, instruments=inst)
+    assert [x["ticker"] for x in got] == ["AAA", "BBB"]
+    kept = tf.pick_stocks(pd.DataFrame(rows), None, None, tf.config({"trading_floor": {"max_stocks": 2, "fill_from_scanners": False, "stocks_only": False}}), instruments=inst)
+    assert [x["ticker"] for x in kept] == ["HEALTHIETF", "PHARMABEES"]
+
+
 if __name__ == "__main__":
     names = sorted(k for k, v in list(globals().items()) if k.startswith("test_") and callable(v))
     for name in names:

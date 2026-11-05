@@ -33,6 +33,7 @@ DEFAULTS = {
     "max_stocks": 15,
     "fill_from_scanners": True,
     "fill_min_scanners": 2,
+    "stocks_only": True,
     "news": {
         "on": True,
         "fresh_days": 3,
@@ -196,6 +197,71 @@ def _listed_row(r):
     return True
 
 
+# Shares on the NSE and BSE. ETFs often trade in EQ, so series alone is not enough.
+EQUITY_SERIES = {"EQ", "BE", "BZ", "SM", "A", "B", "T", "X", "XT", "Z", "P", "M", "MT", "MS"}
+# Fund, ETF, and bond series on the bhavcopy. F, E, and G are the BSE groups.
+FUND_SERIES = {"F", "E", "G", "IV", "MF", "GB", "GS"}
+_NAME_FUND = re.compile(r"\b(etf|bees|mutual fund|index fund|index tracker|exchange traded)\b", re.I)
+_TICKER_FUND = re.compile(r"(ETF|BEES)$", re.I)
+_TICKER_INDEX = re.compile(r"(NIFTY|SENSEX|BANKNIFTY)", re.I)
+
+
+def instrument_table(*frames):
+    """ticker -> isin, series, company from the bhavcopy rows and the lists already on the desk."""
+    out = {}
+    for frame in frames:
+        if frame is None or len(getattr(frame, "index", [])) == 0 or "ticker" not in getattr(frame, "columns", []):
+            continue
+        cols = [c for c in ("ticker", "isin", "series", "company") if c in frame.columns]
+        if len(cols) < 2:
+            continue
+        sub = frame[cols].drop_duplicates("ticker", keep="last")
+        for rec in sub.to_dict("records"):
+            t = _txt(rec.get("ticker")).upper()
+            if not t:
+                continue
+            slot = out.setdefault(t, {"isin": "", "series": "", "company": ""})
+            isin = _txt(rec.get("isin")).upper()
+            series = _txt(rec.get("series")).upper()
+            company = _txt(rec.get("company"))
+            if isin and not slot["isin"]:
+                slot["isin"] = isin
+            if series and series not in ("NAN", "NONE") and not slot["series"]:
+                slot["series"] = series
+            if company and not slot["company"]:
+                slot["company"] = company
+    return out
+
+
+def _name_is_fund(ticker, company):
+    """Name fallback when the bhavcopy has no ISIN and no fund series."""
+    ticker = _txt(ticker).upper()
+    if _TICKER_FUND.search(ticker) or _TICKER_INDEX.search(ticker):
+        return True
+    text = "%s %s" % (ticker, _txt(company))
+    return bool(_NAME_FUND.search(text))
+
+
+def is_non_stock(ticker, company="", isin="", series="", stocks_only=True):
+    """True for an ETF, index fund, or other fund unit. Individual shares return False.
+
+    The bhavcopy ISIN is the instrument type (INF is a fund, INE is a share). A fund
+    series is next. The name is only used when those are missing. stocks_only off
+    keeps every name.
+    """
+    if not stocks_only:
+        return False
+    isin = _txt(isin).upper()
+    series = _txt(series).upper()
+    if isin.startswith("INF"):
+        return True
+    if series in FUND_SERIES:
+        return True
+    if isin.startswith("INE") and (not series or series in EQUITY_SERIES):
+        return False
+    return _name_is_fund(ticker, company)
+
+
 def _prior_avg(v, i, n):
     """Average volume of the n sessions before bar i. None when there is not enough history."""
     if i < n:
@@ -207,16 +273,24 @@ def _prior_avg(v, i, n):
     return a if a > 0 else None
 
 
-def pick_stocks(buy, frames=None, close=None, p=None, cfg=None):
+def pick_stocks(buy, frames=None, close=None, p=None, cfg=None, instruments=None):
     """Today's picks, at most max_stocks.
 
     First the Buy setups rows the page lists, in that page's own order (broken out first,
-    then the most scanners agreeing). When fill_from_scanners is on and that list is short,
-    the rest are stocks that are READY or BROKEN OUT today on at least fill_min_scanners of
-    the pattern scanners, with levels from setups.buy_levels.
+    then the most scanners agreeing). ETFs and fund units are skipped when stocks_only is
+    on, and the next individual stock takes that slot. When fill_from_scanners is on and
+    that list is short, the rest are stocks that are READY or BROKEN OUT today on at least
+    fill_min_scanners of the pattern scanners, with levels from setups.buy_levels.
     """
     p = p or config({})
     cap = int(p.get("max_stocks") or 0)
+    instruments = instruments or {}
+    only = bool(p.get("stocks_only", True))
+
+    def blocked(ticker, company):
+        info = instruments.get(ticker) or {}
+        return is_non_stock(ticker, company or info.get("company") or "", info.get("isin") or "", info.get("series") or "", only)
+
     picks, seen = [], set()
     for r in _rows(buy):
         if len(picks) >= cap:
@@ -225,6 +299,9 @@ def pick_stocks(buy, frames=None, close=None, p=None, cfg=None):
             continue
         t = _txt(r["ticker"]).upper()
         if t in seen:
+            continue
+        if blocked(t, _txt(r.get("company"))):
+            seen.add(t)
             continue
         seen.add(t)
         picks.append({
@@ -251,7 +328,7 @@ def pick_stocks(buy, frames=None, close=None, p=None, cfg=None):
     order = {name: i for i, (name, _) in enumerate(sources)}
     extra = []
     for t, recs in grouped.items():
-        if t in seen:
+        if t in seen or blocked(t, (recs[0].get("company") if recs else "") or ""):
             continue
         names = sorted({rec["source"] for rec in recs}, key=lambda s: order[s])
         if len(names) < int(p.get("fill_min_scanners") or 1):

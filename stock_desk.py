@@ -2754,7 +2754,7 @@ def _rs_map(scores):
     return {}
 
 
-def load_trading_floor(buy, frames, close, opn, vol, news, scores, asof, cfg, cache, mode, flows=None):
+def load_trading_floor(buy, frames, close, opn, vol, news, scores, asof, cfg, cache, mode, flows=None, instruments=None):
     """Trading Floor. Built from scanners, saved bars, saved headlines, and FII/DII cash.
 
     Google News RSS (no key) runs only on the main close run, once a day, and only for picks
@@ -2762,7 +2762,7 @@ def load_trading_floor(buy, frames, close, opn, vol, news, scores, asof, cfg, ca
     No Yahoo volume request is added here.
     """
     p = trading_floor.config(cfg)
-    picks = trading_floor.pick_stocks(buy, frames, close, p, cfg=cfg)
+    picks = trading_floor.pick_stocks(buy, frames, close, p, cfg=cfg, instruments=instruments)
     rs = _rs_map(scores)
     for pk in picks:
         if pk["ticker"] in rs:
@@ -3311,7 +3311,8 @@ def main(argv=None):
         try:
             opn = wide_from_long(long, "open") if long is not None and len(long) and "open" in long.columns else None
             floor_asof = _session_asof(long, asof)
-            floor = load_trading_floor(buy, setup_frames, close, opn, vol, news, scores, floor_asof, cfg, cache, mode, flows)
+            instruments = trading_floor.instrument_table(long, universe, buy)
+            floor = load_trading_floor(buy, setup_frames, close, opn, vol, news, scores, floor_asof, cfg, cache, mode, flows, instruments)
             floor_ran = True
         except Exception as exc:
             log("Trading Floor", "MISSING", asof, ("The debate did not run this time. " + str(exc))[:200])
@@ -3334,6 +3335,7 @@ def main(argv=None):
                 paper_asof,
                 paper_cfg,
                 asof_final=final,
+                stocks_only=bool(trading_floor.config(cfg).get("stocks_only", True)),
             )
             trading_floor_paper.save_state(state, data)
             paper_ran = True
