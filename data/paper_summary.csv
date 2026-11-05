@@ -1,0 +1,2 @@
+start_date,start_cash,fill_rule,share_mode,position_size,last_bar,last_signal_date,cash,invested,equity,total_return_pct,nifty_return_pct,vs_nifty_pct,max_drawdown_pct,open_count,pending_count,closed_count,wins,losses,win_rate_pct,avg_win,avg_loss,avg_win_pct,avg_loss_pct,total_pnl,skipped_count,not_filled_count,note
+2026-11-04,1000000.0,next session open,fractional,100000.0,2026-11-04,2026-11-04,1000000.0,0,1000000.0,0.0,0.0,0.0,0.0,0,10,0,0,0,,,,,,0,2,0,"FAKE MONEY. A paper test of the Trading Floor's Buy calls. No real orders, no broker, no alerts. Prices are in rupees."

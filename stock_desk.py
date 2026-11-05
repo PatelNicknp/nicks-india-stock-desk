@@ -27,6 +27,8 @@ import setups
 import sector_rotation
 import india_data
 import fundamentals_backfill
+import trading_floor
+import trading_floor_paper
 
 ROOT = None  # set in main so tests can point DESK_ROOT at a temp folder
 PT = "America/Los_Angeles"
@@ -2732,6 +2734,93 @@ def _listing_frames(cfg, cache, mode, parts, switches):
     return frames
 
 
+def _flow_today(flows):
+    """Latest FII and DII net cash, in crore rupees, from the file this run already built."""
+    if flows is None or len(getattr(flows, "index", [])) == 0:
+        return {}
+    if "fii_net" not in getattr(flows, "columns", []) and "dii_net" not in getattr(flows, "columns", []):
+        return {}
+    row = flows.iloc[-1]
+    return {"date": str(row.get("date") or "")[:10], "fii_net": row.get("fii_net"), "dii_net": row.get("dii_net")}
+
+
+def _rs_map(scores):
+    """RS score by ticker when another change has added it. Empty until that column exists."""
+    if scores is None or len(getattr(scores, "index", [])) == 0 or "ticker" not in getattr(scores, "columns", []):
+        return {}
+    for key in ("rs_score", "rs", "rs_rank"):
+        if key in scores.columns:
+            return {str(t): v for t, v in zip(scores["ticker"].astype(str), scores[key])}
+    return {}
+
+
+def load_trading_floor(buy, frames, close, opn, vol, news, scores, asof, cfg, cache, mode, flows=None):
+    """Trading Floor. Built from scanners, saved bars, saved headlines, and FII/DII cash.
+
+    Google News RSS (no key) runs only on the main close run, once a day, and only for picks
+    that have no desk headline. Morning and offline runs reuse cache/trading_floor_news.csv.
+    No Yahoo volume request is added here.
+    """
+    p = trading_floor.config(cfg)
+    picks = trading_floor.pick_stocks(buy, frames, close, p, cfg=cfg)
+    rs = _rs_map(scores)
+    for pk in picks:
+        if pk["ticker"] in rs:
+            pk["rs_score"] = rs[pk["ticker"]]
+    path = os.path.join(cache, "trading_floor_news.csv")
+    cached = read_csv(path)
+    floor_news = cached
+    src = "Trading Floor headlines (Google News RSS)"
+    n = p["news"]
+    if n.get("on", True) and n.get("google_news", True) and picks and mode == "full":
+        need = [pk for pk in picks if not trading_floor.headlines_for(pk["ticker"], pk.get("company"), news, None, asof, p)[0]]
+        decision = _need_fetch("trading_floor_news", path, mode) if os.path.exists(path) else "fetch"
+        if decision == "fetch" and need:
+            lim = netutil.RateLimiter(n.get("google_per_second", 1))
+            rows, failed = trading_floor.fetch_google_news(need, p, today_et(), wait=lim.wait)
+            done = [pk["ticker"] for pk in need if pk["ticker"] not in failed]
+            floor_news = trading_floor.merge_news_cache(cached, rows, done, today_et(), n.get("keep_days", 14))
+            floor_news.to_csv(path, index=False)
+            STAMPS["trading_floor_news"] = today_et()
+            status = "OK" if not failed else ("PARTIAL" if done else ("CACHED" if len(cached) else "MISSING"))
+            log(src, status, today_et(), "%d requests for picks without a desk headline, %d headlines, %d failed. No Yahoo volume." % (
+                len(need), len(rows), len(failed)))
+        else:
+            log(src, "OK" if len(cached) else "MISSING", STAMPS.get("trading_floor_news", ""),
+                "reused the saved headlines" if len(cached) else "no extra headline request this run")
+    elif n.get("google_news", True):
+        log(src, "OK" if len(cached) else "MISSING", STAMPS.get("trading_floor_news", ""),
+            "left for the main run after the bhavcopy. No new request on this run.")
+    earn = {}
+    if scores is not None and len(scores) and "next_earnings" in scores.columns and "ticker" in scores.columns:
+        earn = dict(zip(scores["ticker"].astype(str), scores["next_earnings"]))
+    floor = trading_floor.build_floor(picks, close, opn, vol, news, floor_news, asof, cfg, earnings=earn, flow=_flow_today(flows))
+    c = trading_floor.counts(floor)
+    log("Trading Floor", "OK", asof, "%d stocks debated: Buy %d, Wait %d, Skip %d. Advice only. No orders and no alerts." % (
+        len(floor), c["BUY"], c["WAIT"], c["SKIP"]))
+    return floor
+
+
+def _session_asof(long, fallback):
+    """Latest full bhavcopy session. The index file can lag the stock file by a day or two."""
+    try:
+        import volume_scanner
+        day = volume_scanner.session_date(long) if long is not None and len(long) else ""
+        if day:
+            return str(day)[:10]
+    except Exception:
+        pass
+    return fallback
+
+
+def _paper_session_done(asof):
+    """True once the NSE session for asof is over (15:30 IST), so the bhavcopy bar is a full day."""
+    now = pd.Timestamp.now(tz=IST)
+    if str(asof) < now.strftime("%Y-%m-%d"):
+        return True
+    return now.strftime("%H:%M") >= "15:30"
+
+
 def main(argv=None):
     global ROOT
     argv = list(sys.argv[1:] if argv is None else argv)
@@ -3210,6 +3299,55 @@ def main(argv=None):
             gap_note = "The Gap Up scan did not run this time. The rest of the desk updated as normal."
             log("Gap Up scanner", "MISSING", asof, (gap_note + " " + str(exc))[:200])
 
+    # Trading Floor, then the fake-money paper test. Both run on the main close run
+    # (3:00 AM PT, after the bhavcopy) and on the late-bhavcopy retry. The morning
+    # run leaves the saved files alone. Offline rebuilds from the cache only.
+    floor_on = features.get("trading_floor", True)
+    floor = pd.DataFrame()
+    floor_ran = False
+    if not floor_on:
+        log("Trading Floor", "OK", "", "feature off")
+    elif mode in ("full", "retry", "offline") and len(close):
+        try:
+            opn = wide_from_long(long, "open") if long is not None and len(long) and "open" in long.columns else None
+            floor_asof = _session_asof(long, asof)
+            floor = load_trading_floor(buy, setup_frames, close, opn, vol, news, scores, floor_asof, cfg, cache, mode, flows)
+            floor_ran = True
+        except Exception as exc:
+            log("Trading Floor", "MISSING", asof, ("The debate did not run this time. " + str(exc))[:200])
+    else:
+        log("Trading Floor", "OK", "", "unchanged until the main run, after the NSE bhavcopy is in")
+    paper_on = features.get("trading_floor_paper", True)
+    paper_ran = False
+    if not paper_on:
+        log("Trading Floor paper test", "OK", "", "feature off: the paper files are left as they were")
+    elif mode in ("full", "retry", "offline") and len(close) and long is not None and len(long) and "open" in getattr(long, "columns", []):
+        try:
+            paper_cfg = trading_floor_paper.config(cfg)
+            state = trading_floor_paper.load_state(data)
+            paper_asof = _session_asof(long, asof)
+            final = True if mode == "offline" else _paper_session_done(paper_asof)
+            state = trading_floor_paper.update(
+                state,
+                {"open": wide_from_long(long, "open"), "high": high, "low": low, "close": close},
+                floor if floor_ran else None,
+                paper_asof,
+                paper_cfg,
+                asof_final=final,
+            )
+            trading_floor_paper.save_state(state, data)
+            paper_ran = True
+            sm = state["summary"]
+            log("Trading Floor paper test", "OK", sm.get("last_bar", ""),
+                "FAKE MONEY. Value Rs %s, cash Rs %s, open %s, waiting %s, closed %s. Next-day bhavcopy open. No orders." % (
+                    sm.get("equity"), sm.get("cash"), sm.get("open_count"), sm.get("pending_count"), sm.get("closed_count")))
+        except Exception as exc:
+            log("Trading Floor paper test", "CACHED", "", ("Kept the last paper files. " + str(exc))[:200])
+    elif paper_on and mode in ("full", "retry", "offline"):
+        log("Trading Floor paper test", "OK", "", "unchanged: the Nifty 50 open is not in the price cache yet")
+    else:
+        log("Trading Floor paper test", "OK", "", "unchanged: it updates on the main run after the bhavcopy, not the morning run")
+
     aaii_note = "There is no free AAII survey for India. India VIX and FII or DII cash were not available, so this page has no number."
     mood = build_mood(close, fii) if features.get("aaii_sentiment", True) else None
 
@@ -3285,6 +3423,11 @@ def main(argv=None):
         "backtest_yearly": gated(bt.get("yearly"), "backtest_yearly", features.get("backtest", True), "No yearly rows."),
         "backtest_notes": gated(bt.get("notes"), "backtest_notes", features.get("backtest", True), "No notes."),
     }
+    if floor_ran or not floor_on:
+        files["trading_floor"] = gated(
+            floor, "trading_floor", floor_on,
+            "No picks to debate today. The Trading Floor reads Buy setups and the scanners already on the desk. Advice only.",
+        )
     # Mood stays MISSING only when neither India VIX nor FII/DII cash is on file.
     if features.get("aaii_sentiment", True) and mood is None:
         files["aaii_sentiment"] = tables.ensure(pd.DataFrame(), tables.COLS["aaii_sentiment"], "MISSING", aaii_note)
@@ -3329,7 +3472,11 @@ def main(argv=None):
         "mode": "rescore" if light else mode,
         "label": DISCLAIMER,
         "n_stocks": int(len(scores)),
-        "tabs": sorted(files),
+        "tabs": sorted(list(files) + (
+            ["paper_equity", "paper_summary", "paper_trades"] if paper_on and (
+                paper_ran or os.path.exists(os.path.join(data, "paper_summary.csv"))
+            ) else []
+        )),
     }
     with open(os.path.join(data, "meta.json"), "w") as f:
         json.dump(meta, f, indent=1)

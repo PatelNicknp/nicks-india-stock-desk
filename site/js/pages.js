@@ -3259,6 +3259,251 @@
   }
 
 
+  // Trading Floor (feature.trading_floor). Six roles debate today's top picks. Reads trading_floor.csv only.
+  const TF_ROLES = [["news", "News"], ["scout", "Scout"], ["charts", "Charts"], ["skeptic", "Skeptic"], ["sentiment", "Sentiment"]];
+  const TF_TONE = { BUY: "buy", WAIT: "wait", SKIP: "skip" };
+  function tfPts(v) {
+    const n = D.num(v);
+    if (n == null) return '<span class="tf-pts">–</span>';
+    const cls = n > 0 ? "pos" : n < 0 ? "neg" : "zero";
+    const text = n > 0 ? "+" + n : n < 0 ? "−" + Math.abs(n) : "0";
+    return '<span class="tf-pts ' + cls + '">' + text + "</span>";
+  }
+  function tfLines(row) {
+    const lines = [];
+    const add = (key, color, label) => {
+      const n = D.num(row[key]);
+      if (n != null) lines.push({ value: n, color: color, label: label + " " + D.fmt(n, 2) });
+    };
+    add("entry", "#F59E0B", "Entry");
+    add("stop", "#EF4444", "Stop");
+    add("target1", "#22C55E", "Target");
+    return lines;
+  }
+  function tfViewer(row) {
+    if (!D.featureOn("feature.chart_viewer")) return "";
+    if (String(D.settingVal("chart_viewer.scanner_links") || "true").toLowerCase() === "false") return "";
+    const list = row.pick_source === "Buy setups" ? "buysetups" : "all";
+    const t = String(row.ticker || "").trim().toUpperCase();
+    const href = "chart-viewer.html?list=" + encodeURIComponent(list) + (t ? "&t=" + encodeURIComponent(t) : "");
+    return '<a class="cvlink" href="' + D.esc(href) + '">Open in Chart Viewer</a>';
+  }
+  function tfCard(row) {
+    const t = String(row.ticker || "").trim().toUpperCase();
+    const verdict = String(row.verdict || "").toUpperCase();
+    const total = D.num(row.total);
+    const roles = TF_ROLES.map(([key, label]) => {
+      let text = D.esc(row[key + "_line"] || "");
+      if (key === "news" && !D.isBlank(row.headline_link)) {
+        text += ' <a class="tf-src" href="' + D.esc(row.headline_link) + '" target="_blank" rel="noopener">Source</a>';
+      }
+      const veto = key === "charts" && String(row.charts_veto || "").toLowerCase() === "yes" ? ' <span class="tf-flag">veto</span>' : "";
+      const hard = key === "skeptic" && String(row.skeptic_hard_no || "").toLowerCase() === "yes" ? ' <span class="tf-flag">hard no</span>' : "";
+      return '<div class="tf-role"><span class="tf-who">' + D.esc(label) + "</span>" + tfPts(row[key + "_pts"]) +
+        '<span class="tf-say">' + text + veto + hard + "</span></div>";
+    }).join("");
+    const sub = [row.pick_source, row.setup_sources, row.best_status].filter((x) => !D.isBlank(x)).map(D.esc).join(" · ");
+    const totalText = total == null ? "–" : (total > 0 ? "+" : total < 0 ? "−" : "") + Math.abs(total);
+    return '<article class="tf-card" data-t="' + D.esc(t) + '">' +
+      '<button type="button" class="tf-head" aria-expanded="false">' +
+        '<span class="tf-id"><span class="tk">' + D.esc(t) + '</span><span class="tf-co">' + D.esc(row.company || "") + "</span></span>" +
+        '<span class="tf-verdict ' + (TF_TONE[verdict] || "") + '">' + D.esc(verdict || "–") + "</span>" +
+        '<span class="tf-total">' + totalText + "</span>" +
+      "</button>" +
+      '<div class="tf-sub">' + sub + "</div>" +
+      '<div class="tf-role tf-chief"><span class="tf-who">Chief</span><span class="tf-pts tf-sum">Sum</span><span class="tf-say">' + D.esc(row.chief_line || "") + "</span></div>" +
+      roles +
+      '<div class="tf-foot"><button type="button" class="tf-chart">Chart</button>' + tfViewer(row) + "</div>" +
+      '<div class="tf-drop" hidden></div>' +
+    "</article>";
+  }
+  function renderTradingFloor(ctx) {
+    const raw = ctx.files["trading_floor.csv"];
+    const rows = D.realRows(raw).filter((r) => String(r.ticker || "").trim());
+    const count = (v) => rows.filter((r) => String(r.verdict || "").toUpperCase() === v).length;
+    const withNews = rows.filter((r) => (D.num(r.headline_count) || 0) > 0).length;
+    const buyAt = D.settingVal("trading_floor.verdict.buy_min_total") || "2";
+    const waitAt = D.settingVal("trading_floor.verdict.wait_min_total") || "0";
+    const maxN = D.settingVal("trading_floor.max_stocks") || "15";
+    const flow = rows[0] && rows[0].flow_line ? D.esc(rows[0].flow_line) : "";
+    const paperLink = D.featureOn("feature.trading_floor_paper")
+      ? '<div class="cvlinkrow"><a class="cvlink" href="paper-test.html">Paper Test</a><span class="m2">How the Buy calls do with pretend rupees.</span></div>'
+      : "";
+    ctx.page.innerHTML =
+      '<p class="cap">Advice only. A desk debate, not a recommendation. This desk never places trades, never calls a broker, and sends no alerts.</p>' +
+      paperLink +
+      (flow ? '<p class="note-strip">' + flow + "</p>" : "") +
+      '<div class="cards tf-kpis" id="cards"></div>' +
+      '<div class="ctrls tf-ctrls" id="ctrls"><div class="seg" id="tfseg" role="group" aria-label="Show">' +
+        [["All", "All"], ["BUY", "Buy"], ["WAIT", "Wait"], ["SKIP", "Skip"]].map((pair, i) =>
+          '<button type="button" data-v="' + pair[0] + '"' + (i === 0 ? ' class="on"' : "") + ">" + pair[1] + "</button>").join("") +
+      "</div></div>" +
+      '<div class="tf-grid" id="tfgrid"></div>' +
+      '<p class="cap">How the Chief decides: News, Scout, Charts, Skeptic, and Sentiment each give +1, 0, or −1. A total of ' +
+      D.esc(buyAt) + " or more with no hard no from the Skeptic is Buy. " + D.esc(waitAt) +
+      " or more is Wait. Anything lower is Skip. A Charts veto (no usable entry, stop, and target, or the price already under the stop) is always Skip. Picks are the Buy setups list, topped up with stocks ready or broken out today on two or more scanners, " +
+      D.esc(maxN) + " at most. Volume is the bhavcopy volume compared with the 50 sessions before today. Tap a stock for its chart. Every number is in Settings under trading_floor.</p>";
+    const tone = (n, color) => '<span style="color:' + color + '">' + n + "</span>";
+    const asof = rows[0] && rows[0].price_as_of ? ", " + D.esc(rows[0].price_as_of) : "";
+    document.getElementById("cards").innerHTML =
+      card("Stocks debated", String(rows.length), withNews + " with fresh news" + asof) +
+      card("Buy", tone(count("BUY"), "#22C55E"), "Total " + D.esc(buyAt) + " or more, no hard no") +
+      card("Wait", tone(count("WAIT"), "#F59E0B"), "Total " + D.esc(waitAt) + " up to just under Buy, or a hard no") +
+      card("Skip", tone(count("SKIP"), "#EF4444"), "Lower, or a Charts veto");
+    let pick = "All";
+    const grid = document.getElementById("tfgrid");
+    const draw = () => {
+      D.destroyCharts();
+      const shown = rows.filter((r) => pick === "All" || String(r.verdict || "").toUpperCase() === pick);
+      const word = pick === "BUY" ? "Buy" : pick === "WAIT" ? "Wait" : pick === "SKIP" ? "Skip" : pick;
+      grid.innerHTML = shown.length ? shown.map(tfCard).join("") :
+        '<div class="panel pad m2" style="font-size:13px">' + (rows.length ? "No " + D.esc(word) + " calls today." :
+          D.esc(D.noteOf(raw) || "No picks to debate today.")) + "</div>";
+    };
+    document.getElementById("tfseg").addEventListener("click", (e) => {
+      const b = e.target.closest("button[data-v]");
+      if (!b) return;
+      pick = b.getAttribute("data-v");
+      document.querySelectorAll("#tfseg button").forEach((x) => x.classList.toggle("on", x === b));
+      draw();
+    });
+    const toggle = (cardEl) => {
+      const drop = cardEl.querySelector(".tf-drop");
+      const head = cardEl.querySelector(".tf-head");
+      const btn = cardEl.querySelector(".tf-chart");
+      const row = rows.find((r) => String(r.ticker || "").trim().toUpperCase() === cardEl.getAttribute("data-t"));
+      if (!drop || !row) return;
+      const open = drop.hasAttribute("hidden");
+      if (!open) {
+        drop.setAttribute("hidden", "");
+        drop.innerHTML = "";
+        head.setAttribute("aria-expanded", "false");
+        btn.textContent = "Chart";
+        cardEl.classList.remove("open");
+        return;
+      }
+      drop.innerHTML = D.pricePanel("Entry, stop, and target from the desk's levels. Prices in rupees.");
+      drop.removeAttribute("hidden");
+      head.setAttribute("aria-expanded", "true");
+      btn.textContent = "Hide chart";
+      cardEl.classList.add("open");
+      requestAnimationFrame(() => D.drawPriceChart(drop.querySelector("[data-px-panel]"), { ticker: row.ticker, lines: tfLines(row) }));
+    };
+    grid.addEventListener("click", (e) => {
+      if (e.target.closest("a")) return;
+      const hit = e.target.closest(".tf-head, .tf-chart");
+      if (!hit) return;
+      toggle(hit.closest(".tf-card"));
+    });
+    draw();
+  }
+
+  // Paper Test (feature.trading_floor_paper). Pretend rupees following the Buy calls.
+  function ptInr(v, signed) {
+    const n = D.num(v);
+    if (n == null) return D.na();
+    const abs = Math.abs(n).toLocaleString("en-IN", { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    const s = (n < 0 ? "−Rs " : (signed && n > 0 ? "+Rs " : "Rs ")) + abs;
+    if (!signed) return D.esc(s);
+    return '<span style="color:' + (n > 0 ? "#22C55E" : n < 0 ? "#EF4444" : "#E6EBF5") + '">' + D.esc(s) + "</span>";
+  }
+  function ptPct(v) {
+    const n = D.num(v);
+    if (n == null) return D.na();
+    const text = (n > 0 ? "+" : n < 0 ? "−" : "") + D.fmt(Math.abs(n), 2) + "%";
+    return '<span style="color:' + (n > 0 ? "#22C55E" : n < 0 ? "#EF4444" : "#E6EBF5") + '">' + D.esc(text) + "</span>";
+  }
+  function ptLines(row) {
+    const lines = [];
+    const add = (key, color, label) => {
+      const n = D.num(row[key]);
+      if (n != null) lines.push({ value: n, color: color, label: label + " " + D.fmt(n, 2) });
+    };
+    add("entry_price", "#F59E0B", "Bought");
+    add("stop", "#EF4444", "Stop");
+    add("target", "#22C55E", "Target");
+    add("exit_price", "#7C9CFF", "Sold");
+    return lines;
+  }
+  function renderPaperTest(ctx) {
+    const s = D.realRows(ctx.files["paper_summary.csv"])[0] || {};
+    const eq = D.realRows(ctx.files["paper_equity.csv"]).filter((r) => r.date);
+    const trades = D.realRows(ctx.files["paper_trades.csv"]).filter((r) => r.ticker);
+    const open = trades.filter((r) => r.status === "OPEN" || r.status === "PENDING");
+    const closed = trades.filter((r) => r.status === "CLOSED");
+    const other = trades.filter((r) => r.status === "SKIPPED" || r.status === "NOT FILLED");
+    const startCash = D.num(s.start_cash) || 1000000;
+    ctx.page.innerHTML =
+      '<div class="fakebar" role="note"><b>FAKE MONEY</b><span>Pretend ' + ptInr(startCash) +
+        " account. No real orders, no broker, no alerts.</span></div>" +
+      '<p class="cap"><a href="trading-floor.html">Back to the Trading Floor</a> · Started ' + D.esc(s.start_date || "–") +
+        " · Updated through " + D.esc(s.last_bar || "–") + " · Buys at the next day's open · " + D.esc(s.share_mode || "fractional") + " shares</p>" +
+      '<div class="cards pt-kpis" id="cards"></div>' +
+      '<div class="panel pad"><div class="ptitle">Fake account vs the Nifty 50</div><div class="psub">Both start at the same pretend cash on the start day. Daily closes.</div>' +
+        '<div class="chart-box"><canvas id="pteq"></canvas></div><p class="cap" id="ptcap"></p></div>' +
+      '<div class="panel" id="ptopen"></div><div class="panel" id="ptclosed"></div><div class="panel" id="ptother"></div>' +
+      '<p class="cap">Each new Buy call is bought at the next session\'s open with ' + ptInr(s.position_size || startCash * 0.1) +
+        " of pretend cash, at most " + D.esc(D.settingVal("trading_floor_paper.max_open") || "10") +
+        " stocks at once. It never borrows. It is sold when the day's low hits the stop, when the day's high hits the target, or at the close after " +
+        D.esc(D.settingVal("trading_floor_paper.time_stop_days") || "20") +
+        " trading days. If a day touches both the stop and the target, the stop counts. A gap past the stop or target sells at the open. Past pretend results do not promise future ones.</p>";
+    const winRate = D.num(s.win_rate_pct);
+    const winWords = winRate == null ? "No closed trades yet" : D.esc((s.wins || 0) + " won, " + (s.losses || 0) + " lost");
+    document.getElementById("cards").innerHTML =
+      card("Total value", ptInr(s.equity), "Cash " + ptInr(s.cash)) +
+      card("Total return", ptPct(s.total_return_pct), "Nifty 50 " + ptPct(s.nifty_return_pct)) +
+      card("Vs Nifty 50", ptPct(s.vs_nifty_pct), "Biggest drop " + ptPct(s.max_drawdown_pct)) +
+      card("Win rate", winRate == null ? D.na() : D.esc(D.fmt(winRate, 0) + "%"), winWords) +
+      card("Average gain", ptInr(s.avg_win, true), s.avg_win_pct ? ptPct(s.avg_win_pct) : "No gains yet") +
+      card("Average loss", ptInr(s.avg_loss, true), s.avg_loss_pct ? ptPct(s.avg_loss_pct) : "No losses yet") +
+      card("Open", D.esc(String(s.open_count || 0)), D.esc((s.pending_count || 0) + " waiting for the open")) +
+      card("Closed", D.esc(String(s.closed_count || 0)), "Closed P&L " + ptInr(s.total_pnl, true));
+    const about = document.getElementById("about");
+    const fb = ctx.page.querySelector(".fakebar");
+    if (fb && about) about.parentNode.insertBefore(fb, about);
+    D.destroyCharts();
+    const few = eq.length < 40 ? 3 : 0;
+    D.lineChart(document.getElementById("pteq"), eq.map((r) => r.date), [
+      { label: "Fake account", data: D.seriesNum(eq, "equity"), color: "#22C55E", spanGaps: true, pointRadius: few },
+      { label: "Nifty 50", data: D.seriesNum(eq, "nifty_equity"), color: "#7C9CFF", spanGaps: true, pointRadius: few },
+    ], { y: { ticks: { callback: (v) => "₹" + Number(v).toLocaleString("en-IN", { maximumFractionDigits: 0 }) } }, plugins: { barLabels: false } });
+    document.getElementById("ptcap").textContent = eq.length <= 1
+      ? "The test has just started. A new point is added after each main run."
+      : eq.length + " trading days so far.";
+    open.forEach((r) => { r._state = r.status === "PENDING" ? "Waiting for the next open" : "Open"; });
+    const WHY = {
+      STOP: "Hit the stop", STOP_GAP: "Opened under the stop", TARGET: "Hit the target",
+      TARGET_GAP: "Opened over the target", STOP_SAME_BAR: "Stop and target same day", TIME: "Time stop",
+    };
+    closed.forEach((r) => { r._why = WHY[r.exit_reason] || r.exit_reason || ""; });
+    D.drawTable(document.getElementById("ptopen"), {
+      title: "Open positions", sub: "Waiting rows are bought at the next session's open.",
+      rows: open, state: { sort: "signal_date", dir: "desc", page: 0 }, pageSize: 15, expandable: true, fit: true,
+      columns: [TK, T("_state", "State", "text"), T("pnl_pct", "Gain or loss %", "pct", { dec: 2, color: true }),
+        T("pnl", "Gain or loss", "money", { dec: 0, color: true }),
+        T("signal_date", "Called", "date"), T("entry_date", "Bought", "date"), T("entry_price", "Buy price", "num", { dec: 2 }),
+        T("shares", "Shares", "num", { dec: 4 }), T("stop", "Stop", "num", { dec: 2 }),
+        T("target", "Target", "num", { dec: 2 }), T("last_close", "Last close", "num", { dec: 2 }), T("days_held", "Days", "num", { dec: 0 })],
+      lines: ptLines, priceSub: "Buy price, stop, and target. Prices in rupees.",
+      empty: "No open positions yet. Buy calls wait for the next day's open.",
+    });
+    D.drawTable(document.getElementById("ptclosed"), {
+      title: "Closed trades", rows: closed, state: { sort: "exit_date", dir: "desc", page: 0 }, pageSize: 15, expandable: true, fit: true,
+      columns: [TK, T("pnl_pct", "Gain or loss %", "pct", { dec: 2, color: true }), T("_why", "Why it closed", "text"),
+        T("pnl", "Gain or loss", "money", { dec: 0, color: true }), T("entry_date", "Bought", "date"), T("entry_price", "Buy price", "num", { dec: 2 }),
+        T("exit_date", "Sold", "date"), T("exit_price", "Sell price", "num", { dec: 2 }), T("days_held", "Days", "num", { dec: 0 }),
+        T("exit_words", "In plain words", "text", { wrap: true })],
+      lines: ptLines, priceSub: "Buy price, stop, target, and sell price.",
+      empty: "No closed trades yet.",
+    });
+    D.drawTable(document.getElementById("ptother"), {
+      title: "Calls not bought", sub: "Skipped or not filled, with the reason.",
+      rows: other, state: { sort: "signal_date", dir: "desc", page: 0 }, pageSize: 10, expandable: false,
+      columns: [TK, T("signal_date", "Called", "date"), T("status", "Result", "text"), T("note", "Why", "text", { wrap: true })],
+      empty: "Every call so far was bought or is waiting.",
+    });
+  }
+
   // Plain-English "What this page does" boxes, one per page. Shown above the page by
   // Desk.boot. One switch turns them all off: feature.page_descriptions in config.json.
   // Numbers match config.json, setups.py, tables.py, and volume_scanner.py. Simple words, short sentences.
@@ -3322,6 +3567,18 @@
     leaders: { title: SCAN, note: LIQUID_LINE, lines: [
       "Stocks that are a READY or just broken out VCP, or a strict CANSLIM pass. One row per stock.",
       "The best names are on both. Use the On VCP and On CANSLIM filters to see only the stocks on both lists.",
+    ] },
+    tradingfloor: { title: "What this page does", lines: [
+      "A short desk debate about today's top picks from this desk's own scanners. The list starts with Buy setups, then adds stocks that are ready on two or more scanners.",
+      "News says why a stock may be moving. Scout checks volume against a normal day. Charts gives the entry, stop, and target the desk already worked out. Skeptic argues against the trade. Sentiment says whether the crowd is too hot.",
+      "Each of those five gives +1, 0, or -1. The Chief adds them up into Buy, Wait, or Skip, with one line saying why.",
+      "Use the Buy, Wait, and Skip buttons to filter. Read the lines that disagree. Tap a stock to see its chart. It is advice to help you think, not an order.",
+    ] },
+    papertest: { title: "What this page does", lines: [
+      "FAKE MONEY. A pretend account of Rs 10,00,000 that follows the Trading Floor's Buy calls, to see if they would have made or lost money.",
+      "Each new Buy call is bought at the next day's open with Rs 1,00,000. At most 10 stocks are held, and the account never borrows. A call is skipped if that stock is already owned or the cash is gone.",
+      "A position is sold when the day's low hits the stop, when the day's high hits the target, or after about 20 trading days.",
+      "The chart compares the pretend account with simply holding the Nifty 50 from the start day. The cards show cash, total value, win rate, and the average gain and loss. No real orders are placed.",
     ] },
     buysetups: { title: SCAN, note: LIQUID_LINE, lines: [
       "The main shortlist. A stock is listed when VCP, Box, Flag, Qullamaggie, Marios, Episodic Pivot (EP) or CANSLIM is ready or broke out today, price is above the 50-day and 200-day averages, and the stop is 8% or less away. Qullamaggie, Marios and EP names marked Too wide, skip are left out.",
@@ -3553,6 +3810,8 @@
     heatmaps: { files: ["heatmaps.csv"], render: renderHeatmaps },
     updates: { files: ["updates_log.csv", "freshness.csv", "backfill_progress.csv"], render: renderUpdates },
     buysetups: { files: ["buy_setups.csv", "backfill_progress.csv"], render: renderBuySetups },
+    tradingfloor: { files: ["trading_floor.csv"], render: renderTradingFloor },
+    papertest: { files: ["paper_summary.csv", "paper_equity.csv", "paper_trades.csv"], render: renderPaperTest },
     week52: { files: ["scanner_52w.csv", "highs_lows_history.csv"], render: renderWeek52 },
     highvol: { files: ["high_volume.csv"], optional: ["company_lines.csv"], render: renderHighVolume },
     gapup: { files: ["scanner_gap_up.csv"], render: renderGapUp },
