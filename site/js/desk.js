@@ -13,6 +13,8 @@
       ["FII and DII", "flows.html", "flows"],
       ["Top stocks", "top-stocks.html", "top"],
       ["Buy setups", "buy-setups.html", "buysetups"],
+      ["Trading Floor", "trading-floor.html", "tradingfloor"],
+      ["Paper Test", "paper-test.html", "papertest"],
       ["Stock scorecard", "scorecard.html", "scorecard"],
       ["Watchlist and portfolio", "watchlist.html", "watchlist"],
       ["Alerts", "alerts.html", "alerts"],
@@ -1304,7 +1306,7 @@
           backgroundColor: s.color,
           spanGaps: !!s.spanGaps,
           borderWidth: 2,
-          pointRadius: 0,
+          pointRadius: s.pointRadius || 0,
           tension: 0,
         })),
       },
@@ -3226,6 +3228,8 @@
     week52: "feature.scanner_52w",
     highvol: "feature.high_volume_scanner",
     buysetups: "feature.buy_setups",
+    tradingfloor: "feature.trading_floor",
+    papertest: "feature.trading_floor_paper",
     rotation: "feature.sector_rotation",
     calendar: "feature.earnings_calendar",
     heatmap: "feature.earnings_heatmap",
@@ -3262,6 +3266,10 @@
     const row = SETTINGS.find((r) => r.setting === key);
     if (!row) return true;
     return String(row.value).toLowerCase() !== "false";
+  }
+  function settingVal(key) {
+    const row = SETTINGS.find((r) => r.setting === key);
+    return row ? String(row.value) : "";
   }
   // The "What this page does" box. One plain-English card above the page,
   // outside #page so a filter redraw never wipes it. Off with feature.page_descriptions.
@@ -3330,7 +3338,7 @@
   window.Desk = {
     UP: UP, DN: DN, AM: AM, AC: AC, MU: MU, TX: TX, SPD: SPD,
     num: num, isBlank: isBlank, esc: esc, na: na, fmt: fmt, compact: compact,
-    realRows: realRows, alertDataRows: alertDataRows, quietMessage: quietMessage, showQuiet: showQuiet,
+    pricePanel: pricePanel, realRows: realRows, alertDataRows: alertDataRows, quietMessage: quietMessage, showQuiet: showQuiet,
     banner: banner, noteOf: noteOf, statusOf: statusOf, drawPriceChart: drawPriceChart,
     fillCompanyLine: fillCompanyLine, companyLineHtml: companyLineHtml,
     scoreHtml: scoreHtml, scoreFill: scoreFill, tickerHtml: tickerHtml, etfHtml: etfHtml, pctHtml: pctHtml, moneyHtml: moneyHtml,
@@ -3339,7 +3347,7 @@
     selectedMulti: selectedMulti, fieldVal: fieldVal,
     multiHtml: multiHtml, selectHtml: selectHtml, searchHtml: searchHtml, rangeHtml: rangeHtml,
     pairHtml: pairHtml, dateHtml: dateHtml, feedHtml: feedHtml, placeFeed: placeFeed,
-    featureOn: featureOn, aboutHtml: aboutHtml, marketWord: marketWord, marketColor: marketColor, monthLabel: monthLabel, dateTicks: dateTicks, ptsColor: ptsColor,
+    featureOn: featureOn, settingVal: settingVal, aboutHtml: aboutHtml, marketWord: marketWord, marketColor: marketColor, monthLabel: monthLabel, dateTicks: dateTicks, ptsColor: ptsColor,
     wireFilters: wireFilters, matchMulti: matchMulti, matchContains: matchContains,
     matchText: matchText, matchMin: matchMin,
     destroyCharts: destroyCharts, lineChart: lineChart, barChart: barChart, comboChart: comboChart, makeChart: makeChart,

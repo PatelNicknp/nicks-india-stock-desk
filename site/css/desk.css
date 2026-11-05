@@ -530,3 +530,48 @@ body.cv-lock .nav,body.cv-lock .hdr,body.cv-lock .scrim{visibility:hidden}
 .themerow .seg{display:grid;grid-template-columns:1fr 1fr;height:auto}
 .themerow .seg button{min-height:32px}
 .themerow .seg button[data-theme-pick="auto"]{grid-column:1 / -1;border-top:1px solid var(--line)}
+/* Trading Floor: one card per stock. Three columns on a wide screen, two on an iPad, one on a phone. */
+.tf-ctrls{margin:4px 0 14px}
+.cards.tf-kpis,.cards.pt-kpis{grid-template-columns:repeat(4,minmax(0,1fr))}
+.tf-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:12px;align-items:start}
+.tf-card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px 14px;min-width:0}
+.tf-card.open{grid-column:1/-1}
+.tf-head{display:flex;align-items:center;gap:10px;width:100%;background:none;border:0;padding:0;color:var(--text);cursor:pointer;text-align:left;font:inherit;min-height:44px}
+.tf-id{display:flex;align-items:baseline;gap:8px;min-width:0;flex:1}
+.tf-id .tk{font-size:16px;font-weight:700}
+.tf-co{color:var(--text2);font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.tf-verdict{flex:none;font-size:12px;font-weight:800;letter-spacing:.04em;padding:3px 9px;border-radius:5px;border:1px solid currentColor}
+.tf-verdict.buy{color:var(--green)}
+.tf-verdict.wait{color:var(--amber)}
+.tf-verdict.skip{color:var(--red)}
+.tf-total{flex:none;min-width:30px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums;color:var(--text)}
+.tf-sub{font-size:12px;color:var(--muted);margin:4px 0 8px;line-height:16px}
+.tf-role{display:grid;grid-template-columns:78px 28px minmax(0,1fr);gap:8px;align-items:start;padding:6px 0;border-top:1px solid var(--line);font-size:13px;line-height:18px}
+.tf-who{font-weight:700;color:var(--muted);font-size:12px;line-height:18px}
+.tf-say{color:var(--text2);overflow-wrap:anywhere}
+.tf-chief .tf-say{color:var(--text);font-weight:700}
+.tf-pts{display:inline-block;text-align:center;font-size:12px;font-weight:700;border-radius:4px;line-height:18px;background:var(--raise);color:var(--muted)}
+.tf-pts.pos{color:var(--green)}
+.tf-pts.neg{color:var(--red)}
+.tf-pts.tf-sum{color:var(--accent);font-size:11px}
+.tf-flag{display:inline-block;font-size:11px;font-weight:700;color:var(--red);border:1px solid var(--red);border-radius:4px;padding:0 5px;margin-left:4px;line-height:16px}
+.tf-src{font-size:12px;font-weight:700;margin-left:4px;white-space:nowrap}
+.tf-foot{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding-top:10px;border-top:1px solid var(--line)}
+.tf-chart{min-height:44px;padding:0 14px;background:var(--panel);border:1px solid var(--line2);border-radius:6px;color:var(--text);cursor:pointer;font:inherit;font-size:13px;font-weight:700}
+.tf-chart:hover{background:var(--raise)}
+.tf-drop{margin-top:12px}
+.tf-drop .panel{margin-bottom:0}
+.fakebar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;border:2px solid var(--amber);border-radius:8px;padding:10px 14px;margin:0 0 12px;background:var(--panel);color:var(--text2);font-size:13px;line-height:18px}
+.fakebar b{color:var(--amber);font-size:18px;letter-spacing:.08em;font-weight:800}
+@media (max-width:1100px){
+  .tf-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cards.tf-kpis,.cards.pt-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:699px){
+  .tf-grid{grid-template-columns:minmax(0,1fr);gap:12px}
+  .tf-card{padding:12px}
+  .tf-role{grid-template-columns:72px 26px minmax(0,1fr);gap:6px}
+  .tf-drop{margin-left:-12px;margin-right:-12px}
+  .tf-drop .panel.pad{padding:10px 8px}
+  .fakebar{padding:10px 12px}
+}

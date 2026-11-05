@@ -69,7 +69,9 @@
     "split_tech_fund": true,
     "chart_viewer": true,
     "light_mode": true,
-    "self_heal_keeper": true
+    "self_heal_keeper": true,
+    "trading_floor": true,
+    "trading_floor_paper": true
   },
   "vcp": {
     "_note": "VCP scanner. A stock is listed only when the trend template is 8 of 8, the same rule as the green VCP tag. Set show_weaker_trend to true to also list stocks with tightening pullbacks but a weaker trend, marked WATCHING (trend not 8/8).",
@@ -253,7 +255,7 @@
     "hold_level": "gap_day_low"
   },
   "scanner_groups": {
-    "_note": "Technical and Fundamental split (feature.split_tech_fund). With it on, the menu puts every screener page below under a Technical or a Fundamental heading, in the order listed here, and the Chart Viewer gets a Technical | Fundamental switch (chart_viewer.group_toggle) whose list picker, All technical stocks or All fundamental stocks list, and Why box show only that side. Each key is a page id (the name in chart-viewer.html?list=...): vcp (VCP), box (Box breakout), flag (Flag breakout), qullamaggie (Qullamaggie breakout), marios (Marios breakout), episodic (Episodic Pivot), gapup (Gap Up), week52 (52-week), breakouts (52-week breakouts), highvol (High volume), pullbacks (Pullbacks), trends (Trends), wheel (Liquid stocks), canslim (CANSLIM), leaders (Leaders), growth (Growth), quality (Quality), dividend (Dividend), divfund (Dividend fundamentals), scorecard (Stock scorecard), and top (Top stocks). The value is technical or fundamental; any other word leaves that page where it was and out of both. Trends, Dividend fundamentals, Stock scorecard and Top stocks are not on the Chart Viewer, so for them only the menu changes. Buy setups and Watchlist are in both sides of the Chart Viewer. Today, FII and DII, Buy setups, Watchlist, Alerts, Backtest, Earnings, Sentiment, Financials, Macro, and the market pages (Gainers and losers, Breadth, Sector performance, Heatmaps, under Market) are not screeners and stay outside both. With chart_viewer.group_toggle off, the split menu stays and only the Chart Viewer goes back to one list. Turn feature.split_tech_fund off for exactly the old menu and viewer. Nothing new is downloaded.",
+    "_note": "Technical and Fundamental split (feature.split_tech_fund). With it on, the menu puts every screener page below under a Technical or a Fundamental heading, in the order listed here, and the Chart Viewer gets a Technical | Fundamental switch (chart_viewer.group_toggle) whose list picker, All technical stocks or All fundamental stocks list, and Why box show only that side. Each key is a page id (the name in chart-viewer.html?list=...): vcp (VCP), box (Box breakout), flag (Flag breakout), qullamaggie (Qullamaggie breakout), marios (Marios breakout), episodic (Episodic Pivot), gapup (Gap Up), week52 (52-week), breakouts (52-week breakouts), highvol (High volume), pullbacks (Pullbacks), trends (Trends), wheel (Liquid stocks), canslim (CANSLIM), leaders (Leaders), growth (Growth), quality (Quality), dividend (Dividend), divfund (Dividend fundamentals), scorecard (Stock scorecard), and top (Top stocks). The value is technical or fundamental; any other word leaves that page where it was and out of both. Trends, Dividend fundamentals, Stock scorecard and Top stocks are not on the Chart Viewer, so for them only the menu changes. Buy setups and Watchlist are in both sides of the Chart Viewer. Today, FII and DII, Buy setups, Trading Floor, Paper Test, Watchlist, Alerts, Backtest, Earnings, Sentiment, Financials, Macro, and the market pages (Gainers and losers, Breadth, Sector performance, Heatmaps, under Market) are not screeners and stay outside both. With chart_viewer.group_toggle off, the split menu stays and only the Chart Viewer goes back to one list. Turn feature.split_tech_fund off for exactly the old menu and viewer. Nothing new is downloaded.",
     "vcp": "technical",
     "box": "technical",
     "flag": "technical",
@@ -381,6 +383,29 @@
     "market_filter": true,
     "chart_setups_only": true,
     "full_rules_at_coverage_pct": 80
+  },
+  "trading_floor_paper": {
+    "_note": "Paper test of the Trading Floor's Buy calls with FAKE MONEY (paper-test.html, features.trading_floor_paper). It starts with start_cash pretend rupees (Rs 10,00,000) on the first main run and only goes forward. Nothing is replayed. Each Buy call waits for the next session and is bought at that session's open from the NSE bhavcopy. A call is skipped when the stock is already held (skip_if_held), when max_open positions are open or waiting, or when free pretend cash is under one position. It never borrows. Each position is position_pct percent of start_cash (Rs 1,00,000), in fractional shares rounded to share_decimals. With skip_gap_past_plan on, a stock that opens at or under its stop or at or over the target is not bought. Stop and target are frozen at the call. Every daily bar from the entry day on: an open at or under the stop sells at the open; an open at or over the target sells at the open; a day whose high and low touch both counts as the stop; else the stop or the target; after time_stop_days trading days (the entry day is day 1) it sells at the close. The account is compared with the Nifty 50. State is in data/paper_trades.csv, data/paper_equity.csv, and data/paper_summary.csv. The main run (3:00 AM PT, after the bhavcopy) and the late bhavcopy retry change them. The morning run does not. Running the same day twice changes nothing. No real orders, no broker, no alerts, no new downloads. Rules: docs/trading_floor_paper_rules.md.",
+    "start_cash": 1000000.0,
+    "position_pct": 10.0,
+    "max_open": 10,
+    "time_stop_days": 20,
+    "fractional_shares": true,
+    "share_decimals": 4,
+    "skip_if_held": true,
+    "skip_gap_past_plan": true
+  },
+  "trading_floor": {
+    "_note": "Trading Floor page (trading-floor.html, features.trading_floor). Six desk roles debate today's top picks from this desk's own scanners: the Buy setups list in its own order (BUY and Not scored yet), then stocks READY or BROKEN OUT today on at least fill_min_scanners pattern scanners, max_stocks in all. News, Scout, Charts, Skeptic, and Sentiment each give +1, 0, or -1 and the Chief adds them: a Charts veto is Skip; a total of verdict.buy_min_total or more with no Skeptic hard no is Buy; verdict.wait_min_total or more is Wait; under that is Skip. News reuses saved headlines. A market headline counts when it names the stock. Only picks with none get one free Google News RSS request each, on the main run, once a day, cached in cache/trading_floor_news.csv. FII and DII cash already on the desk is shown with the call and does not add a point. Volume uses the bhavcopy bars already saved. No API key and no new Yahoo volume. It runs on the main update after the NSE bhavcopy is in (3:00 AM PT). Advice only: no orders, no broker, no alerts. Rules: docs/trading_floor_rules.md.",
+    "max_stocks": 15,
+    "fill_from_scanners": true,
+    "fill_min_scanners": 2,
+    "news": {"on": true, "fresh_days": 3, "max_headlines": 5, "name_match": true, "google_news": true, "google_per_second": 1, "google_timeout_s": 15, "keep_days": 14},
+    "scout": {"on": true, "avg_days": 50, "hot_ratio": 1.5, "thin_ratio": 0.7, "streak_check": true, "streak_days": 3},
+    "charts": {"on": true, "min_reward_risk": 2.0, "max_risk_pct": 8.0, "veto_below_stop": true},
+    "skeptic": {"on": true, "no_news_check": true, "thin_volume_check": true, "thin_volume_ratio": 0.8, "extended_ma_check": true, "max_above_ma20_pct": 10.0, "max_above_ma50_pct": 25.0, "extended_entry_check": true, "max_above_entry_pct": 5.0, "market_check": true, "earnings_check": true, "earnings_days": 7, "hard_no_objections": 3, "hard_no_above_entry_pct": 10.0},
+    "sentiment": {"on": true, "run_check": true, "run_days": 5, "run_pct": 15.0, "ma10_check": true, "max_above_ma10_pct": 8.0, "ma20_check": true, "max_above_ma20_pct": 12.0, "gap_check": true, "gap_pct": 5.0, "streak_check": true, "up_streak_days": 6, "buzz_check": true, "buzz_headlines": 5, "hot_flags": 2},
+    "verdict": {"buy_min_total": 2, "wait_min_total": 0}
   },
   "sector_rotation": {
     "benchmark": "^NSEI",
