@@ -92,6 +92,20 @@ def test_help_row():
     assert "Chart Viewer" in set(saved["topic"])
 
 
+def test_pages_publish_trends_csv_where_the_viewer_fetches_it():
+    yml = _read(".github", "workflows", "pages.yml")
+    assert "cp -a data/. _site/data/" in yml
+    assert "test -s _site/data/trends.csv" in yml
+    assert "data/**" in yml
+    js = _read("site", "js", "desk.js")
+    start = js.index("function csvUrl")
+    block = js[start:js.index("function loadCsv", start)]
+    assert 'new URL("data/" + name, location.href)' in block
+    assert "raw.githubusercontent.com" not in block
+    assert os.path.exists(os.path.join(ROOT, "data", "trends.csv"))
+    assert os.path.getsize(os.path.join(ROOT, "data", "trends.csv")) > 0
+
+
 def test_trends_is_a_technical_chart_list():
     cfg = _cfg()
     assert cfg["chart_viewer"]["include_trends"] is True

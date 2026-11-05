@@ -248,8 +248,11 @@
   };
 
   function csvUrl(name) {
+    // github.io publishes site/ as the root and data/ beside the html, so
+    // chart-viewer.html and data/trends.csv share one origin. Locally the html
+    // lives in site/, one folder below the repo's data/.
     if (location.hostname.endsWith("github.io")) {
-      return "https://raw.githubusercontent.com/PatelNicknp/nicks-india-stock-desk/main/data/" + name;
+      return new URL("data/" + name, location.href).href;
     }
     return new URL("../data/" + name, location.href).href;
   }

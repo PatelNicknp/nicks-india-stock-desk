@@ -1,13 +1,14 @@
 name: Deploy site
 
-# The site reads data/*.csv from raw.githubusercontent.com on github.io, so the
-# Data commits show up without a Pages rebuild. This workflow publishes
-# site/ when the pages themselves change.
+# The published site is the html in site/ plus data/ next to it. On github.io the
+# pages fetch data/<file> from that same site, including data/trends.csv. A data
+# commit publishes again so the Chart Viewer list stays current.
 on:
   push:
     branches: [main]
     paths:
       - "site/**"
+      - "data/**"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -28,8 +29,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Put the pages and the data files in one folder
+        run: |
+          rm -rf _site
+          mkdir -p _site/data
+          cp -a site/. _site/
+          cp -a data/. _site/data/
+          test -s _site/data/trends.csv
+          test -s _site/data/meta.json
+          test -f _site/chart-viewer.html
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: site
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v4
