@@ -1,13 +1,12 @@
 trade_id,ticker,company,signal_date,signal_total,status,entry_date,entry_price,shares,cost,stop,target,last_date,last_close,days_held,exit_date,exit_price,exit_reason,exit_words,pnl,pnl_pct,market_value,note
-2026-11-04-HEALTHIETF,HEALTHIETF,ICICI Prudential Mutual Fund,2026-11-04,4.0,PENDING,,,,,160.85,207.55,,,,,,,,,,,Buys at the next session's open.
-2026-11-04-MOREALTY,MOREALTY,Motilal Oswal Mutual Fund-Perm,2026-11-04,3.0,PENDING,,,,,79.43,104.21,,,,,,,,,,,Buys at the next session's open.
 2026-11-04-INDGN,INDGN,Indegene Ltd.,2026-11-04,3.0,PENDING,,,,,576.04,743.28,,,,,,,,,,,Buys at the next session's open.
 2026-11-04-LT,LT,Larsen & Toubro Ltd.,2026-11-04,3.0,PENDING,,,,,3687.91,4758.6,,,,,,,,,,,Buys at the next session's open.
+2026-11-04-MARKOLINES,MARKOLINES,Markolines Pavement Technologies Limited,2026-11-04,3.0,PENDING,,,,,167.11,215.63,,,,,,,,,,,Buys at the next session's open.
+2026-11-04-PETRONET,PETRONET,Petronet LNG Ltd.,2026-11-04,3.0,PENDING,,,,,284.95,373.2,,,,,,,,,,,Buys at the next session's open.
 2026-11-04-ABBOTINDIA,ABBOTINDIA,Abbott India Ltd.,2026-11-04,2.0,PENDING,,,,,24961.2,32544.0,,,,,,,,,,,Buys at the next session's open.
 2026-11-04-LALPATHLAB,LALPATHLAB,Dr. Lal Path Labs Ltd.,2026-11-04,2.0,PENDING,,,,,1849.49,2435.28,,,,,,,,,,,Buys at the next session's open.
 2026-11-04-TITAN,TITAN,Titan Company Ltd.,2026-11-04,2.0,PENDING,,,,,4298.27,5705.28,,,,,,,,,,,Buys at the next session's open.
-2026-11-04-PHARMABEES,PHARMABEES,Nippon India Mutual Fund - Per,2026-11-04,2.0,PENDING,,,,,26.15,33.74,,,,,,,,,,,Buys at the next session's open.
 2026-11-04-TFCILTD,TFCILTD,Tourism Finance Corporation of India Limited,2026-11-04,2.0,PENDING,,,,,150.56,194.27,,,,,,,,,,,Buys at the next session's open.
 2026-11-04-TIPSMUSIC,TIPSMUSIC,Tips Music Ltd.,2026-11-04,2.0,PENDING,,,,,738.33,952.68,,,,,,,,,,,Buys at the next session's open.
-2026-11-04-JUNIORBEES,JUNIORBEES,NIPPON INDIA ETF JUNIOR BEES,2026-11-04,2.0,SKIPPED,,,,,720.95,930.25,,,,,,,,,,,No free slot (max 10 open).
-2026-11-04-NEXT50,NEXT50,Mirae Asset Mutual Fund,2026-11-04,2.0,SKIPPED,,,,,690.81,891.37,,,,,,,,,,,No free slot (max 10 open).
+2026-11-04-HAL,HAL,Hindustan Aeronautics Ltd.,2026-11-04,2.0,PENDING,,,,,4723.56,6094.92,,,,,,,,,,,Buys at the next session's open.
+2026-11-04-SOUTHBANK,SOUTHBANK,South Indian Bank Ltd.,2026-11-04,2.0,SKIPPED,,,,,52.61,67.88,,,,,,,,,,,No free slot (max 10 open).

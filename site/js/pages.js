@@ -3573,6 +3573,7 @@
       "News says why a stock may be moving. Scout checks volume against a normal day. Charts gives the entry, stop, and target the desk already worked out. Skeptic argues against the trade. Sentiment says whether the crowd is too hot.",
       "Each of those five gives +1, 0, or -1. The Chief adds them up into Buy, Wait, or Skip, with one line saying why.",
       "Use the Buy, Wait, and Skip buttons to filter. Read the lines that disagree. Tap a stock to see its chart. It is advice to help you think, not an order.",
+      "Only individual stocks are included. ETFs, index funds, and other fund units are left out, and the next stock takes that slot.",
     ] },
     papertest: { title: "What this page does", lines: [
       "FAKE MONEY. A pretend account of Rs 10,00,000 that follows the Trading Floor's Buy calls, to see if they would have made or lost money.",

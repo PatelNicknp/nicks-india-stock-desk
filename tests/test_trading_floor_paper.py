@@ -287,6 +287,25 @@ def test_page_settings_help_and_wiring():
     assert "Rs 10,00,000" in topics["Paper Test"] and "Nifty 50" in topics["Paper Test"]
 
 
+def test_pending_etf_is_cleared_and_the_stock_takes_the_slot():
+    bars = _bars({"AAA": {}, "HEALTHIETF": {}})
+    old = _floor({"ticker": "HEALTHIETF", "company": "ICICI Prudential Mutual Fund", "total": 5},
+                 {"ticker": "AAA", "company": "Alpha", "total": 2})
+    st = tp.update(tp.empty_state(), _cut(bars, D0), old, D0, P, stocks_only=False)
+    assert _trade(st, "HEALTHIETF")["status"] == "PENDING"
+    fresh = _floor({"ticker": "AAA", "company": "Alpha", "total": 2})
+    again = tp.update(st, _cut(bars, D0), fresh, D0, P, stocks_only=True)
+    assert "HEALTHIETF" not in set(again["trades"]["ticker"])
+    assert _trade(again, "AAA")["status"] == "PENDING"
+    assert again["summary"]["cash"] == 1000000.0 and again["summary"]["equity"] == 1000000.0
+    assert again["summary"]["pending_count"] == 1 and again["summary"]["open_count"] == 0
+    # A fund that is still on the floor is not bought, and it does not use a slot.
+    only = tp.update(tp.empty_state(), _cut(bars, D0), old.iloc[:1], D0, P, stocks_only=True)
+    row = _trade(only, "HEALTHIETF")
+    assert row["status"] == "SKIPPED" and row["note"] == "Not an individual stock."
+    assert only["summary"]["cash"] == 1000000.0 and only["summary"]["pending_count"] == 0
+
+
 def test_paper_module_makes_no_requests():
     src = open(os.path.join(ROOT, "trading_floor_paper.py"), encoding="utf-8").read()
     for bad in ("requests", "urllib", "yfinance", "http", "netutil", "datetime.now", "date.today", "time.time"):

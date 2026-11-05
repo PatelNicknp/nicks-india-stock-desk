@@ -21,6 +21,8 @@ import os
 import numpy as np
 import pandas as pd
 
+import trading_floor
+
 DEFAULTS = {
     "start_cash": 1000000.0,
     "position_pct": 10.0,
@@ -210,7 +212,22 @@ def step_day(trades, cash, day, bars, p):
     return cash
 
 
-def add_signals(trades, cash, day, floor, p):
+def purge_unfilled_funds(trades, stocks_only=True):
+    """Drop pending and skipped ETF or fund orders. Filled trades stay. Returns (trades, dropped_pending)."""
+    if not stocks_only:
+        return trades, False
+    kept = []
+    dropped_pending = False
+    for t in trades:
+        if t.get("status") in ("PENDING", "SKIPPED") and trading_floor.is_non_stock(t.get("ticker"), _txt(t.get("company")), stocks_only=True):
+            if t.get("status") == "PENDING":
+                dropped_pending = True
+            continue
+        kept.append(t)
+    return kept, dropped_pending
+
+
+def add_signals(trades, cash, day, floor, p, stocks_only=True):
     """New BUY calls from the Trading Floor of day `day` become PENDING (or SKIPPED with the reason)."""
     if floor is None or len(floor) == 0 or "verdict" not in floor.columns:
         return
@@ -233,7 +250,9 @@ def add_signals(trades, cash, day, floor, p):
         t.update({"trade_id": tid, "ticker": tk, "company": _txt(r.get("company")), "signal_date": day,
                   "signal_total": _num(r.get("total")), "stop": stop, "target": target, "note": ""})
         reason = ""
-        if stop is None or target is None or not stop < target:
+        if stocks_only and trading_floor.is_non_stock(tk, _txt(r.get("company")), stocks_only=True):
+            reason = "Not an individual stock."
+        elif stop is None or target is None or not stop < target:
             reason = "No usable stop and target."
         elif p.get("skip_if_held", True) and tk in held:
             reason = "Already held."
@@ -282,7 +301,7 @@ def stats(trades, equity, p):
 
 
 # ---------------------------------------------------------------- the daily update
-def update(state, bars, floor, asof, p, bench="^NSEI", asof_final=True):
+def update(state, bars, floor, asof, p, bench="^NSEI", asof_final=True, stocks_only=True):
     """Bring the paper test up to `asof`. bars: {"open","high","low","close": wide frames}.
     The first call starts the test on `asof` (no backfill). Returns the new state.
     The benchmark is the Nifty 50 (^NSEI). asof_final=False means the `asof` bar is still
@@ -315,6 +334,10 @@ def update(state, bars, floor, asof, p, bench="^NSEI", asof_final=True):
     for t in trades:
         for k in ("stop", "target", "entry_price", "shares"):
             t[k] = _num(t.get(k))
+    trades, dropped_pending = purge_unfilled_funds(trades, stocks_only)
+    if dropped_pending:
+        # The next individual stocks can take the freed slots on this same day.
+        summ["last_signal_date"] = ""
     equity = state["equity"].copy() if len(state["equity"]) else pd.DataFrame(columns=EQUITY_COLS)
     start = _txt(summ.get("start_date"))
     cash = _num(summ.get("cash"))
@@ -348,7 +371,7 @@ def update(state, bars, floor, asof, p, bench="^NSEI", asof_final=True):
         eqv = pd.to_numeric(equity["equity"], errors="coerce")
         equity["drawdown_pct"] = ((eqv / eqv.cummax() - 1.0) * 100.0).round(2)
     if _txt(summ.get("last_signal_date")) != asof and last_bar == asof:
-        add_signals(trades, cash, asof, floor, p)
+        add_signals(trades, cash, asof, floor, p, stocks_only=stocks_only)
         summ["last_signal_date"] = asof
     st = stats(trades, equity, p)
     invested = sum((_num(t.get("market_value")) or 0) for t in trades if t["status"] == "OPEN")
