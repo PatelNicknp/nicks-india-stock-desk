@@ -168,6 +168,13 @@ def test_rs_line_math():
     assert "RS line: stock vs NIFTY 50." in desk
     assert "\u2014" not in desk[desk.index("RS line: stock vs NIFTY 50."):desk.index("RS line: stock vs NIFTY 50.") + 220]
     assert 'chip("rsline", "RS line"' in desk
+    assert 'priceScaleId: ""' in desk
+    assert "below the candles and above the volume" in desk
+    help = dict(tables.help_rows())["Chart Viewer"]
+    assert "below the candles and above the volume" in help
+    assert "hidden scale" in help
+    assert "\u2014" not in help
+    assert "small pane" not in _cfg()["chart_viewer"]["_note"]
     assert "chart_viewer.rs_line" in _read("tables.py")
 
 
