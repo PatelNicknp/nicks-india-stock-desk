@@ -17,7 +17,7 @@ import tables  # noqa: E402
 
 EXPECTED = {
     "list_picker": True, "include_watching": True, "include_closed": False, "include_buy_setups": True,
-    "include_watchlist": True, "include_gap_up": True, "scanner_links": True, "fullscreen": True, "native_fullscreen_ios": False,
+    "include_watchlist": True, "include_gap_up": True, "include_trends": True, "scanner_links": True, "fullscreen": True, "native_fullscreen_ios": False,
     "swipe": True, "swipe_right_is_next": True, "flip_toggle": True, "chart_touch_pan": True, "drag_mode_toggle": True,
     "swipe_min_px": 80, "swipe_max_ms": 300, "swipe_ratio": 1.5,
     "arrows": True, "keyboard": True, "counter": True, "preload_next": True, "ma_chips": True,
@@ -92,6 +92,21 @@ def test_help_row():
     assert "Chart Viewer" in set(saved["topic"])
 
 
+def test_trends_is_a_technical_chart_list():
+    cfg = _cfg()
+    assert cfg["chart_viewer"]["include_trends"] is True
+    assert cfg["scanner_groups"]["trends"] == "technical"
+    note = cfg["scanner_groups"]["_note"]
+    assert "Trends, Dividend fundamentals" not in note
+    assert "Dividend fundamentals, Stock scorecard and Top stocks are not on the Chart Viewer" in note
+    desk = _read("site", "js", "desk.js")
+    assert 'id: "trends"' in desk and 'file: "trends.csv"' in desk and 'opt: "include_trends"' in desk
+    assert 'case "trend"' in desk and "Above the 20, 50, 100, and 200-day averages" in desk
+    text = dict(tables.help_rows())["Chart Viewer"]
+    assert "chart_viewer.include_trends" in text and "Trends" in text
+    assert "\u2014" not in text
+
+
 def test_page_list_menu_and_description():
     assert ("chart-viewer.html", "chartviewer", "Chart Viewer") in build_pages.PAGES
     assert os.path.exists(os.path.join(ROOT, "site", "chart-viewer.html"))
@@ -111,7 +126,7 @@ def test_every_scanner_is_a_source():
     block = desk[start:desk.index("const CV_MAS", start)]
     for f in ("buy_setups.csv", "scanner_vcp.csv", "scanner_canslim.csv", "scanner_box.csv", "scanner_flag.csv",
               "scanner_qullamaggie.csv", "scanner_marios.csv", "scanner_episodic_pivot.csv", "scanner_gap_up.csv", "scanner_leaders.csv",
-              "scanner_52w.csv", "breakouts.csv", "high_volume.csv", "pullbacks.csv", "scanner_growth.csv",
+              "scanner_52w.csv", "breakouts.csv", "high_volume.csv", "pullbacks.csv", "trends.csv", "scanner_growth.csv",
               "scanner_quality.csv", "scanner_dividend.csv", "scanner_wheel.csv", "watchlist.csv"):
         assert '"' + f + '"' in block, f
         assert os.path.exists(os.path.join(ROOT, "data", f)), f

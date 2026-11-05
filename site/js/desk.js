@@ -2002,6 +2002,7 @@
   // Quality, Dividend, Liquid stocks and Pullbacks count rows that pass. High volume counts
   // the rows its page lists by default. 52-week counts a new high, a new low, or near the high.
   // Gap Up counts every stock still holding its gap (chart_viewer.include_gap_up).
+  // Trends counts stocks above the 20, 50, 100, and 200-day averages (chart_viewer.include_trends).
   // Buy setups and the Watchlist are shown in the reason box but do not add to the count.
   const CV_WATCHING = ["WATCHING", "DELAYED WATCH"];
   const CV_SOURCES = [
@@ -2018,6 +2019,7 @@
     { id: "breakouts", label: "52-week breakouts", short: "Breakouts", file: "breakouts.csv", href: "breakouts.html", kind: "brk" },
     { id: "highvol", label: "High volume", short: "High volume", file: "high_volume.csv", href: "high-volume.html", kind: "hv" },
     { id: "pullbacks", label: "Pullbacks", short: "Pullbacks", file: "pullbacks.csv", href: "pullbacks.html", kind: "passes", word: "PULLBACK" },
+    { id: "trends", label: "Trends", short: "Trends", file: "trends.csv", href: "trends.html", kind: "trend", opt: "include_trends" },
     { id: "growth", label: "Growth", short: "Growth", file: "scanner_growth.csv", href: "growth.html", kind: "passes", word: "PASSES" },
     { id: "quality", label: "Quality", short: "Quality", file: "scanner_quality.csv", href: "quality.html", kind: "passes", word: "PASSES" },
     { id: "dividend", label: "Dividend", short: "Dividend", file: "scanner_dividend.csv", href: "dividend.html", kind: "passes", word: "PASSES" },
@@ -2035,7 +2037,7 @@
   ];
   // Same keys and defaults as the US desk.
   const CV_DEFAULTS = {
-    list_picker: true, include_watching: true, include_closed: false, include_buy_setups: true, include_watchlist: true, include_gap_up: true,
+    list_picker: true, include_watching: true, include_closed: false, include_buy_setups: true, include_watchlist: true, include_gap_up: true, include_trends: true,
     scanner_links: true, fullscreen: true, native_fullscreen_ios: false, swipe: true, swipe_right_is_next: true, flip_toggle: true,
     chart_touch_pan: true, drag_mode_toggle: true, swipe_min_px: 80, swipe_max_ms: 300, swipe_ratio: 1.5,
     arrows: true, keyboard: true, counter: true, preload_next: true,
@@ -2115,6 +2117,13 @@
       case "passes":
         if (!cvYes(r.passes)) return null;
         return { status: src.word, reason: r.why || "", strength: null };
+      case "trend": {
+        if (String(r.trend_label || "").trim() !== "Uptrend") return null;
+        const align = String(r.sma_alignment || "").replace(/\s+/g, " ").trim();
+        const reason = align ? "Above the 20, 50, 100, and 200-day averages (" + align + ")." :
+          "Above the 20, 50, 100, and 200-day averages.";
+        return { status: "Uptrend", reason: reason, strength: null };
+      }
       case "watch":
         return { status: "WATCHLIST", reason: "On your watchlist." + (r.timing ? " Trend: " + r.timing + "." : ""), strength: null };
       default:
@@ -2187,9 +2196,9 @@
   function cvRead(key) { try { return JSON.parse(localStorage.getItem(key) || "null"); } catch (e) { return null; } }
   function cvStatusColor(s) {
     const t = String(s || "");
-    if (/BROKEN OUT|NEW HIGH|EP TODAY|UP DAY|GAP UP|GAP HOLDING/.test(t)) return UP;
+    if (/BROKEN OUT|NEW HIGH|EP TODAY|UP DAY|GAP UP|GAP HOLDING|UPTREND/.test(t)) return UP;
     if (/READY|NEAR|HIGH ON VOLUME|PULLBACK|WATCHING|SELL PART/.test(t)) return AM;
-    if (/NEW LOW|DOWN DAY/.test(t)) return DN;
+    if (/NEW LOW|DOWN DAY|DOWNTREND/.test(t)) return DN;
     if (/IN TRADE|PASSES|WATCHLIST/.test(t)) return AC;
     return MU;
   }

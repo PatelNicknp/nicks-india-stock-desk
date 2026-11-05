@@ -89,7 +89,7 @@ def test_every_chart_viewer_scanner_has_a_group():
     tech = [i for i in ids if groups[i] == "technical"]
     fund = [i for i in ids if groups[i] == "fundamental"]
     assert fund == ["canslim", "growth", "quality", "dividend", "leaders"] or set(fund) == {"canslim", "leaders", "growth", "quality", "dividend"}
-    assert {"vcp", "box", "flag", "qullamaggie", "marios", "episodic", "gapup", "week52", "breakouts", "highvol", "pullbacks", "wheel"} == set(tech)
+    assert {"vcp", "box", "flag", "qullamaggie", "marios", "episodic", "gapup", "week52", "breakouts", "highvol", "pullbacks", "trends", "wheel"} == set(tech)
 
 
 def test_menu_split_code():
