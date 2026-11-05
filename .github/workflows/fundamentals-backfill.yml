@@ -19,6 +19,9 @@ concurrency:
 jobs:
   backfill:
     runs-on: ubuntu-latest
+    outputs:
+      data_pushed: ${{ steps.marked.outputs.data_pushed }}
+      publish_sha: ${{ steps.marked.outputs.publish_sha }}
     # 18 minutes of downloads at most, then a short rebuild that has its own limit.
     timeout-minutes: 35
     steps:
@@ -32,6 +35,7 @@ jobs:
       - name: Download the next batch
         run: python fundamentals_backfill.py
       - name: Save the batch
+        id: save
         run: |
           git config user.name "india-stock-desk-bot"
           git config user.email "india-stock-desk-bot@users.noreply.github.com"
@@ -51,7 +55,7 @@ jobs:
           fi
           git commit -m "Backfill financials and shareholding $(date -u +%Y-%m-%dT%H:%MZ)"
           for i in 1 2 3 4; do
-            git pull --rebase origin "${GITHUB_REF_NAME}" && git push && break
+            git pull --rebase origin "${GITHUB_REF_NAME}" && git push && bash scripts/mark_pages_publish.sh && break
             sleep $((i * 5))
           done
       # Light rebuild of the scored pages, so Buy setups, CANSLIM, and the score
@@ -66,6 +70,7 @@ jobs:
         timeout-minutes: 10
         run: python stock_desk.py --rescore --after-backfill
       - name: Save the rebuilt pages
+        id: resave
         if: steps.rebuild.outcome == 'success'
         continue-on-error: true
         timeout-minutes: 4
@@ -78,7 +83,7 @@ jobs:
           git commit -m "Rescore pages from saved financials $(date -u +%Y-%m-%dT%H:%MZ)"
           for i in 1 2 3 4; do
             if git pull --rebase origin "${GITHUB_REF_NAME}"; then
-              git push && exit 0
+              git push && bash scripts/mark_pages_publish.sh && exit 0
             else
               git rebase --abort || true
             fi
@@ -86,3 +91,23 @@ jobs:
           done
           echo "The rebuilt pages could not be saved this time. The next run rebuilds them."
           exit 0
+      - name: Pass a data commit to the live site
+        id: marked
+        if: always()
+        run: |
+          if [ -f pages_publish.env ]; then
+            cat pages_publish.env >> "$GITHUB_OUTPUT"
+          fi
+
+  # The pushes above use the Actions token, so they do not start Deploy site.
+  # Call it once when either commit changed data/ or site/. The later commit wins.
+  publish:
+    needs: backfill
+    if: needs.backfill.outputs.data_pushed == 'true'
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/pages.yml
+    with:
+      ref: ${{ needs.backfill.outputs.publish_sha }}
