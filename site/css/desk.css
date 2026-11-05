@@ -592,6 +592,28 @@ body.cv-lock .nav,body.cv-lock .hdr,body.cv-lock .scrim{visibility:hidden}
   .tf-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .cards.tf-kpis,.cards.pt-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+/* Shareholding on the stock scorecard and, when the chip is open, under the Chart Viewer chips. */
+.sh-box{margin-top:12px;background:var(--panel);border:1px solid var(--line3);border-radius:10px;padding:10px 12px;min-width:0;max-width:100%}
+.sh-head{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;justify-content:space-between;font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px}
+.sh-asof{font-weight:400;color:var(--muted);font-size:12px}
+.sh-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px 12px}
+.sh-cell{min-width:0}
+.sh-cell .l{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.sh-cell .v{font-size:18px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--text);line-height:22px;overflow-wrap:anywhere}
+.sh-cell .s{font-size:12px;line-height:16px;margin-top:2px;overflow-wrap:anywhere}
+.sh-up{color:var(--green);font-weight:700}
+.sh-dn{color:var(--red);font-weight:700}
+.sh-na{color:var(--muted)}
+.sh-miss{font-size:13px;line-height:18px;color:var(--muted);overflow-wrap:anywhere}
+.cv-hold{flex:none;margin:0 8px 6px;min-width:0;max-width:calc(100% - 16px)}
+.cv-hold[hidden]{display:none}
+.cv-hold .sh-box{margin-top:0;padding:8px 10px}
+.cv-hold .sh-cell .v{font-size:16px;line-height:20px}
+@media (max-width:699px){
+  .sh-row{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 10px}
+  .sh-cell .v{font-size:16px;line-height:20px}
+  .sh-box{padding:10px}
+}
 @media (max-width:699px){
   .tf-grid{grid-template-columns:minmax(0,1fr);gap:12px}
   .tf-card{padding:12px}
