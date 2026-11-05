@@ -2709,19 +2709,20 @@
         s.setData(data);
         st.mas[d.id] = s;
       });
-      // RS line in its own pane, directly under the price. Volume stays below that.
-      // The line is the same in Candles and Bars. Daily and Weekly both come from these bars.
-      let nextPane = 1;
+      // RS line overlaid in the price pane, below the candles and above the volume.
+      // Its own hidden scale (priceScaleId "") so the ratio does not move the price.
+      // Same line for Candles and Bars, Daily and Weekly.
       st.rsCount = 0;
       if (rsLineOn && window.rsLine && (st.nifty || []).length) {
         const line = window.rsLine.build(daily, st.nifty, { weekly: weekly });
         st.rsCount = line.points.length;
         if (line.points.length) {
           st.rs = chart.addSeries(LC.LineSeries, {
-            color: "#7C9CFF", lineWidth: 1, priceLineVisible: false, lastValueVisible: false,
-            crosshairMarkerVisible: true, title: "RS line",
+            color: "#7C9CFF", lineWidth: 2, priceLineVisible: false, lastValueVisible: false,
+            crosshairMarkerVisible: false, title: "",
             priceFormat: { type: "price", precision: 3, minMove: 0.001 },
-          }, nextPane);
+            priceScaleId: "",
+          }, 0);
           st.rs.setData(line.points.map((p) => ({ time: p.time, value: p.value })));
           if (line.markers.length && LC.createSeriesMarkers) {
             try {
@@ -2731,26 +2732,26 @@
               })));
             } catch (e) { /* the line still shows if a dot cannot be drawn */ }
           }
-          nextPane += 1;
         }
       }
       if (volOn) {
-        st.vol = chart.addSeries(LC.HistogramSeries, { priceFormat: { type: "volume" }, priceLineVisible: false, lastValueVisible: false }, nextPane);
+        st.vol = chart.addSeries(LC.HistogramSeries, { priceFormat: { type: "volume" }, priceLineVisible: false, lastValueVisible: false }, 1);
         st.vol.setData(bars.filter((b) => b.v != null).map((b) => ({
           time: b.date, value: b.v, color: b.c >= b.o ? "rgba(34,197,94,.45)" : "rgba(239,68,68,.45)",
         })));
       }
       const panes = chart.panes();
-      if (panes[0]) panes[0].setStretchFactor(st.rs && volOn ? 5 : 4);
-      let paneAt = 1;
-      if (st.rs && panes[paneAt]) {
-        panes[paneAt].setStretchFactor(1.15);
+      if (panes[0]) panes[0].setStretchFactor(4);
+      if (st.rs && panes[0]) {
         try {
-          panes[paneAt].priceScale("right").applyOptions({ scaleMargins: { top: 0.22, bottom: 0.22 }, borderVisible: false });
+          // Candles use the top of the pane. The RS line autoscales in the strip below them.
+          panes[0].priceScale("right").applyOptions({ scaleMargins: { top: 0.06, bottom: 0.26 } });
+          panes[0].priceScale("").applyOptions({
+            visible: false, borderVisible: false, scaleMargins: { top: 0.76, bottom: 0.04 },
+          });
         } catch (e) { /* the line still autoscales */ }
-        paneAt += 1;
       }
-      if (st.vol && panes[paneAt]) panes[paneAt].setStretchFactor(1);
+      if (st.vol && panes[1]) panes[1].setStretchFactor(1);
       paintRsNote();
       requestAnimationFrame(() => applyView());
     };

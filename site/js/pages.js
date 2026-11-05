@@ -3848,7 +3848,7 @@
       "The box in the top left shows every scanner the stock is on, its status, and the reason. Tap it for more. The Reasons chip hides it.",
       "The RS chip and the Why box show the 1 to 99 rank. RS 85 means it beat 85% of stocks over the past year. A stock with less than a year of prices has no rank.",
       "It uses the daily prices the desk already saves. Nothing new is downloaded.",
-      "The RS line under the price is the stock close divided by the Nifty 50. A blue dot is a new 52-week high in that line. An amber dot means the line made that high before the price did. The RS line chip turns it off on this device.",
+      "The RS line in the lower part of the price chart, below the candles and above the volume, is the stock close divided by the Nifty 50. A blue dot is a new 52-week high in that line. An amber dot means the line made that high before the price did. The RS line chip turns it off on this device.",
     ], splitNeedsToggle: true, splitLines: [
       "One big chart at a time. Pick Technical or Fundamental at the top, then a list: every stock in that group, one scanner, Buy setups, or your watchlist.",
       "Technical is the chart scanners (VCP, breakouts, Episodic Pivot, Gap Up, 52-week, High volume, Pullbacks, Trends, Liquid stocks). Fundamental is CANSLIM, Leaders, Growth, Quality and Dividend. Your last choice is remembered on this device.",
@@ -3860,7 +3860,7 @@
       "The box in the top left shows every scanner the stock is on, its status, and the reason. Tap it for more. The Reasons chip hides it.",
       "The RS chip and the Why box show the 1 to 99 rank. RS 85 means it beat 85% of stocks over the past year. A stock with less than a year of prices has no rank.",
       "It uses the daily prices the desk already saves. Nothing new is downloaded.",
-      "The RS line under the price is the stock close divided by the Nifty 50. A blue dot is a new 52-week high in that line. An amber dot means the line made that high before the price did. The RS line chip turns it off on this device.",
+      "The RS line in the lower part of the price chart, below the candles and above the volume, is the stock close divided by the Nifty 50. A blue dot is a new 52-week high in that line. An amber dot means the line made that high before the price did. The RS line chip turns it off on this device.",
     ] },
     help: { lines: [
       "Plain-English answers about how the desk works, and a list of every setting.",
