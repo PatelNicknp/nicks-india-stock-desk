@@ -35,10 +35,10 @@
   "ABSLBANETF": "2026-10-27",
   "ABSLNN50ET": "2026-10-27"
  },
- "last_batch_at": "2026-11-05T15:57Z",
+ "last_batch_at": "2026-11-05T18:11Z",
  "last_statements_ok": 0,
  "last_statements_fail": 0,
- "last_shareholding_ok": 62,
+ "last_shareholding_ok": 63,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
   "BIRET": "2026-11-05",
@@ -61,9 +61,8 @@
   "SHIVAM-RE1": "2026-11-05",
   "ANIRITPP": "2026-11-04",
   "CENTEXTPP": "2026-11-05",
-  "BCSSL": "2026-11-05",
-  "BRIGHTOUTD": "2026-11-05"
+  "BCSSL": "2026-11-05"
  },
- "last_shareholding_empty": 15,
+ "last_shareholding_empty": 14,
  "last_shareholding_skipped": 0
 }
