@@ -1,2 +1,5 @@
 ticker,kind,text,score,score_prev,verdict,verdict_prev,price,data_status,note,disclaimer
-,info,No verdict changes or score crossings this run.,,,,,,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+ONGC,score_jump,ONGC score moved from 8 to 6.,6,8,HOLD,HOLD,230.0,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+ONGC,score_cross,ONGC crossed the buy line (8).,6,8,HOLD,HOLD,230.0,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+KEMP,verdict_change,KEMP changed from Not scored yet to AVOID.,0,1,AVOID,Not scored yet,1098.0,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+SHUKJEW,verdict_change,SHUKJEW changed from Not scored yet to AVOID.,-2,-1,AVOID,Not scored yet,8.5,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
