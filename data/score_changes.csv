@@ -1,6 +1,2 @@
 ticker,company,price,day_pct,score,score_prev,score_change,verdict,data_status,note,disclaimer
-ONGC,Oil & Natural Gas Corporation Ltd.,230.0,-2.13,6.0,8.0,-2.0,HOLD,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-AIAENG,AIA Engineering Ltd.,3202.2,-0.55,1.0,0.0,1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-GLAND,Gland Pharma Ltd.,3145.2,-0.44,1.0,2.0,-1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-KEMP,KEMP & COMPANY LTD.,1098.0,-0.02,0.0,1.0,-1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-SHUKJEW,SHUKRA JEWELLERS LTD.,8.5,-1.16,-2.0,-1.0,-1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+,,,,,,,,MISSING,No score changes versus the last run.,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
