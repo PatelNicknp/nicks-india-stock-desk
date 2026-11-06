@@ -1,6 +1,2 @@
 ticker,kind,text,score,score_prev,verdict,verdict_prev,price,data_status,note,disclaimer
-VINTAGES,verdict_change,VINTAGES changed from Not scored yet to HOLD.,4,-1,HOLD,Not scored yet,13.0,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-VINTAGES,score_jump,VINTAGES score moved from -1 to 4.,4,-1,HOLD,Not scored yet,13.0,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-VINTAGES,score_cross,VINTAGES crossed the hold line (4).,4,-1,HOLD,Not scored yet,13.0,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-MUNCAPM,verdict_change,MUNCAPM changed from Not scored yet to AVOID.,2,1,AVOID,Not scored yet,108.95,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-SICL,verdict_change,SICL changed from Not scored yet to AVOID.,1,2,AVOID,Not scored yet,13.07,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+,info,No verdict changes or score crossings this run.,,,,,,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."

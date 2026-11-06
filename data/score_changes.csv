@@ -1,5 +1,2 @@
 ticker,company,price,day_pct,score,score_prev,score_change,verdict,data_status,note,disclaimer
-VINTAGES,VINTAGE SECURITIES LTD.,13.0,0.0,4.0,-1.0,5.0,HOLD,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-PIRAMALFIN,Piramal Finance Ltd.,2161.8,1.99,5.0,4.0,1.0,HOLD,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-MUNCAPM,MUNOTH CAPITAL MARKET LTD.,108.95,4.76,2.0,1.0,1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-SICL,SUVIDHA INFRAESTATE CORPORATIO,13.07,4.98,1.0,2.0,-1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+,,,,,,,,MISSING,No score changes versus the last run.,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
