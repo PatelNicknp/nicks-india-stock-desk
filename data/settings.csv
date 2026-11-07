@@ -340,4 +340,11 @@ vcp.rs_6m_on,True
 vcp.rs_12m_on,True
 vcp.rs_21d_on,True
 vcp.rs_50d_on,True
+download_guard.provider_fail_limit,3
+download_guard.provider_cooldown_hours,6
+download_guard.stall_runs,3
+download_guard.stall_cooldown_hours,6
+download_guard.statement_hard_fail_after,5
+download_guard.incomplete_price_bars,20
+download_guard.lock_stale_minutes,150
 label,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."

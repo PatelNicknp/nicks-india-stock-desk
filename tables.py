@@ -1204,5 +1204,8 @@ def settings_rows(cfg):
     ):
         if key in backfill:
             rows.append({"setting": "fundamentals_backfill." + key, "value": backfill[key]})
+    for key, value in (cfg.get("download_guard") or {}).items():
+        if not str(key).startswith("_"):
+            rows.append({"setting": "download_guard." + key, "value": value})
     rows.append({"setting": "label", "value": DISCLAIMER})
     return pd.DataFrame(rows)

@@ -16,6 +16,7 @@ import numpy as np
 import pandas as pd
 import requests
 
+import download_guard
 import fallback
 import india_data
 import netutil
@@ -572,15 +573,41 @@ def load_bhav_state(cache):
         return {"ok": [], "holiday": []}
     try:
         data = json.load(open(path))
-    except Exception:
-        return {"ok": [], "holiday": []}
+    except Exception as exc:
+        raise download_guard.CacheUnreadable(
+            "cache/bhav_state.json could not be read. The price file was left as it was. %s" % exc
+        )
+    if not isinstance(data, dict):
+        raise download_guard.CacheUnreadable(
+            "cache/bhav_state.json could not be read. The price file was left as it was."
+        )
     data.setdefault("ok", [])
     data.setdefault("holiday", [])
     return data
 
 
 def save_bhav_state(cache, state):
-    json.dump(state, open(os.path.join(cache, "bhav_state.json"), "w"))
+    download_guard.atomic_write_json(os.path.join(cache, "bhav_state.json"), state)
+
+
+def commit_price_checkpoint(cache, cached, new_bars, state, new_ok, new_holiday):
+    """Write prices first, then the date list. A failed write leaves both as they were.
+
+    Dates in new_ok are marked done only after the price file is swapped in.
+    A crash before that swap leaves those dates pending, so the next run asks again.
+    """
+    merged = cached
+    if new_bars is not None and len(new_bars):
+        merged = india_data.merge_price_history(cached, new_bars)
+        download_guard.atomic_write_df(os.path.join(cache, "ohlcv.csv.gz"), merged, compression="gzip")
+    ok = set(state.get("ok") or [])
+    holiday = set(state.get("holiday") or [])
+    ok.update(new_ok or [])
+    holiday.update(new_holiday or [])
+    state["ok"] = sorted(ok)
+    state["holiday"] = sorted(holiday)
+    save_bhav_state(cache, state)
+    return merged, state
 
 
 def sync_prices(tickers, universe, cfg, cache, cached, mode):
@@ -589,7 +616,31 @@ def sync_prices(tickers, universe, cfg, cache, cached, mode):
     Returns the long price table and log rows (source, status, latest, note).
     """
     logs = []
-    state = load_bhav_state(cache)
+    lock = download_guard.JobLock(
+        os.path.join(cache, "prices.lock"),
+        stale_seconds=download_guard.settings(cfg)["lock_stale_minutes"] * 60,
+    )
+    try:
+        lock.acquire()
+    except download_guard.JobBusy as exc:
+        logs.append(("Prices", "CACHED", "", str(exc) + " The saved price file was left as it was."))
+        return cached, logs
+    try:
+        return _sync_prices_locked(tickers, universe, cfg, cache, cached, mode, logs)
+    finally:
+        lock.release()
+
+
+def _sync_prices_locked(tickers, universe, cfg, cache, cached, mode, logs):
+    pause_reason = download_guard.blocked_reason(download_guard.load_ledger(cache), "prices", time.time())
+    if pause_reason:
+        logs.append(("Prices", "CACHED", "", pause_reason + " The saved price file was left as it was."))
+        return cached, logs
+    try:
+        state = load_bhav_state(cache)
+    except download_guard.CacheUnreadable as exc:
+        logs.append(("Prices", "CACHED", "", str(exc)))
+        return cached, logs
     ok_dates = set(state.get("ok") or [])
     holidays = set(state.get("holiday") or [])
     end = pd.Timestamp.now(tz=india_data.IST).tz_localize(None).normalize()
@@ -611,10 +662,13 @@ def sync_prices(tickers, universe, cfg, cache, cached, mode):
     nse_days = bse_days = index_days = 0
     nse_fail = bse_fail = index_fail = 0
     fresh_parts = []
+    ready_ok = []
+    ready_holiday = []
+    partial_dates = list(state.get("partial") or [])
     pause = _pause(cfg)
     for i, day in enumerate(pending):
         stamp = day.strftime("%Y-%m-%d")
-        got_any = False
+        nse_n = bse_n = index_n = 0
         try:
             content, url = _first_bytes(nse_bhav_urls(day), cfg)
             bars = parse_nse_bhav(content, sme=sme)
@@ -622,7 +676,7 @@ def sync_prices(tickers, universe, cfg, cache, cached, mode):
                 fresh_parts.append(bars)
                 nse_rows += len(bars)
                 nse_days += 1
-                got_any = True
+                nse_n = len(bars)
             else:
                 nse_fail += 1
         except Exception:
@@ -639,7 +693,7 @@ def sync_prices(tickers, universe, cfg, cache, cached, mode):
                         nse_today = set()
                         if fresh_parts:
                             last = fresh_parts[-1]
-                            if len(last) and str(last["date"].iloc[-1]) == stamp and last["source"].iloc[0] == "NSE bhavcopy":
+                            if len(last) and str(last["date"].iloc[-1]) == stamp and str(last["source"].iloc[0]).startswith("NSE"):
                                 nse_today = set(last["isin"].astype(str).str.upper())
                         bars = bars[~isin.isin(nse_today)].copy()
                     if len(bars):
@@ -647,7 +701,7 @@ def sync_prices(tickers, universe, cfg, cache, cached, mode):
                         fresh_parts.append(bars)
                         bse_rows += len(bars)
                         bse_days += 1
-                        got_any = True
+                        bse_n = len(bars)
             except Exception:
                 bse_fail += 1
             time.sleep(pause)
@@ -660,34 +714,54 @@ def sync_prices(tickers, universe, cfg, cache, cached, mode):
                 fresh_parts.append(bars)
                 index_rows += len(bars)
                 index_days += 1
-                got_any = True
+                index_n = len(bars)
             else:
                 index_fail += 1
         except Exception:
             index_fail += 1
-        if got_any:
-            ok_dates.add(stamp)
+        status = download_guard.session_status(nse_n, bse_n, index_n)
+        if status == "complete":
+            ready_ok.append(stamp)
+            if stamp in partial_dates:
+                partial_dates.remove(stamp)
+        elif status == "partial":
+            # Keep the bars we got, but ask NSE again next run. Do not call the day done.
+            if stamp not in partial_dates:
+                partial_dates.append(stamp)
         elif day < (end.date() - dt.timedelta(days=3)):
             # An old weekday with no file is a holiday. A recent miss stays pending for the retry run.
-            holidays.add(stamp)
-        if (i + 1) % 20 == 0 and fresh_parts:
-            cached = india_data.merge_price_history(cached, pd.concat(fresh_parts, ignore_index=True))
+            ready_holiday.append(stamp)
+        # Save every 20 sessions, and always on the last one, so a stop keeps a finished chunk.
+        if (fresh_parts or ready_ok or ready_holiday) and ((i + 1) % 20 == 0 or i + 1 == len(pending)):
+            new_bars = pd.concat(fresh_parts, ignore_index=True) if fresh_parts else None
+            state["partial"] = partial_dates[-30:]
+            try:
+                cached, state = commit_price_checkpoint(cache, cached, new_bars, state, ready_ok, ready_holiday)
+            except Exception as exc:
+                logs.append(("Prices", "CACHED", "", "The price file was not replaced after a failed save. " + str(exc)[:120]))
+                return cached, logs
             fresh_parts = []
-            state["ok"] = sorted(ok_dates)
-            state["holiday"] = sorted(holidays)
-            save_bhav_state(cache, state)
-            cached.to_csv(os.path.join(cache, "ohlcv.csv.gz"), index=False, compression="gzip")
+            ok_dates.update(ready_ok)
+            holidays.update(ready_holiday)
+            ready_ok = []
+            ready_holiday = []
             print("Bhavcopy %d / %d sessions" % (i + 1, len(pending)), flush=True)
         time.sleep(pause)
-    if fresh_parts:
-        cached = india_data.merge_price_history(cached, pd.concat(fresh_parts, ignore_index=True))
     # Drop BSE bars whose ISIN already has an NSE bar that day, so one company is one row.
     if len(cached) and "isin" in cached.columns and "source" in cached.columns:
         cached = _prefer_nse_rows(cached)
     state["ok"] = sorted(ok_dates)
     state["holiday"] = sorted(holidays)
+    state["partial"] = partial_dates[-30:]
     save_bhav_state(cache, state)
-    gap_notes = _gap_fill(cached, tickers, cfg)
+    # A recent day with no file yet is normal. Pause only when NSE keeps missing while other bars arrive.
+    if partial_dates and nse_days == 0:
+        _price_stall(cache, cfg, saved=0)
+        logs.append(("Prices (NSE bhavcopy)", "CACHED" if len(cached) else "MISSING", str(end.date()),
+                     "No NSE session was saved. Bars from the other files were kept, and those days stay pending."))
+    elif nse_days:
+        _price_stall(cache, cfg, saved=nse_days)
+    gap_notes = _gap_fill(cached, tickers, cfg, cache)
     cached = gap_notes.pop("frame")
     logs.append(("Prices (NSE bhavcopy)", "OK" if nse_days else ("CACHED" if len(cached) else "MISSING"),
                  str(end.date()), "%d sessions added, %d bars. %d dates had no NSE file." % (nse_days, nse_rows, nse_fail)))
@@ -730,19 +804,37 @@ def _prefer_nse_rows(frame):
     return pd.concat([rest, dual.drop(columns="_rank")], ignore_index=True)
 
 
-def _gap_fill(frame, tickers, cfg):
+def _price_stall(cache, cfg, saved):
+    spec = download_guard.settings(cfg)
+    ledger = download_guard.load_ledger(cache)
+    download_guard.note_progress(
+        ledger, "prices", saved, True, time.time(),
+        spec["stall_runs"], spec["stall_cooldown_hours"] * 3600,
+    )
+    download_guard.save_ledger(cache, ledger)
+
+
+def _gap_fill(frame, tickers, cfg, cache=None):
     """Stooq, then Yahoo, for symbols that still have no bars. Capped so a run stays short."""
     logs = []
     have = set(frame["ticker"].astype(str).str.upper()) if len(frame) and "ticker" in frame.columns else set()
+    ledger = download_guard.load_ledger(cache) if cache else download_guard.empty_ledger()
+    today = pd.Timestamp.now(tz=india_data.IST).strftime("%Y-%m-%d")
+    spec = download_guard.settings(cfg)
     missing = []
+    skipped = 0
     for ticker in tickers or []:
         symbol = str(ticker).upper().strip()
         if not symbol or symbol in have or symbol.startswith("^") or symbol.endswith("=X"):
+            continue
+        if download_guard.unavailable_waiting(ledger, symbol, "prices", today):
+            skipped += 1
             continue
         missing.append(symbol)
     cap = int((cfg.get("rate_limit") or {}).get("gap_fill_per_run") or 25)
     missing = missing[:cap]
     stooq_n = yahoo_n = 0
+    missed = []
     parts = []
     if missing:
         for symbol in missing:
@@ -750,11 +842,20 @@ def _gap_fill(frame, tickers, cfg):
             if len(bars):
                 parts.append(bars)
                 stooq_n += 1
+                download_guard.clear_unavailable(ledger, symbol, "prices")
                 continue
             bars = _yahoo_daily(symbol, cfg)
             if len(bars):
                 parts.append(bars)
                 yahoo_n += 1
+                download_guard.clear_unavailable(ledger, symbol, "prices")
+                continue
+            missed.append(symbol)
+            download_guard.note_unavailable(
+                ledger, symbol, "prices",
+                "Stooq and Yahoo had no daily bars. The saved file was not changed for this name.",
+                today, _retry_day(today, 7),
+            )
             time.sleep(0.3)
     # Index symbols and the rupee still use Yahoo when the NSE close file missed them.
     index_need = [t for t in (tickers or []) if str(t).startswith("^") and str(t).upper() not in have]
@@ -766,11 +867,29 @@ def _gap_fill(frame, tickers, cfg):
             yahoo_n += 1
     if parts:
         frame = india_data.merge_price_history(frame, pd.concat(parts, ignore_index=True))
+    market_days = frame["date"].nunique() if len(frame) and "date" in frame.columns else 0
+    short = []
+    if len(frame) and "ticker" in frame.columns:
+        counts = frame["ticker"].astype(str).str.upper().value_counts()
+        for symbol in missing:
+            status = download_guard.price_history_status(int(counts.get(symbol, 0)), int(market_days), spec["incomplete_price_bars"])
+            if status == "incomplete":
+                short.append(symbol)
+    if short:
+        download_guard.note_incomplete(ledger, "prices", short)
+    if cache and (missed or short or stooq_n or yahoo_n):
+        download_guard.save_ledger(cache, ledger)
+    if skipped:
+        logs.append(("Prices (gap fill)", "CACHED", "", "%d names were left alone until their retry date. No new download for them." % skipped))
     logs.append(("Prices (Stooq)", "OK" if stooq_n else "MISSING", "",
                  "%d names filled. Stooq often blocks a plain download." % stooq_n if missing else "no gaps to fill"))
     logs.append(("Prices (Yahoo)", "OK" if yahoo_n else "MISSING", "",
                  "%d names, indexes, or the rupee. Yahoo is not used for the full list." % yahoo_n))
     return {"frame": frame, "logs": logs}
+
+
+def _retry_day(today, days):
+    return (pd.Timestamp(today) + pd.Timedelta(days=int(days))).strftime("%Y-%m-%d")
 
 
 def _stooq_daily(symbol):
