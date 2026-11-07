@@ -363,7 +363,8 @@ def write_lines(root, today=None):
     info = _read(os.path.join(cache, "yahoo_info.csv"))
     profiles = _read(os.path.join(cache, "company_profiles.csv"))
     out = build_lines(universe, info, profiles, today)
-    out.to_csv(os.path.join(data, "company_lines.csv"), index=False)
+    import download_guard
+    download_guard.atomic_write_df(os.path.join(data, "company_lines.csv"), out)
     return out
 
 
@@ -451,7 +452,11 @@ def fill_missing(root, cfg, codes, book, limit=40, deadline=None, pause=1.0, tod
         for c in PROFILE_COLS:
             if c not in out.columns:
                 out[c] = ""
-        out[PROFILE_COLS].sort_values("ticker").to_csv(os.path.join(cache, "company_profiles.csv"), index=False)
+        import download_guard
+        download_guard.atomic_write_df(
+            os.path.join(cache, "company_profiles.csv"),
+            out[PROFILE_COLS].sort_values("ticker"),
+        )
     return done
 
 

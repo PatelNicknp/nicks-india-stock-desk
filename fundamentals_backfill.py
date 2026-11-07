@@ -32,6 +32,7 @@ from urllib.parse import quote
 
 import pandas as pd
 
+import download_guard
 import fallback
 import india_data
 import netutil
@@ -135,7 +136,12 @@ def blank(value):
 def read_csv(path):
     if not os.path.exists(path) or os.path.getsize(path) == 0:
         return pd.DataFrame()
-    return pd.read_csv(path)
+    try:
+        return pd.read_csv(path)
+    except Exception as exc:
+        raise download_guard.CacheUnreadable(
+            "%s could not be read. The file was left as it was. %s" % (path, exc)
+        )
 
 
 def load_cursor(cache):
@@ -714,6 +720,46 @@ def _mark_retry(cursor, kind, ticker, today):
     cursor[key] = book
 
 
+def _clear_statement_failed(cursor, ticker):
+    fails = dict(cursor.get("statements_failures") or {})
+    if ticker in fails:
+        fails.pop(ticker, None)
+        cursor["statements_failures"] = fails
+
+
+def _mark_statement_failed(cursor, ledger, ticker, today, note, guard_cfg):
+    """Write down a statement miss. The first tries are next day. Later tries wait longer."""
+    fails = dict(cursor.get("statements_failures") or {})
+    prev = fails.get(ticker) or {}
+    try:
+        count = int(prev.get("count") or 0) + 1
+    except (TypeError, ValueError, AttributeError):
+        count = 1
+    hard = int(guard_cfg["statement_hard_fail_after"])
+    wait = 1 if count < hard else retry_days(count - hard + 1)
+    after = shift_days(today, wait)
+    fails[ticker] = {"count": count, "last_on": today, "retry_after": after, "note": str(note or "")[:140]}
+    cursor["statements_failures"] = fails
+    retry = dict(cursor.get("statements_retry_after") or {})
+    retry[ticker] = after
+    cursor["statements_retry_after"] = retry
+    download_guard.note_unavailable(ledger, ticker, "statements", note, today, after)
+    return after
+
+
+def _mark_statement_incomplete(cursor, ledger, ticker, today, guard_cfg):
+    """A quote was saved, but there are no results. Keep it, and try again in a week."""
+    after = shift_days(today, 7)
+    fails = dict(cursor.get("statements_failures") or {})
+    fails[ticker] = {"count": 0, "last_on": today, "retry_after": after, "note": "quote only, no results"}
+    cursor["statements_failures"] = fails
+    retry = dict(cursor.get("statements_retry_after") or {})
+    retry[ticker] = after
+    cursor["statements_retry_after"] = retry
+    download_guard.note_unavailable(ledger, ticker, "statements", "quote only, no results", today, after)
+    download_guard.note_incomplete(ledger, "statements", [ticker])
+
+
 def retry_days(fail_count):
     """3 days after the first failure, then 7, 14, and 30 days."""
     n = max(1, int(fail_count or 1))
@@ -847,22 +893,57 @@ def run_batch(root, cfg, max_names=None):
     cache = os.path.join(root, "cache")
     os.makedirs(cache, exist_ok=True)
     os.makedirs(data, exist_ok=True)
-    universe = read_csv(os.path.join(data, "universe.csv"))
-    scores = read_csv(os.path.join(data, "scores.csv"))
-    info = read_csv(os.path.join(cache, "yahoo_info.csv"))
-    annual = read_csv(os.path.join(cache, "annual.csv"))
-    quarters = read_csv(os.path.join(cache, "quarters.csv"))
-    earn = read_csv(os.path.join(cache, "earnings.csv"))
-    holders = read_csv(os.path.join(cache, "holders.csv"))
+    lock = download_guard.JobLock(
+        os.path.join(cache, "backfill.lock"),
+        stale_seconds=spec["max_minutes"] * 60 + 600,
+    )
+    try:
+        lock.acquire()
+    except download_guard.JobBusy as exc:
+        print("NOT STARTED:", exc)
+        return {"enabled": True, "blocked": str(exc), "statements_ok": 0, "shareholding_ok": 0}
+    try:
+        return _run_batch_locked(root, cfg, spec, data, cache)
+    finally:
+        lock.release()
+
+
+def _run_batch_locked(root, cfg, spec, data, cache):
+    try:
+        universe = read_csv(os.path.join(data, "universe.csv"))
+        scores = read_csv(os.path.join(data, "scores.csv"))
+        info = read_csv(os.path.join(cache, "yahoo_info.csv"))
+        annual = read_csv(os.path.join(cache, "annual.csv"))
+        quarters = read_csv(os.path.join(cache, "quarters.csv"))
+        earn = read_csv(os.path.join(cache, "earnings.csv"))
+        holders = read_csv(os.path.join(cache, "holders.csv"))
+    except download_guard.CacheUnreadable as exc:
+        print("NEEDS A PERSON:", exc)
+        return {"enabled": True, "cache_unreadable": str(exc), "statements_ok": 0, "shareholding_ok": 0}
     cursor = load_cursor(cache)
     today = today_ist()
+    now = time.time()
+    ledger = download_guard.load_ledger(cache)
+    guard_cfg = download_guard.settings(cfg)
+    share_block = download_guard.blocked_reason(ledger, "shareholding", now)
+    state_block = download_guard.blocked_reason(ledger, "statements", now)
+    if share_block:
+        print("NEEDS A PERSON:", share_block)
+    if state_block:
+        print("NEEDS A PERSON:", state_block)
     refresh = {
         "statements": spec["statements_refresh_days"],
         "shareholding": spec["shareholding_refresh_days"],
     }
     started = time.time()
     deadline = started + spec["max_minutes"] * 60
-    book = fallback.SourceBook(give_up_after=3)
+    book = fallback.SourceBook(give_up_after=guard_cfg["provider_fail_limit"])
+    cooled = set()
+    for name, rec in (ledger.get("providers") or {}).items():
+        if not download_guard.provider_open(ledger, name, now):
+            book.dead.add(name)
+            cooled.add(name)
+            print("Leaving %s alone until %s" % (name, rec.get("cooldown_until")))
     codes = bse_code_map(root)
     pause = spec["pause_seconds"]
     stats = {
@@ -885,7 +966,7 @@ def run_batch(root, cfg, max_names=None):
     # Shareholding first so a full statement pass cannot use up the 18 minute budget
     # before any holder rows are saved.
     hold_queue = build_queue(universe, scores, info, annual, holders, earn, cursor, today, refresh, "shareholding")
-    hold_todo = take_batch(hold_queue, spec["shareholding_per_run"])
+    hold_todo = [] if share_block else take_batch(hold_queue, spec["shareholding_per_run"])
     print("Shareholding batch %d" % len(hold_todo))
     guard = OutageGuard(canary=make_canary(universe, cfg, codes, book))
     for i, rec in enumerate(hold_todo):
@@ -916,6 +997,7 @@ def run_batch(root, cfg, max_names=None):
             _clear_retry(cursor, "shareholding", ticker)
             _clear_empty(cursor, ticker)
             _clear_shareholding_failed(cursor, ticker)
+            download_guard.clear_unavailable(ledger, ticker, "shareholding")
             stats["shareholding_ok"] += 1
             guard.record("ok")
         elif outcome == "empty":
@@ -932,13 +1014,14 @@ def run_batch(root, cfg, max_names=None):
         else:
             stats["shareholding_fail"] += 1
             after = _mark_shareholding_failed(cursor, ticker, today, fail_note)
+            download_guard.note_unavailable(ledger, ticker, "shareholding", fail_note, today, after)
             print("shareholding fail", ticker, fail_note + ", retry after " + after)
             if guard.record("down"):
                 print("Shareholding stopped for this run: " + guard.reason)
                 break
-        if (i + 1) % 8 == 0:
-            _flush_holders(hold_map, cache)
-            save_cursor(cache, cursor)
+        _flush_holders(hold_map, cache)
+        download_guard.save_ledger(cache, ledger)
+        save_cursor(cache, cursor)
         if outcome != "retired":
             # Most BSE-only names have one live source (Screener), so keep at
             # least a second between names to stay polite.
@@ -947,7 +1030,7 @@ def run_batch(root, cfg, max_names=None):
     save_cursor(cache, cursor)
 
     state_queue = build_queue(universe, scores, info, annual, holders, earn, cursor, today, refresh, "statements")
-    todo = take_batch(state_queue, spec["statements_per_run"])
+    todo = [] if state_block else take_batch(state_queue, spec["statements_per_run"])
     print("Statements batch %d" % len(todo))
     streak = 0
     for i, rec in enumerate(todo):
@@ -968,22 +1051,28 @@ def run_batch(root, cfg, max_names=None):
             if bundle["quarters"]:
                 new_q.append(pd.DataFrame(bundle["quarters"]))
             earn_rows.extend(bundle["earn"])
-            _clear_retry(cursor, "statements", ticker)
+            if bundle["annual"] or bundle["quarters"]:
+                _clear_retry(cursor, "statements", ticker)
+                _clear_statement_failed(cursor, ticker)
+                download_guard.clear_unavailable(ledger, ticker, "statements")
+            else:
+                # A quote with no results is not a finished history. Try again later, not every run.
+                _mark_statement_incomplete(cursor, ledger, ticker, today, guard_cfg)
             stats["statements_ok"] += 1
             streak = 0
         except Exception as exc:
             stats["statements_fail"] += 1
             streak += 1
-            _mark_retry(cursor, "statements", ticker, today)
+            _mark_statement_failed(cursor, ledger, ticker, today, str(exc)[:140], guard_cfg)
             print("statement fail", ticker, str(exc)[:140])
             if streak >= 6:
                 print("Statements paused after 6 failures in a row")
                 break
-        if (i + 1) % 8 == 0:
-            annual, quarters = _flush_statements(annual, quarters, new_a, new_q, cache)
-            _flush_info_earn(info_rows, earn_rows, earn, cache)
-            earn = read_csv(os.path.join(cache, "earnings.csv"))
-            save_cursor(cache, cursor)
+        annual, quarters = _flush_statements(annual, quarters, new_a, new_q, cache)
+        _flush_info_earn(info_rows, earn_rows, earn, cache)
+        earn = read_csv(os.path.join(cache, "earnings.csv"))
+        download_guard.save_ledger(cache, ledger)
+        save_cursor(cache, cursor)
         time.sleep(pause)
     annual, quarters = _flush_statements(annual, quarters, new_a, new_q, cache)
     _flush_info_earn(info_rows, earn_rows, earn, cache)
@@ -995,6 +1084,29 @@ def run_batch(root, cfg, max_names=None):
     cursor["last_shareholding_fail"] = stats["shareholding_fail"]
     cursor["last_shareholding_empty"] = stats["shareholding_empty"]
     cursor["last_shareholding_skipped"] = stats["shareholding_skipped"]
+    for name in book.dead - cooled:
+        download_guard.note_provider(
+            ledger, name, False, now, guard_cfg["provider_fail_limit"],
+            guard_cfg["provider_cooldown_hours"] * 3600,
+            "skipped after repeated failures in this run",
+        )
+    for name, fails in book.fails.items():
+        if name not in book.dead and fails == 0:
+            download_guard.note_provider(ledger, name, True, now, guard_cfg["provider_fail_limit"], 0)
+    share_msg = "" if share_block else download_guard.note_progress(
+        ledger, "shareholding", stats["shareholding_ok"], bool(hold_todo), now,
+        guard_cfg["stall_runs"], guard_cfg["stall_cooldown_hours"] * 3600,
+    )
+    state_msg = "" if state_block else download_guard.note_progress(
+        ledger, "statements", stats["statements_ok"], bool(todo), now,
+        guard_cfg["stall_runs"], guard_cfg["stall_cooldown_hours"] * 3600,
+    )
+    if share_msg:
+        print("NEEDS A PERSON:", share_msg)
+    if state_msg:
+        print("NEEDS A PERSON:", state_msg)
+    stats["needs_person"] = " ".join(bit for bit in (share_block, state_block, share_msg, state_msg) if bit)
+    download_guard.save_ledger(cache, ledger)
     save_cursor(cache, cursor)
     frame = progress_frame(root)
     _write_progress(data, frame)
@@ -1042,13 +1154,13 @@ def _flush_statements(annual, quarters, new_a, new_q, cache):
         add = pd.concat(new_a, ignore_index=True)
         keep = annual[~annual["ticker"].astype(str).isin(set(add["ticker"].astype(str)))] if len(annual) and "ticker" in annual.columns else annual
         annual = pd.concat([keep, add], ignore_index=True) if len(keep) else add
-        annual.to_csv(os.path.join(cache, "annual.csv"), index=False)
+        download_guard.atomic_write_df(os.path.join(cache, "annual.csv"), annual)
         new_a.clear()
     if new_q:
         add = pd.concat(new_q, ignore_index=True)
         keep = quarters[~quarters["ticker"].astype(str).isin(set(add["ticker"].astype(str)))] if len(quarters) and "ticker" in quarters.columns else quarters
         quarters = pd.concat([keep, add], ignore_index=True) if len(keep) else add
-        quarters.to_csv(os.path.join(cache, "quarters.csv"), index=False)
+        download_guard.atomic_write_df(os.path.join(cache, "quarters.csv"), quarters)
         new_q.clear()
     return annual, quarters
 
@@ -1056,7 +1168,7 @@ def _flush_statements(annual, quarters, new_a, new_q, cache):
 def _flush_info_earn(info_rows, earn_rows, earn, cache):
     if info_rows:
         info = pd.DataFrame(info_rows).drop_duplicates("ticker", keep="last")
-        info.to_csv(os.path.join(cache, "yahoo_info.csv"), index=False)
+        download_guard.atomic_write_df(os.path.join(cache, "yahoo_info.csv"), info)
     if earn_rows:
         earn_new = pd.DataFrame(earn_rows)
         if len(earn) and "ticker" in earn.columns:
@@ -1064,13 +1176,13 @@ def _flush_info_earn(info_rows, earn_rows, earn, cache):
             earn = pd.concat([earn[~earn["ticker"].astype(str).isin(got)], earn_new], ignore_index=True)
         else:
             earn = earn_new
-        earn.to_csv(os.path.join(cache, "earnings.csv"), index=False)
+        download_guard.atomic_write_df(os.path.join(cache, "earnings.csv"), earn)
 
 
 def _flush_holders(hold_map, cache):
     if not hold_map:
         return
-    pd.DataFrame(list(hold_map.values())).to_csv(os.path.join(cache, "holders.csv"), index=False)
+    download_guard.atomic_write_df(os.path.join(cache, "holders.csv"), pd.DataFrame(list(hold_map.values())))
 
 
 def _write_progress(data, frame):
@@ -1084,7 +1196,7 @@ def _write_progress(data, frame):
         out = tables.ensure(out, cols, "MISSING", "No backfill progress yet.")
     else:
         out = out[cols]
-    out.to_csv(os.path.join(data, "backfill_progress.csv"), index=False)
+    download_guard.atomic_write_df(os.path.join(data, "backfill_progress.csv"), out)
 
 
 def progress_frame(root):
@@ -1132,6 +1244,10 @@ def _progress_frame(root):
     covered_h = len([t for t in dict.fromkeys(names) if shareholding_covered(hold_map.get(t))])
     missing_any = covered_s < total or covered_h < total
     cycle = PASS_NOTE if missing_any else REFRESH_NOTE
+    ledger = download_guard.load_ledger(cache)
+    person = download_guard.person_notes(ledger, time.time())
+    if person:
+        cycle = cycle + " " + person
     last_at = str(cursor.get("last_batch_at") or "not yet")
 
     def row(kind, covered, ok_key, fail_key):
@@ -1152,7 +1268,7 @@ def _progress_frame(root):
             "last_fail": int(cursor.get(fail_key) or 0),
             "next_name": nxt or "none",
             "cycle_note": cycle,
-            "data_status": "OK",
+            "data_status": "PARTIAL" if download_guard.blocked_reason(ledger, kind, time.time()) else "OK",
             "note": cycle,
             "disclaimer": tables.DISCLAIMER,
         }
@@ -1175,7 +1291,9 @@ def main(argv=None):
     if not enabled(cfg):
         print("Fundamentals backfill is off in config.json.")
         return 0
-    run_batch(root, cfg, max_names=max_names)
+    stats = run_batch(root, cfg, max_names=max_names)
+    if stats.get("cache_unreadable"):
+        return 1
     return 0
 
 

@@ -304,7 +304,8 @@ def load_prices(tickers, cfg, cache, mode, universe=None):
             import market_sources
             long, notes = market_sources.sync_prices(tickers, universe, cfg, cache, cached, mode)
             if len(long):
-                long.to_csv(path, index=False, compression="gzip")
+                import download_guard
+                download_guard.atomic_write_df(path, long, compression="gzip")
             for source, status, latest, note in notes:
                 log(source, status, latest, note)
             return long

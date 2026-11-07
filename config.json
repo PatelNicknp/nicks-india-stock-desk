@@ -488,6 +488,16 @@
     "fear_line": 1.15,
     "greed_line": 0.75
   },
+  "download_guard": {
+    "_note": "How a stopped download picks up again. The NSE, BSE, Screener, and Yahoo sources and the daily clock stay the same. provider_fail_limit is how many failures in one run retire a source. provider_cooldown_hours is how long that source is then left alone. stall_runs is how many runs in a row may save nothing before that job pauses. stall_cooldown_hours is how long that pause lasts. A pause does not fix a bad login or a source that stays down. statement_hard_fail_after is how many statement misses use a next-day retry before the wait grows (3, then 7, 14, then 30 days). incomplete_price_bars is the shortest saved history that still counts as complete once the market file is at least that long. lock_stale_minutes is how long a crashed job's lock is ignored so the next run can start.",
+    "provider_fail_limit": 3,
+    "provider_cooldown_hours": 6,
+    "stall_runs": 3,
+    "stall_cooldown_hours": 6,
+    "statement_hard_fail_after": 5,
+    "incomplete_price_bars": 20,
+    "lock_stale_minutes": 150
+  },
   "rate_limit": {
     "sec_user_agent": "NickIndiaStockDesk research nicks-india-stock-desk@example.com",
     "sec_requests_per_second": 8,
