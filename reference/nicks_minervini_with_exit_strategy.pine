@@ -2,6 +2,14 @@
 // Nick's Minervini VCP
 // Shows: moving averages, Minervini's 8-point trend template score, VCP contractions,
 // the buy point (pivot) line, and big-volume bars. Built for the Daily chart.
+//
+// Three book updates. Exits, stops, and contraction counting are unchanged.
+// 1. Rule 6 is 25% above the 52-week low (it was 30%).
+// 2. Rule 8 compares this stock with the benchmark you pick (US: SPY, India: Nifty 50,
+//    or a custom symbol) over 6 and 12 months, and it requires the RS line to be rising.
+//    This is not IBD's 1-99 RS Rating. No 1-99 rank is calculated.
+// 3. The last contraction must quiet down before the breakout. The breakout day's
+//    volume is not part of that check. The 1.5x breakout-volume test stays separate.
 indicator("Nick's Minervini with Exit Strategy", overlay = true, max_labels_count = 500, max_lines_count = 50, max_bars_back = 500)
 
 // ───────── SETTINGS (shown in the indicator's Settings window) ─────────
@@ -14,7 +22,8 @@ grpTT  = "Trend Template"
 showTable  = input.bool(true, "Show score table", group = grpTT)
 showDetail = input.bool(true, "Show each rule (pass/fail)", group = grpTT)
 requireAll = input.bool(true, "Require 8/8 for VCP (off = price > 150/200 & 150 > 200)", group = grpTT)
-spySymbol  = input.symbol("SPY", "Compare strength against", group = grpTT)
+benchPick   = input.string("US: SPY", "Benchmark for relative strength", options = ["US: SPY", "India: Nifty 50", "Custom symbol"], group = grpTT, tooltip = "US stocks: US: SPY. India stocks: India: Nifty 50. This is the stock versus that benchmark. It is not IBD's 1-99 rating.")
+benchCustom = input.symbol("SPY", "Custom benchmark symbol", group = grpTT, tooltip = "Used only when Benchmark is Custom symbol. Examples: NASDAQ:QQQ or BSE:SENSEX.")
 
 grpVCP = "VCP (contractions)"
 lookback  = input.int(100, "Base lookback (bars)", minval = 30, maxval = 300, group = grpVCP)
@@ -31,8 +40,13 @@ showPivot  = input.bool(true, "Show buy-point line", group = grpBuy)
 needVolume = input.bool(true, "Alert needs big volume on breakout", group = grpBuy)
 
 grpVol = "Volume"
-volMult  = input.float(1.5, "Big volume = this many x 50-day average", minval = 1.0, step = 0.1, group = grpVol)
+volMult  = input.float(1.5, "Big volume = this many x 50-day average", minval = 1.0, step = 0.1, group = grpVol, tooltip = "Breakout day only. A heavy breakout does not cancel the quiet-volume check, and a quiet contraction does not replace this.")
 showVol  = input.bool(true, "Mark big-volume bars", group = grpVol)
+
+grpDry = "Quiet final contraction"
+requireDry = input.bool(true, "VCP and BUY need a quiet final contraction", group = grpDry, tooltip = "The last contraction must quiet down before the breakout. Turn this off to mark VCP the old way. The status line still shows.")
+quietFrac  = input.float(0.5, "Quiet day: at or under this fraction of 50-day volume", minval = 0.1, maxval = 1.0, step = 0.05, group = grpDry, tooltip = "0.50 means a day at half the 50-day average volume, or quieter. The book looks for one or two days like that.")
+minQuiet   = input.int(1, "Quiet days needed", minval = 1, maxval = 5, group = grpDry, tooltip = "How many quiet days the last contraction must have. 1 is the minimum. Set 2 to require two. More than that still passes.")
 
 // ───────── MOVING AVERAGES ─────────
 sma50  = ta.sma(close, 50)
@@ -46,48 +60,78 @@ plot(show200 ? sma200 : na, "SMA 200", color = color.new(color.red, 0),    linew
 low52  = ta.lowest(low, 252)    // 52-week low (252 trading days)
 high52 = ta.highest(high, 252)  // 52-week high
 
-// Relative strength approximation: is the stock beating SPY over 6 AND 12 months?
-// (IBD's real RS Rating isn't available in TradingView, so this is a stand-in.)
-spyClose = request.security(spySymbol, timeframe.period, close, lookahead = barmerge.lookahead_off)
-stock6  = close / close[126] - 1
-stock12 = close / close[252] - 1
-spy6    = spyClose / spyClose[126] - 1
-spy12   = spyClose / spyClose[252] - 1
+// Relative strength versus the benchmark chosen in Settings.
+// The RS line is this stock's close divided by the benchmark close.
+// On a 1-day chart, 126 bars is about 6 months and 252 bars is about 12 months.
+// Rule 8 passes only when the RS line is above both of those past levels
+// (the stock beat the benchmark over 6 months AND 12 months) AND the line is rising:
+// higher than 21 daily bars ago, and above its own 50-day average.
+// No 1-99 rating is calculated. IBD's RS Rating ranks a stock against a large universe.
+// This chart cannot see that universe, so a made-up percentile would be a fake number.
+// lookahead is off. A missing symbol returns na and the rest of the script keeps running.
+benchSymbol = benchPick == "India: Nifty 50" ? "NSE:NIFTY" : (benchPick == "Custom symbol" ? benchCustom : "SPY")
+benchName   = benchPick == "India: Nifty 50" ? "Nifty 50" : (benchPick == "Custom symbol" ? benchCustom : "SPY")
+benchClose  = request.security(benchSymbol, timeframe.period, close, gaps = barmerge.gaps_off, lookahead = barmerge.lookahead_off, ignore_invalid_symbol = true)
+bool onDaily = timeframe.isdaily and timeframe.multiplier == 1
+float rsLine = not na(benchClose) and benchClose > 0 ? close / benchClose : na
+float rsSma50 = ta.sma(rsLine, 50)
+float stockRet6 = not na(close[126]) and close[126] > 0 ? close / close[126] - 1 : na
+float stockRet12 = not na(close[252]) and close[252] > 0 ? close / close[252] - 1 : na
+float benchRet6 = not na(benchClose[126]) and benchClose[126] > 0 ? benchClose / benchClose[126] - 1 : na
+float benchRet12 = not na(benchClose[252]) and benchClose[252] > 0 ? benchClose / benchClose[252] - 1 : na
+bool stockHist = not na(close[126]) and close[126] > 0 and not na(close[252]) and close[252] > 0
+bool benchHist = not na(benchClose) and benchClose > 0 and not na(benchClose[126]) and benchClose[126] > 0 and not na(benchClose[252]) and benchClose[252] > 0
+bool rsHist = not na(rsLine) and not na(rsLine[21]) and not na(rsLine[126]) and not na(rsLine[252]) and not na(rsSma50)
+bool rsReady = stockHist and benchHist and rsHist
+bool beat6 = onDaily and rsReady and rsLine > rsLine[126]
+bool beat12 = onDaily and rsReady and rsLine > rsLine[252]
+bool rsMonthUp = onDaily and rsReady and rsLine > rsLine[21]
+bool rsAboveAvg = onDaily and rsReady and rsLine > rsSma50
 
 r1 = close > sma150 and close > sma200       // 1. Price above 150 & 200 SMA
 r2 = sma150 > sma200                          // 2. 150 SMA above 200 SMA
 r3 = sma200 > sma200[20]                      // 3. 200 SMA rising (vs ~1 month ago)
 r4 = sma50 > sma150 and sma50 > sma200        // 4. 50 SMA above 150 & 200
 r5 = close > sma50                            // 5. Price above 50 SMA
-r6 = close >= low52 * 1.30                    // 6. At least 30% above 52-week low
+r6 = close >= low52 * 1.25                    // 6. At least 25% above the 52-week low
 r7 = close >= high52 * 0.75                   // 7. Within 25% of 52-week high
-r8 = not na(spy12) and stock6 > spy6 and stock12 > spy12   // 8. RS vs SPY (approx.)
+r8 = beat6 and beat12 and rsMonthUp and rsAboveAvg   // 8. Beat benchmark 6 and 12 months, RS line rising
 
 score = (r1 ? 1 : 0) + (r2 ? 1 : 0) + (r3 ? 1 : 0) + (r4 ? 1 : 0) + (r5 ? 1 : 0) + (r6 ? 1 : 0) + (r7 ? 1 : 0) + (r8 ? 1 : 0)
 
-var table tt = table.new(position.bottom_right, 2, 10, bgcolor = color.new(color.black, 20), border_width = 1)
+f_pct(float x) =>
+    na(x) ? "n/a" : ((x >= 0 ? "+" : "") + str.tostring(x * 100, "0.0") + "%")
+
+string rsStatus = "FAIL"
+string rsDetail = ""
+if not onDaily
+    rsStatus := "NEED DAILY"
+    rsDetail := "Open a 1-day chart. Six months is 126 daily bars and twelve months is 252 daily bars."
+else if na(benchClose) or benchClose <= 0
+    rsStatus := "NO BENCHMARK"
+    rsDetail := "No price for " + benchName + ". Choose US: SPY, India: Nifty 50, or a symbol TradingView knows."
+else if not rsReady
+    rsStatus := "NEED HISTORY"
+    rsDetail := "Need about one year of daily prices for this stock and for " + benchName + "."
+else
+    rsStatus := r8 ? "PASS" : "FAIL"
+    rsDetail := "Versus " + benchName + ". 6 months: stock " + f_pct(stockRet6) + ", benchmark " + f_pct(benchRet6) + ". 12 months: stock " + f_pct(stockRet12) + ", benchmark " + f_pct(benchRet12) + "."
+    if not beat6 or not beat12
+        rsDetail := rsDetail + " Both 6 months and 12 months have to beat the benchmark."
+    if not rsMonthUp
+        rsDetail := rsDetail + " RS line is not higher than 21 days ago."
+    if not rsAboveAvg
+        rsDetail := rsDetail + " RS line is not above its 50-day average."
+    if r8
+        rsDetail := rsDetail + " RS line is higher than 21 days ago and above its 50-day average."
+
+
+var table tt = table.new(position.bottom_right, 2, 13, bgcolor = color.new(color.black, 20), border_width = 1)
 
 // Helper: write one rule row into the table
 rowRule(int row, string name, bool ok) =>
     table.cell(tt, 0, row, name, text_color = color.white, text_size = size.small, text_halign = text.align_left)
     table.cell(tt, 1, row, ok ? "PASS" : "FAIL", text_color = ok ? color.lime : color.red, text_size = size.small)
-
-if barstate.islast
-    table.clear(tt, 0, 0, 1, 9)
-    if showTable
-        table.cell(tt, 0, 0, "Trend Template", text_color = color.white, text_size = size.small)
-        table.cell(tt, 1, 0, str.tostring(score) + "/8", text_color = color.white, text_size = size.normal, bgcolor = score == 8 ? color.new(color.green, 0) : score >= 6 ? color.new(color.orange, 0) : color.new(color.red, 0))
-        if showDetail
-            rowRule(1, "Price > 150 & 200 SMA", r1)
-            rowRule(2, "150 SMA > 200 SMA", r2)
-            rowRule(3, "200 SMA rising (1 mo)", r3)
-            rowRule(4, "50 SMA > 150 & 200", r4)
-            rowRule(5, "Price > 50 SMA", r5)
-            rowRule(6, "30%+ above 52w low", r6)
-            rowRule(7, "Within 25% of 52w high", r7)
-            rowRule(8, "Beats SPY 6&12 mo*", r8)
-            table.cell(tt, 0, 9, "*RS is an approximation (not IBD RS)", text_color = color.gray, text_size = size.tiny, text_halign = text.align_left)
-            table.merge_cells(tt, 0, 9, 1, 9)
 
 // ───────── VCP DETECTION ─────────
 // Find swing highs/lows. These return na on most bars and only confirm
@@ -194,7 +238,114 @@ shrinking = cnt >= 2   // the run is shrinking by construction; need 2+ for a VC
 
 // Uptrend filter: full 8/8 (default) or at least the core rules 1 & 2
 trendOK = requireAll ? score == 8 : (r1 and r2)
-isVCP = shrinking and trendOK
+
+// ───────── QUIET FINAL CONTRACTION ─────────
+// The last contraction is the newest T in the live base (the same high that sets the buy point).
+// Days included: from that swing high through the last day BEFORE the first close above the buy point.
+// The breakout day, and anything after it, is left out. Its volume is judged only by the 1.5x test.
+// Passes when all three are true:
+// 1. Average volume on those days is below the 50-day average volume on the last of those days.
+// 2. At least minQuiet days (default 1) have volume at or under quietFrac (default half) of THAT day's 50-day average.
+// 3. Price tightened: after the contraction low, and still before the breakout, the average daily
+//    high-to-low range is smaller than the average range from the swing high down to that low.
+//    Each side needs at least two daily bars, or the status stays WAIT instead of failing early.
+// Averages use only bars already known on that day. This does not look ahead of the baseline BUY mark.
+avgVol = ta.sma(volume, 50)
+bigVol = not na(avgVol) and volume > avgVol * volMult
+
+string dryStatus = "WAIT"
+string dryDetail = "No contraction yet."
+bool dryUpOk = false
+float dryMeanRatio = na
+if cnt > 0
+    float dPiv = array.get(cHigh, cnt - 1)
+    int dHiBar = array.get(cBar, cnt - 1)
+    int dLoBar = array.get(cLowBar, cnt - 1)
+    int dHiAgo = -1
+    int dLoAgo = -1
+    if not na(dHiBar)
+        dHiAgo := bar_index - dHiBar
+    if not na(dLoBar)
+        dLoAgo := bar_index - dLoBar
+    bool barsOk = not na(dPiv) and dPiv > 0 and dHiAgo >= 0 and dLoAgo >= 0 and dHiAgo >= dLoAgo and dHiAgo <= 450
+    if not barsOk
+        dryDetail := "The last contraction is not ready to measure."
+    else
+        int dBreakAgo = -1
+        for bk = dHiAgo to 0
+            if dBreakAgo < 0 and not na(close[bk]) and close[bk] > dPiv
+                dBreakAgo := bk
+        int dEndAgo = dBreakAgo >= 0 ? dBreakAgo + 1 : 0
+        if dEndAgo > dHiAgo
+            dryDetail := "There is no day left before the breakout to measure."
+        else
+            float volSum = 0.0
+            int volN = 0
+            int quietN = 0
+            float pullSum = 0.0
+            int pullN = 0
+            float rightSum = 0.0
+            int rightN = 0
+            float vBar = na
+            float aBar = na
+            float cBarPx = na
+            float hBarPx = na
+            float lBarPx = na
+            float dayRng = na
+            for wk = dEndAgo to dHiAgo
+                vBar := volume[wk]
+                aBar := avgVol[wk]
+                if not na(vBar) and not na(aBar) and aBar > 0
+                    volSum := volSum + vBar
+                    volN := volN + 1
+                    if vBar <= aBar * quietFrac
+                        quietN := quietN + 1
+                cBarPx := close[wk]
+                hBarPx := high[wk]
+                lBarPx := low[wk]
+                if not na(cBarPx) and cBarPx > 0 and not na(hBarPx) and not na(lBarPx)
+                    dayRng := (hBarPx - lBarPx) / cBarPx
+                    if wk >= dLoAgo
+                        pullSum := pullSum + dayRng
+                        pullN := pullN + 1
+                    else
+                        rightSum := rightSum + dayRng
+                        rightN := rightN + 1
+            float refAvg = avgVol[dEndAgo]
+            float meanVol = volN > 0 ? volSum / volN : na
+            dryMeanRatio := not na(meanVol) and not na(refAvg) and refAvg > 0 ? meanVol / refAvg : na
+            bool volBelow = not na(dryMeanRatio) and dryMeanRatio < 1.0
+            bool quietOk = quietN >= minQuiet
+            float pullAvg = pullN > 0 ? pullSum / pullN : na
+            float rightAvg = rightN > 0 ? rightSum / rightN : na
+            bool priceTight = pullN >= 2 and rightN >= 2 and not na(pullAvg) and not na(rightAvg) and rightAvg < pullAvg
+            bool mature = volN >= 4 and pullN >= 2 and rightN >= 2 and not na(refAvg) and refAvg > 0
+            string nums = "Last contraction, before the breakout: "
+            nums := nums + (na(dryMeanRatio) ? "Volume average is not ready. " : "Average volume is " + str.tostring(dryMeanRatio, "0.00") + "x the 50-day average. ")
+            nums := nums + "Quiet days: " + str.tostring(quietN) + " (need " + str.tostring(minQuiet) + ", at or under " + str.tostring(quietFrac, "0.00") + "x usual volume). "
+            if pullN >= 2 and rightN >= 2
+                nums := nums + (priceTight ? "Daily bars got tighter after the low. " : "Daily bars after the low are not tighter than the drop. ")
+            else
+                nums := nums + "Need at least two daily bars on the drop and two after the low, before the breakout. "
+            nums := nums + "The breakout day is not included."
+            if mature and not volBelow
+                nums := nums + " It must be under 1.00x."
+            if mature and not quietOk
+                nums := nums + " Not enough quiet days."
+            if not mature
+                dryStatus := "WAIT"
+                dryUpOk := false
+            else if volBelow and quietOk and priceTight
+                dryStatus := "PASS"
+                dryUpOk := true
+            else
+                dryStatus := "FAIL"
+                dryUpOk := false
+            dryDetail := nums
+if not requireDry
+    dryDetail := dryDetail + " Not required for the VCP tag."
+
+isVCP = shrinking and trendOK and (not requireDry or dryUpOk)
 
 // One "VCP" tag only, for the current base: delete the old one, drawn above the last contraction's high if valid
 var label vcpLbl = na
@@ -214,6 +365,31 @@ if barstate.islast
             txt = "T" + str.tostring(i + 1) + " " + str.tostring(math.round(array.get(cDepth, i))) + "%"
             array.push(cLbl, label.new(array.get(cLowBar, i), array.get(cLow, i), txt, style = label.style_label_up, color = color.new(color.purple, 0), textcolor = color.white, size = size.small))
 
+// Score table. Drawn on the last bar only, same corner as before.
+if barstate.islast
+    table.clear(tt, 0, 0, 1, 12)
+    if showTable
+        table.cell(tt, 0, 0, "Trend Template", text_color = color.white, text_size = size.small)
+        table.cell(tt, 1, 0, str.tostring(score) + "/8", text_color = color.white, text_size = size.normal, bgcolor = score == 8 ? color.new(color.green, 0) : score >= 6 ? color.new(color.orange, 0) : color.new(color.red, 0))
+        if showDetail
+            rowRule(1, "Price > 150 & 200 SMA", r1)
+            rowRule(2, "150 SMA > 200 SMA", r2)
+            rowRule(3, "200 SMA rising (1 mo)", r3)
+            rowRule(4, "50 SMA > 150 & 200", r4)
+            rowRule(5, "Price > 50 SMA", r5)
+            rowRule(6, "25%+ above 52w low", r6)
+            rowRule(7, "Within 25% of 52w high", r7)
+            table.cell(tt, 0, 8, "RS vs " + benchName, text_color = color.white, text_size = size.small, text_halign = text.align_left)
+            table.cell(tt, 1, 8, rsStatus, text_color = rsStatus == "PASS" ? color.lime : rsStatus == "FAIL" ? color.red : color.orange, text_size = size.small)
+            table.cell(tt, 0, 9, rsDetail, text_color = color.gray, text_size = size.tiny, text_halign = text.align_left)
+            table.merge_cells(tt, 0, 9, 1, 9)
+            table.cell(tt, 0, 10, "Last contraction quiet", text_color = color.white, text_size = size.small, text_halign = text.align_left)
+            table.cell(tt, 1, 10, dryStatus, text_color = dryStatus == "PASS" ? color.lime : dryStatus == "FAIL" ? color.red : color.orange, text_size = size.small)
+            table.cell(tt, 0, 11, dryDetail, text_color = color.gray, text_size = size.tiny, text_halign = text.align_left)
+            table.merge_cells(tt, 0, 11, 1, 11)
+            table.cell(tt, 0, 12, "*Not IBD's RS Rating and not a 1-99 rank. Daily chart only. Rising = RS line above 21 days ago and above its 50-day average.", text_color = color.gray, text_size = size.tiny, text_halign = text.align_left)
+            table.merge_cells(tt, 0, 12, 1, 12)
+
 // ───────── BUY POINT (pivot) ─────────
 // Pivot = high of the most recent (tightest) contraction in the current base
 pivotPrice = cnt > 0 ? array.get(cHigh, cnt - 1) : na
@@ -231,8 +407,7 @@ else if not na(buyLine)
     buyLine := na
 
 // ───────── VOLUME ─────────
-avgVol = ta.sma(volume, 50)
-bigVol = not na(avgVol) and volume > avgVol * volMult
+// avgVol and bigVol are calculated above. The triangles, the 1.5x breakout test, and the exits share that same 50-day average.
 // Big-volume triangles are drawn ONLY inside the current base (from the base high to today).
 // Redrawn on the last bar, so old ones outside the base disappear.
 baseStartBar = baseIdx >= 0 ? array.get(hBar, baseIdx) : na

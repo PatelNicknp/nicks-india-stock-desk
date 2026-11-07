@@ -865,6 +865,7 @@
     if (D.isBlank(s)) return D.na();
     if (s.toUpperCase() === "PASS") return '<span class="pill" style="color:#22C55E">PASS</span>';
     if (s.toUpperCase() === "FAIL") return '<span class="pill" style="color:#EF4444">FAIL</span>';
+    if (s.toUpperCase() === "WAITING") return '<span class="pill" style="color:#F59E0B">WAITING</span>';
     return D.esc(s);
   }
   function prettyNums(text) {
@@ -1217,7 +1218,7 @@
     },
   });
 
-  const vcpRuleLabels = ["Above 150d & 200d", "150d over 200d", "200d rising", "50d over 150d & 200d", "Above 50d", "30%+ over 52w low", "Within 25% of 52w high", "Beats Nifty 6m & 12m"];
+  const vcpRuleLabels = ["Above 150d & 200d", "150d over 200d", "200d rising", "50d over 150d & 200d", "Above 50d", "25%+ over 52w low", "Within 25% of 52w high", "RS vs benchmark"];
   const vcp = patternPage({
     file: "scanner_vcp.csv",
     caption: "",
@@ -1225,6 +1226,7 @@
     columns: [TK, T("index_membership", "Index"), T("status", "Status", "setup"), PR, T("pivot", "Buy point", "num", { dec: 2 }),
       T("stop", "Stop", "num", { dec: 2, tone: "stop" }), T("target", "Target", "num", { dec: 2, tone: "target" }), T("trail", "20-day trail", "num", { dec: 2 }),
       T("trend_score", "Trend template", "of8"), T("contractions", "Pullbacks"), T("depths", "Pullback depths %"),
+      T("volume_dry", "Dried up", "text"),
       T("strength", "Strength", "strengthbar"), T("freshness", "Freshness", "fresh")],
     price: setupLines,
     priceSub: "Buy point, stop, and target when the scan has them",
@@ -3617,8 +3619,11 @@
   const ABOUT = {
     vcp: { title: SCAN, note: LIQUID_LINE, lines: [
       "Same rules as Nick's TradingView indicator. A stock is listed only when it would get the green VCP tag: all 8 trend rules pass and there are at least two pullbacks that get smaller.",
+      "The 52-week low rule is 25%. A close exactly 25% above the low passes. The number is vcp.above_low_pct.",
+      "Volume dried up looks at the last pullback only, and stops the day before price closes over the buy line. It wants volume under the 50-day average, and at least one day at half that average or quieter. The breakout day's 1.5 times volume check is separate.",
+      "RS vs benchmark is the stock price divided by the Nifty 50 (SENSEX for a BSE-only stock). It is not an IBD 1 to 99 rating. The 1 to 99 rank, the RS 70 filter, the chart RS line, and sector leaders stay as they are.",
       "READY means price is still under the buy line. BROKEN OUT today means it closed above the buy line on volume at least 1.5 times the 50-day average.",
-      "WATCHING means the trend is 8 of 8 but it is not ready yet. Price went over the line on low volume, or there is only one pullback so far.",
+      "WATCHING means the trend is 8 of 8 but it is not ready yet. Price went over the line on low volume, or there is only one pullback so far. WAITING means a check has no data yet. It is not a pass.",
       "A stock still in a trade stays on the list if its buy printed with 8 of 8. Set vcp.show_weaker_trend to true to also see stocks with a weaker trend. They show as WATCHING (trend not 8/8).",
       "A buy needs a fresh close above the line on big volume. Stops and targets: 7% stop, sell part at +20%.",
     ] },

@@ -328,4 +328,16 @@ fundamentals_backfill.pause_seconds,0.45
 fundamentals_backfill.max_minutes,18
 fundamentals_backfill.statements_refresh_days,90
 fundamentals_backfill.shareholding_refresh_days,90
+vcp.show_weaker_trend,False
+vcp.above_low_pct,25
+vcp.dry_up_on,True
+vcp.dry_up_below_avg_on,True
+vcp.dry_up_quiet_on,True
+vcp.dry_up_quiet_frac,0.5
+vcp.dry_up_quiet_days,1
+vcp.dry_up_tighten_on,False
+vcp.rs_6m_on,True
+vcp.rs_12m_on,True
+vcp.rs_21d_on,True
+vcp.rs_50d_on,True
 label,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."

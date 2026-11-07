@@ -88,11 +88,19 @@ def _vcp_tape(breakout=False):
     high[low2] = l2 * 1.008
     low[low2] = l2
     close[low2] = l2 * 1.002
-    settle = p2 * 0.99
+    # Drift up under the buy point, faster than the benchmark, so the RS line
+    # is still rising on the right side of the base. The close stays under the pivot.
+    start = p2 * 0.972
     for i in range(low2 + 1, n):
-        high[i] = settle * 1.004
-        low[i] = settle * 0.996
-        close[i] = settle
+        level = start * (1.001 ** (i - low2))
+        if level > p2 * 0.995:
+            level = p2 * 0.995
+        high[i] = level * 1.002
+        low[i] = level * 0.998
+        close[i] = level
+    # The last contraction is quieter than the earlier bars, so the dry-up check can pass.
+    # The 50-day average still remembers the heavier bars before this pullback.
+    vol[peak2:] = 400_000
     if breakout:
         prev = float(close[-2])
         assert prev <= p2

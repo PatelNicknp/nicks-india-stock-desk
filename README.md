@@ -44,7 +44,7 @@ The year is four quarters of 63 trading days. The latest quarter counts 40%. Eac
 
 The rank is calculated only on the after-close run (16:30 IST, 3:00 AM PT, one hour later in summer) from prices already saved. No new download. The morning run and the late bhavcopy retry reuse it. Turn it off with `feature.rs_rank`.
 
-The VCP trend template still checks whether the stock beat the Nifty 50 over 6 months and over 12 months (SENSEX for a BSE-only stock). That check is not replaced by this rank. CANSLIM's L column is still strength versus the index. Minervini's line is the optional filter, RS 70 or higher.
+The VCP trend template still checks the stock against the Nifty 50 (SENSEX for a BSE-only stock). The RS line is the stock's price divided by that index. It has to be higher than 126, 252, and 21 days ago, and above its own 50-day average. That check is not replaced by this rank, and it is not an IBD 1 to 99 rating. CANSLIM's L column is still strength versus the index. Minervini's line is the optional filter, RS 70 or higher.
 
 ## What is fetched, and how often
 
