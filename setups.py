@@ -155,7 +155,40 @@ def _shift_div(arr, bars):
     return out
 
 
-def _trend_arrays(close, high, low, spy):
+def _rs_line(close, bench):
+    """Stock close divided by the benchmark close. Missing or non-positive prices stay blank."""
+    close = np.asarray(close, dtype=float)
+    bench = np.asarray(bench, dtype=float)
+    out = np.full(len(close), np.nan)
+    ok = np.isfinite(close) & np.isfinite(bench) & (close > 0) & (bench > 0)
+    out[ok] = close[ok] / bench[ok]
+    return out
+
+
+def _above_prior(series, bars):
+    """True only where both ends exist and today's value is strictly higher."""
+    n = len(series)
+    passed = np.zeros(n, dtype=bool)
+    ready = np.zeros(n, dtype=bool)
+    if bars <= 0 or n <= bars:
+        return passed, ready
+    now = series[bars:]
+    prev = series[:-bars]
+    ok = np.isfinite(now) & np.isfinite(prev)
+    ready[bars:] = ok
+    passed[bars:] = ok & (now > prev)
+    return passed, ready
+
+
+def _rule_text(passed, ready, off=False):
+    if off:
+        return "OFF"
+    if not ready:
+        return "WAITING"
+    return "PASS" if passed else "FAIL"
+
+
+def _trend_arrays(close, high, low, spy, spec):
     n = len(close)
     sma50 = _sma(close, 50)
     sma150 = _sma(close, 150)
@@ -164,25 +197,57 @@ def _trend_arrays(close, high, low, spy):
     sma200_ago[20:] = sma200[:-20]
     low52 = _rolling_min(low, 252)
     high52 = _rolling_max(high, 252)
-    r1 = (close > sma150) & (close > sma200)
-    r2 = sma150 > sma200
-    r3 = sma200 > sma200_ago
-    r4 = (sma50 > sma150) & (sma50 > sma200)
-    r5 = close > sma50
-    r6 = close >= low52 * 1.30
-    r7 = close >= high52 * 0.75
-    stock6 = _shift_div(close, 126)
-    stock12 = _shift_div(close, 252)
-    spy6 = _shift_div(spy, 126)
-    spy12 = _shift_div(spy, 252)
-    r8 = np.isfinite(spy12) & (stock6 > spy6) & (stock12 > spy12)
+    r1_ready = np.isfinite(close) & np.isfinite(sma150) & np.isfinite(sma200)
+    r1 = r1_ready & (close > sma150) & (close > sma200)
+    r2_ready = np.isfinite(sma150) & np.isfinite(sma200)
+    r2 = r2_ready & (sma150 > sma200)
+    r3_ready = np.isfinite(sma200) & np.isfinite(sma200_ago)
+    r3 = r3_ready & (sma200 > sma200_ago)
+    r4_ready = np.isfinite(sma50) & np.isfinite(sma150) & np.isfinite(sma200)
+    r4 = r4_ready & (sma50 > sma150) & (sma50 > sma200)
+    r5_ready = np.isfinite(close) & np.isfinite(sma50)
+    r5 = r5_ready & (close > sma50)
+    low_mult = 1.0 + float(spec["above_low_pct"]) / 100.0
+    r6_ready = np.isfinite(close) & np.isfinite(low52) & (low52 > 0)
+    r6 = r6_ready & (close >= low52 * low_mult)
+    r7_ready = np.isfinite(close) & np.isfinite(high52) & (high52 > 0)
+    r7 = r7_ready & (close >= high52 * 0.75)
+    rs = _rs_line(close, spy)
+    p6, d6 = _above_prior(rs, 126)
+    p12, d12 = _above_prior(rs, 252)
+    p21, d21 = _above_prior(rs, 21)
+    rs_sma = _sma(rs, 50)
+    d50 = np.isfinite(rs) & np.isfinite(rs_sma)
+    p50 = d50 & (rs > rs_sma)
+    pieces = []
+    if spec["rs_6m_on"]:
+        pieces.append((p6, d6))
+    if spec["rs_12m_on"]:
+        pieces.append((p12, d12))
+    if spec["rs_21d_on"]:
+        pieces.append((p21, d21))
+    if spec["rs_50d_on"]:
+        pieces.append((p50, d50))
+    if not pieces:
+        r8 = np.ones(n, dtype=bool)
+        r8_ready = np.ones(n, dtype=bool)
+        r8_off = True
+    else:
+        r8 = np.ones(n, dtype=bool)
+        r8_ready = np.ones(n, dtype=bool)
+        for passed, ready in pieces:
+            r8_ready = r8_ready & ready
+            r8 = r8 & ready & passed
+        r8_off = False
     rules = [r1, r2, r3, r4, r5, r6, r7, r8]
+    readies = [r1_ready, r2_ready, r3_ready, r4_ready, r5_ready, r6_ready, r7_ready, r8_ready]
     score = np.zeros(n, dtype=int)
     for r in rules:
         score += r.astype(int)
     return {
         "sma50": sma50, "sma150": sma150, "sma200": sma200,
-        "score": score, "rules": rules, "high52": high52, "low52": low52,
+        "score": score, "rules": rules, "readies": readies,
+        "high52": high52, "low52": low52, "r8_off": r8_off,
     }
 
 
@@ -211,7 +276,88 @@ def _base_from(h_depth, h_high, h_bar, h_low, h_low_bar):
     )
 
 
-def vcp_last(high, low, close, volume, spy):
+def contraction_dry_up(high, low, close, volume, avg_vol, hi_bar, lo_bar, pivot, end_limit, spec):
+    """Quiet-volume check for the last contraction, on daily bars.
+
+    The window runs from the contraction high through the day before the first
+    close above the buy point. The breakout day is left out. Missing volume or
+    a 50-day average that is not ready yet is waiting, never a pass.
+    The narrower-bar check is optional and off unless dry_up_tighten_on is set.
+    """
+    if not spec.get("dry_up_on", True):
+        return {"status": "off", "quiet_days": 0, "ratio": None}
+    checks = []
+    if spec.get("dry_up_below_avg_on", True):
+        checks.append("avg")
+    if spec.get("dry_up_quiet_on", True):
+        checks.append("quiet")
+    if spec.get("dry_up_tighten_on", False):
+        checks.append("tight")
+    if not checks:
+        return {"status": "off", "quiet_days": 0, "ratio": None}
+    try:
+        hi_bar = int(hi_bar)
+        lo_bar = int(lo_bar)
+        end_limit = int(end_limit)
+    except (TypeError, ValueError):
+        return {"status": "waiting", "quiet_days": 0, "ratio": None}
+    if (
+        hi_bar < 0 or lo_bar < hi_bar or end_limit < hi_bar or lo_bar > end_limit
+        or not np.isfinite(pivot) or pivot <= 0
+    ):
+        return {"status": "waiting", "quiet_days": 0, "ratio": None}
+    segment = close[hi_bar:end_limit + 1]
+    over = np.where(np.isfinite(segment) & (segment > pivot))[0]
+    end = hi_bar + int(over[0]) - 1 if len(over) else end_limit
+    if end < hi_bar:
+        return {"status": "waiting", "quiet_days": 0, "ratio": None}
+    vol = volume[hi_bar:end + 1]
+    avg = avg_vol[hi_bar:end + 1]
+    usable = np.isfinite(vol) & np.isfinite(avg) & (avg > 0)
+    quiet_days = 0
+    ratio = None
+    results = {}
+    if "avg" in checks or "quiet" in checks:
+        ref_ok = bool(np.isfinite(avg_vol[end]) and avg_vol[end] > 0 and usable.any())
+        if not ref_ok:
+            if "avg" in checks:
+                results["avg"] = None
+            if "quiet" in checks:
+                results["quiet"] = None
+        else:
+            mean = float(vol[usable].mean())
+            ratio = mean / float(avg_vol[end])
+            frac = float(spec.get("dry_up_quiet_frac", 0.5))
+            quiet_days = int(np.sum(usable & (vol <= avg * frac)))
+            if "avg" in checks:
+                results["avg"] = mean < float(avg_vol[end])
+            if "quiet" in checks:
+                results["quiet"] = quiet_days >= int(spec.get("dry_up_quiet_days", 1))
+    if "tight" in checks:
+        def _ranges(a, b):
+            if b - a + 1 < 2:
+                return None
+            hh = high[a:b + 1]
+            ll = low[a:b + 1]
+            cc = close[a:b + 1]
+            ok = np.isfinite(hh) & np.isfinite(ll) & np.isfinite(cc) & (cc > 0)
+            if int(ok.sum()) < 2:
+                return None
+            return float(((hh[ok] - ll[ok]) / cc[ok]).mean())
+        pull_end = min(lo_bar, end)
+        pull = _ranges(hi_bar, pull_end)
+        right = _ranges(lo_bar + 1, end) if end > lo_bar else None
+        results["tight"] = None if pull is None or right is None else right < pull
+    if any(v is False for v in results.values()):
+        status = "no"
+    elif results and all(v is True for v in results.values()):
+        status = "yes"
+    else:
+        status = "waiting"
+    return {"status": status, "quiet_days": quiet_days, "ratio": ratio}
+
+
+def vcp_last(high, low, close, volume, spy, cfg=None):
     """Run Nick's indicator through the last bar. Returns the live state.
 
     The state machine follows the Pine order: new swing high, then a swing low
@@ -226,9 +372,10 @@ def vcp_last(high, low, close, volume, spy):
     n = len(close)
     if n == 0:
         return None
+    spec = _vcp_cfg(cfg)
     ph = pivot_confirmed(high, PINE["piv_l"], PINE["piv_r"], "high")
     pl = pivot_confirmed(low, PINE["piv_l"], PINE["piv_r"], "low")
-    trend = _trend_arrays(close, high, low, spy)
+    trend = _trend_arrays(close, high, low, spy, spec)
     avg_vol = _sma(volume, PINE["vol_len"])
     trail = _sma(close, PINE["trail_len"])
     piv_r = PINE["piv_r"]
@@ -249,12 +396,13 @@ def vcp_last(high, low, close, volume, spy):
     entry_bar = -1
     entry_score = -1
     prev_pivot = np.nan
-    c_depth, c_high = [], []
+    c_depth, c_high, c_bar, c_low_bar = [], [], [], []
     cnt = 0
     pivot = np.nan
     is_vcp = False
     broke = False
     big_vol = False
+    dry = {"status": "off", "quiet_days": 0, "ratio": None}
 
     for i in range(n):
         changed = False
@@ -292,7 +440,7 @@ def vcp_last(high, low, close, volume, spy):
                 h_low_bar.pop(0)
             changed = True
         if changed or i == n - 1:
-            c_depth, c_high, _, _, _ = _base_from(h_depth, h_high, h_bar, h_low, h_low_bar)
+            c_depth, c_high, c_bar, _, c_low_bar = _base_from(h_depth, h_high, h_bar, h_low, h_low_bar)
             cnt = len(c_depth)
             pivot = c_high[-1] if cnt else np.nan
         score_i = int(trend["score"][i])
@@ -300,13 +448,24 @@ def vcp_last(high, low, close, volume, spy):
             trend_ok = score_i == 8
         else:
             trend_ok = bool(trend["rules"][0][i] and trend["rules"][1][i])
-        is_vcp = cnt >= 2 and trend_ok
         big_vol = bool(np.isfinite(avg_vol[i]) and np.isfinite(volume[i]) and volume[i] > avg_vol[i] * PINE["vol_mult"])
         cross = (
             np.isfinite(pivot) and np.isfinite(prev_pivot)
             and np.isfinite(close[i]) and i > 0 and np.isfinite(close[i - 1])
             and close[i - 1] <= prev_pivot and close[i] > pivot
         )
+        if spec["dry_up_on"] and (i == n - 1 or (cnt >= 1 and trend_ok and cross)):
+            if cnt >= 1 and c_bar and c_low_bar:
+                dry = contraction_dry_up(
+                    high, low, close, volume, avg_vol,
+                    c_bar[-1], c_low_bar[-1], pivot, i, spec,
+                )
+            else:
+                dry = {"status": "waiting", "quiet_days": 0, "ratio": None}
+        elif not spec["dry_up_on"]:
+            dry = {"status": "off", "quiet_days": 0, "ratio": None}
+        dry_ok = dry["status"] in ("yes", "off")
+        is_vcp = cnt >= 2 and trend_ok and dry_ok
         broke = bool(np.isfinite(pivot) and cross and big_vol and is_vcp)
 
         if in_trade:
@@ -341,9 +500,17 @@ def vcp_last(high, low, close, volume, spy):
         prev_pivot = pivot
 
     rules_now = [bool(r[-1]) for r in trend["rules"]]
+    rule_text = [
+        _rule_text(bool(passed[-1]), bool(ready[-1]), off=(idx == 7 and trend["r8_off"]))
+        for idx, (passed, ready) in enumerate(zip(trend["rules"], trend["readies"]))
+    ]
     return {
         "score": int(trend["score"][-1]),
         "rules": rules_now,
+        "rule_text": rule_text,
+        "dry_up": dry["status"],
+        "dry_quiet_days": int(dry["quiet_days"]),
+        "above_low_pct": spec["above_low_pct"],
         "cnt": cnt,
         "depths": [round(float(d), 1) for d in c_depth],
         "highs": [float(h) for h in c_high],
@@ -370,16 +537,52 @@ VCP_DEFAULTS = {
     # Off: only stocks that would get the green VCP tag are listed (8 of 8 trend rules).
     # On: stocks with tightening pullbacks but a weaker trend come back as WEAK_TREND_STATUS.
     "show_weaker_trend": False,
+    # Close must be at least this percent above the 52-week low. 25 means exactly 25% passes.
+    "above_low_pct": 25.0,
+    # Last-contraction volume. The breakout day is not included.
+    "dry_up_on": True,
+    "dry_up_below_avg_on": True,
+    "dry_up_quiet_on": True,
+    "dry_up_quiet_frac": 0.5,
+    "dry_up_quiet_days": 1,
+    # Optional. Daily bars after the low are narrower than the drop. Not a book rule.
+    "dry_up_tighten_on": False,
+    # RS line versus Nifty 50, or SENSEX for a BSE-only name. Not the 1 to 99 rank.
+    "rs_6m_on": True,
+    "rs_12m_on": True,
+    "rs_21d_on": True,
+    "rs_50d_on": True,
 }
+_VCP_BOOLS = (
+    "show_weaker_trend", "dry_up_on", "dry_up_below_avg_on", "dry_up_quiet_on",
+    "dry_up_tighten_on", "rs_6m_on", "rs_12m_on", "rs_21d_on", "rs_50d_on",
+)
 WEAK_TREND_STATUS = "WATCHING (trend not 8/8)"
+
+
+def _vcp_num(value, fallback, kind):
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return fallback
+    if not np.isfinite(number):
+        return fallback
+    if kind == "int":
+        return int(number)
+    return number
 
 
 def _vcp_cfg(cfg=None):
     out = dict(VCP_DEFAULTS)
     block = (cfg or {}).get("vcp") or {}
     if isinstance(block, dict):
-        out.update({k: v for k, v in block.items() if k in VCP_DEFAULTS})
-    out["show_weaker_trend"] = bool(out["show_weaker_trend"])
+        out.update({k: v for k, v in block.items() if k in VCP_DEFAULTS and not str(k).startswith("_")})
+    for key in _VCP_BOOLS:
+        out[key] = bool(out[key])
+    out["above_low_pct"] = _vcp_num(out["above_low_pct"], 25.0, "float")
+    out["dry_up_quiet_frac"] = _vcp_num(out["dry_up_quiet_frac"], 0.5, "float")
+    days = _vcp_num(out["dry_up_quiet_days"], 1, "int")
+    out["dry_up_quiet_days"] = days if days >= 1 else 1
     return out
 
 
@@ -427,7 +630,29 @@ def _vcp_levels(state):
 def _vcp_reason(state, status, dates):
     depths = ", ".join("%s%%" % d for d in state["depths"]) or "none yet"
     score = state["score"]
+    texts = state.get("rule_text") or ["PASS" if ok else "FAIL" for ok in state["rules"]]
     bits = ["Trend template %d/8." % score, "Contractions: %s." % depths]
+    pct = _vcp_num(state.get("above_low_pct", 25), 25, "float")
+    pct_txt = str(int(pct)) if pct == int(pct) else str(pct)
+    bits.append("The 52-week low rule is %s%%. A close exactly that far above the low passes." % pct_txt)
+    dry = state.get("dry_up", "waiting")
+    bits.append("Volume dried up: %s." % dry)
+    if dry == "waiting":
+        bits.append("Dry-up is waiting for the last contraction and its volume. That is not a pass.")
+    elif dry == "no":
+        bits.append("The last contraction was not quiet. The 1.5 times volume check on the breakout day is separate.")
+    elif dry == "yes":
+        bits.append("Quiet volume is measured before the breakout day, not on it.")
+    bench = state.get("bench_name") or "the benchmark"
+    r8 = texts[7] if len(texts) > 7 else ""
+    if r8 == "PASS":
+        bits.append("RS versus %s passed. This compares the stock with that index. It is not an IBD 1 to 99 rating." % bench)
+    elif r8 == "WAITING":
+        bits.append("RS versus %s is waiting for more daily prices. It is not a pass." % bench)
+    elif r8 == "FAIL":
+        bits.append("RS versus %s did not pass. The line has to be ahead on the windows that are switched on." % bench)
+    elif r8 == "OFF":
+        bits.append("The benchmark RS check is switched off.")
     if state["pivot"] is not None:
         bits.append("Buy point %s." % _round(state["pivot"]))
     if status == "BROKEN OUT today":
@@ -437,8 +662,13 @@ def _vcp_reason(state, status, dates):
     elif state["is_vcp"] and state["pivot"] is not None and state["close"] > state["pivot"] and not state["big_vol"]:
         bits.append("Price is through the buy point, but volume was not 1.5 times the 50-day average, so the indicator did not print a buy today.")
     elif state["cnt"] >= 2 and score < 8:
-        failed = [str(i + 1) for i, ok in enumerate(state["rules"]) if not ok]
-        bits.append("Pullbacks are tightening, but the trend template is not 8 of 8. Still open: rule %s." % ", ".join(failed))
+        failed = [str(i + 1) for i, text in enumerate(texts) if text == "FAIL"]
+        waiting = [str(i + 1) for i, text in enumerate(texts) if text == "WAITING"]
+        bits.append("Pullbacks are tightening, but the trend template is not 8 of 8.")
+        if failed:
+            bits.append("Still open: rule %s." % ", ".join(failed))
+        if waiting:
+            bits.append("Waiting on rule %s. A missing check is not a pass." % ", ".join(waiting))
     elif state["cnt"] == 1:
         bits.append("One pullback so far. The indicator needs a second, tighter one before it will call this a VCP.")
     if state["in_trade"] and state["entry"] is not None and score < 8:
@@ -563,7 +793,8 @@ def _panel_date(close):
 def scan_vcp(close, high, low, vol, universe, cfg=None):
     rows = []
     panel = _panel_date(close)
-    show_weaker = _vcp_cfg(cfg)["show_weaker_trend"]
+    spec = _vcp_cfg(cfg)
+    show_weaker = spec["show_weaker_trend"]
     names = list(universe["ticker"]) if universe is not None and len(universe) else []
     for ticker in names:
         bench_col, bench_word = _stock_benchmark(close, ticker, universe, cfg)
@@ -574,7 +805,7 @@ def scan_vcp(close, high, low, vol, universe, cfg=None):
         frame, spy_aligned = got
         state = vcp_last(
             frame["high"].to_numpy(), frame["low"].to_numpy(), frame["close"].to_numpy(),
-            frame["volume"].to_numpy(), spy_aligned,
+            frame["volume"].to_numpy(), spy_aligned, cfg,
         )
         if state is None:
             continue
@@ -582,6 +813,7 @@ def scan_vcp(close, high, low, vol, universe, cfg=None):
         if status is None:
             continue
         stop, target, _, basis = _vcp_levels(state)
+        state["bench_name"] = bench_word
         meta = _meta_row(universe, ticker)
         last = frame.index[-1]
         strength = round(state["score"] / 8.0 * 80.0 + min(state["cnt"], 4) * 5.0, 1)
@@ -611,13 +843,15 @@ def scan_vcp(close, high, low, vol, universe, cfg=None):
             "contractions": state["cnt"],
             "depths": "; ".join(str(d) for d in state["depths"]),
             "volume_ok": "yes" if state["big_vol"] else "no",
+            "volume_dry": state.get("dry_up") or "waiting",
             "in_trade": "yes" if state["in_trade"] else "no",
             "stop_basis": basis,
             "data_status": "OK",
             "note": note,
         }
-        for i, ok in enumerate(state["rules"], start=1):
-            row["r%d" % i] = "PASS" if ok else "FAIL"
+        labels = state.get("rule_text") or ["PASS" if ok else "FAIL" for ok in state["rules"]]
+        for i, label in enumerate(labels, start=1):
+            row["r%d" % i] = label
         rows.append(row)
     if not rows:
         return pd.DataFrame()

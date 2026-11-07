@@ -78,8 +78,19 @@
     "stock_shareholding": true
   },
   "vcp": {
-    "_note": "VCP scanner. A stock is listed only when the trend template is 8 of 8, the same rule as the green VCP tag. Set show_weaker_trend to true to also list stocks with tightening pullbacks but a weaker trend, marked WATCHING (trend not 8/8).",
-    "show_weaker_trend": false
+    "_note": "VCP scanner. A stock is listed only when the trend template is 8 of 8, the same rule as the green VCP tag. Set show_weaker_trend to true to also list stocks with tightening pullbacks but a weaker trend, marked WATCHING (trend not 8/8). above_low_pct is how far the close must sit above the 52-week low. 25 means 25%. A close exactly 25% above the low passes. dry_up_on looks at the last contraction only, from its high through the day before the first close over the buy point. The breakout day is not in that window. dry_up_below_avg_on wants the average volume in the window under the 50-day average. dry_up_quiet_on wants dry_up_quiet_days days (1) at or under dry_up_quiet_frac (0.50) times that day's own 50-day average. dry_up_tighten_on is an extra check of ours, not a book rule: daily bars after the low are narrower than the drop. It starts off. The 1.5 times breakout-volume rule is separate and stays. Rule 8 is the stock versus the Nifty 50 (SENSEX for a BSE-only stock). It is not an IBD 1 to 99 rating. rs_6m_on and rs_12m_on want the RS line (stock close divided by the benchmark close) higher than 126 and 252 days ago. rs_21d_on wants it higher than 21 days ago. rs_50d_on wants it above its own 50-day average. A missing price or volume is WAITING. It is not a pass and it is not stored as 0. The 1 to 99 RS rank, the RS 70 filter, the chart RS line, and sector leaders are unchanged.",
+    "show_weaker_trend": false,
+    "above_low_pct": 25,
+    "dry_up_on": true,
+    "dry_up_below_avg_on": true,
+    "dry_up_quiet_on": true,
+    "dry_up_quiet_frac": 0.5,
+    "dry_up_quiet_days": 1,
+    "dry_up_tighten_on": false,
+    "rs_6m_on": true,
+    "rs_12m_on": true,
+    "rs_21d_on": true,
+    "rs_50d_on": true
   },
   "qullamaggie": {
     "_note": "Qullamaggie breakout scan on cached daily bars. Every rule has an on/off switch and its numbers here. Percents are whole numbers (3.5 means 3.5%). Marios uses these for the shared rules unless the marios block sets its own.",
@@ -443,7 +454,7 @@
     "min_median_traded_value": 10000000
   },
   "relative_strength": {
-    "_note": "IBD and Minervini style RS rank. Calculated only on the after-close run (16:30 IST, 3:00 AM PT, one hour later in summer) from daily closes already saved. No new download. A quarter is quarter_sessions trading days (63, about 3 months). Q1 is the latest quarter, then Q2, Q3, and Q4. Raw score is weight_q1*Q1 + weight_q2*Q2 + weight_q3*Q3 + weight_q4*Q4. The rank is 1 to 99 across every covered stock with a full year of closes (min_bars: today plus 252 sessions). 99 is the strongest. A shorter history is left blank. It is not stored as 0. Minervini's line is leader_min (70). The VCP check that asks whether the stock beat the Nifty over 6 and 12 months stays as it is. Turn the column and the RS 70 filter off with feature.rs_rank.",
+    "_note": "IBD and Minervini style RS rank. Calculated only on the after-close run (16:30 IST, 3:00 AM PT, one hour later in summer) from daily closes already saved. No new download. A quarter is quarter_sessions trading days (63, about 3 months). Q1 is the latest quarter, then Q2, Q3, and Q4. Raw score is weight_q1*Q1 + weight_q2*Q2 + weight_q3*Q3 + weight_q4*Q4. The rank is 1 to 99 across every covered stock with a full year of closes (min_bars: today plus 252 sessions). 99 is the strongest. A shorter history is left blank. It is not stored as 0. Minervini's line is leader_min (70). The VCP page also compares the stock with the Nifty 50 (SENSEX for a BSE-only stock). That comparison is not this rank. Turn the column and the RS 70 filter off with feature.rs_rank.",
     "quarter_sessions": 63,
     "weight_q1": 0.4,
     "weight_q2": 0.2,
