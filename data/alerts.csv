@@ -1,2 +1,3 @@
 ticker,kind,text,score,score_prev,verdict,verdict_prev,price,data_status,note,disclaimer
-,info,No verdict changes or score crossings this run.,,,,,,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+KPITTECH,verdict_change,KPITTECH changed from AVOID to HOLD.,4,3,HOLD,AVOID,540.45,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+KPITTECH,score_cross,KPITTECH crossed the hold line (4).,4,3,HOLD,AVOID,540.45,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."

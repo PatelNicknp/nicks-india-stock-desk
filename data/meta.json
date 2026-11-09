@@ -1,7 +1,7 @@
 {
- "updated_pt": "2026-11-06 23:02 IST \u00b7 2026-11-06 09:32 PT",
+ "updated_pt": "2026-11-09 08:14 IST \u00b7 2026-11-08 18:44 PT",
  "price_as_of": "2026-11-02",
- "mode": "rescore",
+ "mode": "morning",
  "label": "Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts.",
  "n_stocks": 4265,
  "tabs": [
@@ -75,7 +75,6 @@
   "sector_rotation_tails",
   "sectors",
   "settings",
-  "trading_floor",
   "trends",
   "universe",
   "updates_log",
