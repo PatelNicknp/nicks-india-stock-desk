@@ -4,7 +4,8 @@
  "providers": {},
  "stalls": {
   "prices": {
-   "runs": 1
+   "cooldown_until": "",
+   "runs": 0
   }
  },
  "unavailable": {
