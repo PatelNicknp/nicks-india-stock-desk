@@ -1,0 +1,48 @@
+{
+ "incomplete": {},
+ "needs_person": {},
+ "providers": {},
+ "stalls": {
+  "prices": {
+   "runs": 1
+  }
+ },
+ "unavailable": {
+  "prices:BAGMANE": {
+   "kind": "prices",
+   "last_on": "2026-11-09",
+   "note": "Stooq and Yahoo had no daily bars. The saved file was not changed for this name.",
+   "retry_after": "2026-11-16",
+   "since": "2026-11-09",
+   "ticker": "BAGMANE",
+   "tries": 1
+  },
+  "prices:DUMMYHEG": {
+   "kind": "prices",
+   "last_on": "2026-11-09",
+   "note": "Stooq and Yahoo had no daily bars. The saved file was not changed for this name.",
+   "retry_after": "2026-11-16",
+   "since": "2026-11-09",
+   "ticker": "DUMMYHEG",
+   "tries": 1
+  },
+  "prices:DUMMYINXGN": {
+   "kind": "prices",
+   "last_on": "2026-11-09",
+   "note": "Stooq and Yahoo had no daily bars. The saved file was not changed for this name.",
+   "retry_after": "2026-11-16",
+   "since": "2026-11-09",
+   "ticker": "DUMMYINXGN",
+   "tries": 1
+  },
+  "prices:VEEFIN": {
+   "kind": "prices",
+   "last_on": "2026-11-09",
+   "note": "Stooq and Yahoo had no daily bars. The saved file was not changed for this name.",
+   "retry_after": "2026-11-16",
+   "since": "2026-11-09",
+   "ticker": "VEEFIN",
+   "tries": 1
+  }
+ }
+}
