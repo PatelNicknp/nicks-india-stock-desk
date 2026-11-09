@@ -1,4 +1,2 @@
 ticker,company,price,day_pct,score,score_prev,score_change,verdict,data_status,note,disclaimer
-KPITTECH,KPIT Technologies Ltd.,540.45,0.12,4.0,3.0,1.0,HOLD,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-DIVISLAB,Divi's Laboratories Ltd.,10320.5,1.78,1.0,2.0,-1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-INDRANIB,INDRAYANI BIOTECH LTD.,7.85,-2.61,-2.0,-3.0,1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+,,,,,,,,MISSING,No score changes versus the last run.,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
