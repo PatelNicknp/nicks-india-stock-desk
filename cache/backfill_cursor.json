@@ -40,11 +40,11 @@
   "KCDGROUP": "2026-11-12",
   "SPACEINCUBA": "2026-11-12"
  },
- "last_batch_at": "2026-11-09T09:40Z",
+ "last_batch_at": "2026-11-09T10:01Z",
  "last_statements_ok": 0,
  "last_statements_fail": 0,
- "last_shareholding_ok": 56,
- "last_shareholding_fail": 4,
+ "last_shareholding_ok": 57,
+ "last_shareholding_fail": 0,
  "shareholding_empty_on": {
   "BIRET": "2026-11-09",
   "EMBASSY": "2026-11-09",
@@ -66,10 +66,9 @@
   "SHIVAM-RE1": "2026-11-09",
   "ANIRITPP": "2026-11-09",
   "CENTEXTPP": "2026-11-09",
-  "OLAPP": "2026-11-09",
-  "LAKPRE": "2026-11-09"
+  "OLAPP": "2026-11-09"
  },
- "last_shareholding_empty": 15,
+ "last_shareholding_empty": 14,
  "last_shareholding_skipped": 0,
  "statements_failures": {
   "BAGMANE": {
