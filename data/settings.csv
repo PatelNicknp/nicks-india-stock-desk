@@ -87,7 +87,7 @@ vcp.dry_up_below_avg_on,True
 vcp.dry_up_quiet_on,True
 vcp.dry_up_quiet_frac,0.5
 vcp.dry_up_quiet_days,1
-vcp.dry_up_tighten_on,False
+vcp.dry_up_tighten_on,True
 vcp.rs_6m_on,True
 vcp.rs_12m_on,True
 vcp.rs_21d_on,True

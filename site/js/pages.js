@@ -3621,6 +3621,7 @@
       "Same rules as Nick's TradingView indicator. A stock is listed only when it would get the green VCP tag: all 8 trend rules pass and there are at least two pullbacks that get smaller.",
       "The 52-week low rule is 25%. A close exactly 25% above the low passes. The number is vcp.above_low_pct.",
       "Volume dried up looks at the last pullback only, and stops the day before price closes over the buy line. It wants volume under the 50-day average, and at least one day at half that average or quieter. The breakout day's 1.5 times volume check is separate.",
+      "Price has to tighten in that same last pullback. Daily bars after the low have to be narrower than the bars on the way down. vcp.dry_up_tighten_on is on. Set it to false to turn this off. If there are not yet two days on each side, it shows WAITING. That is not a pass.",
       "RS vs benchmark is the stock price divided by the Nifty 50 (SENSEX for a BSE-only stock). It is not an IBD 1 to 99 rating. The 1 to 99 rank, the RS 70 filter, the chart RS line, and sector leaders stay as they are.",
       "READY means price is still under the buy line. BROKEN OUT today means it closed above the buy line on volume at least 1.5 times the 50-day average.",
       "WATCHING means the trend is 8 of 8 but it is not ready yet. Price went over the line on low volume, or there is only one pullback so far. WAITING means a check has no data yet. It is not a pass.",

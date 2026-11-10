@@ -78,7 +78,7 @@
     "stock_shareholding": true
   },
   "vcp": {
-    "_note": "VCP scanner. A stock is listed only when the trend template is 8 of 8, the same rule as the green VCP tag. Set show_weaker_trend to true to also list stocks with tightening pullbacks but a weaker trend, marked WATCHING (trend not 8/8). above_low_pct is how far the close must sit above the 52-week low. 25 means 25%. A close exactly 25% above the low passes. dry_up_on looks at the last contraction only, from its high through the day before the first close over the buy point. The breakout day is not in that window. dry_up_below_avg_on wants the average volume in the window under the 50-day average. dry_up_quiet_on wants dry_up_quiet_days days (1) at or under dry_up_quiet_frac (0.50) times that day's own 50-day average. dry_up_tighten_on is an extra check of ours, not a book rule: daily bars after the low are narrower than the drop. It starts off. The 1.5 times breakout-volume rule is separate and stays. Rule 8 is the stock versus the Nifty 50 (SENSEX for a BSE-only stock). It is not an IBD 1 to 99 rating. rs_6m_on and rs_12m_on want the RS line (stock close divided by the benchmark close) higher than 126 and 252 days ago. rs_21d_on wants it higher than 21 days ago. rs_50d_on wants it above its own 50-day average. A missing price or volume is WAITING. It is not a pass and it is not stored as 0. The 1 to 99 RS rank, the RS 70 filter, the chart RS line, and sector leaders are unchanged.",
+    "_note": "VCP scanner. A stock is listed only when the trend template is 8 of 8, the same rule as the green VCP tag. Set show_weaker_trend to true to also list stocks with tightening pullbacks but a weaker trend, marked WATCHING (trend not 8/8). above_low_pct is how far the close must sit above the 52-week low. 25 means 25%. A close exactly 25% above the low passes. dry_up_on looks at the last contraction only, from its high through the day before the first close over the buy point. The breakout day is not in that window. dry_up_below_avg_on wants the average volume in the window under the 50-day average. dry_up_quiet_on wants dry_up_quiet_days days (1) at or under dry_up_quiet_frac (0.50) times that day's own 50-day average. dry_up_tighten_on is on. In the last contraction, daily bars after the low have to be narrower than the bars from the high down to the low. The window stops the day before the first close over the buy point. Each side needs at least two days, or the check shows WAITING and does not pass. Set it to false to turn this check off. The 1.5 times breakout-volume rule is separate and stays. Rule 8 is the stock versus the Nifty 50 (SENSEX for a BSE-only stock). It is not an IBD 1 to 99 rating. rs_6m_on and rs_12m_on want the RS line (stock close divided by the benchmark close) higher than 126 and 252 days ago. rs_21d_on wants it higher than 21 days ago. rs_50d_on wants it above its own 50-day average. A missing price or volume is WAITING. It is not a pass and it is not stored as 0. The 1 to 99 RS rank, the RS 70 filter, the chart RS line, and sector leaders are unchanged.",
     "show_weaker_trend": false,
     "above_low_pct": 25,
     "dry_up_on": true,
@@ -86,7 +86,7 @@
     "dry_up_quiet_on": true,
     "dry_up_quiet_frac": 0.5,
     "dry_up_quiet_days": 1,
-    "dry_up_tighten_on": false,
+    "dry_up_tighten_on": true,
     "rs_6m_on": true,
     "rs_12m_on": true,
     "rs_21d_on": true,
