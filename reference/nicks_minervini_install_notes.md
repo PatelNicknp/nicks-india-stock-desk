@@ -53,6 +53,10 @@ A red **FAIL** means that rule missed. On the AMZN daily chart that was sent, RS
 
 Press and hold the row for the full note. The note stays off the chart so the box does not stretch.
 
+**Depth** is its own row. It is on by default. The deepest pullback in the current base must be no deeper than 35% (you can set 10 to 60). Exactly 35% passes. The row reads `PASS 28.0%` or `FAIL 41.0%`, or **OFF** if you turn **VCP and BUY need a shallow enough base** off. A fail blocks the green VCP tag and BUY. Each counted pullback is already smaller than the one before it.
+
+**Base** is its own row. It is on by default. On a daily chart, one week is 5 bars. The count runs from the base's starting high to today. **PASS** is 3 to 45 weeks. Shorter than 3 weeks is **WAIT**. Longer than 45 weeks is **FAIL**. A wait or a fail blocks the tag and BUY. The row can read `PASS 19.0w`. Turn **VCP and BUY need the base length in range** off and the row says **OFF** and does not block. The lookback is 225 bars so a 45-week base can still be seen. The T1 to T4 labels still use only the latest shrinking pullbacks.
+
 **Big-volume marks to draw** defaults to 8, the latest marks in the current base, and it skips the bar that carries a T label so the triangles do not sit on that tag. The 1.5x breakout test is unchanged. Set the number to 0 to hide the marks. The T label sits a little under the contraction low so the box is not on the candle. The contraction count is unchanged.
 
 ## How the quiet check is calculated

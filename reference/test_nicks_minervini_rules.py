@@ -300,8 +300,42 @@ def dry_up(high, low, close, volume, avg50, hi_ago, lo_ago, pivot, quiet_frac=0.
     }
 
 
-def is_vcp(shrinking, trend_ok, require_dry, dry_ok, require_tight=False, tight_ok=False):
-    return shrinking and trend_ok and ((not require_dry) or dry_ok) and ((not require_tight) or tight_ok)
+def is_vcp(shrinking, trend_ok, require_dry, dry_ok, require_tight=False, tight_ok=False,
+          require_depth=False, depth_ok=False, require_base=False, base_ok=False):
+    return (
+        shrinking and trend_ok
+        and ((not require_dry) or dry_ok)
+        and ((not require_tight) or tight_ok)
+        and ((not require_depth) or depth_ok)
+        and ((not require_base) or base_ok)
+    )
+
+
+def depth_check(depths, limit=35.0, enabled=True):
+    """Largest pullback in the base. Exactly the limit passes. Later ones already shrink."""
+    if not enabled:
+        return {"status": "OFF", "ok": True, "largest": None}
+    if not depths:
+        return {"status": "WAIT", "ok": False, "largest": None}
+    largest = max(depths)
+    ok = largest <= limit
+    return {"status": "PASS" if ok else "FAIL", "ok": ok, "largest": largest}
+
+
+def base_check(bars, min_weeks=3, max_weeks=45, enabled=True, daily=True):
+    """Bars from the base's starting high to today. One week is 5 daily bars."""
+    if not enabled:
+        return {"status": "OFF", "ok": True, "weeks": None}
+    if not daily or bars is None:
+        return {"status": "WAIT", "ok": False, "weeks": None}
+    weeks = bars / 5.0
+    if weeks < min_weeks:
+        status, ok = "WAIT", False
+    elif weeks > max_weeks:
+        status, ok = "FAIL", False
+    else:
+        status, ok = "PASS", True
+    return {"status": status, "ok": ok, "weeks": weeks}
 
 
 class Contractions:
@@ -472,7 +506,10 @@ class SourceLockTests(unittest.TestCase):
         self.assertIn("rsLine > rsLine[21]", src)
         self.assertIn("rsLine > rsSma50", src)
         self.assertIn("ta.sma(rsLine, 50)", src)
-        self.assertIn("isVCP = shrinking and trendOK and (not requireDry or dryUpOk) and (not requireTight or tightOk)", src)
+        self.assertIn(
+            "isVCP = shrinking and trendOK and (not requireDry or dryUpOk) and (not requireTight or tightOk) and (not requireDepth or depthOk) and (not requireBase or baseOk)",
+            src,
+        )
         self.assertIn("breakout = not na(pivotPrice) and crossUp and (not needVolume or bigVol) and isVCP", src)
         self.assertIn("if dBreakAgo < 0 and not na(close[bk]) and close[bk] > dPiv", src)
         self.assertIn("int dEndAgo = dBreakAgo >= 0 ? dBreakAgo + 1 : 0", src)
@@ -502,7 +539,13 @@ class SourceLockTests(unittest.TestCase):
 
     def test_score_box_stays_small_and_rules_stay(self):
         src = pine_text()
-        self.assertIn("table.new(position.bottom_right, 2, 11,", src)
+        self.assertIn("table.new(position.bottom_right, 2, 13,", src)
+        self.assertIn('input.int(225, "Base lookback (bars)"', src)
+        self.assertIn('input.float(35.0, "Deepest pullback allowed (%)"', src)
+        self.assertIn('input.int(3, "Base minimum (weeks)"', src)
+        self.assertIn('input.int(45, "Base maximum (weeks)"', src)
+        self.assertIn('"Depth"', src)
+        self.assertIn('"Base"', src)
         self.assertIn('requireTight = input.bool(true, "VCP and BUY need tighter bars after the low"', src)
         self.assertIn('"Bars tightened"', src)
         self.assertNotIn("table.merge_cells", src)
@@ -840,6 +883,47 @@ class DryUpTests(unittest.TestCase):
         # A heavy bar older than the swing high is not in the lists the check receives.
         got = self._quiet_pass()
         self.assertEqual(max(got["included"]), 5)
+
+
+class DepthAndBaseTests(unittest.TestCase):
+    def test_depth_limit_passes_at_35_and_fails_above_it(self):
+        exact = depth_check([35.0, 12.0, 6.0])
+        self.assertEqual(exact["status"], "PASS")
+        self.assertTrue(exact["ok"])
+        self.assertEqual(exact["largest"], 35.0)
+        deep = depth_check([35.01, 10.0])
+        self.assertEqual(deep["status"], "FAIL")
+        self.assertFalse(is_vcp(True, True, False, True, False, True, True, deep["ok"]))
+        shallow = depth_check([10.0, 4.0], limit=35)
+        self.assertEqual(shallow["status"], "PASS")
+        self.assertTrue(is_vcp(True, True, False, True, False, True, True, shallow["ok"]))
+
+    def test_depth_switch_off_does_not_block(self):
+        off = depth_check([50.0], enabled=False)
+        self.assertEqual(off["status"], "OFF")
+        self.assertTrue(is_vcp(True, True, False, True, False, True, False, False))
+
+    def test_no_pullback_waits(self):
+        got = depth_check([])
+        self.assertEqual(got["status"], "WAIT")
+        self.assertFalse(got["ok"])
+
+    def test_base_length_bounds(self):
+        self.assertEqual(base_check(15)["status"], "PASS")  # 3.0 weeks
+        self.assertAlmostEqual(base_check(15)["weeks"], 3.0)
+        short = base_check(14)  # 2.8 weeks
+        self.assertEqual(short["status"], "WAIT")
+        self.assertFalse(is_vcp(True, True, False, True, False, True, False, True, True, short["ok"]))
+        self.assertEqual(base_check(225)["status"], "PASS")  # 45.0 weeks
+        long = base_check(226)
+        self.assertEqual(long["status"], "FAIL")
+        self.assertFalse(long["ok"])
+        self.assertEqual(base_check(None)["status"], "WAIT")
+        self.assertEqual(base_check(100, daily=False)["status"], "WAIT")
+
+    def test_base_switch_off_does_not_block(self):
+        self.assertEqual(base_check(10, enabled=False)["status"], "OFF")
+        self.assertTrue(is_vcp(True, True, False, True, False, True, False, True, False, False))
 
 
 class ContractionTests(unittest.TestCase):
