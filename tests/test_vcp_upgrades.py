@@ -28,13 +28,14 @@ def test_config_defaults_match_the_brief():
     assert cfg["dry_up_quiet_on"] is True
     assert cfg["dry_up_quiet_frac"] == 0.5
     assert cfg["dry_up_quiet_days"] == 1
-    assert cfg["dry_up_tighten_on"] is False
+    assert cfg["dry_up_tighten_on"] is True
     assert cfg["rs_6m_on"] and cfg["rs_12m_on"] and cfg["rs_21d_on"] and cfg["rs_50d_on"]
     saved = __import__("json").load(open(os.path.join(ROOT, "config.json"), encoding="utf-8"))
     block = saved["vcp"]
     assert block["above_low_pct"] == 25
-    assert block["dry_up_tighten_on"] is False
-    assert "not a book rule" in block["_note"]
+    assert block["dry_up_tighten_on"] is True
+    assert "Set it to false" in block["_note"]
+    assert "not a book rule" not in block["_note"]
     assert "\u2014" not in block["_note"]
 
 
@@ -174,30 +175,58 @@ def test_rank_and_rs70_filter_are_unchanged():
     assert rs.raw_score([0.1, None, 0.2, 0.1]) is None
 
 
-def test_tighten_switch_is_off_and_does_not_block_a_quiet_base():
+def test_price_tightening_is_on_and_stays_switchable():
     high, low, close, volume, avg = _quiet_window()
-    # Make the later bars wider so the optional check would fail if it were on.
-    high[-2:] = high[-2:] + 2
-    low[-2:] = low[-2:] - 2
-    off = setups.contraction_dry_up(high, low, close, volume, avg, 0, 3, 10.0, 6, _spec())
-    assert off["status"] == "yes", off
-    on = setups.contraction_dry_up(
-        high, low, close, volume, avg, 0, 3, 10.0, 6, _spec(dry_up_tighten_on=True),
+    # The quiet sample already narrows after the low, so the check that is now on still passes.
+    quiet = setups.contraction_dry_up(high, low, close, volume, avg, 0, 3, 10.0, 6, _spec())
+    assert quiet["status"] == "yes", quiet
+    assert quiet["tight"] is True
+    wide_high = high.copy()
+    wide_low = low.copy()
+    wide_high[-2:] = wide_high[-2:] + 2
+    wide_low[-2:] = wide_low[-2:] - 2
+    blocked = setups.contraction_dry_up(wide_high, wide_low, close, volume, avg, 0, 3, 10.0, 6, _spec())
+    assert blocked["status"] == "no", blocked
+    assert blocked["tight"] is False
+    skipped = setups.contraction_dry_up(
+        wide_high, wide_low, close, volume, avg, 0, 3, 10.0, 6, _spec(dry_up_tighten_on=False),
     )
-    assert on["status"] == "no"
+    assert skipped["status"] == "yes", skipped
+    assert skipped["tight"] == "off"
+
+
+def test_tightening_ignores_the_breakout_day_and_waits_when_short():
+    high, low, close, volume, avg = _quiet_window()
+    close2 = close.copy()
+    high2 = high.copy()
+    low2 = low.copy()
+    close2[-1] = 11  # first close over the buy line, so today is left out
+    high2[-1] = 14
+    low2[-1] = 8
+    kept = setups.contraction_dry_up(high2, low2, close2, volume, avg, 0, 3, 10.0, 6, _spec())
+    assert kept["status"] == "yes", kept
+    assert kept["tight"] is True
+    # The low is the last bar, so there is no day after it yet.
+    waiting = setups.contraction_dry_up(high, low, close, volume, avg, 0, 6, 10.0, 6, _spec())
+    assert waiting["status"] == "waiting", waiting
+    assert waiting["tight"] is None
 
 
 def test_help_mentions_the_new_rules_without_a_profit_claim():
     import tables
     text = dict(tables.help_rows())["VCP scanner"]
-    for phrase in ("25%", "1.5", "WAITING", "not a book rule", "1 to 99", "vcp.show_weaker_trend"):
+    for phrase in ("25%", "1.5", "WAITING", "vcp.dry_up_tighten_on", "narrower", "1 to 99", "vcp.show_weaker_trend"):
         assert phrase in text, phrase
+    assert "not a book rule" not in text
     assert "8 trend rules pass" in text
     assert "profit" not in text.lower()
+    assert "\u2014" not in text
     pages = open(os.path.join(ROOT, "site", "js", "pages.js"), encoding="utf-8").read()
     assert "25%+ over 52w low" in pages
     assert "30%+ over 52w low" not in pages
     assert "Dried up" in pages
+    assert "vcp.dry_up_tighten_on is on" in pages
+    assert "\u2014" not in pages[pages.index("Volume dried up"):pages.index("RS vs benchmark")]
 
 
 if __name__ == "__main__":
@@ -208,6 +237,7 @@ if __name__ == "__main__":
     test_missing_benchmark_or_short_history_is_waiting()
     test_rs_line_needs_every_switched_on_piece()
     test_rank_and_rs70_filter_are_unchanged()
-    test_tighten_switch_is_off_and_does_not_block_a_quiet_base()
+    test_price_tightening_is_on_and_stays_switchable()
+    test_tightening_ignores_the_breakout_day_and_waits_when_short()
     test_help_mentions_the_new_rules_without_a_profit_claim()
     print("vcp upgrades ok")

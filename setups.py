@@ -282,7 +282,9 @@ def contraction_dry_up(high, low, close, volume, avg_vol, hi_bar, lo_bar, pivot,
     The window runs from the contraction high through the day before the first
     close above the buy point. The breakout day is left out. Missing volume or
     a 50-day average that is not ready yet is waiting, never a pass.
-    The narrower-bar check is optional and off unless dry_up_tighten_on is set.
+    When dry_up_tighten_on is set, the daily bars after the low also have to be
+    narrower than the bars from the high down to the low. Fewer than two usable
+    days on either side is waiting, never a pass.
     """
     if not spec.get("dry_up_on", True):
         return {"status": "off", "quiet_days": 0, "ratio": None}
@@ -354,7 +356,8 @@ def contraction_dry_up(high, low, close, volume, avg_vol, hi_bar, lo_bar, pivot,
         status = "yes"
     else:
         status = "waiting"
-    return {"status": status, "quiet_days": quiet_days, "ratio": ratio}
+    tight = results["tight"] if "tight" in results else "off"
+    return {"status": status, "quiet_days": quiet_days, "ratio": ratio, "tight": tight}
 
 
 def vcp_last(high, low, close, volume, spy, cfg=None):
@@ -510,6 +513,7 @@ def vcp_last(high, low, close, volume, spy, cfg=None):
         "rule_text": rule_text,
         "dry_up": dry["status"],
         "dry_quiet_days": int(dry["quiet_days"]),
+        "dry_tight": dry.get("tight", "off"),
         "above_low_pct": spec["above_low_pct"],
         "cnt": cnt,
         "depths": [round(float(d), 1) for d in c_depth],
@@ -545,8 +549,9 @@ VCP_DEFAULTS = {
     "dry_up_quiet_on": True,
     "dry_up_quiet_frac": 0.5,
     "dry_up_quiet_days": 1,
-    # Optional. Daily bars after the low are narrower than the drop. Not a book rule.
-    "dry_up_tighten_on": False,
+    # On: in the last contraction, daily bars after the low are narrower than the drop.
+    # The window stops the day before the close over the buy line. Set false to skip it.
+    "dry_up_tighten_on": True,
     # RS line versus Nifty 50, or SENSEX for a BSE-only name. Not the 1 to 99 rank.
     "rs_6m_on": True,
     "rs_12m_on": True,
@@ -640,9 +645,16 @@ def _vcp_reason(state, status, dates):
     if dry == "waiting":
         bits.append("Dry-up is waiting for the last contraction and its volume. That is not a pass.")
     elif dry == "no":
-        bits.append("The last contraction was not quiet. The 1.5 times volume check on the breakout day is separate.")
+        bits.append("The last contraction did not pass. Volume has to quiet down, and daily bars after the low have to be narrower than the drop while that check is on. The 1.5 times volume check on the breakout day is separate.")
     elif dry == "yes":
         bits.append("Quiet volume is measured before the breakout day, not on it.")
+    tight = state.get("dry_tight", "off")
+    if tight is True:
+        bits.append("Daily bars tightened after the low, before the breakout day.")
+    elif tight is False:
+        bits.append("Daily bars after the low were not narrower than the drop. vcp.dry_up_tighten_on is on. Set it to false to skip this check.")
+    elif tight is None:
+        bits.append("Price tightening is waiting for two daily bars on the drop and two after the low. That is not a pass.")
     bench = state.get("bench_name") or "the benchmark"
     r8 = texts[7] if len(texts) > 7 else ""
     if r8 == "PASS":
