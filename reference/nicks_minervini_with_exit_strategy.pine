@@ -10,9 +10,11 @@
 //    This is not IBD's 1-99 RS Rating. No 1-99 rank is calculated.
 // 3. The last contraction must quiet down before the breakout. The breakout day's
 //    volume is not part of that check. The 1.5x breakout-volume test stays separate.
+// 4. With the switch on, the same last contraction must also tighten: daily bars
+//    after the low are narrower than the bars on the way down. A wait is not a pass.
 indicator("Nick's Minervini with Exit Strategy", overlay = true, max_labels_count = 500, max_lines_count = 50, max_bars_back = 500)
 
-// ───────── SETTINGS (shown in the indicator's Settings window) ─────────
+// --------- SETTINGS (shown in the indicator's Settings window) ---------
 grpMA  = "Moving Averages"
 show50  = input.bool(true, "Show 50-day SMA",  group = grpMA)
 show150 = input.bool(true, "Show 150-day SMA", group = grpMA)
@@ -49,8 +51,9 @@ grpDry = "Quiet final contraction"
 requireDry = input.bool(true, "VCP and BUY need a quiet final contraction", group = grpDry, tooltip = "The last contraction must quiet down before the breakout. Turn this off to mark VCP the old way. The status line still shows.")
 quietFrac  = input.float(0.5, "Quiet day: at or under this fraction of 50-day volume", minval = 0.1, maxval = 1.0, step = 0.05, group = grpDry, tooltip = "0.50 means a day at half the 50-day average volume, or quieter. The book looks for one or two days like that.")
 minQuiet   = input.int(1, "Quiet days needed", minval = 1, maxval = 5, group = grpDry, tooltip = "How many quiet days the last contraction must have. 1 is the minimum. Set 2 to require two. More than that still passes.")
+requireTight = input.bool(true, "VCP and BUY need tighter bars after the low", group = grpDry, tooltip = "Last contraction only. Daily bars after the low must be narrower than the bars from the high down to the low. The window stops the day before the close over the buy line. Fewer than 2 days on either side waits, and a wait does not pass. Turn this off to ignore it.")
 
-// ───────── MOVING AVERAGES ─────────
+// --------- MOVING AVERAGES ---------
 sma50  = ta.sma(close, 50)
 sma150 = ta.sma(close, 150)
 sma200 = ta.sma(close, 200)
@@ -58,7 +61,7 @@ plot(show50  ? sma50  : na, "SMA 50",  color = color.new(color.blue, 0),   linew
 plot(show150 ? sma150 : na, "SMA 150", color = color.new(color.orange, 0), linewidth = 1)
 plot(show200 ? sma200 : na, "SMA 200", color = color.new(color.red, 0),    linewidth = 1)
 
-// ───────── TREND TEMPLATE (8 rules) ─────────
+// --------- TREND TEMPLATE (8 rules) ---------
 low52  = ta.lowest(low, 252)    // 52-week low (252 trading days)
 high52 = ta.highest(high, 252)  // 52-week high
 
@@ -130,14 +133,14 @@ else
 
 // Bottom-right on purpose. Ten short rows. A long sentence in a cell makes
 // TradingView stretch this box across the chart, which is what covered the iPad view.
-var table tt = table.new(position.bottom_right, 2, 10, bgcolor = color.new(color.black, 20), border_width = 1)
+var table tt = table.new(position.bottom_right, 2, 11, bgcolor = color.new(color.black, 20), border_width = 1)
 
 // Helper: write one rule row into the table. The tip is not drawn in the cell.
 rowRule(int row, string name, bool ok, string tip) =>
     table.cell(tt, 0, row, name, text_color = color.white, text_size = size.small, text_halign = text.align_left, tooltip = tip)
     table.cell(tt, 1, row, ok ? "PASS" : "FAIL", text_color = ok ? color.lime : color.red, text_size = size.small, tooltip = tip)
 
-// ───────── VCP DETECTION ─────────
+// --------- VCP DETECTION ---------
 // Find swing highs/lows. These return na on most bars and only confirm
 // 'pivR' bars after the actual swing.
 ph = ta.pivothigh(high, pivL, pivR)
@@ -243,17 +246,16 @@ shrinking = cnt >= 2   // the run is shrinking by construction; need 2+ for a VC
 // Uptrend filter: full 8/8 (default) or at least the core rules 1 & 2
 trendOK = requireAll ? score == 8 : (r1 and r2)
 
-// ───────── QUIET FINAL CONTRACTION ─────────
+// --------- QUIET FINAL CONTRACTION ---------
 // The last contraction is the newest T in the live base (the same high that sets the buy point).
 // Days included: from that swing high through the last day BEFORE the first close above the buy point.
 // The breakout day, and anything after it, is left out. Its volume is judged only by the 1.5x test.
-// Passes when all three are true:
+// Volume passes when both are true, on days already known. This does not look ahead.
 // 1. Average volume on those days is below the 50-day average volume on the last of those days.
 // 2. At least minQuiet days (default 1) have volume at or under quietFrac (default half) of THAT day's 50-day average.
-// 3. Price tightened: after the contraction low, and still before the breakout, the average daily
-//    high-to-low range is smaller than the average range from the swing high down to that low.
-//    Each side needs at least two daily bars, or the status stays WAIT instead of failing early.
-// Averages use only bars already known on that day. This does not look ahead of the baseline BUY mark.
+// Price tightening is a separate row. After the low, and still before the breakout, the average
+// daily high-to-low range must be smaller than the average range from the swing high down to that low.
+// Each side needs at least two daily bars, or that row stays WAIT. A wait does not pass.
 avgVol = ta.sma(volume, 50)
 bigVol = not na(avgVol) and volume > avgVol * volMult
 
@@ -262,6 +264,10 @@ string dryDetail = "No contraction yet."
 bool dryUpOk = false
 float dryMeanRatio = na
 int dryQuietN = 0
+string tightStatus = "WAIT"
+string tightDetail = "No contraction yet."
+bool tightOk = false
+float tightRatio = na
 if cnt > 0
     float dPiv = array.get(cHigh, cnt - 1)
     int dHiBar = array.get(cBar, cnt - 1)
@@ -323,35 +329,49 @@ if cnt > 0
             bool quietOk = quietN >= minQuiet
             float pullAvg = pullN > 0 ? pullSum / pullN : na
             float rightAvg = rightN > 0 ? rightSum / rightN : na
-            bool priceTight = pullN >= 2 and rightN >= 2 and not na(pullAvg) and not na(rightAvg) and rightAvg < pullAvg
-            bool mature = volN >= 4 and pullN >= 2 and rightN >= 2 and not na(refAvg) and refAvg > 0
-            string nums = "Last contraction, before the breakout: "
+            bool volReady = volN >= 4 and not na(refAvg) and refAvg > 0 and not na(dryMeanRatio)
+            dryQuietN := quietN
+            string nums = "Last contraction, before the breakout. "
             nums := nums + (na(dryMeanRatio) ? "Volume average is not ready. " : "Average volume is " + str.tostring(dryMeanRatio, "0.00") + "x the 50-day average. ")
             nums := nums + "Quiet days: " + str.tostring(quietN) + " (need " + str.tostring(minQuiet) + ", at or under " + str.tostring(quietFrac, "0.00") + "x usual volume). "
-            if pullN >= 2 and rightN >= 2
-                nums := nums + (priceTight ? "Daily bars got tighter after the low. " : "Daily bars after the low are not tighter than the drop. ")
-            else
-                nums := nums + "Need at least two daily bars on the drop and two after the low, before the breakout. "
             nums := nums + "The breakout day is not included."
-            if mature and not volBelow
+            if volReady and not volBelow
                 nums := nums + " It must be under 1.00x."
-            if mature and not quietOk
+            if volReady and not quietOk
                 nums := nums + " Not enough quiet days."
-            dryQuietN := quietN
-            if not mature
+            if not volReady
                 dryStatus := "WAIT"
                 dryUpOk := false
-            else if volBelow and quietOk and priceTight
+            else if volBelow and quietOk
                 dryStatus := "PASS"
                 dryUpOk := true
             else
                 dryStatus := "FAIL"
                 dryUpOk := false
             dryDetail := nums
+            if pullN >= 2 and rightN >= 2 and not na(pullAvg) and not na(rightAvg) and pullAvg > 0
+                tightRatio := rightAvg / pullAvg
+                if rightAvg < pullAvg
+                    tightStatus := "PASS"
+                    tightOk := true
+                else
+                    tightStatus := "FAIL"
+                    tightOk := false
+            else
+                tightStatus := "WAIT"
+                tightOk := false
+            tightDetail := "Last contraction only. Days after the low versus the days from the high down to the low, through the day before the close over the buy line. Need 2 days on each side (" + str.tostring(pullN) + " down, " + str.tostring(rightN) + " after). "
+            if not na(tightRatio)
+                tightDetail := tightDetail + "After-low range is " + str.tostring(tightRatio, "0.00") + " times the drop. Under 1.00 passes. "
+            else
+                tightDetail := tightDetail + "Not enough days yet, so this waits. A wait is not a pass. "
+            tightDetail := tightDetail + "The breakout day is not included."
 if not requireDry
     dryDetail := dryDetail + " Not required for the VCP tag."
+if not requireTight
+    tightDetail := tightDetail + " The switch is off, so this does not block the VCP tag or BUY."
 
-isVCP = shrinking and trendOK and (not requireDry or dryUpOk)
+isVCP = shrinking and trendOK and (not requireDry or dryUpOk) and (not requireTight or tightOk)
 
 // One "VCP" tag only, for the current base: delete the old one, drawn above the last contraction's high if valid
 var label vcpLbl = na
@@ -374,7 +394,7 @@ if barstate.islast
 
 // Score table. Last bar only, bottom-right, short cells. Long notes are tips, not rows.
 if barstate.islast
-    table.clear(tt, 0, 0, 1, 9)
+    table.clear(tt, 0, 0, 1, 10)
     if showTable
         string rsShow = benchName
         if str.length(rsShow) > 12
@@ -389,8 +409,12 @@ if barstate.islast
         string dryCell = dryStatus
         if showNumbers and not na(dryMeanRatio)
             dryCell := dryStatus + " " + str.tostring(dryMeanRatio, "0.00") + "x " + str.tostring(dryQuietN) + "d"
+        string tightShow = requireTight ? tightStatus : "OFF"
+        if requireTight and showNumbers and (tightStatus == "PASS" or tightStatus == "FAIL") and not na(tightRatio)
+            tightShow := tightStatus + " " + str.tostring(tightRatio, "0.00") + "x"
         color rsCol = rsStatus == "PASS" ? color.lime : rsStatus == "FAIL" ? color.red : color.orange
         color dryCol = dryStatus == "PASS" ? color.lime : dryStatus == "FAIL" ? color.red : color.orange
+        color tightCol = not requireTight ? color.gray : tightStatus == "PASS" ? color.lime : tightStatus == "FAIL" ? color.red : color.orange
         table.cell(tt, 0, 0, "Trend Template", text_color = color.white, text_size = size.small, tooltip = "Eight rules. A red FAIL means that rule missed. Press a row for the numbers.")
         table.cell(tt, 1, 0, str.tostring(score) + "/8", text_color = color.white, text_size = size.normal, bgcolor = score == 8 ? color.new(color.green, 0) : score >= 6 ? color.new(color.orange, 0) : color.new(color.red, 0), tooltip = "Eight rules. A red FAIL means that rule missed.")
         if showDetail
@@ -405,8 +429,10 @@ if barstate.islast
             table.cell(tt, 1, 8, rsCell, text_color = rsCol, text_size = size.small, tooltip = rsTip)
             table.cell(tt, 0, 9, "Last contraction quiet", text_color = color.white, text_size = size.small, text_halign = text.align_left, tooltip = dryDetail)
             table.cell(tt, 1, 9, dryCell, text_color = dryCol, text_size = size.small, tooltip = dryDetail)
+            table.cell(tt, 0, 10, "Bars tightened", text_color = color.white, text_size = size.small, text_halign = text.align_left, tooltip = tightDetail)
+            table.cell(tt, 1, 10, tightShow, text_color = tightCol, text_size = size.small, tooltip = tightDetail)
 
-// ───────── BUY POINT (pivot) ─────────
+// --------- BUY POINT (pivot) ---------
 // Pivot = high of the most recent (tightest) contraction in the current base
 pivotPrice = cnt > 0 ? array.get(cHigh, cnt - 1) : na
 pivotBar   = cnt > 0 ? array.get(cBar, cnt - 1) : na
@@ -422,7 +448,7 @@ else if not na(buyLine)
     line.delete(buyLine)
     buyLine := na
 
-// ───────── VOLUME ─────────
+// --------- VOLUME ---------
 // avgVol and bigVol are calculated above. The triangles, the 1.5x breakout test, and the exits share that same 50-day average.
 // Big-volume triangles are drawn ONLY inside the current base (from the base high to today).
 // Redrawn on the last bar, so old ones outside the base disappear.
@@ -450,7 +476,7 @@ if barstate.islast
                     array.push(vLbl, label.new(markBar, low[k], "", yloc = yloc.belowbar, style = label.style_triangleup, color = up ? color.new(color.green, 0) : color.new(color.red, 0), size = size.tiny))
                     marked := marked + 1
 
-// ───────── ALERT ─────────
+// --------- ALERT ---------
 crossUp = ta.crossover(close, pivotPrice)   // calculated every bar (Pine needs this)
 breakout = not na(pivotPrice) and crossUp and (not needVolume or bigVol) and isVCP
 plotshape(breakout, "Breakout", shape.labelup, location.belowbar, color.new(color.lime, 0), text = "BUY", textcolor = color.black, size = size.small)
@@ -465,7 +491,7 @@ if barstate.islast and showDist
     col = pctOff <= 10 ? color.lime : pctOff <= 25 ? color.orange : color.red
     table.cell(distT, 0, 0, txt, text_color = col, text_size = size.normal)
 
-// ───────── EXIT TOOLS (Minervini-style) ─────────
+// --------- EXIT TOOLS (Minervini-style) ---------
 // Starts after a BUY. Every piece can be switched on/off in Settings.
 grpExit = "Exit tools"
 exitOn     = input.bool(true,  "Show exit tools (master switch)", group = grpExit)
