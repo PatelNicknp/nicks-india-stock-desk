@@ -42,10 +42,10 @@
   "KCDGROUP": "2026-11-12",
   "SPACEINCUBA": "2026-11-12"
  },
- "last_batch_at": "2026-11-11T14:03Z",
- "last_statements_ok": 5,
- "last_statements_fail": 1,
- "last_shareholding_ok": 63,
+ "last_batch_at": "2026-11-11T17:32Z",
+ "last_statements_ok": 0,
+ "last_statements_fail": 0,
+ "last_shareholding_ok": 59,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
   "BIRET": "2026-11-11",
