@@ -856,3 +856,267 @@ def metrics_asof(prep, asof, price, quarters=None):
         "fcf_per_share": None if not np.isfinite(fcf_ps) else float(fcf_ps),
     })
     return out
+
+
+STATEMENT_MONEY_COLS = (
+    "revenue", "net_income", "gross_profit", "op_income", "equity", "debt",
+    "ocf", "capex",
+)
+STATEMENT_PER_SHARE_COLS = ("eps", "dps")
+# Used only when INR=X is missing entirely. The cached series starts near 83
+# in late 2023 and was near 95 by late 2026, so 88 is a mid-2020s stand-in.
+FALLBACK_USD_INR = 88.0
+FIXED_INR_PER_UNIT = {
+    "USD": FALLBACK_USD_INR,
+    "EUR": 90.0,   # no EURINR series is cached; documented approximate
+    "GBP": 105.0,  # no GBPINR series is cached; documented approximate
+}
+
+
+def normalize_statement_currency(raw):
+    """Map a Yahoo currency code to INR / USD / EUR / GBP, or None if unknown."""
+    if raw is None:
+        return None
+    try:
+        if isinstance(raw, float) and not np.isfinite(raw):
+            return None
+    except (TypeError, ValueError):
+        return None
+    s = str(raw).strip().upper()
+    if not s or s in ("NAN", "NONE", "NULL", "NAT"):
+        return None
+    if s in ("INR", "RS", "RS.", "INR=X"):
+        return "INR"
+    if s in ("USD", "US$", "USD/SHARES"):
+        return "USD"
+    if s in ("EUR", "GBP", "JPY", "CHF", "AUD", "CAD", "SGD", "HKD"):
+        return s
+    return s
+
+
+def usd_inr_on(fx, when, fallback=FALLBACK_USD_INR):
+    """INR per 1 USD on or before `when`.
+
+    Historical rates come from the cached INR=X series. A date before the
+    first bar uses that first rate. A date after the last bar uses the last
+    rate (the most recent cached print). If the series is empty, `fallback`
+    is used (88 unless the caller passes another number).
+    """
+    rate = None
+    if fx is not None and len(fx):
+        s = pd.to_numeric(fx, errors="coerce").dropna()
+        if len(s):
+            if not isinstance(s.index, pd.DatetimeIndex):
+                s = s.copy()
+                s.index = pd.to_datetime(s.index, errors="coerce")
+                s = s[s.index.notna()].sort_index()
+            else:
+                s = s.sort_index()
+            if len(s):
+                if when is None or pd.isna(pd.Timestamp(when)):
+                    rate = float(s.iloc[-1])
+                else:
+                    ts = pd.Timestamp(when)
+                    prior = s.loc[:ts]
+                    if len(prior):
+                        rate = float(prior.iloc[-1])
+                    else:
+                        rate = float(s.iloc[0])
+    if rate is None or not np.isfinite(rate) or rate <= 0:
+        return float(fallback)
+    return float(rate)
+
+
+def guess_statement_currency(price, shares, revenue, eps, fx_rate):
+    """Return USD when rupee prices and these statement figures only fit after a dollar conversion.
+
+    The usual tell is a sky-high P/E (above the 500 cap used for trailing P/E)
+    plus a P/S above 80 that both land in a normal band after dividing by
+    USD/INR. A name whose trailing P/E is already inside 1-500 is left as INR,
+    even if P/S is rich, so expensive small caps are not rewritten.
+    """
+    px = _num(price)
+    sh = _num(shares)
+    rev = _num(revenue)
+    rate = _num(fx_rate)
+    if px is None or sh is None or rev is None or rate is None:
+        return "INR"
+    if px <= 0 or sh <= 0 or rev <= 0 or rate <= 1:
+        return "INR"
+    raw_ps = (px * sh) / rev
+    if raw_ps <= 80:
+        return "INR"
+    conv_ps = raw_ps / rate
+    if conv_ps < 0.2 or conv_ps > 40:
+        return "INR"
+    # Dying microcaps can print huge P/E and P/S because sales are tiny, not
+    # because Yahoo used dollars. Infosys-scale USD filings have billions of
+    # units of revenue (or a large rupee market cap).
+    mcap = px * sh
+    if rev < 1e9 and mcap < 5e10:
+        return "INR"
+    ep = _num(eps)
+    if ep is not None and ep > 0:
+        raw_pe = px / ep
+        if raw_pe <= 500:
+            return "INR"
+        conv_pe = raw_pe / rate
+        if 4 <= conv_pe <= 80:
+            return "USD"
+        return "INR"
+    # No usable EPS: only convert a large company whose P/S FX-corrects.
+    if (px * sh) >= 1e11:
+        return "USD"
+    return "INR"
+
+
+def _info_financial_currency(info):
+    out = {}
+    if info is None or len(info) == 0 or "ticker" not in getattr(info, "columns", []):
+        return out
+    for rec in info.to_dict("records"):
+        ticker = str(rec.get("ticker") or "").upper().strip()
+        if not ticker:
+            continue
+        raw = rec.get("financial_currency")
+        if raw is None or str(raw).strip() == "":
+            raw = rec.get("financialCurrency")
+        ccy = normalize_statement_currency(raw)
+        if ccy:
+            out[ticker] = ccy
+    return out
+
+
+def _latest_statement_row(frame):
+    latest = {}
+    if frame is None or len(frame) == 0 or "ticker" not in getattr(frame, "columns", []):
+        return latest
+    tmp = frame.copy()
+    tmp["_end"] = pd.to_datetime(tmp["end"], errors="coerce") if "end" in tmp.columns else pd.NaT
+    if "revenue" in tmp.columns:
+        tmp["revenue"] = pd.to_numeric(tmp["revenue"], errors="coerce")
+    else:
+        tmp["revenue"] = np.nan
+    tmp = tmp.sort_values(["ticker", "_end"], na_position="first")
+    for ticker, group in tmp.groupby(tmp["ticker"].astype(str), sort=False):
+        with_rev = group[group["revenue"].notna() & (group["revenue"] > 0)]
+        pick = with_rev.iloc[-1] if len(with_rev) else group.iloc[-1]
+        latest[str(ticker)] = pick
+    return latest
+
+
+def _last_price(close, ticker):
+    if close is None:
+        return None
+    if isinstance(close, pd.DataFrame):
+        if ticker not in close.columns:
+            return None
+        series = pd.to_numeric(close[ticker], errors="coerce").dropna()
+        return float(series.iloc[-1]) if len(series) else None
+    series = pd.to_numeric(close, errors="coerce").dropna()
+    return float(series.iloc[-1]) if len(series) else None
+
+
+def _rate_for_currency(ccy, fx, when):
+    ccy = normalize_statement_currency(ccy) or ccy
+    if ccy == "INR":
+        return 1.0
+    if ccy == "USD":
+        return usd_inr_on(fx, when, FALLBACK_USD_INR)
+    fixed = FIXED_INR_PER_UNIT.get(ccy)
+    if fixed:
+        return float(fixed)
+    return None
+
+
+def detect_statement_currencies(annual, quarters=None, close=None, info=None, fx=None):
+    """One decision per ticker: explicit Yahoo financialCurrency, else the heuristic."""
+    declared = _info_financial_currency(info)
+    latest = _latest_statement_row(annual)
+    if not latest:
+        latest = _latest_statement_row(quarters)
+    tickers = set(declared) | set(latest)
+    if quarters is not None and len(quarters) and "ticker" in quarters.columns:
+        tickers |= set(quarters["ticker"].astype(str))
+    if annual is not None and len(annual) and "ticker" in annual.columns:
+        tickers |= set(annual["ticker"].astype(str))
+    recent_fx = usd_inr_on(fx, None, FALLBACK_USD_INR)
+    rows = []
+    for ticker in sorted(tickers):
+        source = "heuristic"
+        ccy = declared.get(ticker)
+        if ccy:
+            source = "field"
+        else:
+            rec = latest.get(ticker)
+            price = _last_price(close, ticker)
+            if rec is not None:
+                ccy = guess_statement_currency(
+                    price, rec.get("shares"), rec.get("revenue"), rec.get("eps"), recent_fx)
+            else:
+                ccy = "INR"
+        convert = ccy is not None and ccy != "INR"
+        rows.append({
+            "ticker": ticker,
+            "currency": ccy or "INR",
+            "source": source,
+            "converted": convert,
+        })
+    return pd.DataFrame(rows)
+
+
+def _scale_statement_frame(frame, decisions, fx, rate_on):
+    """Apply one FX rate per ticker so growth percents stay in the source terms."""
+    if frame is None or len(frame) == 0:
+        return frame
+    out = frame.copy()
+    if "ticker" not in out.columns:
+        return out
+    by_ticker = {str(r["ticker"]): r for r in decisions.to_dict("records")} if decisions is not None and len(decisions) else {}
+    rates = np.ones(len(out), dtype=float)
+    tickers = out["ticker"].astype(str).tolist()
+    for i, ticker in enumerate(tickers):
+        meta = by_ticker.get(ticker)
+        if not meta or not meta.get("converted"):
+            continue
+        when = rate_on.get(ticker)
+        rate = _rate_for_currency(meta.get("currency"), fx, when)
+        if rate is None or rate <= 0:
+            continue
+        rates[i] = rate
+    if not np.any(rates != 1.0):
+        return out
+    for col in STATEMENT_MONEY_COLS + STATEMENT_PER_SHARE_COLS:
+        if col not in out.columns:
+            continue
+        vals = pd.to_numeric(out[col], errors="coerce")
+        out[col] = vals * rates
+    return out
+
+
+def align_statements_to_inr(annual, quarters, close=None, info=None, fx=None):
+    """Convert any non-INR cached statements into rupees so multiples use one currency.
+
+    Does not rewrite the on-disk cache. Shares are left alone. Each converted
+    name uses one USD/INR rate (cached INR=X on that name's latest period end,
+    or 88 if the series is missing) so current and history stay in rupees and
+    growth percents are not mixed with later rupee moves.
+    """
+    decisions = detect_statement_currencies(annual, quarters, close, info, fx)
+    rate_on = {}
+    for frame in (annual, quarters):
+        if frame is None or len(frame) == 0 or "ticker" not in getattr(frame, "columns", []):
+            continue
+        ends = pd.to_datetime(frame["end"], errors="coerce") if "end" in frame.columns else pd.Series(pd.NaT, index=frame.index)
+        tmp = pd.DataFrame({"ticker": frame["ticker"].astype(str), "end": ends})
+        tmp = tmp.dropna(subset=["end"])
+        if not len(tmp):
+            continue
+        latest = tmp.groupby("ticker")["end"].max()
+        for ticker, when in latest.items():
+            prev = rate_on.get(ticker)
+            if prev is None or when > prev:
+                rate_on[ticker] = when
+    annual_out = _scale_statement_frame(annual, decisions, fx, rate_on)
+    quarters_out = _scale_statement_frame(quarters, decisions, fx, rate_on)
+    return annual_out, quarters_out, decisions
