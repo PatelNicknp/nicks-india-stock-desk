@@ -7,17 +7,15 @@
   "DUMMYINXGN": "2026-11-12",
   "DVL": "2026-10-27",
   "DYNPRO": "2026-10-27",
-  "TEAM24": "2026-11-10",
+  "TEAM24": "2026-11-12",
   "KHAZANCHI": "2026-10-29",
   "SUDARSHAN": "2026-10-28",
   "BONDADA": "2026-10-30",
   "EDELALTS": "2026-11-04",
   "SUGALESL": "2026-11-16",
   "TRANOCE": "2026-11-04",
-  "SAHAJDIGI": "2026-11-10",
   "BRIGHTOUTD": "2026-11-07",
   "AVENIQUE": "2026-11-10",
-  "OLAPP": "2026-11-10",
   "VEEFIN": "2026-11-12",
   "4THGEN": "2026-11-12",
   "ABHIINFRA": "2026-11-12"
@@ -43,10 +41,10 @@
   "KCDGROUP": "2026-11-12",
   "SPACEINCUBA": "2026-11-12"
  },
- "last_batch_at": "2026-11-11T03:46Z",
- "last_statements_ok": 0,
- "last_statements_fail": 6,
- "last_shareholding_ok": 88,
+ "last_batch_at": "2026-11-11T04:02Z",
+ "last_statements_ok": 15,
+ "last_statements_fail": 1,
+ "last_shareholding_ok": 76,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
   "BIRET": "2026-11-11",
@@ -98,18 +96,6 @@
    "retry_after": "2026-11-10",
    "note": "no statement source answered"
   },
-  "OLAPP": {
-   "count": 1,
-   "last_on": "2026-11-09",
-   "retry_after": "2026-11-10",
-   "note": "no statement source answered"
-  },
-  "SAHAJDIGI": {
-   "count": 1,
-   "last_on": "2026-11-09",
-   "retry_after": "2026-11-10",
-   "note": "no statement source answered"
-  },
   "SUGALESL": {
    "count": 0,
    "last_on": "2026-11-09",
@@ -117,9 +103,9 @@
    "note": "quote only, no results"
   },
   "TEAM24": {
-   "count": 1,
-   "last_on": "2026-11-09",
-   "retry_after": "2026-11-10",
+   "count": 2,
+   "last_on": "2026-11-11",
+   "retry_after": "2026-11-12",
    "note": "no statement source answered"
   },
   "VEEFIN": {

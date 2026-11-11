@@ -4,7 +4,7 @@
  "providers": {
   "BSE shareholding": {
    "cooldown_until": "",
-   "fails": 1,
+   "fails": 2,
    "last_error": "skipped after repeated failures in this run"
   },
   "NSE shareholding": {
@@ -24,13 +24,13 @@
   },
   "Yahoo BO": {
    "cooldown_until": "",
-   "fails": 1,
-   "last_error": "skipped after repeated failures in this run"
+   "fails": 0,
+   "last_error": ""
   },
   "Yahoo NS": {
    "cooldown_until": "",
-   "fails": 1,
-   "last_error": "skipped after repeated failures in this run"
+   "fails": 0,
+   "last_error": ""
   }
  },
  "stalls": {
@@ -43,7 +43,8 @@
    "runs": 0
   },
   "statements": {
-   "runs": 1
+   "cooldown_until": "",
+   "runs": 0
   }
  },
  "unavailable": {
@@ -126,6 +127,15 @@
    "retry_after": "2026-11-12",
    "since": "2026-11-11",
    "ticker": "DUMMYINXGN",
+   "tries": 1
+  },
+  "statements:TEAM24": {
+   "kind": "statements",
+   "last_on": "2026-11-11",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-12",
+   "since": "2026-11-11",
+   "ticker": "TEAM24",
    "tries": 1
   },
   "statements:VEEFIN": {
