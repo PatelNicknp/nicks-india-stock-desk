@@ -78,6 +78,7 @@ feature.stock_canslim,True
 feature.canslim_industry_rank,True
 feature.canslim_free_float,True
 feature.canslim_news,True
+feature.run_everything,True
 buy_setups.market_filter,True
 buy_setups.chart_setups_only,True
 buy_setups.full_rules_at_coverage_pct,80

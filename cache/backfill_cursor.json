@@ -1,23 +1,24 @@
 {
  "statements_retry_after": {
-  "BAGMANE": "2026-11-10",
-  "DUMMYHEG": "2026-11-10",
+  "BAGMANE": "2026-11-12",
+  "DUMMYHEG": "2026-11-12",
   "DUMMYINGL1": "2026-11-05",
   "DUMMYINGL2": "2026-11-05",
-  "DUMMYINXGN": "2026-11-10",
+  "DUMMYINXGN": "2026-11-12",
   "DVL": "2026-10-27",
   "DYNPRO": "2026-10-27",
-  "TEAM24": "2026-11-10",
+  "TEAM24": "2026-11-12",
   "KHAZANCHI": "2026-10-29",
   "SUDARSHAN": "2026-10-28",
   "BONDADA": "2026-10-30",
   "EDELALTS": "2026-11-04",
   "SUGALESL": "2026-11-16",
   "TRANOCE": "2026-11-04",
-  "SAHAJDIGI": "2026-11-10",
   "BRIGHTOUTD": "2026-11-07",
   "AVENIQUE": "2026-11-10",
-  "OLAPP": "2026-11-10"
+  "VEEFIN": "2026-11-12",
+  "4THGEN": "2026-11-12",
+  "ABHIINFRA": "2026-11-12"
  },
  "shareholding_retry_after": {
   "08AGG": "2026-10-27",
@@ -40,68 +41,56 @@
   "KCDGROUP": "2026-11-12",
   "SPACEINCUBA": "2026-11-12"
  },
- "last_batch_at": "2026-11-09T10:01Z",
- "last_statements_ok": 0,
- "last_statements_fail": 0,
- "last_shareholding_ok": 57,
+ "last_batch_at": "2026-11-11T04:02Z",
+ "last_statements_ok": 15,
+ "last_statements_fail": 1,
+ "last_shareholding_ok": 76,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
-  "BIRET": "2026-11-09",
-  "EMBASSY": "2026-11-09",
-  "BAGMANE": "2026-11-09",
-  "DUMMYHEG": "2026-11-09",
+  "BIRET": "2026-11-11",
+  "EMBASSY": "2026-11-11",
+  "BAGMANE": "2026-11-11",
+  "DUMMYHEG": "2026-11-11",
   "DUMMYINGL1": "2026-11-04",
   "DUMMYINGL2": "2026-11-04",
-  "DUMMYINXGN": "2026-11-09",
+  "DUMMYINXGN": "2026-11-11",
   "OLAELEC-RE": "2026-10-27",
-  "APLABPP": "2026-11-09",
-  "ATLPP": "2026-11-09",
-  "GSAILPP": "2026-11-09",
+  "APLABPP": "2026-11-11",
+  "ATLPP": "2026-11-11",
+  "GSAILPP": "2026-11-11",
   "JAYKAYPP": "2026-11-09",
   "QDLCCPS": "2026-11-05",
-  "SURAJINDPP": "2026-11-09",
-  "VERTEXPP": "2026-11-09",
+  "SURAJINDPP": "2026-11-11",
+  "VERTEXPP": "2026-11-11",
   "ICICIPRULI": "2026-10-27",
-  "ACESEPP": "2026-11-09",
-  "SHIVAM-RE1": "2026-11-09",
+  "ACESEPP": "2026-11-11",
+  "SHIVAM-RE1": "2026-11-11",
   "ANIRITPP": "2026-11-09",
-  "CENTEXTPP": "2026-11-09",
+  "CENTEXTPP": "2026-11-11",
   "OLAPP": "2026-11-09"
  },
- "last_shareholding_empty": 14,
+ "last_shareholding_empty": 13,
  "last_shareholding_skipped": 0,
  "statements_failures": {
   "BAGMANE": {
-   "count": 1,
-   "last_on": "2026-11-09",
-   "retry_after": "2026-11-10",
+   "count": 2,
+   "last_on": "2026-11-11",
+   "retry_after": "2026-11-12",
    "note": "no statement source answered"
   },
   "DUMMYHEG": {
-   "count": 1,
-   "last_on": "2026-11-09",
-   "retry_after": "2026-11-10",
+   "count": 2,
+   "last_on": "2026-11-11",
+   "retry_after": "2026-11-12",
    "note": "no statement source answered"
   },
   "DUMMYINXGN": {
-   "count": 1,
-   "last_on": "2026-11-09",
-   "retry_after": "2026-11-10",
+   "count": 2,
+   "last_on": "2026-11-11",
+   "retry_after": "2026-11-12",
    "note": "no statement source answered"
   },
   "AVENIQUE": {
-   "count": 1,
-   "last_on": "2026-11-09",
-   "retry_after": "2026-11-10",
-   "note": "no statement source answered"
-  },
-  "OLAPP": {
-   "count": 1,
-   "last_on": "2026-11-09",
-   "retry_after": "2026-11-10",
-   "note": "no statement source answered"
-  },
-  "SAHAJDIGI": {
    "count": 1,
    "last_on": "2026-11-09",
    "retry_after": "2026-11-10",
@@ -114,9 +103,27 @@
    "note": "quote only, no results"
   },
   "TEAM24": {
+   "count": 2,
+   "last_on": "2026-11-11",
+   "retry_after": "2026-11-12",
+   "note": "no statement source answered"
+  },
+  "VEEFIN": {
    "count": 1,
-   "last_on": "2026-11-09",
-   "retry_after": "2026-11-10",
+   "last_on": "2026-11-11",
+   "retry_after": "2026-11-12",
+   "note": "no statement source answered"
+  },
+  "4THGEN": {
+   "count": 1,
+   "last_on": "2026-11-11",
+   "retry_after": "2026-11-12",
+   "note": "no statement source answered"
+  },
+  "ABHIINFRA": {
+   "count": 1,
+   "last_on": "2026-11-11",
+   "retry_after": "2026-11-12",
    "note": "no statement source answered"
   }
  },

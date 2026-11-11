@@ -394,6 +394,9 @@ def score_components(fin, mkt, extra, cfg):
     pts_earn = earnings_points(extra.get("eps_flag"), extra.get("rev_flag"))
     pts_sec = sector_points(extra.get("sector_excess"))
     tech = nansum_strict([pts_trend, pts_osc])
+    # Out-of-range multiples are already blanked (same as a missing value).
+    # nansum_strict leaves those out, which is the same as scoring them 0, so
+    # the Financials tile, the breakdown subtotal, and the desk score match.
     fin_pts = nansum_strict([pts[k] for k, _ in FIN_SPECS])
     sent = nansum_strict([pts_an, pts_inst, pts_ins])
     score = nansum_strict([tech, fin_pts, sent, pts_earn, pts_sec])

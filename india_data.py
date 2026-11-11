@@ -295,6 +295,9 @@ def fetch_yahoo_bundle(ticker, cfg, symbol=None):
             "target_mean": inf.get("targetMeanPrice"),
             "target_median": inf.get("targetMedianPrice"),
             "earnings_ts": inf.get("earningsTimestamp"),
+            # Statement units. Quote currency is often INR for .NS even when Yahoo's
+            # income statement is in USD, so this is financialCurrency, not currency.
+            "financial_currency": inf.get("financialCurrency") or "",
             # Already in the same profile reply, so the company line costs no extra request.
             "summary": company_lines.keep_summary(inf.get("longBusinessSummary") or ""),
         }

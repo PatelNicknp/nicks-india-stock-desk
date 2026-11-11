@@ -1,9 +1,48 @@
 {
  "incomplete": {},
  "needs_person": {},
- "providers": {},
+ "providers": {
+  "BSE shareholding": {
+   "cooldown_until": "",
+   "fails": 2,
+   "last_error": "skipped after repeated failures in this run"
+  },
+  "NSE shareholding": {
+   "cooldown_until": "",
+   "fails": 0,
+   "last_error": ""
+  },
+  "Screener About": {
+   "cooldown_until": "",
+   "fails": 0,
+   "last_error": ""
+  },
+  "Screener shareholding": {
+   "cooldown_until": "",
+   "fails": 0,
+   "last_error": ""
+  },
+  "Yahoo BO": {
+   "cooldown_until": "",
+   "fails": 0,
+   "last_error": ""
+  },
+  "Yahoo NS": {
+   "cooldown_until": "",
+   "fails": 0,
+   "last_error": ""
+  }
+ },
  "stalls": {
   "prices": {
+   "cooldown_until": "",
+   "runs": 0
+  },
+  "shareholding": {
+   "cooldown_until": "",
+   "runs": 0
+  },
+  "statements": {
    "cooldown_until": "",
    "runs": 0
   }
@@ -42,6 +81,69 @@
    "note": "Stooq and Yahoo had no daily bars. The saved file was not changed for this name.",
    "retry_after": "2026-11-16",
    "since": "2026-11-09",
+   "ticker": "VEEFIN",
+   "tries": 1
+  },
+  "statements:4THGEN": {
+   "kind": "statements",
+   "last_on": "2026-11-11",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-12",
+   "since": "2026-11-11",
+   "ticker": "4THGEN",
+   "tries": 1
+  },
+  "statements:ABHIINFRA": {
+   "kind": "statements",
+   "last_on": "2026-11-11",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-12",
+   "since": "2026-11-11",
+   "ticker": "ABHIINFRA",
+   "tries": 1
+  },
+  "statements:BAGMANE": {
+   "kind": "statements",
+   "last_on": "2026-11-11",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-12",
+   "since": "2026-11-11",
+   "ticker": "BAGMANE",
+   "tries": 1
+  },
+  "statements:DUMMYHEG": {
+   "kind": "statements",
+   "last_on": "2026-11-11",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-12",
+   "since": "2026-11-11",
+   "ticker": "DUMMYHEG",
+   "tries": 1
+  },
+  "statements:DUMMYINXGN": {
+   "kind": "statements",
+   "last_on": "2026-11-11",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-12",
+   "since": "2026-11-11",
+   "ticker": "DUMMYINXGN",
+   "tries": 1
+  },
+  "statements:TEAM24": {
+   "kind": "statements",
+   "last_on": "2026-11-11",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-12",
+   "since": "2026-11-11",
+   "ticker": "TEAM24",
+   "tries": 1
+  },
+  "statements:VEEFIN": {
+   "kind": "statements",
+   "last_on": "2026-11-11",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-12",
+   "since": "2026-11-11",
    "ticker": "VEEFIN",
    "tries": 1
   }
