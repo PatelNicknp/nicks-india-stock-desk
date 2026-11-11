@@ -3,3 +3,4 @@ date,cash,invested,equity,return_pct,nifty_close,nifty_equity,nifty_return_pct,d
 2026-11-05,0.71,982236.58,982237.29,-1.78,23440.8,1000000.0,0.0,-1.78,10,Nifty close is the latest index bar on file.
 2026-11-06,92984.24,889128.15,982112.39,-1.79,23440.8,1000000.0,0.0,-1.79,9,Nifty close is the latest index bar on file.
 2026-11-09,92984.24,902722.16,995706.4,-0.43,23440.8,1000000.0,0.0,-0.43,9,Nifty close is the latest index bar on file.
+2026-11-11,92984.24,901571.77,994556.01,-0.54,25044.65,1068421.3,6.84,-0.54,9,Nifty close is the latest index bar on file.
