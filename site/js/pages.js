@@ -756,7 +756,7 @@
       const vol = D.num(row.s_value);
       if (vol != null) bits.push("20-day avg " + clVol(vol) + " shares");
       const vx = scoreRow ? D.num(scoreRow.volume_ratio) : null;
-      if (vx != null) bits.push(D.fmt(vx, vx >= 10 ? 0 : 1) + "x");
+      if (vx != null && vx >= 0.1) bits.push(D.fmt(vx, vx >= 10 ? 0 : 1) + "x");
       const fl = D.num(row.s_float_pct);
       if (fl != null) bits.push("free float " + D.fmt(fl, 1) + "%");
       return bits.join(", ");
