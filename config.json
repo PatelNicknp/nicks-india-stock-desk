@@ -371,6 +371,7 @@
     "bse_only_uses_sensex": true
   },
   "fundamentals_backfill": {
+    "_note": "Financials and shareholding backfill. statements_per_run stays 200; the name cap is not raised. Statements now try official NSE rupee filings first (list + up to nse_xbrl_quarters quarterly and nse_xbrl_annuals annual XBRL files, with nse_xbrl_pause_seconds between files), then BSE, then Yahoo. If the newest NSE or BSE period is older than nse_results_max_age_days, that source is treated as empty so a fresher fallback can run. Extra HTTP calls per name may mean fewer names finish inside max_minutes. No new secrets.",
     "statements_per_run": 200,
     "shareholding_per_run": 200,
     "pause_seconds": 0.45,
@@ -378,7 +379,11 @@
     "statements_refresh_days": 90,
     "shareholding_refresh_days": 90,
     "company_lines_per_run": 40,
-    "rebuild_pages_after_run": true
+    "rebuild_pages_after_run": true,
+    "nse_xbrl_quarters": 8,
+    "nse_xbrl_annuals": 4,
+    "nse_xbrl_pause_seconds": 0.35,
+    "nse_results_max_age_days": 200
   },
   "self_heal_schedule": {
     "_note": "Self-healing schedule. A small watchdog job checks a few times an hour and starts a workflow only when it is overdue and nothing for it is queued or running. false turns a check off and leaves only GitHub's own cron.",
