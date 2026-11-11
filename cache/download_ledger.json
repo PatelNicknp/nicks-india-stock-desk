@@ -1,7 +1,16 @@
 {
- "incomplete": {},
+ "incomplete": {
+  "statements": [
+   "SANCF"
+  ]
+ },
  "needs_person": {},
  "providers": {
+  "BSE results": {
+   "cooldown_until": "",
+   "fails": 1,
+   "last_error": "skipped after repeated failures in this run"
+  },
   "BSE shareholding": {
    "cooldown_until": "2026-11-11T16:54Z",
    "fails": 4,
@@ -127,6 +136,24 @@
    "retry_after": "2026-11-12",
    "since": "2026-11-11",
    "ticker": "DUMMYINXGN",
+   "tries": 1
+  },
+  "statements:POWERIETF": {
+   "kind": "statements",
+   "last_on": "2026-11-11",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-12",
+   "since": "2026-11-11",
+   "ticker": "POWERIETF",
+   "tries": 1
+  },
+  "statements:SANCF": {
+   "kind": "statements",
+   "last_on": "2026-11-11",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-18",
+   "since": "2026-11-11",
+   "ticker": "SANCF",
    "tries": 1
   },
   "statements:TEAM24": {
