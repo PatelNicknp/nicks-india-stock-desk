@@ -41,9 +41,9 @@ UNCHANGED = {
         "0588afcb5da709f5106c70cce04af11fd47150476c2756d200400fe547a0c930",
     ),
     "vol_draw": (
-        "baseStartBar = baseIdx >= 0 ? array.get(hBar, baseIdx) : na",
+        "var array<label> vLbl = array.new<label>()",
         'array.push(vLbl, label.new(markBar, low[k], "", yloc = yloc.belowbar, style = label.style_triangleup, color = up ? color.new(color.green, 0) : color.new(color.red, 0), size = size.tiny))\n',
-        "61e87ab36e913cd4e65c9d8175c55a415296c9ed6145223f4ea43f2d4d21bdca",
+        "7f6d9c219b0d3c3d34b157b4674b4cc7823521673c7a4c7f074a28d37850718e",
     ),
     "alert": (
         'crossUp = ta.crossover(close, pivotPrice)',
