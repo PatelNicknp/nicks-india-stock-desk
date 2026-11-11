@@ -74,6 +74,10 @@ feature.self_heal_keeper,True
 feature.trading_floor,True
 feature.trading_floor_paper,True
 feature.stock_shareholding,True
+feature.stock_canslim,True
+feature.canslim_industry_rank,True
+feature.canslim_free_float,True
+feature.canslim_news,True
 buy_setups.market_filter,True
 buy_setups.chart_setups_only,True
 buy_setups.full_rules_at_coverage_pct,80

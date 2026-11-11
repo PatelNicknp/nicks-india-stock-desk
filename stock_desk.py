@@ -2821,6 +2821,110 @@ def load_trading_floor(buy, frames, close, opn, vol, news, scores, asof, cfg, ca
     return floor
 
 
+
+def refresh_canslim_news(candidates, desk_news, cfg, cache, mode):
+    """Google News RSS for CANSLIM N, only for names that passed the price checks.
+
+    At most stock_canslim.news_per_run requests on the main after-close run.
+    Morning and offline runs reuse cache/canslim_news.csv. Failures stay not verified.
+    """
+    nums = setups._canslim_cfg(cfg)
+    path = os.path.join(cache, "canslim_news.csv")
+    cached = read_csv(path)
+    news_map = {}
+    checked = set()
+    if cached is not None and len(cached) and "ticker" in cached.columns:
+        for ticker, part in cached.groupby(cached["ticker"].astype(str)):
+            checked.add(str(ticker))
+            heads = part[part["headline"].astype(str).str.strip().ne("")] if "headline" in part.columns else part.iloc[0:0]
+            rec = {"checked": True, "n": int(len(heads)), "headline": "", "publisher": ""}
+            if len(heads):
+                top = heads.iloc[-1]
+                rec["headline"] = str(top.get("headline") or "")
+                rec["publisher"] = str(top.get("publisher") or "")
+            news_map[str(ticker)] = rec
+    if not setups._feature_on(cfg, "canslim_news", True):
+        return news_map
+    picks = []
+    seen = set()
+    if candidates is not None and len(candidates) and "ticker" in candidates.columns:
+        for _, r in candidates.iterrows():
+            t = str(r.get("ticker") or "")
+            if not t or t in seen:
+                continue
+            seen.add(t)
+            picks.append({"ticker": t, "company": r.get("company") or ""})
+    # Prefer names that already have a desk headline; only request those that do not.
+    need = []
+    for pk in picks:
+        t = pk["ticker"]
+        if t in news_map and news_map[t].get("n"):
+            continue
+        # Reuse a desk headline if one already names the stock.
+        desk_hit = None
+        if desk_news is not None and len(desk_news) and "ticker" in desk_news.columns:
+            sub = desk_news[desk_news["ticker"].astype(str) == t]
+            if len(sub) and "headline" in sub.columns:
+                sub = sub[sub["headline"].astype(str).str.strip().ne("")]
+            if len(sub):
+                top = sub.iloc[-1]
+                news_map[t] = {
+                    "checked": True,
+                    "n": int(len(sub)),
+                    "headline": str(top.get("headline") or ""),
+                    "publisher": str(top.get("publisher") or ""),
+                }
+                continue
+        if t not in checked:
+            need.append(pk)
+    cap = max(0, int(nums["news_per_run"]))
+    need = need[:cap]
+    src = "CANSLIM news (Google News RSS)"
+    if mode == "full" and need and setups._feature_on(cfg, "canslim_news", True):
+        decision = _need_fetch("canslim_news", path, mode) if os.path.exists(path) else "fetch"
+        if decision == "fetch":
+            fake_p = {"news": {
+                "fresh_days": nums["news_fresh_days"],
+                "max_headlines": 5,
+                "google_timeout_s": 15,
+            }}
+            lim = netutil.RateLimiter(nums["news_per_second"])
+            rows, failed = trading_floor.fetch_google_news(need, fake_p, today_et(), wait=lim.wait)
+            done = [pk["ticker"] for pk in need if pk["ticker"] not in failed]
+            # Record a blank checked row so a dry lookup is not repeated every run.
+            have_new = set(str(r.get("ticker")) for r in rows)
+            for t in done:
+                if t not in have_new:
+                    rows.append({"ticker": t, "headline": "", "publisher": "", "link": "",
+                                 "published": "", "fetched": today_et()})
+            merged = trading_floor.merge_news_cache(cached, rows, done, today_et(), nums["news_keep_days"])
+            merged.to_csv(path, index=False)
+            STAMPS["canslim_news"] = today_et()
+            # Rebuild the map from the saved file.
+            news_map = {}
+            if len(merged):
+                for ticker, part in merged.groupby(merged["ticker"].astype(str)):
+                    heads = part[part["headline"].astype(str).str.strip().ne("")] if "headline" in part.columns else part.iloc[0:0]
+                    rec = {"checked": True, "n": int(len(heads)), "headline": "", "publisher": ""}
+                    if len(heads):
+                        top = heads.iloc[-1]
+                        rec["headline"] = str(top.get("headline") or "")
+                        rec["publisher"] = str(top.get("publisher") or "")
+                    news_map[str(ticker)] = rec
+            status = "OK" if not failed else ("PARTIAL" if done else ("CACHED" if len(cached) else "MISSING"))
+            log(src, status, today_et(),
+                "%d extra Google News requests for price-screen names with no saved headline, %d headlines, %d failed. "
+                "Cap is %d a run. No Yahoo request." % (len(need), len([r for r in rows if str(r.get("headline") or "").strip()]), len(failed), cap))
+        else:
+            log(src, "OK" if news_map else "MISSING", STAMPS.get("canslim_news", ""),
+                "reused the saved CANSLIM headlines" if news_map else "no extra headline request this run")
+    else:
+        log(src, "OK" if news_map else "MISSING", STAMPS.get("canslim_news", ""),
+            "left for the main run after the bhavcopy. No new request on this run." if mode != "full" else
+            "no price-screen names needed a new headline request")
+    return news_map
+
+
 def _session_asof(long, fallback):
     """Latest full bhavcopy session. The index file can lag the stock file by a day or two."""
     try:
@@ -3425,9 +3529,39 @@ def main(argv=None):
         sector_leaders_frame = pd.DataFrame()
         log("Sector leaders", "OK", "", "Switch feature.sector_leaders is off.")
 
+    stock_canslim_on = features.get("stock_canslim", True)
+    news_map = {}
+    if stock_canslim_on:
+        extra_shares = shares_by_ticker or {}
+        if not extra_shares:
+            try:
+                import market_cap
+                extra_shares = market_cap.shares_map(market_cap.read_cache(cache))
+            except Exception:
+                extra_shares = {}
+        if features.get("canslim_news", True):
+            news_map = refresh_canslim_news(setup_frames.get("scanner_canslim"), news_out, cfg, cache, mode)
+        try:
+            stock_canslim = setups.build_stock_canslim(
+                close, high, low, vol, universe, quarters, annual, holders, cfg=cfg,
+                rs_table=rs_table, news_map=news_map, scores=scores, shares=extra_shares,
+            )
+        except Exception as exc:
+            stock_canslim = pd.DataFrame()
+            log("Stock CANSLIM", "MISSING", asof, ("The scorecard CANSLIM card was not built. " + str(exc))[:200])
+        else:
+            n_card = int(len(stock_canslim)) if stock_canslim is not None else 0
+            log("Stock CANSLIM", "OK" if n_card else "MISSING", asof,
+                "%d stocks have a CANSLIM card for the scorecard. The scanner qualify list is unchanged. "
+                "News was checked only for names that already passed the price screen." % n_card)
+    else:
+        stock_canslim = pd.DataFrame()
+        log("Stock CANSLIM", "OK", "", "Switch feature.stock_canslim is off.")
+
     files = {
         "scores": gated(scores, "scores", features.get("top_stocks", True) or features.get("scorecard", True), "No scores."),
         "score_details": gated(details, "score_details", features.get("scorecard", True), "No score breakdown."),
+        "stock_canslim": gated(stock_canslim, "stock_canslim", features.get("stock_canslim", True), "No CANSLIM card yet. The scorecard builds one row per stock from saved prices, statements, and shareholding."),
         "market_today": gated(market, "market_today", True, "No market snapshot."),
         "sectors": gated(sectors, "sectors", features.get("top_sectors", True), "No Nifty sector indexes."),
         "breadth_history": gated(breadth, "breadth_history", features.get("breadth", True), "No breadth history."),

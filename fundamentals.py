@@ -739,6 +739,12 @@ def latest_ttm(quarters, asof):
 
 
 def _sane_multiple(x, hi):
+    """Drop a multiple that is at or below 0 or above hi.
+
+    Price/sales above 80, or price/free cash flow above 200, is treated as
+    missing. That catches unit mismatches, such as USD statements paired with
+    an NSE price in rupees, without inventing a converted figure.
+    """
     if x is None or not np.isfinite(x) or x <= 0 or x > hi:
         return None
     return float(x)
@@ -822,16 +828,16 @@ def metrics_asof(prep, asof, price, quarters=None):
         "fy_end": None if pd.isna(fy_end) else str(pd.Timestamp(fy_end).date()),
         "avg_years": int(row["avg_years"]) if pd.notna(row.get("avg_years")) else 0,
         "ttm_pe": guard_multiple(pe),
-        "ps": _sane_multiple(ps, 500),
-        "pfcf": _sane_multiple(pfcf, 2000),
+        "ps": _sane_multiple(ps, 80),
+        "pfcf": _sane_multiple(pfcf, 200),
         "de": _sane_ratio(de, 0, 50),
         "rev_growth": _sane_ratio(rev_g, -0.95, 10),
         "eps_growth": _sane_ratio(eps_g, -0.95, 10),
         "roe": _sane_ratio(roe, -1.5, 3),
         "div_yield": guard_yield(div_y),
         "ttm_pe_avg": guard_multiple(_num(row.get("pe_avg"))),
-        "ps_avg": _sane_multiple(_num(row.get("ps_avg")), 500),
-        "pfcf_avg": _sane_multiple(_num(row.get("pfcf_avg")), 2000),
+        "ps_avg": _sane_multiple(_num(row.get("ps_avg")), 80),
+        "pfcf_avg": _sane_multiple(_num(row.get("pfcf_avg")), 200),
         "de_avg": _sane_ratio(_num(row.get("de_avg")), 0, 50),
         "rev_growth_avg": _sane_ratio(_num(row.get("rev_g_avg")), -0.95, 10),
         "eps_growth_avg": _sane_ratio(_num(row.get("eps_g_avg")), -0.95, 10),

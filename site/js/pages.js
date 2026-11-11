@@ -710,12 +710,266 @@
   function stockShareHtml(ctx, ticker, fallback) {
     if (panelOff("feature.stock_shareholding")) return holdRow(fallback);
     const fromFile = D.shareholdingOf(ctx.files["institutional_13f.csv"], ticker);
-    return D.shareholdingHtml(fromFile || fallback || null);
+    return '<div class="sc-share">' + D.shareholdingHtml(fromFile || fallback || null, { pledgeBar: true, prettyDate: true }) + "</div>";
+  }
+
+  function clTone(mark) {
+    const m = String(mark || "").toLowerCase();
+    if (m === "pass") return "pass";
+    if (m === "fail") return "fail";
+    return "na";
+  }
+  function clLabel(mark, letter) {
+    const tone = clTone(mark);
+    if (tone === "pass") return "PASS";
+    if (tone === "fail") return "FAIL";
+    if ((letter === "C" || letter === "A") && String(mark || "").toLowerCase() === "not verified") return "Not verified";
+    return "No data yet";
+  }
+  function clPct(v) {
+    const n = D.num(v);
+    if (n == null) return "";
+    const dec = Math.abs(n - Math.round(n)) < 0.05 ? 0 : 1;
+    const core = D.fmt(Math.abs(n), dec);
+    if (n > 0) return "+" + core + "%";
+    if (n < 0) return "-" + core + "%";
+    return core + "%";
+  }
+  function clFromHigh(v) {
+    const n = D.num(v);
+    if (n == null) return "";
+    if (Math.abs(n) < 0.05) return "At the 52-week high";
+    if (n < 0) return D.fmt(Math.abs(n), 1) + "% below the 52-week high";
+    return D.fmt(n, 1) + "% above the 52-week high";
+  }
+  function clVol(n) {
+    const a = Math.abs(n);
+    if (a >= 1e6) return (n / 1e6).toFixed(2) + "M";
+    if (a >= 1e3) return (n / 1e3).toFixed(a >= 10000 ? 0 : 1) + "K";
+    return D.fmt(n, 0);
+  }
+  function clLetterValue(letter, row, scoreRow, compact) {
+    if (letter === "C" || letter === "A") return clPct(row[letter.toLowerCase() + "_value"]);
+    if (letter === "N") return clFromHigh(row.n_value);
+    if (letter === "S") {
+      const bits = [];
+      const vol = D.num(row.s_value);
+      if (vol != null) bits.push(compact ? clVol(vol) + " avg vol" : "20-day avg " + clVol(vol) + " shares");
+      const vx = scoreRow ? D.num(scoreRow.volume_ratio) : null;
+      if (vx != null && vx >= 0.1) bits.push(D.fmt(vx, vx >= 10 ? 0 : 1) + "x");
+      const fl = D.num(row.s_float_pct);
+      if (fl != null) bits.push(compact ? "float " + D.fmt(fl, 1) + "%" : "free float " + D.fmt(fl, 1) + "%");
+      return bits.join(compact ? " · " : ", ");
+    }
+    if (letter === "L") {
+      const rs = D.num(row.l_value);
+      if (rs == null) return "";
+      const ir = D.num(row.l_industry_rank);
+      if (compact) {
+        const bits = ["RS " + D.fmt(rs, 0)];
+        if (ir != null) bits.push("industry rank " + D.fmt(ir, 0));
+        return bits.join(" · ");
+      }
+      const bits = ["RS " + D.fmt(rs, 0)];
+      const bench = scoreRow && !D.isBlank(scoreRow.rs_benchmark) ? String(scoreRow.rs_benchmark) : "Nifty 50";
+      bits[0] += " vs " + bench;
+      bits.push("rank " + String(Math.max(1, 100 - Math.round(rs))) + " of 99");
+      if (ir != null) bits.push("industry rank " + D.fmt(ir, 0));
+      return bits.join(" · ");
+    }
+    if (letter === "I") {
+      if (clTone(row.i_mark) === "na") return "";
+      const trend = String(row.i_value || "").toLowerCase();
+      if (trend === "up" || trend === "down" || trend === "flat") return "FII and DII " + trend;
+      return String(row.i_value || "");
+    }
+    if (letter === "M") return String(row.m_value || "");
+    return "";
+  }
+  function clEmptyNote(letter) {
+    if (letter === "C") return "Quarterly EPS from saved statements is not verified yet. This is not a fail.";
+    if (letter === "A") return "Yearly EPS from saved statements is not verified yet. This is not a fail.";
+    if (letter === "I") return "FII and DII quarter change are not on file yet. This is not a fail.";
+    return "This item is not on file yet. This is not a fail.";
+  }
+  function stockCanslimHtml(ctx, ticker, scoreRow) {
+    if (panelOff("feature.stock_canslim")) return "";
+    const rows = ctx.files["stock_canslim.csv"] || [];
+    const row = rows.find((r) => String(r.ticker || "").toUpperCase() === String(ticker || "").toUpperCase()) || null;
+    const letters = [
+      ["C", "Current quarterly EPS", "25% or more vs the year-ago quarter."],
+      ["A", "Annual EPS growth", "25% or more vs last year."],
+      ["N", "New highs", "Within 15% of the 52-week closing high."],
+      ["S", "Supply and demand", "20-day volume of 200,000 shares or more."],
+      ["L", "Leader / RS", "RS percentile 80 or higher vs Nifty 50 (SENSEX if BSE-only)."],
+      ["I", "Institutional buying", "FII and DII bought more than they sold last quarter."],
+      ["M", "Market direction", "The Nifty 50 or SENSEX is in an uptrend."],
+    ];
+    const chips = letters.map((item) => {
+      const tone = row ? clTone(row[item[0].toLowerCase() + "_mark"]) : "na";
+      return '<span class="cl-chip cl-' + tone + '">' + item[0] + "</span>";
+    }).join("");
+    const detail = letters.map((item) => {
+      const letter = item[0];
+      const mark = row ? row[letter.toLowerCase() + "_mark"] : "";
+      const tone = row ? clTone(mark) : "na";
+      let value = row ? clLetterValue(letter, row, scoreRow, false) : "";
+      let valuePhone = row ? clLetterValue(letter, row, scoreRow, true) : "";
+      let rule = item[2];
+      if (tone === "na") {
+        if (!value) value = letter === "C" || letter === "A" ? "Not verified yet" : "Not on file yet";
+        if (!valuePhone) valuePhone = value;
+        rule = clEmptyNote(letter);
+      }
+      if (letter === "L" && row) {
+        const rs = D.num(row.l_value);
+        if (rs != null) rule += " Rank " + String(Math.max(1, 100 - Math.round(rs))) + " of 99.";
+      }
+      if (letter === "N" && row && !D.isBlank(row.n_news_status) && String(row.n_news_mark || "") !== "not verified") {
+        rule += " " + String(row.n_news_status);
+      }
+      const label = clLabel(mark, letter);
+      return '<button type="button" class="cl-row cl-' + tone + '-row" aria-expanded="false">' +
+        '<span class="cl-badge cl-' + tone + '">' + letter + "</span>" +
+        '<span class="cl-mid"><span class="cl-name">' + D.esc(item[1]) + '</span>' +
+        '<span class="cl-val cl-val-phone">' + D.esc(valuePhone) + "</span>" +
+        '<span class="cl-val cl-val-wide">' + D.esc(value) + "</span>" +
+        '<span class="cl-rule">' + D.esc(rule) + "</span></span>" +
+        '<span class="cl-mark cl-' + tone + '">' + D.esc(label) + "<i></i></span>" +
+        "</button>";
+    }).join("");
+    const passed = row && !D.isBlank(row.passes) ? String(row.passes) : "0";
+    return '<section class="cl-box" aria-label="CAN SLIM"><div class="cl-head"><span>CAN SLIM</span>' +
+      '<span class="cl-count">' + D.esc(passed) + " of 7 pass</span></div>" +
+      '<div class="cl-chips">' + chips + "</div>" +
+      '<div class="cl-rows">' + detail + "</div></section>";
+  }
+  function wireCanslimRows(host) {
+    host.querySelectorAll(".cl-row").forEach((el) => {
+      el.addEventListener("click", () => {
+        if (!window.matchMedia("(max-width: 759px)").matches) return;
+        const open = el.classList.toggle("open");
+        el.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+    });
+  }
+  function scPtsTone(v) {
+    if (v == null) return "zero";
+    if (v >= 2) return "up2";
+    if (v >= 1) return "up";
+    if (v > -1) return "zero";
+    return "dn";
+  }
+  function scScoreTone(s) {
+    if (s >= 12) return "up2";
+    if (s >= 9) return "up";
+    if (s >= 5) return "zero";
+    return "dn";
+  }
+  function scPill(v, missing) {
+    if (missing) return '<span class="sc-pill sc-na">–</span>';
+    const n = D.num(v);
+    if (n == null) return '<span class="sc-pill sc-na">–</span>';
+    return '<span class="sc-pill sc-' + scPtsTone(n) + '">' + D.esc(D.signedPts(n)) + "</span>";
+  }
+  function scItemName(name, bench) {
+    let s = String(name || "");
+    s = s.replace(/\s*\((lower|higher) is better\)/ig, "");
+    s = s.replace(/S&P 500/g, bench || "Nifty 50");
+    s = s.replace("Institutional 13F trend", "Institutional trend");
+    s = s.replace("Oscillator (RSI-14)", "RSI-14");
+    s = s.replace(", 3 months", ", 3 mo");
+    return s;
+  }
+  function scRangeHi(name) {
+    const s = String(name || "").toLowerCase();
+    if (s.indexOf("price / sales") >= 0) return 80;
+    if (s.indexOf("price / free cash flow") >= 0 || s.indexOf("price / fcf") >= 0) return 200;
+    if (s.indexOf("p/e") >= 0) return 80;
+    return null;
+  }
+  function scValueOutOfRange(item) {
+    const hi = scRangeHi(item.item);
+    if (hi == null) return false;
+    const check = (v) => { const n = D.num(v); return n != null && (n <= 0 || n > hi); };
+    return check(item.now_value) || check(item.avg_value);
+  }
+  function scRowMissing(item) {
+    if (scValueOutOfRange(item)) return true;
+    return D.num(item.points) == null;
+  }
+  function scNowLine(item) {
+    if (scRowMissing(item)) return "No data yet";
+    const name = String(item.item || "").toLowerCase();
+    if (name.indexOf("institutional") >= 0 && name.indexOf("trend") >= 0) {
+      const n = D.num(item.points);
+      if (n == null) return "No data yet";
+      if (n > 0) return "Rising";
+      if (n < 0) return "Falling";
+      return "Flat";
+    }
+    const now = D.num(item.now_value);
+    const avg = D.num(item.avg_value);
+    if (now != null && avg != null) return D.fmt(now, 2) + " vs own " + D.fmt(avg, 2);
+    if (now != null) return "Now " + D.fmt(now, Math.abs(now) >= 10 ? 1 : 2);
+    return "";
+  }
+  function scoreBreakHtml(details, bench) {
+    const order = ["Technical", "Financials", "Sentiment", "Earnings", "Sector"];
+    const groups = {};
+    (details || []).forEach((r) => {
+      const g = String(r.group_name || "").trim();
+      if (!g) return;
+      if (!groups[g]) groups[g] = [];
+      groups[g].push(r);
+    });
+    const cards = order.filter((g) => groups[g]).map((g) => {
+      const items = groups[g];
+      const total = items.reduce((sum, r) => sum + (scRowMissing(r) ? 0 : (D.num(r.points) || 0)), 0);
+      const rows = items.map((r) => {
+        const miss = scRowMissing(r);
+        const now = scNowLine(r);
+        return '<div class="sc-g-item' + (miss ? " sc-g-miss" : "") + '"><div class="sc-g-mid"><div class="sc-g-name">' + D.esc(scItemName(r.item, bench)) +
+          "</div>" + (now ? '<div class="sc-g-now">' + D.esc(now) + "</div>" : "") + "</div>" + scPill(r.points, miss) + "</div>";
+      }).join("");
+      return '<article class="sc-g"><div class="sc-g-head"><span>' + D.esc(g) + "</span>" + scPill(total) + "</div>" + rows + "</article>";
+    }).join("");
+
+    return '<section class="panel pad sc-break" aria-label="Score breakdown"><div class="ptitle">Score breakdown</div>' +
+      '<div class="psub">Compared with this company\'s own 3-year average.</div>' +
+      '<div class="sc-break-grid">' + cards + "</div></section>";
+  }
+  function vsSectorHtml(row) {
+    const vsRows = [
+      ["pts_forward_pe_ind", "Forward P/E"], ["pts_ttm_pe_ind", "Trailing P/E"], ["pts_ps_ind", "Price / sales"],
+      ["pts_pfcf_ind", "Price / FCF"], ["pts_rev_growth_ind", "Revenue growth"], ["pts_eps_growth_ind", "EPS growth"],
+      ["pts_div_yield_ind", "Dividend yield"],
+    ];
+    const lines = vsRows.map((pair) => '<div class="sc-vs-row"><span>' + D.esc(pair[1]) + "</span>" + scPill(row[pair[0]]) + "</div>").join("");
+    return '<section class="panel pad sc-vs" aria-label="Versus sector"><div class="ptitle">Versus sector</div>' + lines + "</section>";
+  }
+  function analystCardHtml(row) {
+    const mean = D.num(row.analyst_mean);
+    const count = D.num(row.analyst_count);
+    const target = D.num(row.target_analyst);
+    const price = D.num(row.price);
+    const up = (target != null && price != null && price !== 0) ? (target / price - 1) * 100 : null;
+    const cell = (lab, val, extra) => '<div class="sc-an-cell"><div class="l">' + D.esc(lab) + '</div><div class="v">' + val +
+      "</div>" + (extra ? '<div class="s">' + extra + "</div>" : "") + "</div>";
+    const upHtml = up == null ? D.na() : '<span style="color:' + D.retColor(up) + '">' + D.esc((up > 0 ? "+" : up < 0 ? "-" : "") + D.fmt(Math.abs(up), 1) + "%") + "</span>";
+    return '<section class="panel pad sc-an" aria-label="Analyst rating"><div class="ptitle">Analyst rating</div>' +
+      '<div class="sc-an-grid">' +
+      cell("Mean rating", mean == null ? D.na() : D.esc(D.fmt(mean, 2)), "1 = strong buy, 5 = sell") +
+      cell("Analysts", count == null ? D.na() : D.esc(D.fmt(count, 0))) +
+      cell("Median target", target == null ? D.na() : D.esc("₹" + D.fmt(target, 2))) +
+      cell("Upside", upHtml, price == null ? "" : "Target vs ₹" + D.fmt(price, 2)) +
+      "</div></section>";
   }
   function ptsCard(label, v) {
     const n = D.num(v);
     const shown = n == null ? D.na() : D.esc(D.signedPts(n));
-    return card(label, '<span style="color:#E6EBF5">' + shown + "</span>", "", n == null ? "" : D.ptsColor(n));
+    const tone = n == null ? "zero" : scPtsTone(n);
+    return '<div class="card sc-tile sc-' + tone + '"><div class="l">' + D.esc(label) + '</div><div class="v">' + shown + "</div></div>";
   }
   function renderScorecard(ctx) {
     const scores = D.realRows(ctx.files["scores.csv"]);
@@ -749,12 +1003,6 @@
       const earn = (ctx.files["earnings_history.csv"] || []).filter((r) => r.ticker === ticker && !D.isBlank(r.eps_actual))
         .sort((a, b) => a.earnings_date < b.earnings_date ? -1 : 1).slice(-8);
       const news = (ctx.files["news.csv"] || []).filter((r) => r.ticker === ticker && (kind === "" || r.kind === kind));
-      const vsRows = [
-        ["pts_forward_pe_ind", "Forward P/E"], ["pts_ttm_pe_ind", "Trailing P/E"], ["pts_ps_ind", "Price / sales"],
-        ["pts_pfcf_ind", "Price / FCF"], ["pts_rev_growth_ind", "Revenue growth"], ["pts_eps_growth_ind", "EPS growth"],
-        ["pts_div_yield_ind", "Dividend yield"],
-      ];
-      const vs = vsRows.map((pair) => "<tr><td>" + D.esc(pair[1]) + '</td><td class="c">' + D.pointsHtml(row[pair[0]]) + "</td></tr>").join("");
       const basis = [
         ["Fundamentals from", row.fundamentals_basis], ["Filed", row.fundamentals_filed],
         ["Years in own average", row.fin_avg_years], ["Forward P/E average", row.forward_pe_avg_basis],
@@ -762,20 +1010,31 @@
       ].map((pair) => '<div class="rowhead"><span>' + D.esc(pair[0]) + '</span><span class="m2" style="text-align:right">' +
         (D.isBlank(pair[1]) ? D.na() : D.esc(pair[1])) + "</span></div>").join("");
       const scoreN = D.num(row.score);
+      const dayHtml = day == null ? D.na() : D.esc((day > 0 ? "+" : "") + D.fmt(day, 2) + "%");
+      const priceHtml = D.num(row.price) == null ? D.na() : D.esc("₹" + D.fmt(row.price, 2));
       host.innerHTML =
+        '<div class="sc-page">' +
         '<div class="panel pad identity"><div class="id-main"><div class="big">' + D.esc(row.ticker) + "</div><div>" + D.esc(row.company) +
         '</div><div class="m2" style="font-size:12px">' + D.esc(row.sector) + (row.industry ? " · " + D.esc(row.industry) : "") +
         "</div><div class=\"m2\" style=\"font-size:12px\">Relative strength uses " + D.esc(row.rs_benchmark || "Nifty 50") + ".</div></div>" +
-        '<div class="stat"><div class="l">Price</div><div class="v">' + px2(row.price) + "</div></div>" +
-        '<div class="stat"><div class="l">Day %</div><div class="v" style="color:' + D.retColor(day) + '">' + (day == null ? D.na() : D.esc((day > 0 ? "+" : "") + D.fmt(day, 2) + "%")) + "</div></div>" +
-        '<div class="stat"><div class="l">Confidence</div><div class="v" style="font-size:16px">' + (D.isBlank(row.confidence) ? D.na() : D.esc(row.confidence)) + '</div><div class="l" style="margin-top:8px">Verdict</div><div class="vpill">' + D.verdictHtml(row.verdict) + "</div></div>" +
-        '<div class="stat"><div class="l">Desk score</div><div class="v"><span class="scorepill deskscore" style="background:' + D.band(scoreN || 0) + '">' + D.esc(scoreN == null ? "–" : String(scoreN)) + "</span></div></div></div>" +
+        '<div class="id-score"><div class="l">Desk score</div><span class="scorepill deskscore sc-score sc-' + scScoreTone(scoreN || 0) + '">' +
+        D.esc(scoreN == null ? "–" : String(scoreN)) + "</span></div>" +
+        '<div class="id-stats">' +
+        '<div class="stat"><div class="l">Price</div><div class="v">' + priceHtml + "</div></div>" +
+        '<div class="stat"><div class="l">Day %</div><div class="v" style="color:' + D.retColor(day) + '">' + dayHtml + "</div></div>" +
+        '<div class="stat"><div class="l">Confidence</div><div class="v" style="font-size:16px">' + (D.isBlank(row.confidence) ? D.na() : D.esc(row.confidence)) + "</div></div>" +
+        '<div class="stat"><div class="l">Verdict</div><div class="vpill">' + D.verdictHtml(row.verdict) + "</div></div>" +
+        "</div></div>" +
+        '<div class="sc-top">' +
+        '<div class="sc-top-cl">' + stockCanslimHtml(ctx, ticker, row) + "</div>" +
+        '<div class="sc-top-side">' +
         stockShareHtml(ctx, ticker, row) +
-        '<div class="panel pad"><p style="font-size:13px;line-height:20px">' + D.esc(row.reason || "") + "</p></div>" +
+        '<div class="panel pad sc-reason"><p style="font-size:13px;line-height:20px">' + D.esc(row.reason || "") + "</p></div>" +
         '<div class="cards">' +
         ptsCard("Technical", row.pts_tech) + ptsCard("Financials", row.pts_fin) + ptsCard("Sentiment", row.pts_sent) +
         ptsCard("Earnings", row.pts_earnings) + ptsCard("Sector", row.pts_sector) +
-        card("Total score", D.scoreHtml(row.score)) + "</div>" +
+        '<div class="card sc-tile sc-' + scScoreTone(scoreN || 0) + '"><div class="l">Total score</div><div class="v">' + D.esc(scoreN == null ? "–" : String(scoreN)) + "</div></div>" +
+        "</div></div></div>" +
         '<div class="split plan"><div class="panel pad"><div class="ptitle">Plan</div><div class="mini">' +
         miniStat("Entry low", px2(row.entry_low)) + miniStat("Entry high", px2(row.entry_high)) +
         miniStat("Stop", D.num(row.stop) == null ? D.na() : '<span style="color:#EF4444">' + D.esc(D.fmt(row.stop, 2)) + "</span>") +
@@ -789,9 +1048,10 @@
         "</div></div></div>" +
         '<div class="split chartpair">' + priceShell("Plan levels stay on the chart") +
         '<div class="panel pad"><div class="ptitle">EPS surprise %, last 8 reports</div><div class="chart-box"><canvas id="eh"></canvas></div></div></div>' +
-        '<div class="split r21"><div class="panel" id="break"></div><div><div class="panel"><div class="pad" style="padding-bottom:0"><div class="ptitle">Versus sector</div></div><div class="scroll"><table><tbody>' + vs +
-        '</tbody></table></div></div><div class="panel pad"><div class="ptitle">Data basis</div><div style="font-size:11px;margin-top:8px">' + basis + "</div></div></div></div>" +
-        '<div class="panel" id="news"></div><p class="cap">' + D.esc(newsEmpty) + "</p>";
+        '<div class="sc-lower">' + scoreBreakHtml(details, row.rs_benchmark || "Nifty 50") +
+        '<div class="sc-aside">' + vsSectorHtml(row) + analystCardHtml(row) + "</div></div>" +
+        '<div class="panel pad"><div class="ptitle">Data basis</div><div style="font-size:11px;margin-top:8px">' + basis + "</div></div>" +
+        '<div class="panel" id="news"></div><p class="cap">' + D.esc(newsEmpty) + "</p></div>";
       const entryLo = D.num(row.entry_low);
       const entryHi = D.num(row.entry_high);
       const hlines = [];
@@ -806,6 +1066,7 @@
       }
       if (D.num(row.stop) != null) hlines.push({ value: D.num(row.stop), color: "#EF4444", label: "Stop " + D.fmt(row.stop, 2) });
       if (D.num(row.trade_target) != null) hlines.push({ value: D.num(row.trade_target), color: "#22C55E", label: "Target " + D.fmt(row.trade_target, 2) });
+      wireCanslimRows(host);
       D.drawPriceChart(host.querySelector("[data-px-panel]"), { ticker: ticker, lines: hlines });
       const mon = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
       const earnLabels = earn.map((r) => {
@@ -829,13 +1090,6 @@
             y: { ticks: { color: "#8B96AD" }, grid: { color: "#1E293B" } },
           },
         },
-      });
-      D.drawTable(document.getElementById("break"), {
-        title: "Score breakdown",
-        rows: details,
-        columns: [T("group_name", "Group"), T("item", "Item", "text", { wrap: true }), T("points_label", "Points", "plabel"),
-          T("now_value", "Now", "num", { dec: 2 }), T("avg_value", "Own 3-yr avg", "num", { dec: 2 }), T("vs_industry", "Vs sector", "points")],
-        state: { sort: "group_name", dir: "asc", sort2: "item", dir2: "asc", page: 0 }, pageSize: 20,
       });
       D.drawTable(document.getElementById("news"), {
         title: "News", sub: newsEmpty,
@@ -3739,7 +3993,8 @@
     scorecard: { lines: [
       "One stock at a time. Type a ticker to see its total score and how each point was earned, versus its own 3-year average and versus its sector.",
       "It also shows the plan (entry, stop, target), recent earnings surprises, and headlines.",
-      "The Shareholding box shows promoter, FII, and DII percent, plus public when the file has it, and the change versus last quarter. Green is up and red is down. Pledge shows when the file has it. Turn it off with feature.stock_shareholding.",
+      "The CAN SLIM card sits under the ticker. It has 7 letter chips and 7 rows, each marked PASS, FAIL, No data yet, or Not verified. Grey means the letter is not a fail. C and A can show Not verified while statements are still being saved. L passes at an RS rank of 80 or higher (stock_canslim.l_rs_min). The CANSLIM scanner list is unchanged. Turn the card off with feature.stock_canslim, the industry rank with feature.canslim_industry_rank, free float with feature.canslim_free_float, and the news check with feature.canslim_news.",
+      "The Shareholding box sits under the CAN SLIM card. It shows promoter, FII, and DII percent, plus public when the file has it, and the change versus last quarter. Green is up and red is down. Pledge shows when the file has it. If a stock has no filing yet, the box says shareholding is not on file. Turn it off with feature.stock_shareholding.",
     ] },
     watchlist: { lines: [
       "Your holdings and your watchlist, with portfolio value, today's profit or loss, total gain, and the desk score of each stock.",
@@ -3888,7 +4143,7 @@
     today: { files: ["market_today.csv", "breadth_history.csv", "sectors.csv", "alerts.csv", "fii_flows.csv"], optional: ["high_volume.csv"], render: renderToday },
     flows: { files: ["fii_flows.csv", "participant_oi.csv"], render: renderFlows },
     top: { files: ["scores.csv"], render: renderTop },
-    scorecard: { files: ["scores.csv", "score_details.csv", "news.csv", "earnings_history.csv"], optional: ["institutional_13f.csv"], render: renderScorecard },
+    scorecard: { files: ["scores.csv", "score_details.csv", "news.csv", "earnings_history.csv"], optional: ["institutional_13f.csv", "stock_canslim.csv"], render: renderScorecard },
     watchlist: { files: ["portfolio.csv", "portfolio_summary.csv", "watchlist.csv"], render: renderWatch },
     alerts: { files: ["alerts.csv", "score_changes.csv"], render: renderAlerts },
     backtest: { files: ["backtest_summary.csv", "backtest_equity.csv", "backtest_buckets.csv", "backtest_yearly.csv", "backtest_notes.csv"], render: renderBacktest },

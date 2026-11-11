@@ -2367,10 +2367,9 @@
   }
   function shareChgHtml(chg) {
     const n = num(chg);
-    if (n == null) return '<span class="sh-na">quarter change n/a</span>';
+    if (n == null || n === 0) return '<span class="sh-na">–</span>';
     if (n > 0) return '<span class="sh-up">\u25B2 ' + esc(fmt(n, 2)) + " pts</span>";
-    if (n < 0) return '<span class="sh-dn">\u25BC ' + esc(fmt(Math.abs(n), 2)) + " pts</span>";
-    return '<span class="sh-na">flat vs last quarter</span>';
+    return '<span class="sh-dn">\u25BC ' + esc(fmt(Math.abs(n), 2)) + " pts</span>";
   }
   function shareValue(v) {
     const n = num(v);
@@ -2402,17 +2401,35 @@
     }
     return null;
   }
-  function shareholdingHtml(row) {
+  function shareAsOf(value, pretty) {
+    const raw = String(value || "").slice(0, 10);
+    if (!pretty) return raw;
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(raw);
+    if (!m) return raw;
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    return String(Number(m[3])) + " " + months[Number(m[2]) - 1] + " " + m[1];
+  }
+  function shareholdingHtml(row, opts) {
+    opts = opts || {};
     if (!shareHasNumbers(row)) {
       return '<section class="sh-box" aria-label="Shareholding"><div class="sh-head"><span>Shareholding</span></div>' +
         '<p class="sh-miss">Shareholding is not on file for this stock.</p></section>';
     }
     const cells = SHARE_FIELDS.filter((f) => f[3] || !isBlank(row[f[1]])).map((f) => shareCell(f[0], row[f[1]], row[f[2]])).join("");
     const pledge = pledgeOf(row);
-    const pledgeHtml = pledge ? shareCell("Pledge", pledge.pct, pledge.chg) : "";
-    const asof = isBlank(row.as_of) ? "" : '<span class="sh-asof">as of ' + esc(String(row.as_of).slice(0, 10)) + "</span>";
+    let pledgeHtml = "";
+    if (pledge) {
+      if (opts.pledgeBar) {
+        pledgeHtml = '<div class="sh-pledge"><div class="sh-pledge-lab"><div class="l">Pledge</div>' +
+          '<div class="s">Shown only when the filing has it</div></div><div class="v">' + shareValue(pledge.pct) + "</div></div>";
+      } else {
+        pledgeHtml = shareCell("Pledge", pledge.pct, pledge.chg);
+      }
+    }
+    const asof = isBlank(row.as_of) ? "" : '<span class="sh-asof">as of ' + esc(shareAsOf(row.as_of, opts.prettyDate)) + "</span>";
     return '<section class="sh-box" aria-label="Shareholding"><div class="sh-head"><span>Shareholding</span>' + asof +
-      '</div><div class="sh-row">' + cells + pledgeHtml + "</div></section>";
+      '</div><div class="sh-row">' + cells + (opts.pledgeBar ? "" : pledgeHtml) + "</div>" +
+      (opts.pledgeBar ? pledgeHtml : "") + "</section>";
   }
   function renderChartViewer(ctx) {
     const params = new URLSearchParams(location.search);
