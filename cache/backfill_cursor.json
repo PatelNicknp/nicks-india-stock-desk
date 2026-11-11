@@ -41,9 +41,9 @@
   "KCDGROUP": "2026-11-12",
   "SPACEINCUBA": "2026-11-12"
  },
- "last_batch_at": "2026-11-11T04:02Z",
- "last_statements_ok": 15,
- "last_statements_fail": 1,
+ "last_batch_at": "2026-11-11T04:24Z",
+ "last_statements_ok": 0,
+ "last_statements_fail": 0,
  "last_shareholding_ok": 76,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
