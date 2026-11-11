@@ -1,2 +1,4 @@
 ticker,company,price,day_pct,score,score_prev,score_change,verdict,data_status,note,disclaimer
-,,,,,,,,MISSING,No score changes versus the last run.,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+INTETHR,INTEGRATED THERMOPLASTICS LTD.,7.58,-4.77,-4.0,-1.0,-3.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+SHVSUIT,SHIVA SUITINGS LTD.,44.66,-4.98,-1.0,1.0,-2.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+INDAGIV,IND-AGIV COMMERCE LTD.,42.99,10.23,0.0,1.0,-1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."

@@ -1,2 +1,6 @@
 ticker,kind,text,score,score_prev,verdict,verdict_prev,price,data_status,note,disclaimer
-,info,No verdict changes or score crossings this run.,,,,,,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+INDAGIV,verdict_change,INDAGIV changed from Not scored yet to AVOID.,0,1,AVOID,Not scored yet,42.99,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+SHVSUIT,verdict_change,SHVSUIT changed from Not scored yet to AVOID.,-1,1,AVOID,Not scored yet,44.66,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+SHVSUIT,score_jump,SHVSUIT score moved from 1 to -1.,-1,1,AVOID,Not scored yet,44.66,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+INTETHR,verdict_change,INTETHR changed from Not scored yet to AVOID.,-4,-1,AVOID,Not scored yet,7.58,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+INTETHR,score_jump,INTETHR score moved from -1 to -4.,-4,-1,AVOID,Not scored yet,7.58,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
