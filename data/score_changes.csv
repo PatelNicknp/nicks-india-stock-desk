@@ -1,4 +1,8 @@
 ticker,company,price,day_pct,score,score_prev,score_change,verdict,data_status,note,disclaimer
 INTETHR,INTEGRATED THERMOPLASTICS LTD.,7.58,-4.77,-4.0,-1.0,-3.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 SHVSUIT,SHIVA SUITINGS LTD.,44.66,-4.98,-1.0,1.0,-2.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+IPCALAB,Ipca Laboratories Ltd.,1938.4,-1.1,3.0,5.0,-2.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+MRF,MRF Ltd.,127125.0,1.64,6.0,7.0,-1.0,HOLD,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+APOLLOTYRE,Apollo Tyres Ltd.,423.85,2.08,11.0,12.0,-1.0,BUY,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 INDAGIV,IND-AGIV COMMERCE LTD.,42.99,10.23,0.0,1.0,-1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+EXIDEIND,Exide Industries Ltd.,385.95,0.22,3.0,2.0,1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
