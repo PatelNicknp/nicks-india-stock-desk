@@ -3,8 +3,8 @@
  "needs_person": {},
  "providers": {
   "BSE shareholding": {
-   "cooldown_until": "2026-11-11T10:21Z",
-   "fails": 3,
+   "cooldown_until": "2026-11-11T16:54Z",
+   "fails": 4,
    "last_error": "skipped after repeated failures in this run"
   },
   "NSE shareholding": {
