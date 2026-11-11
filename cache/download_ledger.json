@@ -7,8 +7,8 @@
  "needs_person": {},
  "providers": {
   "BSE results": {
-   "cooldown_until": "",
-   "fails": 2,
+   "cooldown_until": "2026-11-12T00:52Z",
+   "fails": 3,
    "last_error": "skipped after repeated failures in this run"
   },
   "BSE shareholding": {
@@ -38,8 +38,8 @@
   },
   "Yahoo NS": {
    "cooldown_until": "",
-   "fails": 1,
-   "last_error": "skipped after repeated failures in this run"
+   "fails": 0,
+   "last_error": ""
   }
  },
  "stalls": {
@@ -53,7 +53,7 @@
   },
   "statements": {
    "cooldown_until": "",
-   "runs": 1
+   "runs": 0
   }
  },
  "unavailable": {
@@ -158,12 +158,12 @@
   },
   "statements:TEAM24": {
    "kind": "statements",
-   "last_on": "2026-11-11",
+   "last_on": "2026-11-12",
    "note": "no statement source answered",
-   "retry_after": "2026-11-12",
+   "retry_after": "2026-11-13",
    "since": "2026-11-11",
    "ticker": "TEAM24",
-   "tries": 1
+   "tries": 2
   },
   "statements:VEEFIN": {
    "kind": "statements",

@@ -7,7 +7,7 @@
   "DUMMYINXGN": "2026-11-13",
   "DVL": "2026-10-27",
   "DYNPRO": "2026-10-27",
-  "TEAM24": "2026-11-12",
+  "TEAM24": "2026-11-13",
   "KHAZANCHI": "2026-10-29",
   "SUDARSHAN": "2026-10-28",
   "BONDADA": "2026-10-30",
@@ -40,9 +40,9 @@
   "JAYKAYPP": "2026-11-12",
   "OLAPP": "2026-11-12"
  },
- "last_batch_at": "2026-11-11T18:46Z",
- "last_statements_ok": 0,
- "last_statements_fail": 6,
+ "last_batch_at": "2026-11-11T18:59Z",
+ "last_statements_ok": 20,
+ "last_statements_fail": 1,
  "last_shareholding_ok": 61,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
@@ -96,9 +96,9 @@
    "note": "quote only, no results"
   },
   "TEAM24": {
-   "count": 2,
-   "last_on": "2026-11-11",
-   "retry_after": "2026-11-12",
+   "count": 3,
+   "last_on": "2026-11-12",
+   "retry_after": "2026-11-13",
    "note": "no statement source answered"
   },
   "VEEFIN": {
