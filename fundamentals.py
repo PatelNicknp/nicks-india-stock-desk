@@ -1029,8 +1029,46 @@ def _rate_for_currency(ccy, fx, when):
     return None
 
 
+def _row_value(rec, key):
+    """Read one field from a statement row that may be a Series or a dict."""
+    if rec is None:
+        return None
+    if isinstance(rec, dict):
+        val = rec.get(key)
+    else:
+        try:
+            val = rec[key] if key in rec.index else None
+        except Exception:
+            val = rec.get(key) if hasattr(rec, "get") else None
+    if val is None:
+        return None
+    try:
+        if pd.isna(val):
+            return None
+    except (TypeError, ValueError):
+        pass
+    return val
+
+
+def _filing_currency(rec):
+    """Currency of the cached filing itself, when the row records it.
+
+    Official NSE and BSE statements are already in rupees. That tag beats a
+    leftover Yahoo financialCurrency on the profile (Infosys is the usual
+    case). Yahoo fallback rows may carry USD and should still be converted.
+    """
+    if rec is None:
+        return None
+    source = str(_row_value(rec, "source") or "").strip()
+    ccy = normalize_statement_currency(_row_value(rec, "currency"))
+    head = source.split()[0].upper() if source else ""
+    if head in ("NSE", "BSE"):
+        return ccy or "INR"
+    return ccy
+
+
 def detect_statement_currencies(annual, quarters=None, close=None, info=None, fx=None):
-    """One decision per ticker: explicit Yahoo financialCurrency, else the heuristic."""
+    """One decision per ticker: the filing's own currency when tagged, else Yahoo financialCurrency, else the heuristic."""
     declared = _info_financial_currency(info)
     latest = _latest_statement_row(annual)
     if not latest:
@@ -1043,12 +1081,17 @@ def detect_statement_currencies(annual, quarters=None, close=None, info=None, fx
     recent_fx = usd_inr_on(fx, None, FALLBACK_USD_INR)
     rows = []
     for ticker in sorted(tickers):
-        source = "heuristic"
-        ccy = declared.get(ticker)
-        if ccy:
+        rec = latest.get(ticker)
+        filing_ccy = _filing_currency(rec)
+        declared_ccy = declared.get(ticker)
+        if filing_ccy:
+            ccy = filing_ccy
+            source = "filing"
+        elif declared_ccy:
+            ccy = declared_ccy
             source = "field"
         else:
-            rec = latest.get(ticker)
+            source = "heuristic"
             price = _last_price(close, ticker)
             if rec is not None:
                 ccy = guess_statement_currency(

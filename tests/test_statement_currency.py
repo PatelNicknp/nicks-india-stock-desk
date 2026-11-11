@@ -151,3 +151,46 @@ def test_blank_or_out_of_range_financials_add_zero_to_the_score():
         [full["pts_ttm_pe"], full["pts_de"], full["pts_rev_growth"],
          full["pts_eps_growth"], full["pts_roe"], full["pts_div_yield"], 0, 0])
     assert scoring.nansum_strict([1, None, -1]) == scoring.nansum_strict([1, 0, -1])
+
+def test_nse_rupee_filings_are_not_converted_when_yahoo_profile_still_says_usd():
+    # After an NSE (or BSE) fill, statement rows are already in rupees, but the
+    # saved Yahoo profile can still say financialCurrency=USD, as with Infosys.
+    annual = _infy_annual().copy()
+    annual["revenue"] = annual["revenue"] * 83.0
+    annual["net_income"] = annual["net_income"] * 83.0
+    annual["eps"] = annual["eps"] * 83.0
+    annual["gross_profit"] = annual["gross_profit"] * 83.0
+    annual["op_income"] = annual["op_income"] * 83.0
+    annual["equity"] = annual["equity"] * 83.0
+    annual["debt"] = annual["debt"] * 83.0
+    annual["ocf"] = annual["ocf"] * 83.0
+    annual["capex"] = annual["capex"] * 83.0
+    annual["dps"] = annual["dps"] * 83.0
+    annual["source"] = "NSE"
+    annual["currency"] = "INR"
+    close = pd.DataFrame({"INFY": pd.Series([1153.9], index=[pd.Timestamp("2026-11-01")])})
+    info = pd.DataFrame([{"ticker": "INFY", "financial_currency": "USD"}])
+    out, _, dec = fund.align_statements_to_inr(annual, None, close, info, _fx_series(83.0))
+    rec = dec[dec.ticker == "INFY"].iloc[0]
+    assert rec["currency"] == "INR"
+    assert rec["source"] == "filing"
+    assert not rec["converted"]
+    raw = annual[annual.frame == "CY2026"].iloc[0]
+    row = out[out.frame == "CY2026"].iloc[0]
+    assert abs(row["revenue"] - raw["revenue"]) < 1e-6
+    assert abs(row["eps"] - raw["eps"]) < 1e-6
+
+
+def test_yahoo_fallback_rows_tagged_usd_still_convert():
+    annual = _infy_annual().copy()
+    annual["source"] = "Yahoo INFY.NS"
+    annual["currency"] = "USD"
+    close = pd.DataFrame({"INFY": pd.Series([1153.9], index=[pd.Timestamp("2026-11-01")])})
+    # Profile currency left blank so the filing tag has to be what decides it.
+    info = pd.DataFrame([{"ticker": "INFY", "financial_currency": ""}])
+    out, _, dec = fund.align_statements_to_inr(annual, None, close, info, _fx_series(83.0))
+    rec = dec[dec.ticker == "INFY"].iloc[0]
+    assert rec["currency"] == "USD" and rec["converted"] and rec["source"] == "filing"
+    raw = annual[annual.frame == "CY2026"].iloc[0]
+    row = out[out.frame == "CY2026"].iloc[0]
+    assert abs(row["revenue"] / raw["revenue"] - 83.0) < 1e-6

@@ -10,7 +10,7 @@ date or every 90 days.
 Free sources, no API key. Shareholding runs before statements so a long
 statement pass cannot use up the clock. Shareholding tries the NSE filing,
 then the public Screener page, then the BSE shareholding file. Statements try
-Yahoo .NS, then Yahoo .BO. A source that errors three times in one run is
+the official NSE rupee filings first, then BSE, then Yahoo .NS, then Yahoo .BO. A source that errors three times in one run is
 skipped for the rest of that run. An empty filing is recorded and tried again
 later in the pass. It does not stop the batch. A statement name whose sources
 error is tried again the next day. A shareholding name whose sources all fail
@@ -33,6 +33,7 @@ from urllib.parse import quote
 import pandas as pd
 
 import download_guard
+import exchange_financials
 import fallback
 import india_data
 import netutil
@@ -420,8 +421,35 @@ def _bundle_useful(info, annual, quarters):
     return False
 
 
-def fetch_statements(rec, cfg, book):
+def _tag_yahoo_rows(rows, symbol, currency):
+    out = []
+    for row in rows or []:
+        item = dict(row)
+        item.setdefault("source", "Yahoo " + symbol)
+        if currency and not item.get("currency"):
+            item["currency"] = currency
+        out.append(item)
+    return out
+
+
+def fetch_statements(rec, cfg, book, codes=None):
     ticker = rec["ticker"]
+    nse = str(rec.get("nse_symbol") or "").strip().upper()
+    bse_sym = str(rec.get("bse_symbol") or "").strip().upper()
+    bse_only = str(rec.get("in_bse_only") or "").lower() == "yes" or str(rec.get("exchange") or "").upper() == "BSE"
+    codes = codes or {}
+    code = codes.get(ticker) or codes.get(bse_sym) or codes.get(str(rec.get("isin") or "").strip().upper())
+
+    def attempt_nse():
+        symbol = nse or ("" if bse_only else str(ticker).strip().upper())
+        if not symbol or bse_only:
+            return None
+        return exchange_financials.fetch_nse_statements(symbol, cfg, ticker=ticker)
+
+    def attempt_bse():
+        if not code:
+            return None
+        return exchange_financials.fetch_bse_statements(code, cfg, ticker=ticker)
 
     def attempt(symbol):
         def run():
@@ -431,10 +459,21 @@ def fetch_statements(rec, cfg, book):
             info = dict(info or {})
             info["ticker"] = ticker
             info["source"] = "Yahoo " + symbol
-            return {"info": info, "annual": annual or [], "quarters": quarters or [], "earn": earn or [], "symbol": symbol}
+            currency = str(info.get("financial_currency") or "").strip().upper()
+            return {
+                "info": info,
+                "annual": _tag_yahoo_rows(annual, symbol, currency),
+                "quarters": _tag_yahoo_rows(quarters, symbol, currency),
+                "earn": earn or [],
+                "symbol": symbol,
+            }
         return run
 
     steps = []
+    if not bse_only:
+        steps.append(("NSE results", attempt_nse))
+    if code:
+        steps.append(("BSE results", attempt_bse))
     for symbol in statement_symbols(rec):
         # One label per listing so three failures skip that listing for the rest of the run.
         label = "Yahoo BO" if str(symbol).endswith(".BO") else "Yahoo NS"
@@ -1039,13 +1078,25 @@ def _run_batch_locked(root, cfg, spec, data, cache):
             break
         ticker = rec["ticker"]
         try:
-            bundle, source = fetch_statements(rec, cfg, book)
+            bundle, source = fetch_statements(rec, cfg, book, codes)
             if not bundle:
                 raise RuntimeError("no statement source answered")
             info_row = dict(bundle["info"])
             info_row["fetched_on"] = today
             info_row["source"] = source or info_row.get("source") or ""
-            info_rows.append(info_row)
+            prior = {}
+            for existing in reversed(info_rows):
+                if str(existing.get("ticker") or "").strip().upper() == ticker:
+                    prior = dict(existing)
+                    break
+            merged = dict(prior)
+            for key, val in info_row.items():
+                if not blank(val):
+                    merged[key] = val
+            merged["ticker"] = ticker
+            merged["fetched_on"] = today
+            merged["source"] = info_row["source"]
+            info_rows.append(merged)
             if bundle["annual"]:
                 new_a.append(pd.DataFrame(bundle["annual"]))
             if bundle["quarters"]:

@@ -418,3 +418,58 @@ if __name__ == "__main__":
     test_empty_filing_waits_behind_names_that_have_not_been_tried()
     test_switch_off_does_not_download()
     print("backfill ok")
+
+
+def test_statements_try_nse_before_yahoo(monkeypatch):
+    calls = []
+
+    def nse(symbol, cfg, ticker=None):
+        calls.append("nse:" + symbol)
+        return {
+            "info": {"ticker": ticker, "source": "NSE", "financial_currency": "INR"},
+            "annual": [{"ticker": ticker, "frame": "CY2024", "end": "2024-03-31", "revenue": 1,
+                         "source": "NSE", "currency": "INR"}],
+            "quarters": [],
+            "earn": [],
+            "symbol": symbol,
+        }
+
+    def boom(*a, **k):
+        calls.append("yahoo")
+        raise AssertionError("Yahoo should not run after NSE answers")
+
+    monkeypatch.setattr(bf.exchange_financials, "fetch_nse_statements", nse)
+    monkeypatch.setattr(bf.exchange_financials, "fetch_bse_statements", lambda *a, **k: (_ for _ in ()).throw(RuntimeError("no bse")))
+    monkeypatch.setattr(bf.india_data, "fetch_yahoo_bundle", boom)
+    rec = {"ticker": "INFY", "exchange": "Both", "in_bse_only": "no", "nse_symbol": "INFY", "bse_symbol": "INFY", "isin": "INE009A01021"}
+    book = __import__("fallback").SourceBook()
+    value, source = bf.fetch_statements(rec, {}, book, {"INFY": "500209"})
+    assert source == "NSE results"
+    assert value["annual"][0]["currency"] == "INR"
+    assert calls == ["nse:INFY"]
+
+
+def test_bse_only_skips_nse_statements(monkeypatch):
+    calls = []
+
+    def nse(*a, **k):
+        calls.append("nse")
+        raise AssertionError("BSE-only names should not call NSE results")
+
+    def bse(code, cfg, ticker=None):
+        calls.append("bse:" + code)
+        return {
+            "info": {"ticker": ticker, "source": "BSE", "financial_currency": "INR"},
+            "annual": [{"ticker": ticker, "end": "2024-03-31", "revenue": 2, "source": "BSE", "currency": "INR"}],
+            "quarters": [],
+            "earn": [],
+        }
+
+    monkeypatch.setattr(bf.exchange_financials, "fetch_nse_statements", nse)
+    monkeypatch.setattr(bf.exchange_financials, "fetch_bse_statements", bse)
+    rec = {"ticker": "AAIL", "exchange": "BSE", "in_bse_only": "yes", "nse_symbol": "", "bse_symbol": "AAIL", "isin": "INE864E01021"}
+    book = __import__("fallback").SourceBook()
+    value, source = bf.fetch_statements(rec, {}, book, {"AAIL": "530621"})
+    assert source == "BSE results"
+    assert calls == ["bse:530621"]
+    assert value["info"]["financial_currency"] == "INR"
