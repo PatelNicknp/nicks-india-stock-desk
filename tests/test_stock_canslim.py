@@ -301,4 +301,7 @@ def test_feature_switch_hides_the_scorecard_card():
     assert "sc-break-grid{display:grid;grid-template-columns:minmax(0,1fr)" in css.replace(" ", "") or ".sc-break-grid{display:grid;grid-template-columns:minmax(0,1fr)" in css
     assert "@media (min-width:700px)" in css
     assert "function scRowMissing" in pages
-    assert "No data yet" in pages[pages.index("function scNowLine"):pages.index("function scoreBreakHtml")]
+    now_fn = pages[pages.index("function scNowLine"):pages.index("function scoreBreakHtml")]
+    assert "No data yet" in now_fn
+    assert "Rising" in now_fn and "Falling" in now_fn and "Flat" in now_fn
+    assert "institutional" in now_fn

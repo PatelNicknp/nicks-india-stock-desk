@@ -900,6 +900,14 @@
   }
   function scNowLine(item) {
     if (scRowMissing(item)) return "No data yet";
+    const name = String(item.item || "").toLowerCase();
+    if (name.indexOf("institutional") >= 0 && name.indexOf("trend") >= 0) {
+      const n = D.num(item.points);
+      if (n == null) return "No data yet";
+      if (n > 0) return "Rising";
+      if (n < 0) return "Falling";
+      return "Flat";
+    }
     const now = D.num(item.now_value);
     const avg = D.num(item.avg_value);
     if (now != null && avg != null) return D.fmt(now, 2) + " vs own " + D.fmt(avg, 2);
