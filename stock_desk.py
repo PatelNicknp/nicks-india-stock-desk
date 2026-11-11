@@ -3006,6 +3006,12 @@ def main(argv=None):
         holders = load_shareholding(list(universe["ticker"]), focus_seed, cfg, cache, mode)
     if len(annual) or len(quarters):
         annual, quarters = fund.adjust_pershare_for_splits(annual, quarters)
+        fx = close["INR=X"].dropna() if close is not None and hasattr(close, "columns") and "INR=X" in close.columns else None
+        annual, quarters, ccy_report = fund.align_statements_to_inr(annual, quarters, close, info, fx)
+        n_fx = int(ccy_report["converted"].sum()) if ccy_report is not None and len(ccy_report) else 0
+        if n_fx:
+            log("Statement currency", "OK", "",
+                "%d names had non-INR statements and were converted to rupees using cached INR=X rates" % n_fx)
     # fill sector gaps from Yahoo
     if len(info) and len(universe):
         imap = info.set_index("ticker")
