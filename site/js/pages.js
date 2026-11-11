@@ -3981,6 +3981,7 @@
     today: { lines: [
       "A quick look at the whole market today. The cards show the Nifty 50, advancers and decliners, new 52-week highs and lows, put/call mood, India VIX, the 10-year rate, and the rupee.",
       "Below that are today's sector moves, market breadth, and the latest alerts.",
+      "Run everything, at the top, opens the GitHub page for the full after-close update. It does not start the run. Last update next to it shows when the numbers were last published, in IST and PT.",
     ] },
     flows: { lines: [
       "How much foreign investors (FII) and Indian institutions (DII) bought or sold in the cash market, in crore rupees. Green is net buying. Red is net selling.",
