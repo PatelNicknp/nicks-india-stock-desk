@@ -7,6 +7,9 @@
   const MU = "#8B96AD";
   const TX = "#E6EBF5";
   const RESEARCH = "Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts.";
+  // Public page only. The link does not start a run and carries no token.
+  const RUN_EVERYTHING_URL = "https://github.com/PatelNicknp/nicks-india-stock-desk/actions/workflows/update.yml";
+  let publishedUpdate = null;
   const NAV = [
     ["Overview", [
       ["Today", "index.html", "today"],
@@ -418,6 +421,34 @@
     }
     if (!bits.length) return text || "n/a";
     return bits.join(" · ");
+  }
+  // The words next to Run everything. The time is the published update (data/meta.json).
+  // IST and PT are both kept when the file has both. A missing file says not available.
+  function lastUpdateWhen(meta) {
+    const raw = meta && meta.updated_pt != null ? String(meta.updated_pt).trim() : "";
+    if (!raw) return "not available";
+    const shown = formatUpdated(raw);
+    if (!shown || shown === "n/a") return "not available";
+    return shown;
+  }
+  async function loadPublishedMeta() {
+    try {
+      const res = await fetch(csvUrl("meta.json"));
+      if (!res.ok) return null;
+      const body = await res.json();
+      if (!body || typeof body !== "object" || Array.isArray(body)) return null;
+      return body;
+    } catch (err) {
+      return null;
+    }
+  }
+  function headerActionsHtml(page) {
+    if (page && page.id === "today" && featureOn("feature.run_everything")) {
+      return '<div class="hdracts">' +
+        '<a class="runbtn" id="run-everything" href="' + RUN_EVERYTHING_URL + '" target="_blank" rel="noopener noreferrer">Run everything</a>' +
+        '<div class="upd">Last update: <b id="last-update">' + esc(lastUpdateWhen(publishedUpdate)) + "</b></div></div>";
+    }
+    return '<div class="upd">Updated <b id="updated">…</b></div>';
   }
   function latestChecked(rows) {
     let best = "";
@@ -3377,7 +3408,7 @@
       '<button type="button" class="search-btn" id="qbtn" aria-label="Search stocks" aria-expanded="false" aria-controls="q">' + SEARCH_ICON + "</button>" +
       "<div class=\"titles\"><h1>" + esc(page.title) + "</h1>" +
       (researchLineOn() ? "<div class=\"rl\">" + esc(RESEARCH) + "</div>" : "") + "</div>" +
-      '<div class="upd">Updated <b id="updated">…</b></div></div><div id="page"></div></div></div>';
+      headerActionsHtml(page) + '</div><div id="page"></div></div></div>';
     document.getElementById("nav").addEventListener("click", (e) => {
       const btn = e.target.closest(".grp");
       if (!btn) {
@@ -3568,10 +3599,12 @@
       }));
       SETTINGS = loaded["settings.csv"] || [];
       applyTheme();
+      publishedUpdate = (id === "today" && featureOn("feature.run_everything")) ? await loadPublishedMeta() : null;
       renderShell(meta);
       const mt = loaded["market_today.csv"];
       const stamp = (mt && mt[0] && mt[0].updated_pt) || latestChecked(loaded["updates_log.csv"]);
-      document.getElementById("updated").textContent = formatUpdated(stamp);
+      const updatedEl = document.getElementById("updated");
+      if (updatedEl) updatedEl.textContent = formatUpdated(stamp);
       if (FEATURE[id] && !featureOn(FEATURE[id])) {
         document.getElementById("page").innerHTML = '<div class="panel pad m2" style="font-size:12px">Turned off in Settings</div>';
         markReady("1");
@@ -3603,6 +3636,7 @@
     multiHtml: multiHtml, selectHtml: selectHtml, searchHtml: searchHtml, rangeHtml: rangeHtml,
     pairHtml: pairHtml, dateHtml: dateHtml, feedHtml: feedHtml, placeFeed: placeFeed,
     featureOn: featureOn, settingVal: settingVal, aboutHtml: aboutHtml, rsLeaderMin: rsLeaderMin, rsSentence: rsSentence, marketWord: marketWord, marketColor: marketColor, monthLabel: monthLabel, dateTicks: dateTicks, ptsColor: ptsColor,
+    lastUpdateWhen: lastUpdateWhen, formatUpdated: formatUpdated,
     wireFilters: wireFilters, matchMulti: matchMulti, matchContains: matchContains,
     matchText: matchText, matchMin: matchMin,
     destroyCharts: destroyCharts, lineChart: lineChart, barChart: barChart, comboChart: comboChart, makeChart: makeChart,

@@ -43,6 +43,10 @@ h1{font-size:32px;font-weight:700;line-height:36px}
 .qmiss{padding:12px;color:var(--muted);font-size:13px}
 .upd{font-size:12px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:7px 12px;margin-top:4px;white-space:normal}
 .upd b{color:var(--text);font-weight:500}
+.hdracts{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:8px;margin-top:4px;max-width:100%;min-width:0}
+.hdracts .upd{margin-top:0;min-width:0}
+.runbtn{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;height:36px;min-height:36px;padding:0 12px;background:var(--panel);border:1px solid var(--line);border-radius:6px;color:var(--text);font-size:13px;font-weight:700;line-height:16px;text-decoration:none;white-space:nowrap;cursor:pointer}
+.runbtn:hover{background:var(--raise);text-decoration:none;color:var(--text)}
 .ctrls{display:flex;flex-wrap:wrap;gap:16px;margin:18px 0 16px;align-items:center}
 .dd,select.dd,input.dd{height:36px;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:0 12px;font-size:13px;min-width:160px}
 .filter{position:relative}
@@ -249,6 +253,8 @@ input::placeholder{color:var(--muted2);opacity:1}
   .search-btn{grid-column:2;grid-row:1;margin:0}
   .titles{grid-column:3;grid-row:1}
   .upd{grid-column:4;grid-row:1;margin-top:0}
+  .hdracts{grid-column:4;grid-row:1;margin-top:0}
+  .runbtn{min-height:44px;height:44px}
   .qwrap{display:none;grid-column:1 / -1;grid-row:2}
   body.search-open .qwrap{display:block}
 }
@@ -307,8 +313,10 @@ input::placeholder{color:var(--muted2);opacity:1}
   .toggles,.moodchip,.feed{grid-column:auto}
   .hdr{grid-template-columns:44px 44px minmax(0,1fr)}
   .upd{grid-column:1 / -1;grid-row:2;justify-self:start}
+  .hdracts{grid-column:1 / -1;grid-row:2;justify-self:start;justify-content:flex-start}
   body.search-open .qwrap{grid-row:2}
   body.search-open .upd{grid-row:3}
+  body.search-open .hdracts{grid-row:3}
 }
 @media (max-width:900px) and (max-height:500px){
   .chart-box,.chart-box.tall,.chart-box.htall,.chart-box.h300{height:180px}
