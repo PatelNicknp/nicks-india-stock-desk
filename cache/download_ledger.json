@@ -8,7 +8,7 @@
  "providers": {
   "BSE results": {
    "cooldown_until": "",
-   "fails": 1,
+   "fails": 2,
    "last_error": "skipped after repeated failures in this run"
   },
   "BSE shareholding": {
@@ -33,13 +33,13 @@
   },
   "Yahoo BO": {
    "cooldown_until": "",
-   "fails": 0,
-   "last_error": ""
+   "fails": 1,
+   "last_error": "skipped after repeated failures in this run"
   },
   "Yahoo NS": {
    "cooldown_until": "",
-   "fails": 0,
-   "last_error": ""
+   "fails": 1,
+   "last_error": "skipped after repeated failures in this run"
   }
  },
  "stalls": {
@@ -53,7 +53,7 @@
   },
   "statements": {
    "cooldown_until": "",
-   "runs": 0
+   "runs": 1
   }
  },
  "unavailable": {
@@ -104,48 +104,48 @@
   },
   "statements:ABHIINFRA": {
    "kind": "statements",
-   "last_on": "2026-11-11",
+   "last_on": "2026-11-12",
    "note": "no statement source answered",
-   "retry_after": "2026-11-12",
+   "retry_after": "2026-11-13",
    "since": "2026-11-11",
    "ticker": "ABHIINFRA",
-   "tries": 1
+   "tries": 2
   },
   "statements:BAGMANE": {
    "kind": "statements",
-   "last_on": "2026-11-11",
+   "last_on": "2026-11-12",
    "note": "no statement source answered",
-   "retry_after": "2026-11-12",
+   "retry_after": "2026-11-13",
    "since": "2026-11-11",
    "ticker": "BAGMANE",
-   "tries": 1
+   "tries": 2
   },
   "statements:DUMMYHEG": {
    "kind": "statements",
-   "last_on": "2026-11-11",
+   "last_on": "2026-11-12",
    "note": "no statement source answered",
-   "retry_after": "2026-11-12",
+   "retry_after": "2026-11-13",
    "since": "2026-11-11",
    "ticker": "DUMMYHEG",
-   "tries": 1
+   "tries": 2
   },
   "statements:DUMMYINXGN": {
    "kind": "statements",
-   "last_on": "2026-11-11",
+   "last_on": "2026-11-12",
    "note": "no statement source answered",
-   "retry_after": "2026-11-12",
+   "retry_after": "2026-11-13",
    "since": "2026-11-11",
    "ticker": "DUMMYINXGN",
-   "tries": 1
+   "tries": 2
   },
   "statements:POWERIETF": {
    "kind": "statements",
-   "last_on": "2026-11-11",
+   "last_on": "2026-11-12",
    "note": "no statement source answered",
-   "retry_after": "2026-11-12",
+   "retry_after": "2026-11-13",
    "since": "2026-11-11",
    "ticker": "POWERIETF",
-   "tries": 1
+   "tries": 2
   },
   "statements:SANCF": {
    "kind": "statements",
@@ -167,12 +167,12 @@
   },
   "statements:VEEFIN": {
    "kind": "statements",
-   "last_on": "2026-11-11",
+   "last_on": "2026-11-12",
    "note": "no statement source answered",
-   "retry_after": "2026-11-12",
+   "retry_after": "2026-11-13",
    "since": "2026-11-11",
    "ticker": "VEEFIN",
-   "tries": 1
+   "tries": 2
   }
  }
 }

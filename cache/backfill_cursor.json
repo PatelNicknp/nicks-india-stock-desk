@@ -1,10 +1,10 @@
 {
  "statements_retry_after": {
-  "BAGMANE": "2026-11-12",
-  "DUMMYHEG": "2026-11-12",
+  "BAGMANE": "2026-11-13",
+  "DUMMYHEG": "2026-11-13",
   "DUMMYINGL1": "2026-11-05",
   "DUMMYINGL2": "2026-11-05",
-  "DUMMYINXGN": "2026-11-12",
+  "DUMMYINXGN": "2026-11-13",
   "DVL": "2026-10-27",
   "DYNPRO": "2026-10-27",
   "TEAM24": "2026-11-12",
@@ -15,10 +15,10 @@
   "SUGALESL": "2026-11-16",
   "TRANOCE": "2026-11-04",
   "BRIGHTOUTD": "2026-11-07",
-  "VEEFIN": "2026-11-12",
+  "VEEFIN": "2026-11-13",
   "4THGEN": "2026-11-12",
-  "ABHIINFRA": "2026-11-12",
-  "POWERIETF": "2026-11-12",
+  "ABHIINFRA": "2026-11-13",
+  "POWERIETF": "2026-11-13",
   "SANCF": "2026-11-18"
  },
  "shareholding_retry_after": {
@@ -38,57 +38,55 @@
   "ABSLBANETF": "2026-10-27",
   "ABSLNN50ET": "2026-10-27",
   "JAYKAYPP": "2026-11-12",
-  "OLAPP": "2026-11-12",
-  "KCDGROUP": "2026-11-12",
-  "SPACEINCUBA": "2026-11-12"
+  "OLAPP": "2026-11-12"
  },
- "last_batch_at": "2026-11-11T17:32Z",
+ "last_batch_at": "2026-11-11T18:46Z",
  "last_statements_ok": 0,
- "last_statements_fail": 0,
- "last_shareholding_ok": 59,
+ "last_statements_fail": 6,
+ "last_shareholding_ok": 61,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
-  "BIRET": "2026-11-11",
-  "EMBASSY": "2026-11-11",
-  "BAGMANE": "2026-11-11",
-  "DUMMYHEG": "2026-11-11",
+  "BIRET": "2026-11-12",
+  "EMBASSY": "2026-11-12",
+  "BAGMANE": "2026-11-12",
+  "DUMMYHEG": "2026-11-12",
   "DUMMYINGL1": "2026-11-04",
   "DUMMYINGL2": "2026-11-04",
-  "DUMMYINXGN": "2026-11-11",
+  "DUMMYINXGN": "2026-11-12",
   "OLAELEC-RE": "2026-10-27",
-  "APLABPP": "2026-11-11",
-  "ATLPP": "2026-11-11",
-  "GSAILPP": "2026-11-11",
-  "JAYKAYPP": "2026-11-09",
+  "APLABPP": "2026-11-12",
+  "ATLPP": "2026-11-12",
+  "GSAILPP": "2026-11-12",
+  "JAYKAYPP": "2026-11-12",
   "QDLCCPS": "2026-11-05",
-  "SURAJINDPP": "2026-11-11",
-  "VERTEXPP": "2026-11-11",
+  "SURAJINDPP": "2026-11-12",
+  "VERTEXPP": "2026-11-12",
   "ICICIPRULI": "2026-10-27",
-  "ACESEPP": "2026-11-11",
-  "SHIVAM-RE1": "2026-11-11",
+  "ACESEPP": "2026-11-12",
+  "SHIVAM-RE1": "2026-11-12",
   "ANIRITPP": "2026-11-09",
-  "CENTEXTPP": "2026-11-11",
-  "OLAPP": "2026-11-09"
+  "CENTEXTPP": "2026-11-12",
+  "OLAPP": "2026-11-12"
  },
- "last_shareholding_empty": 13,
+ "last_shareholding_empty": 15,
  "last_shareholding_skipped": 0,
  "statements_failures": {
   "BAGMANE": {
-   "count": 2,
-   "last_on": "2026-11-11",
-   "retry_after": "2026-11-12",
+   "count": 3,
+   "last_on": "2026-11-12",
+   "retry_after": "2026-11-13",
    "note": "no statement source answered"
   },
   "DUMMYHEG": {
-   "count": 2,
-   "last_on": "2026-11-11",
-   "retry_after": "2026-11-12",
+   "count": 3,
+   "last_on": "2026-11-12",
+   "retry_after": "2026-11-13",
    "note": "no statement source answered"
   },
   "DUMMYINXGN": {
-   "count": 2,
-   "last_on": "2026-11-11",
-   "retry_after": "2026-11-12",
+   "count": 3,
+   "last_on": "2026-11-12",
+   "retry_after": "2026-11-13",
    "note": "no statement source answered"
   },
   "SUGALESL": {
@@ -104,9 +102,9 @@
    "note": "no statement source answered"
   },
   "VEEFIN": {
-   "count": 1,
-   "last_on": "2026-11-11",
-   "retry_after": "2026-11-12",
+   "count": 2,
+   "last_on": "2026-11-12",
+   "retry_after": "2026-11-13",
    "note": "no statement source answered"
   },
   "4THGEN": {
@@ -116,15 +114,15 @@
    "note": "no statement source answered"
   },
   "ABHIINFRA": {
-   "count": 1,
-   "last_on": "2026-11-11",
-   "retry_after": "2026-11-12",
+   "count": 2,
+   "last_on": "2026-11-12",
+   "retry_after": "2026-11-13",
    "note": "no statement source answered"
   },
   "POWERIETF": {
-   "count": 1,
-   "last_on": "2026-11-11",
-   "retry_after": "2026-11-12",
+   "count": 2,
+   "last_on": "2026-11-12",
+   "retry_after": "2026-11-13",
    "note": "no statement source answered"
   },
   "SANCF": {
@@ -142,18 +140,6 @@
    "note": "no shareholding source answered"
   },
   "OLAPP": {
-   "count": 1,
-   "last_on": "2026-11-09",
-   "retry_after": "2026-11-12",
-   "note": "no shareholding source answered"
-  },
-  "KCDGROUP": {
-   "count": 1,
-   "last_on": "2026-11-09",
-   "retry_after": "2026-11-12",
-   "note": "no shareholding source answered"
-  },
-  "SPACEINCUBA": {
    "count": 1,
    "last_on": "2026-11-09",
    "retry_after": "2026-11-12",
