@@ -516,7 +516,7 @@ else if not na(buyLine)
 // avgVol and bigVol are calculated above. The triangles, the 1.5x breakout test, and the exits share that same 50-day average.
 // Big-volume triangles are drawn ONLY inside the current base (from the base high to today).
 // Redrawn on the last bar, so old ones outside the base disappear.
-baseStartBar = baseIdx >= 0 ? array.get(hBar, baseIdx) : na
+// baseStartBar is worked out once above, in the Depth section.
 var array<label> vLbl = array.new<label>()
 if barstate.islast
     for lb in vLbl
