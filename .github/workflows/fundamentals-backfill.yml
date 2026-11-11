@@ -47,17 +47,36 @@ jobs:
             cache/holders.csv \
             cache/backfill_cursor.json \
             cache/company_profiles.csv \
+            cache/download_ledger.json \
             data/backfill_progress.csv \
             data/company_lines.csv
+          # Stage any other tracked file this run already touched, such as the
+          # download ledger. Leaving one dirty blocks git pull --rebase.
+          git add -u -- cache data
           if git diff --cached --quiet; then
             echo "No financials changes."
             exit 0
           fi
           git commit -m "Backfill financials and shareholding $(date -u +%Y-%m-%dT%H:%MZ)"
+          pushed=
           for i in 1 2 3 4; do
-            git pull --rebase origin "${GITHUB_REF_NAME}" && git push && bash scripts/mark_pages_publish.sh && break
+            stashed=
+            if ! git diff --quiet || ! git diff --cached --quiet || [ -n "$(git ls-files --others --exclude-standard)" ]; then
+              git stash push --include-untracked -m "backfill-pre-rebase" && stashed=1
+            fi
+            if git pull --rebase origin "${GITHUB_REF_NAME}" && git push && bash scripts/mark_pages_publish.sh; then
+              if [ -n "$stashed" ]; then git stash pop || true; fi
+              pushed=1
+              break
+            fi
+            git rebase --abort || true
+            if [ -n "$stashed" ]; then git stash pop || true; fi
             sleep $((i * 5))
           done
+          if [ -z "$pushed" ]; then
+            echo "The backfill commit could not be pushed this time."
+            exit 1
+          fi
       # Light rebuild of the scored pages, so Buy setups, CANSLIM, and the score
       # pages pick up the financials and shareholding saved above. It reads only
       # files already on disk and downloads nothing. It runs after the batch is
@@ -76,17 +95,23 @@ jobs:
         timeout-minutes: 4
         run: |
           git add data
+          git add -u -- cache data
           if git diff --cached --quiet; then
             echo "No page changes."
             exit 0
           fi
           git commit -m "Rescore pages from saved financials $(date -u +%Y-%m-%dT%H:%MZ)"
           for i in 1 2 3 4; do
-            if git pull --rebase origin "${GITHUB_REF_NAME}"; then
-              git push && bash scripts/mark_pages_publish.sh && exit 0
-            else
-              git rebase --abort || true
+            stashed=
+            if ! git diff --quiet || ! git diff --cached --quiet || [ -n "$(git ls-files --others --exclude-standard)" ]; then
+              git stash push --include-untracked -m "backfill-resave-pre-rebase" && stashed=1
             fi
+            if git pull --rebase origin "${GITHUB_REF_NAME}" && git push && bash scripts/mark_pages_publish.sh; then
+              if [ -n "$stashed" ]; then git stash pop || true; fi
+              exit 0
+            fi
+            git rebase --abort || true
+            if [ -n "$stashed" ]; then git stash pop || true; fi
             sleep $((i * 5))
           done
           echo "The rebuilt pages could not be saved this time. The next run rebuilds them."
