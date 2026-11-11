@@ -2367,10 +2367,9 @@
   }
   function shareChgHtml(chg) {
     const n = num(chg);
-    if (n == null) return '<span class="sh-na">quarter change n/a</span>';
+    if (n == null || n === 0) return '<span class="sh-na">–</span>';
     if (n > 0) return '<span class="sh-up">\u25B2 ' + esc(fmt(n, 2)) + " pts</span>";
-    if (n < 0) return '<span class="sh-dn">\u25BC ' + esc(fmt(Math.abs(n), 2)) + " pts</span>";
-    return '<span class="sh-na">flat vs last quarter</span>';
+    return '<span class="sh-dn">\u25BC ' + esc(fmt(Math.abs(n), 2)) + " pts</span>";
   }
   function shareValue(v) {
     const n = num(v);

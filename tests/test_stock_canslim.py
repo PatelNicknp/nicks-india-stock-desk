@@ -284,3 +284,21 @@ def test_scorecard_page_loads_the_card():
     assert 'title: "Score breakdown"' not in pages
     assert "25% or more vs the year-ago quarter" in block
     assert "Within 15% of the 52-week closing high" in block
+
+
+def test_feature_switch_hides_the_scorecard_card():
+    pages = _read("site", "js", "pages.js")
+    start = pages.index("function stockCanslimHtml")
+    chunk = pages[start:pages.index("function wireCanslimRows")]
+    assert 'panelOff("feature.stock_canslim")' in chunk
+    after = chunk.split('panelOff("feature.stock_canslim")', 1)[1][:80]
+    assert "return \"\"" in after or "return '';" in after or 'return ""' in after
+    assert pages.index("stockCanslimHtml(ctx, ticker, row)") < pages.index("stockShareHtml(ctx, ticker, row)")
+    assert "cl-val-phone" in pages
+    assert "avg vol" in pages
+    assert 'panelOff("feature.stock_canslim")' in chunk
+    css = _read("site", "css", "desk.css")
+    assert "sc-break-grid{display:grid;grid-template-columns:minmax(0,1fr)" in css.replace(" ", "") or ".sc-break-grid{display:grid;grid-template-columns:minmax(0,1fr)" in css
+    assert "@media (min-width:700px)" in css
+    assert "function scRowMissing" in pages
+    assert "No data yet" in pages[pages.index("function scNowLine"):pages.index("function scoreBreakHtml")]

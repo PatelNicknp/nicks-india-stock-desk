@@ -748,27 +748,32 @@
     if (a >= 1e3) return (n / 1e3).toFixed(a >= 10000 ? 0 : 1) + "K";
     return D.fmt(n, 0);
   }
-  function clLetterValue(letter, row, scoreRow) {
+  function clLetterValue(letter, row, scoreRow, compact) {
     if (letter === "C" || letter === "A") return clPct(row[letter.toLowerCase() + "_value"]);
     if (letter === "N") return clFromHigh(row.n_value);
     if (letter === "S") {
       const bits = [];
       const vol = D.num(row.s_value);
-      if (vol != null) bits.push("20-day avg " + clVol(vol) + " shares");
+      if (vol != null) bits.push(compact ? clVol(vol) + " avg vol" : "20-day avg " + clVol(vol) + " shares");
       const vx = scoreRow ? D.num(scoreRow.volume_ratio) : null;
       if (vx != null && vx >= 0.1) bits.push(D.fmt(vx, vx >= 10 ? 0 : 1) + "x");
       const fl = D.num(row.s_float_pct);
-      if (fl != null) bits.push("free float " + D.fmt(fl, 1) + "%");
-      return bits.join(", ");
+      if (fl != null) bits.push(compact ? "float " + D.fmt(fl, 1) + "%" : "free float " + D.fmt(fl, 1) + "%");
+      return bits.join(compact ? " · " : ", ");
     }
     if (letter === "L") {
       const rs = D.num(row.l_value);
       if (rs == null) return "";
+      const ir = D.num(row.l_industry_rank);
+      if (compact) {
+        const bits = ["RS " + D.fmt(rs, 0)];
+        if (ir != null) bits.push("industry rank " + D.fmt(ir, 0));
+        return bits.join(" · ");
+      }
       const bits = ["RS " + D.fmt(rs, 0)];
       const bench = scoreRow && !D.isBlank(scoreRow.rs_benchmark) ? String(scoreRow.rs_benchmark) : "Nifty 50";
       bits[0] += " vs " + bench;
       bits.push("rank " + String(Math.max(1, 100 - Math.round(rs))) + " of 99");
-      const ir = D.num(row.l_industry_rank);
       if (ir != null) bits.push("industry rank " + D.fmt(ir, 0));
       return bits.join(" · ");
     }
@@ -808,11 +813,17 @@
       const letter = item[0];
       const mark = row ? row[letter.toLowerCase() + "_mark"] : "";
       const tone = row ? clTone(mark) : "na";
-      let value = row ? clLetterValue(letter, row, scoreRow) : "";
+      let value = row ? clLetterValue(letter, row, scoreRow, false) : "";
+      let valuePhone = row ? clLetterValue(letter, row, scoreRow, true) : "";
       let rule = item[2];
       if (tone === "na") {
         if (!value) value = letter === "C" || letter === "A" ? "Not verified yet" : "Not on file yet";
+        if (!valuePhone) valuePhone = value;
         rule = clEmptyNote(letter);
+      }
+      if (letter === "L" && row) {
+        const rs = D.num(row.l_value);
+        if (rs != null) rule += " Rank " + String(Math.max(1, 100 - Math.round(rs))) + " of 99.";
       }
       if (letter === "N" && row && !D.isBlank(row.n_news_status) && String(row.n_news_mark || "") !== "not verified") {
         rule += " " + String(row.n_news_status);
@@ -821,7 +832,8 @@
       return '<button type="button" class="cl-row cl-' + tone + '-row" aria-expanded="false">' +
         '<span class="cl-badge cl-' + tone + '">' + letter + "</span>" +
         '<span class="cl-mid"><span class="cl-name">' + D.esc(item[1]) + '</span>' +
-        '<span class="cl-val">' + D.esc(value) + "</span>" +
+        '<span class="cl-val cl-val-phone">' + D.esc(valuePhone) + "</span>" +
+        '<span class="cl-val cl-val-wide">' + D.esc(value) + "</span>" +
         '<span class="cl-rule">' + D.esc(rule) + "</span></span>" +
         '<span class="cl-mark cl-' + tone + '">' + D.esc(label) + "<i></i></span>" +
         "</button>";
@@ -854,9 +866,10 @@
     if (s >= 5) return "zero";
     return "dn";
   }
-  function scPill(v) {
+  function scPill(v, missing) {
+    if (missing) return '<span class="sc-pill sc-na">–</span>';
     const n = D.num(v);
-    if (n == null) return D.na();
+    if (n == null) return '<span class="sc-pill sc-na">–</span>';
     return '<span class="sc-pill sc-' + scPtsTone(n) + '">' + D.esc(D.signedPts(n)) + "</span>";
   }
   function scItemName(name, bench) {
@@ -864,9 +877,29 @@
     s = s.replace(/\s*\((lower|higher) is better\)/ig, "");
     s = s.replace(/S&P 500/g, bench || "Nifty 50");
     s = s.replace("Institutional 13F trend", "Institutional trend");
+    s = s.replace("Oscillator (RSI-14)", "RSI-14");
+    s = s.replace(", 3 months", ", 3 mo");
     return s;
   }
+  function scRangeHi(name) {
+    const s = String(name || "").toLowerCase();
+    if (s.indexOf("price / sales") >= 0) return 80;
+    if (s.indexOf("price / free cash flow") >= 0 || s.indexOf("price / fcf") >= 0) return 200;
+    if (s.indexOf("p/e") >= 0) return 80;
+    return null;
+  }
+  function scValueOutOfRange(item) {
+    const hi = scRangeHi(item.item);
+    if (hi == null) return false;
+    const check = (v) => { const n = D.num(v); return n != null && (n <= 0 || n > hi); };
+    return check(item.now_value) || check(item.avg_value);
+  }
+  function scRowMissing(item) {
+    if (scValueOutOfRange(item)) return true;
+    return D.num(item.points) == null;
+  }
   function scNowLine(item) {
+    if (scRowMissing(item)) return "No data yet";
     const now = D.num(item.now_value);
     const avg = D.num(item.avg_value);
     if (now != null && avg != null) return D.fmt(now, 2) + " vs own " + D.fmt(avg, 2);
@@ -884,14 +917,16 @@
     });
     const cards = order.filter((g) => groups[g]).map((g) => {
       const items = groups[g];
-      const total = items.reduce((sum, r) => sum + (D.num(r.points) || 0), 0);
+      const total = items.reduce((sum, r) => sum + (scRowMissing(r) ? 0 : (D.num(r.points) || 0)), 0);
       const rows = items.map((r) => {
+        const miss = scRowMissing(r);
         const now = scNowLine(r);
-        return '<div class="sc-g-item"><div class="sc-g-mid"><div class="sc-g-name">' + D.esc(scItemName(r.item, bench)) +
-          "</div>" + (now ? '<div class="sc-g-now">' + D.esc(now) + "</div>" : "") + "</div>" + scPill(r.points) + "</div>";
+        return '<div class="sc-g-item' + (miss ? " sc-g-miss" : "") + '"><div class="sc-g-mid"><div class="sc-g-name">' + D.esc(scItemName(r.item, bench)) +
+          "</div>" + (now ? '<div class="sc-g-now">' + D.esc(now) + "</div>" : "") + "</div>" + scPill(r.points, miss) + "</div>";
       }).join("");
       return '<article class="sc-g"><div class="sc-g-head"><span>' + D.esc(g) + "</span>" + scPill(total) + "</div>" + rows + "</article>";
     }).join("");
+
     return '<section class="panel pad sc-break" aria-label="Score breakdown"><div class="ptitle">Score breakdown</div>' +
       '<div class="psub">Compared with this company\'s own 3-year average.</div>' +
       '<div class="sc-break-grid">' + cards + "</div></section>";

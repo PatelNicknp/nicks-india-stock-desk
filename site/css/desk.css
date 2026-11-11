@@ -643,20 +643,22 @@ body.cv-lock .nav,body.cv-lock .hdr,body.cv-lock .scrim{visibility:hidden}
 .cl-badge{flex:none;width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
 .cl-mid{flex:1 1 auto;min-width:0}
 .cl-name{display:block;font-size:14px;font-weight:700;color:var(--text)}
-.cl-val{display:block;font-size:13px;font-weight:400;color:var(--text2);margin-top:2px;overflow-wrap:anywhere}
+.cl-val{display:block;font-size:13px;font-weight:400;color:var(--text2);margin-top:2px;overflow-wrap:break-word}
+.cl-val-phone{display:none}
+.cl-val-wide{display:block}
 .cl-rule{display:block;font-size:12px;line-height:16px;color:var(--muted);margin-top:3px;overflow-wrap:anywhere}
 .cl-mark{flex:none;font-size:12px;font-weight:700;letter-spacing:0;margin-top:4px;display:inline-flex;align-items:center;gap:4px}
 .cl-mark i{display:none;width:8px;height:8px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);margin-top:-3px}
 .cl-chip.cl-pass,.cl-badge.cl-pass,.cl-mark.cl-pass{color:var(--green)}
 .cl-chip.cl-fail,.cl-badge.cl-fail,.cl-mark.cl-fail{color:var(--red)}
 .cl-chip.cl-na,.cl-badge.cl-na,.cl-mark.cl-na{color:var(--muted2)}
-.sc-break-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px}
+.sc-break-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin-top:10px}
 .sc-g{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:10px 12px;min-width:0}
 .sc-g-head{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:14px;font-weight:700;margin-bottom:6px}
 .sc-g-item{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;padding:6px 0;border-top:1px solid var(--line)}
 .sc-g-mid{min-width:0}
-.sc-g-name{font-size:13px;font-weight:500;color:var(--text);overflow-wrap:anywhere}
-.sc-g-now{font-size:12px;color:var(--muted);margin-top:2px;overflow-wrap:anywhere}
+.sc-g-name{font-size:13px;font-weight:500;color:var(--text);overflow-wrap:break-word;word-break:normal}
+.sc-g-now{font-size:12px;color:var(--muted);margin-top:2px;overflow-wrap:break-word}
 .sc-pill.sc-up2,.sc-tile.sc-up2,.sc-score.sc-up2{background:var(--cl-plus2);color:var(--green)}
 .sc-pill.sc-up,.sc-tile.sc-up,.sc-score.sc-up{background:var(--cl-plus1);color:var(--green)}
 .sc-pill.sc-zero,.sc-tile.sc-zero,.sc-score.sc-zero{background:var(--cl-zero);color:var(--text)}
@@ -664,6 +666,8 @@ body.cv-lock .nav,body.cv-lock .hdr,body.cv-lock .scrim{visibility:hidden}
 .sc-page .card.sc-tile{color:inherit}
 .sc-page .card.sc-tile .v{color:inherit}
 .sc-page .scorepill.sc-score{color:inherit}
+.sc-g-miss .sc-g-now{color:var(--muted2)}
+.sc-pill.sc-na{background:var(--raise);color:var(--muted2);font-weight:700}
 .sc-pill{display:inline-flex;min-width:28px;height:22px;padding:0 6px;align-items:center;justify-content:center;border-radius:999px;font-size:12px;font-weight:700}
 .sc-vs-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 0;border-top:1px solid var(--line);font-size:13px}
 .sc-vs-row:first-of-type{border-top:0;margin-top:6px}
@@ -674,6 +678,9 @@ body.cv-lock .nav,body.cv-lock .hdr,body.cv-lock .scrim{visibility:hidden}
 .sc-lower{display:grid;grid-template-columns:minmax(0,1fr);gap:16px}
 .sc-aside .panel{margin-bottom:16px}
 .sc-aside .panel:last-child{margin-bottom:0}
+@media (min-width:700px){
+  .sc-break-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 @media (min-width:760px){
   .sc-top{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.95fr);gap:16px;align-items:start}
   .sc-top-cl .cl-box{margin-bottom:0}
@@ -687,6 +694,8 @@ body.cv-lock .nav,body.cv-lock .hdr,body.cv-lock .scrim{visibility:hidden}
   .cl-row:not(.open) .cl-rule{display:none}
   .cl-mark i{display:inline-block}
   .cl-row.open .cl-mark i{transform:rotate(225deg);margin-top:2px}
+  .cl-val-phone{display:block;white-space:nowrap}
+  .cl-val-wide{display:none}
   .sc-an-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media (max-width:699px){
