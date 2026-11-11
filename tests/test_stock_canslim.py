@@ -259,10 +259,10 @@ def test_l_pass_line_is_adjustable():
 def test_scorecard_page_loads_the_card():
     pages = _read("site", "js", "pages.js")
     assert "function stockCanslimHtml" in pages
-    assert "stockCanslimHtml(ctx, ticker)" in pages
+    assert "stockCanslimHtml(ctx, ticker, row)" in pages
     assert "stock_canslim.csv" in pages
     assert 'optional: ["institutional_13f.csv", "stock_canslim.csv"]' in pages
-    assert pages.index("stockCanslimHtml(ctx, ticker)") < pages.index("stockShareHtml(ctx, ticker, row)")
+    assert pages.index("stockCanslimHtml(ctx, ticker, row)") < pages.index("stockShareHtml(ctx, ticker, row)")
     assert "CAN SLIM" in pages
     assert "No data yet" in pages
     assert "cl-chip" in pages and "cl-rows" in pages
@@ -271,6 +271,16 @@ def test_scorecard_page_loads_the_card():
     assert "feature.stock_shareholding" in chunk
     css = _read("site", "css", "desk.css")
     assert ".cl-box{" in css and ".cl-chip{" in css and ".cl-pass{" in css
+    assert ".sc-break-grid{" in css and ".sc-page .identity{" in css
+    assert "--cl-plus2:" in css and "--cl-minus:" in css
     block = pages[pages.index("function clTone"):pages.index("function ptsCard")]
     assert "\u2014" not in block
     assert "FAIL" in block and "No data yet" in block
+    assert "Not verified" in block
+    assert "function scoreBreakHtml" in pages
+    assert "function vsSectorHtml" in pages
+    assert "function analystCardHtml" in pages
+    assert "sc-top" in pages and "sc-lower" in pages
+    assert 'title: "Score breakdown"' not in pages
+    assert "25% or more vs the year-ago quarter" in block
+    assert "Within 15% of the 52-week closing high" in block
