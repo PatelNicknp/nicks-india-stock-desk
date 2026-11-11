@@ -75,7 +75,11 @@
     "self_heal_keeper": true,
     "trading_floor": true,
     "trading_floor_paper": true,
-    "stock_shareholding": true
+    "stock_shareholding": true,
+    "stock_canslim": true,
+    "canslim_industry_rank": true,
+    "canslim_free_float": true,
+    "canslim_news": true
   },
   "vcp": {
     "_note": "VCP scanner. A stock is listed only when the trend template is 8 of 8, the same rule as the green VCP tag. Set show_weaker_trend to true to also list stocks with tightening pullbacks but a weaker trend, marked WATCHING (trend not 8/8). above_low_pct is how far the close must sit above the 52-week low. 25 means 25%. A close exactly 25% above the low passes. dry_up_on looks at the last contraction only, from its high through the day before the first close over the buy point. The breakout day is not in that window. dry_up_below_avg_on wants the average volume in the window under the 50-day average. dry_up_quiet_on wants dry_up_quiet_days days (1) at or under dry_up_quiet_frac (0.50) times that day's own 50-day average. dry_up_tighten_on is on. In the last contraction, daily bars after the low have to be narrower than the bars from the high down to the low. The window stops the day before the first close over the buy point. Each side needs at least two days, or the check shows WAITING and does not pass. Set it to false to turn this check off. The 1.5 times breakout-volume rule is separate and stays. Rule 8 is the stock versus the Nifty 50 (SENSEX for a BSE-only stock). It is not an IBD 1 to 99 rating. rs_6m_on and rs_12m_on want the RS line (stock close divided by the benchmark close) higher than 126 and 252 days ago. rs_21d_on wants it higher than 21 days ago. rs_50d_on wants it above its own 50-day average. A missing price or volume is WAITING. It is not a pass and it is not stored as 0. The 1 to 99 RS rank, the RS 70 filter, the chart RS line, and sector leaders are unchanged.",
@@ -487,6 +491,16 @@
     "wheel_min_dollar_volume": 200000000,
     "fear_line": 1.15,
     "greed_line": 0.75
+  },
+  "stock_canslim": {
+    "_note": "Stock scorecard CANSLIM section (feature.stock_canslim). Every stock gets a C A N S L I M card on the scorecard. This does not change who qualifies on the CANSLIM scanner, Leaders, or Buy setups. C wants quarterly EPS up 25% versus the year-ago quarter. A wants yearly EPS up 25% versus the prior year (a 3-year streak is not verified). N wants the close within 15% of the 52-week closing high, plus an optional news check. S wants 20-day average volume of at least 200,000 shares, plus free float (100 minus promoter percent) when feature.canslim_free_float is on. L wants an RS rank of 80 or higher, plus an industry group rank by median RS when feature.canslim_industry_rank is on. I uses FII and DII change, not promoter change. M is the same market check as the rest of the desk. News (feature.canslim_news) is the only new download: the after-close run looks up Google News RSS for stocks that already passed the CANSLIM price checks and have no saved headline, at most news_per_run names a day, one request each. Morning and offline runs reuse cache/canslim_news.csv. A missing letter stays not verified. It is never stored as 0.",
+    "c_min_pct": 25,
+    "a_min_pct": 25,
+    "l_rs_min": 80,
+    "news_per_run": 15,
+    "news_fresh_days": 7,
+    "news_keep_days": 14,
+    "news_per_second": 1
   },
   "download_guard": {
     "_note": "How a stopped download picks up again. The NSE, BSE, Screener, and Yahoo sources and the daily clock stay the same. provider_fail_limit is how many failures in one run retire a source. provider_cooldown_hours is how long that source is then left alone. stall_runs is how many runs in a row may save nothing before that job pauses. stall_cooldown_hours is how long that pause lasts. A pause does not fix a bad login or a source that stays down. statement_hard_fail_after is how many statement misses use a next-day retry before the wait grows (3, then 7, 14, then 30 days). incomplete_price_bars is the shortest saved history that still counts as complete once the market file is at least that long. lock_stale_minutes is how long a crashed job's lock is ignored so the next run can start.",

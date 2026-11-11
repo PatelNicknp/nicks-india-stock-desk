@@ -710,7 +710,104 @@
   function stockShareHtml(ctx, ticker, fallback) {
     if (panelOff("feature.stock_shareholding")) return holdRow(fallback);
     const fromFile = D.shareholdingOf(ctx.files["institutional_13f.csv"], ticker);
-    return D.shareholdingHtml(fromFile || fallback || null);
+    return '<div class="sc-share">' + D.shareholdingHtml(fromFile || fallback || null) + "</div>";
+  }
+
+  function clTone(mark) {
+    const m = String(mark || "").toLowerCase();
+    if (m === "pass") return "pass";
+    if (m === "fail") return "fail";
+    return "na";
+  }
+  function clLabel(mark) {
+    const tone = clTone(mark);
+    if (tone === "pass") return "PASS";
+    if (tone === "fail") return "FAIL";
+    return "No data yet";
+  }
+  function clPct(v) {
+    const n = D.num(v);
+    if (n == null) return "";
+    const dec = Math.abs(n - Math.round(n)) < 0.05 ? 0 : 1;
+    const core = D.fmt(Math.abs(n), dec);
+    if (n > 0) return "+" + core + "%";
+    if (n < 0) return "-" + core + "%";
+    return core + "%";
+  }
+  function clFromHigh(v) {
+    const n = D.num(v);
+    if (n == null) return "";
+    if (Math.abs(n) < 0.05) return "At the 52-week high";
+    if (n < 0) return D.fmt(Math.abs(n), 1) + "% below the 52-week high";
+    return D.fmt(n, 1) + "% above the 52-week high";
+  }
+  function clLetterValue(letter, row) {
+    if (letter === "C" || letter === "A") return clPct(row[letter.toLowerCase() + "_value"]);
+    if (letter === "N") return clFromHigh(row.n_value);
+    if (letter === "S") {
+      const bits = [];
+      const vol = D.num(row.s_value);
+      if (vol != null) bits.push(D.fmt(vol, 0) + " avg shares");
+      const fl = D.num(row.s_float_pct);
+      if (fl != null) bits.push(D.fmt(fl, 1) + "% free float");
+      return bits.join(" · ");
+    }
+    if (letter === "L") {
+      const rs = D.num(row.l_value);
+      return rs == null ? "" : "RS " + D.fmt(rs, 0);
+    }
+    if (letter === "I") return clTone(row.i_mark) === "na" ? "" : String(row.i_value || "");
+    if (letter === "M") return String(row.m_value || "");
+    return "";
+  }
+  function stockCanslimHtml(ctx, ticker) {
+    if (panelOff("feature.stock_canslim")) return "";
+    const rows = ctx.files["stock_canslim.csv"] || [];
+    const row = rows.find((r) => String(r.ticker || "").toUpperCase() === String(ticker || "").toUpperCase()) || null;
+    const letters = [
+      ["C", "Current quarterly EPS", "25% or more vs the year-ago quarter", "c_mark", "c_status"],
+      ["A", "Annual EPS growth", "25% or more vs last year", "a_mark", "a_status"],
+      ["N", "New highs", "Within 15% of the 52-week high", "n_mark", "n_status"],
+      ["S", "Supply and demand", "20-day volume of 200,000 shares or more", "s_mark", "s_status"],
+      ["L", "Leader / RS", "RS rank 80 or higher", "l_mark", "l_status"],
+      ["I", "Institutional buying", "FII and DII bought more than they sold", "i_mark", "i_status"],
+      ["M", "Market direction", "The Nifty 50 or SENSEX is in an uptrend", "m_mark", "m_status"],
+    ];
+    const chips = letters.map((item) => {
+      const tone = row ? clTone(row[item[3]]) : "na";
+      return '<span class="cl-chip cl-' + tone + '">' + item[0] + "</span>";
+    }).join("");
+    const detail = letters.map((item) => {
+      const tone = row ? clTone(row[item[3]]) : "na";
+      const value = row ? clLetterValue(item[0], row) : "";
+      const shown = value || "No data yet";
+      let rule = item[2];
+      if (row && !D.isBlank(row[item[4]])) rule = String(row[item[4]]);
+      if (item[0] === "N" && row && !D.isBlank(row.n_news_status)) rule += " " + String(row.n_news_status);
+      if (tone === "na" && item[0] === "I") rule = "FII and DII holdings are not on file yet. This is not a fail.";
+      return '<button type="button" class="cl-row cl-' + tone + '-row" aria-expanded="false">' +
+        '<span class="cl-badge cl-' + tone + '">' + item[0] + "</span>" +
+        '<span class="cl-mid"><span class="cl-name">' + D.esc(item[1]) + '</span>' +
+        '<span class="cl-val cl-val-phone">' + D.esc(shown) + "</span>" +
+        '<span class="cl-rule">' + D.esc(rule) + "</span></span>" +
+        '<span class="cl-val cl-val-wide">' + D.esc(shown) + "</span>" +
+        '<span class="cl-mark cl-' + tone + '">' + D.esc(clLabel(tone === "na" ? "" : tone)) + "</span>" +
+        "</button>";
+    }).join("");
+    const passed = row && !D.isBlank(row.passes) ? String(row.passes) : "0";
+    return '<section class="cl-box" aria-label="CAN SLIM"><div class="cl-head"><span>CAN SLIM</span>' +
+      '<span class="cl-count">' + D.esc(passed) + " of 7 pass</span></div>" +
+      '<div class="cl-chips">' + chips + "</div>" +
+      '<div class="cl-rows">' + detail + "</div></section>";
+  }
+  function wireCanslimRows(host) {
+    host.querySelectorAll(".cl-row").forEach((el) => {
+      el.addEventListener("click", () => {
+        if (!window.matchMedia("(max-width: 699px)").matches) return;
+        const open = el.classList.toggle("open");
+        el.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+    });
   }
   function ptsCard(label, v) {
     const n = D.num(v);
@@ -770,6 +867,7 @@
         '<div class="stat"><div class="l">Day %</div><div class="v" style="color:' + D.retColor(day) + '">' + (day == null ? D.na() : D.esc((day > 0 ? "+" : "") + D.fmt(day, 2) + "%")) + "</div></div>" +
         '<div class="stat"><div class="l">Confidence</div><div class="v" style="font-size:16px">' + (D.isBlank(row.confidence) ? D.na() : D.esc(row.confidence)) + '</div><div class="l" style="margin-top:8px">Verdict</div><div class="vpill">' + D.verdictHtml(row.verdict) + "</div></div>" +
         '<div class="stat"><div class="l">Desk score</div><div class="v"><span class="scorepill deskscore" style="background:' + D.band(scoreN || 0) + '">' + D.esc(scoreN == null ? "–" : String(scoreN)) + "</span></div></div></div>" +
+        stockCanslimHtml(ctx, ticker) +
         stockShareHtml(ctx, ticker, row) +
         '<div class="panel pad"><p style="font-size:13px;line-height:20px">' + D.esc(row.reason || "") + "</p></div>" +
         '<div class="cards">' +
@@ -806,6 +904,7 @@
       }
       if (D.num(row.stop) != null) hlines.push({ value: D.num(row.stop), color: "#EF4444", label: "Stop " + D.fmt(row.stop, 2) });
       if (D.num(row.trade_target) != null) hlines.push({ value: D.num(row.trade_target), color: "#22C55E", label: "Target " + D.fmt(row.trade_target, 2) });
+      wireCanslimRows(host);
       D.drawPriceChart(host.querySelector("[data-px-panel]"), { ticker: ticker, lines: hlines });
       const mon = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
       const earnLabels = earn.map((r) => {
@@ -3739,7 +3838,8 @@
     scorecard: { lines: [
       "One stock at a time. Type a ticker to see its total score and how each point was earned, versus its own 3-year average and versus its sector.",
       "It also shows the plan (entry, stop, target), recent earnings surprises, and headlines.",
-      "The Shareholding box shows promoter, FII, and DII percent, plus public when the file has it, and the change versus last quarter. Green is up and red is down. Pledge shows when the file has it. Turn it off with feature.stock_shareholding.",
+      "The CAN SLIM card sits under the ticker. It has 7 letter chips and 7 rows, each marked PASS, FAIL, or No data yet. No data yet is grey, not a fail. L passes at an RS rank of 80 or higher (stock_canslim.l_rs_min). The CANSLIM scanner list is unchanged. Turn the card off with feature.stock_canslim, the industry rank with feature.canslim_industry_rank, free float with feature.canslim_free_float, and the news check with feature.canslim_news.",
+      "The Shareholding box sits under the CAN SLIM card. It shows promoter, FII, and DII percent, plus public when the file has it, and the change versus last quarter. Green is up and red is down. Pledge shows when the file has it. If a stock has no filing yet, the box says shareholding is not on file. Turn it off with feature.stock_shareholding.",
     ] },
     watchlist: { lines: [
       "Your holdings and your watchlist, with portfolio value, today's profit or loss, total gain, and the desk score of each stock.",
@@ -3888,7 +3988,7 @@
     today: { files: ["market_today.csv", "breadth_history.csv", "sectors.csv", "alerts.csv", "fii_flows.csv"], optional: ["high_volume.csv"], render: renderToday },
     flows: { files: ["fii_flows.csv", "participant_oi.csv"], render: renderFlows },
     top: { files: ["scores.csv"], render: renderTop },
-    scorecard: { files: ["scores.csv", "score_details.csv", "news.csv", "earnings_history.csv"], optional: ["institutional_13f.csv"], render: renderScorecard },
+    scorecard: { files: ["scores.csv", "score_details.csv", "news.csv", "earnings_history.csv"], optional: ["institutional_13f.csv", "stock_canslim.csv"], render: renderScorecard },
     watchlist: { files: ["portfolio.csv", "portfolio_summary.csv", "watchlist.csv"], render: renderWatch },
     alerts: { files: ["alerts.csv", "score_changes.csv"], render: renderAlerts },
     backtest: { files: ["backtest_summary.csv", "backtest_equity.csv", "backtest_buckets.csv", "backtest_yearly.csv", "backtest_notes.csv"], render: renderBacktest },

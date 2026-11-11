@@ -192,6 +192,18 @@ COLS["scanner_canslim"] = _SETUP + [
     "m_market", "m_spy", "m_sensex", "m_qqq", "m_status", "qualify", "vcp_heuristic",
     "data_status", "note", "disclaimer",
 ]
+COLS["stock_canslim"] = [
+    "ticker", "company", "sector", "industry",
+    "c_value", "c_mark", "c_status",
+    "a_value", "a_mark", "a_status",
+    "n_value", "n_mark", "n_status", "n_news_mark", "n_news_status",
+    "s_value", "s_mark", "s_status", "s_float_pct", "s_float_shares", "s_float_mark",
+    "l_value", "l_mark", "l_status", "l_industry_rank", "l_industry_n", "l_industry_name", "l_industry_mark",
+    "i_value", "i_mark", "i_status",
+    "m_value", "m_mark", "m_status",
+    "passes",
+    "data_status", "note", "disclaimer",
+]
 COLS["scanner_box"] = _SETUP + ["range_days", "range_width_pct", "volume_ratio", "data_status", "note", "disclaimer"]
 COLS["scanner_flag"] = _SETUP + ["pole_pct", "flag_bars", "retrace_pct", "volume_ratio", "data_status", "note", "disclaimer"]
 # Qullamaggie and Marios share the entry, base, and context columns. Qullamaggie has no fixed target.
@@ -1074,7 +1086,8 @@ def help_rows():
         ("Targets", "You will see an analyst target when Yahoo has one, a price/free-cash-flow target, a PEG-style target, and a blend of whichever of those exist. The trade target is separate. It is an entry-zone plan using the recent daily range."),
         ("Backtest", "Once a month the job asks what the score would have been using only data that was already public, then looks at the next 1, 4, and 12 weeks versus the Nifty 50. Read the headline. If it says there is no clear edge, believe that. Past results are not future results."),
         ("Shareholding", "Promoter, FII, DII, and other public percents come from the NSE shareholding filing when that file is reachable. The change is versus the prior quarter. If the split is missing, the cell says not verified. It is not a US 13F report."),
-        ("Stock shareholding", "The stock scorecard and the Chart Viewer show promoter, FII, and DII percent for that one stock, plus public when the shareholding file has it. The change is versus the prior quarter, in percentage points. Green is up and red is down. A blank change says quarter change n/a. Pledge shows only when the file has a pledge number. The numbers are the same file the Shareholding page uses. Nothing new is downloaded. On the Chart Viewer the box stays off the candles: tap the Shareholding chip to open it. Turn it off with feature.stock_shareholding."),
+        ("Stock shareholding", "The stock scorecard shows a Shareholding box under the CAN SLIM card: promoter, FII, and DII percent, plus public when the file has it. The change is versus the prior quarter, in percentage points. Green is up and red is down. A blank change says quarter change n/a. Pledge shows only when the file has a pledge number. The numbers are the same file the Shareholding page uses. Nothing new is downloaded for this box. If a stock has no filing yet, the box says shareholding is not on file. On the Chart Viewer the box stays off the candles: tap the Shareholding chip to open it. Turn it off with feature.stock_shareholding."),
+        ("Stock CANSLIM", "The stock scorecard shows a C A N S L I M card for every stock, not only the names that pass the price screen on the CANSLIM scanner. The scanner, Leaders, and Buy setups stay the same. C is quarterly EPS versus the same quarter last year (pass at +25% or more). A is yearly EPS versus the prior year (pass at +25% or more; a 3-year streak is not verified). N is how far the close sits from the 52-week closing high (pass within 15%), plus a news check when feature.canslim_news is on. S is 20-day average volume (pass at 200,000 shares or more) plus free float, which is 100 minus promoter percent, when feature.canslim_free_float is on. If a share count is already saved, it also shows about how many shares are free to trade. L is the 1 to 99 RS rank (pass at 80 or higher) plus an industry group rank, the median RS of that industry ranked across groups, when feature.canslim_industry_rank is on. I is whether FII and DII holdings rose versus last quarter. Promoter change is not used for I. M is the same market check as the rest of the desk: it passes when the Nifty 50 or SENSEX is in an uptrend. A blank letter says not verified. It is never filled in with zero. News is the only new download: the after-close run checks Google News RSS for stocks that already passed the CANSLIM price checks, at most 15 names a day, and saves the answers in cache/canslim_news.csv. Morning and offline runs reuse that file. Turn the card off with feature.stock_canslim."),
         ("Insiders", "Insider points use NSE PIT buy and sell counts over three months. If NSE blocks the file, the page says data not available for free and the score for that piece stays blank."),
         ("Put/call and walls", "The put/call line is Nifty put open interest divided by call open interest, when the NSE option chain answers. Walls are the strikes with the most open interest. They are mood, not a trade. If NSE blocks the chain, the page says not available."),
         ("India mood", "There is no Indian version of the AAII survey, so that survey is not shown. This page uses India VIX and, when the NSE file answers, the day's FII and DII cash flow in crores."),

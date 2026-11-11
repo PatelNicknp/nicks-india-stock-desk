@@ -1398,6 +1398,399 @@ def scan_canslim(close, high, low, vol, universe, quarters, annual, holders, cfg
     return out, market
 
 
+C_MIN_PCT = 25.0
+A_MIN_PCT = 25.0
+L_RS_MIN = 80.0
+
+
+def _feature_on(cfg, name, default=True):
+    return bool(((cfg or {}).get("features") or {}).get(name, default))
+
+
+def _canslim_cfg(cfg):
+    block = dict((cfg or {}).get("stock_canslim") or {})
+    return {
+        "c_min_pct": _num(block.get("c_min_pct")) if _num(block.get("c_min_pct")) is not None else C_MIN_PCT,
+        "a_min_pct": _num(block.get("a_min_pct")) if _num(block.get("a_min_pct")) is not None else A_MIN_PCT,
+        "l_rs_min": _num(block.get("l_rs_min")) if _num(block.get("l_rs_min")) is not None else L_RS_MIN,
+        "news_per_run": int(block.get("news_per_run", 15) or 15),
+        "news_fresh_days": int(block.get("news_fresh_days", 7) or 7),
+        "news_keep_days": int(block.get("news_keep_days", 14) or 14),
+        "news_per_second": float(block.get("news_per_second", 1) or 1),
+    }
+
+
+def _letter_mark(ok):
+    if ok is None:
+        return NOT_VERIFIED
+    return "pass" if ok else "fail"
+
+
+def _holder_row(holders, ticker):
+    if holders is None or len(holders) == 0 or "ticker" not in holders.columns:
+        return None
+    sub = holders[holders["ticker"].astype(str) == str(ticker)]
+    if len(sub) == 0:
+        return None
+    return sub.iloc[-1]
+
+
+def _industry_of(ticker, universe, scores):
+    if scores is not None and len(scores) and "industry" in scores.columns and "ticker" in scores.columns:
+        hit = scores[scores["ticker"].astype(str) == str(ticker)]
+        if len(hit):
+            industry = str(hit.iloc[-1].get("industry") or "").strip()
+            if industry:
+                return industry
+    meta = _meta_row(universe, ticker)
+    return str(meta.get("sector") or "").strip()
+
+
+def _rs_map(rs_table):
+    out = {}
+    if rs_table is None or len(rs_table) == 0 or "ticker" not in rs_table.columns:
+        return out
+    col = "rs" if "rs" in rs_table.columns else None
+    if col is None:
+        return out
+    for _, r in rs_table.iterrows():
+        val = _num(r.get(col))
+        if val is None:
+            continue
+        out[str(r.get("ticker"))] = val
+    return out
+
+
+def _group_rank_map(universe, scores, rs_map):
+    """Rank industry groups by the median RS of stocks in the group. 1 is strongest."""
+    rows = []
+    names = list(universe["ticker"].astype(str)) if universe is not None and len(universe) else []
+    for ticker in names:
+        rs = rs_map.get(str(ticker))
+        industry = _industry_of(ticker, universe, scores)
+        if rs is None or not industry:
+            continue
+        rows.append({"ticker": str(ticker), "industry": industry, "rs": rs})
+    if not rows:
+        return {}, 0
+    frame = pd.DataFrame(rows)
+    med = frame.groupby("industry")["rs"].median()
+    ranks = med.rank(ascending=False, method="min")
+    n_groups = int(len(med))
+    out = {}
+    for ticker, industry, rs in zip(frame["ticker"], frame["industry"], frame["rs"]):
+        out[ticker] = {
+            "industry": industry,
+            "median_rs": float(med.loc[industry]),
+            "rank": int(ranks.loc[industry]),
+            "n_groups": n_groups,
+        }
+    return out, n_groups
+
+
+def _inst_letter(holders, ticker):
+    """I uses FII and DII (or institutional up/down). Promoter change is not I."""
+    row = _holder_row(holders, ticker)
+    if row is None:
+        return NOT_VERIFIED, "FII and DII change is not verified.", None
+    up = _num(row.get("inst_up"))
+    down = _num(row.get("inst_down"))
+    if up is not None and down is not None:
+        if up > down:
+            trend = "up"
+        elif up < down:
+            trend = "down"
+        else:
+            trend = "flat"
+        text = "Institutional shares increased %s versus decreased %s, so the trend is %s." % (
+            _round(up, 0), _round(down, 0), trend)
+        return trend, text, trend == "up"
+    fii = _num(row.get("fii_chg"))
+    dii = _num(row.get("dii_chg"))
+    if fii is None and dii is None:
+        return NOT_VERIFIED, "FII and DII change is not verified.", None
+    bits = []
+    total = 0.0
+    if fii is not None:
+        bits.append("FII changed %s percentage points" % _round(fii, 2))
+        total += fii
+    if dii is not None:
+        bits.append("DII changed %s percentage points" % _round(dii, 2))
+        total += dii
+    if total > 0.25:
+        trend = "up"
+    elif total < -0.25:
+        trend = "down"
+    else:
+        trend = "flat"
+    text = "%s versus last quarter, so the institutional trend is %s." % (" and ".join(bits), trend)
+    return trend, text, trend == "up"
+
+
+def _float_from_holders(holders, ticker, shares=None):
+    row = _holder_row(holders, ticker)
+    if row is None:
+        return None, None
+    promoter = _num(row.get("promoter_pct"))
+    if promoter is None or promoter < 0 or promoter > 100:
+        return None, None
+    float_pct = 100.0 - promoter
+    share_n = None
+    if shares:
+        share_n = _num(shares.get(str(ticker)))
+    float_shares = None
+    if share_n is not None and share_n > 0:
+        float_shares = share_n * float_pct / 100.0
+    return float_pct, float_shares
+
+
+def _price_bits(close, high, low, vol, ticker):
+    got = _bars(close, high, low, vol, ticker, None)
+    if got is None:
+        return None
+    frame, _ = got
+    c = frame["close"].dropna()
+    if len(c) == 0:
+        return None
+    last = float(c.iloc[-1])
+    adv = None
+    if frame["volume"].notna().any():
+        adv = float(frame["volume"].reindex(c.index).iloc[-20:].mean())
+        if not np.isfinite(adv):
+            adv = None
+    hi52 = float(c.iloc[-252:].max()) if len(c) >= 252 else (float(c.max()) if len(c) else None)
+    pct_from_high = (last / hi52 - 1.0) * 100.0 if hi52 else None
+    e50 = _ema(c, 50)
+    above50 = last > float(e50.iloc[-1]) if e50 is not None and np.isfinite(e50.iloc[-1]) else None
+    return {
+        "last": last,
+        "adv": adv,
+        "hi52": hi52,
+        "pct_from_high": pct_from_high,
+        "above50": above50,
+        "bars": len(c),
+        "short_history": len(c) < 252,
+        "asof": c.index[-1],
+    }
+
+
+def build_stock_canslim(close, high, low, vol, universe, quarters, annual, holders, cfg=None,
+                        rs_table=None, news_map=None, scores=None, shares=None):
+    """One CANSLIM record for every stock in the universe.
+
+    This does not change the CANSLIM scanner, Leaders, or Buy setups. Missing
+    numbers stay blank and are marked not verified. They are never stored as 0.
+    """
+    if not _feature_on(cfg, "stock_canslim", True):
+        return pd.DataFrame()
+    if universe is None or len(universe) == 0:
+        return pd.DataFrame()
+    want_ind = _feature_on(cfg, "canslim_industry_rank", True)
+    want_float = _feature_on(cfg, "canslim_free_float", True)
+    want_news = _feature_on(cfg, "canslim_news", True)
+    nums = _canslim_cfg(cfg)
+    snap = market_snapshot(close, cfg) if close is not None and len(close) else {}
+    rs_map = _rs_map(rs_table)
+    group_map, n_groups = _group_rank_map(universe, scores, rs_map) if want_ind else ({}, 0)
+    news_map = news_map or {}
+    rows = []
+    for ticker in list(universe["ticker"].astype(str)):
+        if not ticker or ticker.startswith("^"):
+            continue
+        meta = _meta_row(universe, ticker)
+        industry = _industry_of(ticker, universe, scores)
+        price = _price_bits(close, high, low, vol, ticker)
+        c_pct, c_now, c_old = _yoy_eps(quarters, ticker, True)
+        a_pct, a_now, a_old = _yoy_eps(annual, ticker, False)
+        i_trend, i_text, i_ok = _inst_letter(holders, ticker)
+
+        if c_pct is None:
+            c_mark, c_val, c_txt = NOT_VERIFIED, "", "Quarterly EPS versus the year-ago quarter is not verified."
+        else:
+            c_ok = c_pct >= nums["c_min_pct"]
+            c_mark = _letter_mark(c_ok)
+            c_val = round(c_pct, 1)
+            c_txt = "%.1f%% versus the year-ago quarter (%.2f vs %.2f). The check wants +%.0f%% or more." % (
+                c_pct, c_now, c_old, nums["c_min_pct"])
+
+        if a_pct is None:
+            a_mark, a_val, a_txt = NOT_VERIFIED, "", "Yearly EPS versus the prior year is not verified. A 3-year streak is not verified."
+        else:
+            a_ok = a_pct >= nums["a_min_pct"]
+            a_mark = _letter_mark(a_ok)
+            a_val = round(a_pct, 1)
+            a_txt = (
+                "%.1f%% versus the prior year (%.2f vs %.2f). The check wants +%.0f%% or more. "
+                "A 3-year streak is not verified."
+                % (a_pct, a_now, a_old, nums["a_min_pct"])
+            )
+
+        if price is None or price["pct_from_high"] is None:
+            n_mark, n_val, n_txt = NOT_VERIFIED, "", "Distance from the 52-week closing high is not verified."
+        else:
+            n_ok = price["pct_from_high"] >= NSE_NEAR_HIGH
+            n_mark = _letter_mark(n_ok)
+            n_val = round(price["pct_from_high"], 1)
+            n_txt = "%.1f%% from the 52-week closing high. Within %.0f%% of that high passes." % (
+                price["pct_from_high"], abs(NSE_NEAR_HIGH))
+            if price.get("short_history"):
+                n_txt += " The window is shorter than 252 sessions."
+
+        n_news_mark, n_news_status = NOT_VERIFIED, "News catalyst is not verified."
+        if not want_news:
+            n_news_status = "News check is off."
+        elif str(ticker) in news_map:
+            rec = news_map.get(str(ticker)) or {}
+            headline = str(rec.get("headline") or "").strip()
+            n_count = _num(rec.get("n"))
+            if n_count is None:
+                n_count = 1 if headline else 0
+            if rec.get("checked") and n_count <= 0 and not headline:
+                n_news_mark = "fail"
+                n_news_status = "No fresh headline was found."
+            elif headline:
+                n_news_mark = "pass"
+                src = rec.get("publisher") or ""
+                n_news_status = 'Latest: "%s"%s.' % (headline, (" (" + src + ")") if src else "")
+            else:
+                n_news_status = "News catalyst is not verified."
+
+        if price is None or price["adv"] is None:
+            s_mark, s_val, s_txt = NOT_VERIFIED, "", "20-day average volume is not verified."
+        else:
+            s_ok = price["adv"] >= NSE_ADV_MIN
+            s_mark = _letter_mark(s_ok)
+            s_val = _round(price["adv"], 0)
+            s_txt = "20-day average volume %s shares. The check wants at least %s shares." % (
+                "{:,.0f}".format(round(price["adv"])), "{:,.0f}".format(NSE_ADV_MIN))
+
+        s_float_pct = ""
+        s_float_shares = ""
+        s_float_mark = NOT_VERIFIED
+        if not want_float:
+            s_txt += " Free float is off."
+        else:
+            float_pct, float_shares = _float_from_holders(holders, ticker, shares)
+            if float_pct is None:
+                s_txt += " Free float is not verified."
+            else:
+                s_float_pct = round(float_pct, 1)
+                s_float_mark = "pass"
+                s_txt += " Free float is %.1f%% (100 minus promoter percent)." % float_pct
+                if float_shares is None:
+                    s_txt += " Shares available are not verified."
+                else:
+                    s_float_shares = _round(float_shares, 0)
+                    s_txt += " About %s shares are available." % "{:,.0f}".format(round(float_shares))
+
+        rs = rs_map.get(str(ticker))
+        if rs is None:
+            l_mark, l_val, l_txt = NOT_VERIFIED, "", "RS rank is not verified."
+        else:
+            l_ok = rs >= nums["l_rs_min"]
+            l_mark = _letter_mark(l_ok)
+            l_val = round(rs, 1)
+            l_txt = "RS rank %.0f. The check wants %s or higher." % (rs, _round(nums["l_rs_min"], 0))
+
+        l_industry_rank = ""
+        l_industry_n = ""
+        l_industry_name = industry
+        l_industry_mark = NOT_VERIFIED
+        if not want_ind:
+            l_txt += " Industry group rank is off."
+        else:
+            g = group_map.get(str(ticker))
+            if g is None:
+                l_txt += " Industry group rank is not verified."
+            else:
+                l_industry_rank = g["rank"]
+                l_industry_n = g["n_groups"]
+                l_industry_name = g["industry"]
+                mid = (g["n_groups"] + 1) / 2.0
+                l_industry_mark = "pass" if g["rank"] <= mid else "fail"
+                l_txt += " Industry group %s ranks %s of %s by median RS (%.0f)." % (
+                    g["industry"], g["rank"], g["n_groups"], g["median_rs"])
+
+        i_mark = _letter_mark(i_ok)
+        i_val = i_trend if i_trend and i_trend != NOT_VERIFIED else ""
+        if not i_text:
+            i_text = "FII and DII change is not verified."
+
+        market_label = snap.get("label") or NOT_VERIFIED
+        if market_label == NOT_VERIFIED or not snap:
+            m_mark, m_val = NOT_VERIFIED, ""
+            m_txt = "Market direction is not verified."
+        else:
+            m_ok = str(snap.get("market_ok") or "") == "yes"
+            m_mark = _letter_mark(m_ok)
+            m_val = market_label
+            m_txt = snap.get("text") or market_label
+
+        marks = [c_mark, a_mark, n_mark, s_mark, l_mark, i_mark, m_mark]
+        passed = sum(1 for m in marks if m == "pass")
+        gaps = []
+        if c_mark == NOT_VERIFIED:
+            gaps.append("C not verified")
+        if a_mark == NOT_VERIFIED:
+            gaps.append("A not verified")
+        if n_mark == NOT_VERIFIED:
+            gaps.append("N not verified")
+        if n_news_mark == NOT_VERIFIED:
+            gaps.append("news catalyst not verified")
+        if s_mark == NOT_VERIFIED:
+            gaps.append("S not verified")
+        if want_float and s_float_mark == NOT_VERIFIED:
+            gaps.append("free float not verified")
+        if l_mark == NOT_VERIFIED:
+            gaps.append("L not verified")
+        if want_ind and l_industry_mark == NOT_VERIFIED:
+            gaps.append("industry rank not verified")
+        if i_mark == NOT_VERIFIED:
+            gaps.append("I not verified")
+        if m_mark == NOT_VERIFIED:
+            gaps.append("M not verified")
+        rows.append({
+            "ticker": ticker,
+            "company": meta["company"],
+            "sector": meta["sector"],
+            "industry": industry,
+            "c_value": c_val,
+            "c_mark": c_mark,
+            "c_status": c_txt,
+            "a_value": a_val,
+            "a_mark": a_mark,
+            "a_status": a_txt,
+            "n_value": n_val,
+            "n_mark": n_mark,
+            "n_status": n_txt,
+            "n_news_mark": n_news_mark,
+            "n_news_status": n_news_status,
+            "s_value": s_val,
+            "s_mark": s_mark,
+            "s_status": s_txt,
+            "s_float_pct": s_float_pct,
+            "s_float_shares": s_float_shares,
+            "s_float_mark": s_float_mark,
+            "l_value": l_val,
+            "l_mark": l_mark,
+            "l_status": l_txt,
+            "l_industry_rank": l_industry_rank,
+            "l_industry_n": l_industry_n,
+            "l_industry_name": l_industry_name,
+            "l_industry_mark": l_industry_mark,
+            "i_value": i_val,
+            "i_mark": i_mark,
+            "i_status": i_text,
+            "m_value": m_val,
+            "m_mark": m_mark,
+            "m_status": m_txt,
+            "passes": passed,
+            "data_status": "OK",
+            "note": ("; ".join(gaps) + ".") if gaps else "All seven letters have a stored value.",
+        })
+    return pd.DataFrame(rows)
+
+
 def _big_volume(volume):
     vol = np.asarray(volume, dtype=float)
     if len(vol) < VOL_LEN or not np.isfinite(vol[-1]):

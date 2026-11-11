@@ -614,6 +614,39 @@ body.cv-lock .nav,body.cv-lock .hdr,body.cv-lock .scrim{visibility:hidden}
   .sh-cell .v{font-size:16px;line-height:20px}
   .sh-box{padding:10px}
 }
+
+.sc-share .sh-box{border-color:var(--line2)}
+.sc-share .sh-head{font-size:15px}
+.cl-box{margin-top:12px;margin-bottom:16px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 16px;min-width:0;max-width:100%}
+.cl-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--text);margin-bottom:10px}
+.cl-count{font-weight:700;letter-spacing:0;text-transform:none;color:var(--green);font-size:13px}
+.cl-chips{display:flex;flex-wrap:nowrap;gap:6px;margin-bottom:12px}
+.cl-chip{flex:1 1 0;min-width:0;height:36px;display:flex;align-items:center;justify-content:center;border-radius:6px;font-size:14px;font-weight:700}
+.cl-chip.cl-pass,.cl-badge.cl-pass{background:color-mix(in srgb, var(--green) 28%, var(--panel));color:var(--green)}
+.cl-chip.cl-fail,.cl-badge.cl-fail{background:color-mix(in srgb, var(--red) 28%, var(--panel));color:var(--red)}
+.cl-chip.cl-na,.cl-badge.cl-na{background:var(--line2);color:var(--muted2)}
+.cl-rows{display:flex;flex-direction:column;gap:8px}
+.cl-row{display:flex;align-items:flex-start;gap:10px;width:100%;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 12px;color:inherit;cursor:default}
+.cl-badge{flex:none;width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.cl-mid{flex:1 1 auto;min-width:0}
+.cl-name{display:block;font-size:14px;font-weight:700;color:var(--text)}
+.cl-val{font-size:13px;font-weight:700;overflow-wrap:anywhere}
+.cl-val-phone{display:none;margin-top:2px}
+.cl-val-wide{flex:none;margin:2px 4px 0 0;text-align:right;min-width:4.5em}
+.cl-rule{display:block;font-size:12px;line-height:16px;color:var(--muted);margin-top:3px;overflow-wrap:anywhere}
+.cl-mark{flex:none;font-size:11px;font-weight:700;letter-spacing:.04em;margin-top:4px}
+.cl-pass,.cl-pass-row .cl-val{color:var(--green)}
+.cl-fail,.cl-fail-row .cl-val{color:var(--red)}
+.cl-na,.cl-na-row .cl-val{color:var(--muted2)}
+@media (max-width:699px){
+  .cl-chips{gap:4px}
+  .cl-chip{height:32px;font-size:13px}
+  .cl-val-phone{display:block}
+  .cl-val-wide{display:none}
+  .cl-row{cursor:pointer}
+  .cl-row:not(.open) .cl-rule{display:none}
+  .cl-row.open{background:var(--panel2)}
+}
 @media (max-width:699px){
   .tf-grid{grid-template-columns:minmax(0,1fr);gap:12px}
   .tf-card{padding:12px}

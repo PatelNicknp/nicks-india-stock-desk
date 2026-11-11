@@ -46,6 +46,32 @@ The rank is calculated only on the after-close run (16:30 IST, 3:00 AM PT, one h
 
 The VCP trend template still checks the stock against the Nifty 50 (SENSEX for a BSE-only stock). The RS line is the stock's price divided by that index. It has to be higher than 126, 252, and 21 days ago, and above its own 50-day average. That check is not replaced by this rank, and it is not an IBD 1 to 99 rating. CANSLIM's L column is still strength versus the index. Minervini's line is the optional filter, RS 70 or higher.
 
+## Stock scorecard CANSLIM
+
+The stock scorecard shows a C A N S L I M card for every stock, not only the names that pass the price screen on the CANSLIM scanner page. The scanner, Leaders, and Buy setups stay exactly the same.
+
+Each letter has a stored value and a pass, fail, or not verified mark:
+
+- C: quarterly EPS versus the same quarter last year. Pass at +25% or more.
+- A: yearly EPS versus the prior year. Pass at +25% or more. A 3-year streak is not verified.
+- N: how far the close sits from the 52-week closing high. Pass within 15%. A news check is added when `feature.canslim_news` is on.
+- S: 20-day average volume. Pass at 200,000 shares or more. Free float is 100 minus promoter percent when `feature.canslim_free_float` is on. If a share count is already saved, the card also shows about how many shares are free to trade.
+- L: the 1 to 99 RS rank. Pass at 80 or higher. An industry group rank (median RS of the industry, ranked across groups) is added when `feature.canslim_industry_rank` is on.
+- I: whether FII and DII holdings rose versus last quarter. Promoter change is not used for I.
+- M: the same market check as the rest of the desk. It passes when the Nifty 50 or SENSEX is in an uptrend.
+
+A missing number stays blank and says not verified. It is never stored as 0.
+
+Switches in `config.json`: `feature.stock_canslim` (the whole card), `feature.canslim_industry_rank`, `feature.canslim_free_float`, and `feature.canslim_news`.
+
+### Extra downloads
+
+C, A, S (including free float), L (including industry rank), I, and M use files the desk already has. They add no new downloads.
+
+News is the only new download. On the after-close run (`--close`), the job looks up the free Google News RSS feed for stocks that already passed the CANSLIM price checks and have no saved headline. The cap is `stock_canslim.news_per_run` (15) requests a run, at `stock_canslim.news_per_second` (1) request a second. The morning run and `--offline` do not request news. That is at most 15 extra network calls on an after-close run, and at most 15 a day, because the close job runs once. The answers are saved in `cache/canslim_news.csv` and reused for `stock_canslim.news_keep_days` (14) days.
+
+The Shareholding box on the same scorecard is separate. It reads `data/institutional_13f.csv` and downloads nothing new.
+
 ## What is fetched, and how often
 
 Daily prices come from the NSE bhavcopy. BSE bhavcopy, then Stooq, then a small Yahoo gap fill are the backups. The history stays in `cache/ohlcv.csv.gz` (about 3 years) and the site reads letter files in `data/ohlc/`. There is no hourly price download.

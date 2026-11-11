@@ -47,7 +47,7 @@ def test_help_uses_simple_words():
 
 def test_scorecard_and_chart_viewer_share_the_file():
     pages = _read("site", "js", "pages.js")
-    assert 'optional: ["institutional_13f.csv"]' in pages
+    assert 'optional: ["institutional_13f.csv", "stock_canslim.csv"]' in pages
     assert "stockShareHtml(ctx, ticker, row)" in pages
     assert 'panelOff("feature.stock_shareholding")' in pages
     assert "feature.stock_shareholding" in pages[pages.index("scorecard: { lines:"):pages.index("watchlist: { lines:")]
