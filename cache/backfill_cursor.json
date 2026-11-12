@@ -7,7 +7,7 @@
   "DUMMYINXGN": "2026-11-14",
   "DVL": "2026-10-27",
   "DYNPRO": "2026-10-27",
-  "TEAM24": "2026-11-13",
+  "TEAM24": "2026-11-14",
   "KHAZANCHI": "2026-10-29",
   "SUDARSHAN": "2026-10-28",
   "BONDADA": "2026-10-30",
@@ -18,7 +18,7 @@
   "VEEFIN": "2026-11-14",
   "4THGEN": "2026-11-12",
   "ABHIINFRA": "2026-11-14",
-  "POWERIETF": "2026-11-13",
+  "POWERIETF": "2026-11-14",
   "SANCF": "2026-11-18",
   "SUVID-RE": "2026-11-14"
  },
@@ -41,9 +41,9 @@
   "JAYKAYPP": "2026-11-12",
   "OLAPP": "2026-11-12"
  },
- "last_batch_at": "2026-11-12T18:37Z",
- "last_statements_ok": 0,
- "last_statements_fail": 6,
+ "last_batch_at": "2026-11-12T21:05Z",
+ "last_statements_ok": 19,
+ "last_statements_fail": 2,
  "last_shareholding_ok": 58,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
@@ -98,9 +98,9 @@
    "note": "quote only, no results"
   },
   "TEAM24": {
-   "count": 3,
-   "last_on": "2026-11-12",
-   "retry_after": "2026-11-13",
+   "count": 4,
+   "last_on": "2026-11-13",
+   "retry_after": "2026-11-14",
    "note": "no statement source answered"
   },
   "VEEFIN": {
@@ -122,9 +122,9 @@
    "note": "no statement source answered"
   },
   "POWERIETF": {
-   "count": 2,
-   "last_on": "2026-11-12",
-   "retry_after": "2026-11-13",
+   "count": 3,
+   "last_on": "2026-11-13",
+   "retry_after": "2026-11-14",
    "note": "no statement source answered"
   },
   "SANCF": {

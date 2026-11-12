@@ -38,8 +38,8 @@
   },
   "Yahoo NS": {
    "cooldown_until": "",
-   "fails": 1,
-   "last_error": "skipped after repeated failures in this run"
+   "fails": 0,
+   "last_error": ""
   }
  },
  "stalls": {
@@ -53,7 +53,7 @@
   },
   "statements": {
    "cooldown_until": "",
-   "runs": 1
+   "runs": 0
   }
  },
  "unavailable": {
@@ -149,12 +149,12 @@
   },
   "statements:POWERIETF": {
    "kind": "statements",
-   "last_on": "2026-11-12",
+   "last_on": "2026-11-13",
    "note": "no statement source answered",
-   "retry_after": "2026-11-13",
+   "retry_after": "2026-11-14",
    "since": "2026-11-11",
    "ticker": "POWERIETF",
-   "tries": 2
+   "tries": 3
   },
   "statements:SANCF": {
    "kind": "statements",
@@ -176,12 +176,12 @@
   },
   "statements:TEAM24": {
    "kind": "statements",
-   "last_on": "2026-11-12",
+   "last_on": "2026-11-13",
    "note": "no statement source answered",
-   "retry_after": "2026-11-13",
+   "retry_after": "2026-11-14",
    "since": "2026-11-11",
    "ticker": "TEAM24",
-   "tries": 2
+   "tries": 3
   },
   "statements:VEEFIN": {
    "kind": "statements",
