@@ -45,7 +45,7 @@
  "stalls": {
   "prices": {
    "cooldown_until": "",
-   "runs": 0
+   "runs": 1
   },
   "shareholding": {
    "cooldown_until": "",
@@ -82,6 +82,15 @@
    "retry_after": "2026-11-16",
    "since": "2026-11-09",
    "ticker": "DUMMYINXGN",
+   "tries": 1
+  },
+  "prices:SUVID-RE": {
+   "kind": "prices",
+   "last_on": "2026-11-12",
+   "note": "Stooq and Yahoo had no daily bars. The saved file was not changed for this name.",
+   "retry_after": "2026-11-19",
+   "since": "2026-11-12",
+   "ticker": "SUVID-RE",
    "tries": 1
   },
   "prices:VEEFIN": {
