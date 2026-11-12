@@ -41,10 +41,10 @@
   "JAYKAYPP": "2026-11-12",
   "OLAPP": "2026-11-12"
  },
- "last_batch_at": "2026-11-12T17:02Z",
- "last_statements_ok": 4,
- "last_statements_fail": 1,
- "last_shareholding_ok": 63,
+ "last_batch_at": "2026-11-12T17:11Z",
+ "last_statements_ok": 0,
+ "last_statements_fail": 0,
+ "last_shareholding_ok": 58,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
   "BIRET": "2026-11-12",
