@@ -7,13 +7,13 @@
  "needs_person": {},
  "providers": {
   "BSE results": {
-   "cooldown_until": "2026-11-12T00:52Z",
-   "fails": 3,
+   "cooldown_until": "2026-11-12T22:58Z",
+   "fails": 4,
    "last_error": "skipped after repeated failures in this run"
   },
   "BSE shareholding": {
-   "cooldown_until": "2026-11-12T14:18Z",
-   "fails": 7,
+   "cooldown_until": "2026-11-12T22:58Z",
+   "fails": 8,
    "last_error": "skipped after repeated failures in this run"
   },
   "NSE shareholding": {
@@ -33,8 +33,8 @@
   },
   "Yahoo BO": {
    "cooldown_until": "",
-   "fails": 1,
-   "last_error": "skipped after repeated failures in this run"
+   "fails": 0,
+   "last_error": ""
   },
   "Yahoo NS": {
    "cooldown_until": "",
@@ -163,6 +163,15 @@
    "retry_after": "2026-11-18",
    "since": "2026-11-11",
    "ticker": "SANCF",
+   "tries": 1
+  },
+  "statements:SUVID-RE": {
+   "kind": "statements",
+   "last_on": "2026-11-12",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-13",
+   "since": "2026-11-12",
+   "ticker": "SUVID-RE",
    "tries": 1
   },
   "statements:TEAM24": {
