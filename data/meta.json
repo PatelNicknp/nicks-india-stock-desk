@@ -1,7 +1,7 @@
 {
- "updated_pt": "2026-11-12 08:15 IST \u00b7 2026-11-11 18:45 PT",
+ "updated_pt": "2026-11-12 10:00 IST \u00b7 2026-11-11 20:30 PT",
  "price_as_of": "2026-11-09",
- "mode": "morning",
+ "mode": "rescore",
  "label": "Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts.",
  "n_stocks": 4320,
  "tabs": [
@@ -76,6 +76,7 @@
   "sectors",
   "settings",
   "stock_canslim",
+  "trading_floor",
   "trends",
   "universe",
   "updates_log",
