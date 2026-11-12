@@ -1,50 +1,48 @@
 source,status,latest,note,checked_pt
-Universe (Nifty 50),OK,50,50 names from www.niftyindices.com,2026-11-12 16:41 IST · 2026-11-12 03:11 PT
-Universe (Nifty Next 50),OK,50,50 names from www.niftyindices.com,2026-11-12 16:41 IST · 2026-11-12 03:11 PT
-Universe (Nifty Midcap 150),OK,150,150 names from www.niftyindices.com,2026-11-12 16:41 IST · 2026-11-12 03:11 PT
-Universe (Smallcap 250),OK,251,251 names from nsearchives.nseindia.com,2026-11-12 16:41 IST · 2026-11-12 03:11 PT
-Universe (Microcap 250),OK,253,253 names from nsearchives.nseindia.com,2026-11-12 16:41 IST · 2026-11-12 03:11 PT
-Universe (Total Market),OK,754,754 names from nsearchives.nseindia.com,2026-11-12 16:41 IST · 2026-11-12 03:11 PT
-Universe (NSE equity list),OK,2635,2635 names from nsearchives.nseindia.com,2026-11-12 16:41 IST · 2026-11-12 03:11 PT
-Universe (Other NSE),OK,1886,NSE shares that are not in the index lists above,2026-11-12 16:41 IST · 2026-11-12 03:11 PT
-Universe (SME),OK,,switch is off,2026-11-12 16:41 IST · 2026-11-12 03:11 PT
-Universe (BSE only),OK,1740,1740 names whose ISIN is not on the NSE list,2026-11-12 16:41 IST · 2026-11-12 03:11 PT
-Prices (NSE bhavcopy),CACHED,2026-11-12,"No NSE session was saved. Bars from the other files were kept, and those days stay pending.",2026-11-12 16:42 IST · 2026-11-12 03:12 PT
-Prices (NSE bhavcopy),CACHED,2026-11-12,"0 sessions added, 0 bars. 2 dates had no NSE file.",2026-11-12 16:42 IST · 2026-11-12 03:12 PT
-Prices (BSE bhavcopy),OK,2026-11-12,"1 sessions, 4204 bars kept for names missing that day's NSE print. 1 dates failed.",2026-11-12 16:42 IST · 2026-11-12 03:12 PT
-Index levels (NSE ind_close_all),MISSING,2026-11-12,0 sessions. niftyindices is the second try. 2 dates failed.,2026-11-12 16:42 IST · 2026-11-12 03:12 PT
-Prices (gap fill),CACHED,,3 names were left alone until their retry date. No new download for them.,2026-11-12 16:42 IST · 2026-11-12 03:12 PT
-Prices (Stooq),MISSING,,0 names filled. Stooq often blocks a plain download.,2026-11-12 16:42 IST · 2026-11-12 03:12 PT
-Prices (Yahoo),OK,,"1 names, indexes, or the rupee. Yahoo is not used for the full list.",2026-11-12 16:42 IST · 2026-11-12 03:12 PT
-Prices (SENSEX),OK,2026-11-12,BSE index file 0 sessions. Yahoo ^BSESN filled 1 older sessions. Stooq returned nothing for the remaining sessions.,2026-11-12 16:42 IST · 2026-11-12 03:12 PT
-Prices,OK,2026-11-12,3115783 rows after the fallback chain,2026-11-12 16:42 IST · 2026-11-12 03:12 PT
-Fundamentals (Yahoo statements),CACHED,,6 of 160 failed; kept the saved copy,2026-11-12 16:44 IST · 2026-11-12 03:14 PT
-Analyst and profile (Yahoo Finance),CACHED,,same pass as statements,2026-11-12 16:44 IST · 2026-11-12 03:14 PT
-Earnings dates (Yahoo Finance),CACHED,,same pass as statements,2026-11-12 16:44 IST · 2026-11-12 03:14 PT
-Shareholding (NSE),CACHED,,6 failed; kept the saved copy. Blank cells are not verified.,2026-11-12 16:44 IST · 2026-11-12 03:14 PT
-Insiders (NSE PIT),CACHED,,6 failed; kept the saved copy. Blank cells are not verified.,2026-11-12 16:44 IST · 2026-11-12 03:14 PT
-Statement currency,OK,,1 names had non-INR statements and were converted to rupees using cached INR=X rates,2026-11-12 16:44 IST · 2026-11-12 03:14 PT
-News headlines (RSS),OK,2026-11-12,reused cache (slow sources refresh at most once a day),2026-11-12 16:45 IST · 2026-11-12 03:15 PT
-Option walls (NSE),OK,2026-11-12,1379 rows. Open interest only. Not an option pick.,2026-11-12 16:46 IST · 2026-11-12 03:16 PT
-Put/call (NSE open interest),OK,,Nifty put open interest divided by call open interest,2026-11-12 16:46 IST · 2026-11-12 03:16 PT
-FII and DII cash (NSE),OK,,reused cache (slow sources refresh at most once a day),2026-11-12 16:46 IST · 2026-11-12 03:16 PT
-FII derivatives (NSE participant OI),OK,2026-11-11,4 rows from the participant file,2026-11-12 16:46 IST · 2026-11-12 03:16 PT
-Macro (RBI),MISSING,,empty reply,2026-11-12 16:51 IST · 2026-11-12 03:21 PT
-"Macro (RBI, FRED, World Bank)",OK,2026-11-12,"3 rows. Surprise stays blank when there is no forecast. India 10-year yield was not available. CPI FRED failed (HTTPSConnectionPool(host='fred.stlouisfed.org', port=443): R). CPI was not available from FRED. IIP FRED failed (HTTPSConnectionPool(host='fred.stlouisfed.org', port=443): R). IIP was not ",2026-11-12 16:51 IST · 2026-11-12 03:21 PT
-Backtest,OK,2026-10-30,monthly point-in-time test,2026-11-12 16:55 IST · 2026-11-12 03:25 PT
-Price candles,OK,2026-11-09,"4306 tickers in letter files, 28 groups rewritten, up to 756 sessions.",2026-11-12 16:56 IST · 2026-11-12 03:26 PT
-Market cap (saved share counts),OK,2026-11-09,"4326 names have a saved share count in cache/market_cap.csv. Market cap = shares x close, in Rs crore. 0 asked from Yahoo this run, 0 found.",2026-11-12 16:57 IST · 2026-11-12 03:27 PT
-Pattern scanners,OK,2026-11-09,"VCP 77, CANSLIM 437, box 52, flag 91, Qullamaggie 82, Marios 66, Episodic Pivot 163, leaders 296, 52-week 1562. No new downloads.",2026-11-12 16:57 IST · 2026-11-12 03:27 PT
-Buy setups,OK,2026-11-09,"160 chart setups, 20 with a BUY or Not scored yet label. The market check passes when the Nifty 50 or SENSEX is in an uptrend. This desk never places trades.",2026-11-12 16:57 IST · 2026-11-12 03:27 PT
-Sector rotation,OK,2026-11-09,"12 sectors, 2 weekly Leading. Skipped (no price or not enough history): none. Macro: no 10-year or curve file. Oil and gold are not on file. 12 sectors, 1 weekly Leading. Skipped (no price or not enough history): none. Macro: no 10-year or curve file. Oil and gold are not on file.",2026-11-12 16:57 IST · 2026-11-12 03:27 PT
-Financials backfill,OK,2026-11-12T10:13Z,"At 200 statements and 200 shareholding names a run, the first pass of about 4,300 stocks takes well under a day when the free sources answer. Liquid names come first, then the rest of the NSE list, then BSE-only names. A name with no shareholding filing is saved for later in the pass, and a name no source answers for is tried again after a few days, so hard names do not stop the batch.",2026-11-12 16:57 IST · 2026-11-12 03:27 PT
-High volume scanner,OK,2026-11-09,"Session 2026-11-12. 24 stocks at 2x or more of their 50-day average volume, 28 at 1.5x or more. Close over Rs 20 and at least Rs 1 crore traded. Built from the saved daily bars. No new download. Delivery % is not in the saved bars, so that column stays blank.",2026-11-12 16:57 IST · 2026-11-12 03:27 PT
-Gap Up scanner,OK,2026-11-09,Session 2026-11-12. 73 stocks gapped above the day before's high on 1.5x or more of their 50-day volume in the last 21 sessions and have held the gap-day low. Gap Up does not feed Buy setups. Built from the saved daily bars. No new download.,2026-11-12 16:57 IST · 2026-11-12 03:27 PT
-Trading Floor headlines (Google News RSS),OK,2026-11-12,"13 requests for picks without a desk headline, 45 headlines, 0 failed. No Yahoo volume.",2026-11-12 16:57 IST · 2026-11-12 03:27 PT
-Trading Floor,OK,2026-11-12,"15 stocks debated: Buy 2, Wait 8, Skip 5. Advice only. No orders and no alerts.",2026-11-12 16:57 IST · 2026-11-12 03:27 PT
-Trading Floor paper test,OK,2026-11-12,"FAKE MONEY. Value Rs 1001471.73, cash Rs 92984.24, open 9, waiting 0, closed 1. Next-day bhavcopy open. No orders.",2026-11-12 16:57 IST · 2026-11-12 03:27 PT
-Relative strength,OK,2026-11-09,3958 stocks ranked 1 to 99 from saved daily closes. A name with less than a year of prices is left blank. No new download.,2026-11-12 16:57 IST · 2026-11-12 03:27 PT
-Sector leaders,OK,2026-11-09,6 leader stocks. Strong sectors come from the sector index versus the Nifty 50 when that table is on file.,2026-11-12 16:57 IST · 2026-11-12 03:27 PT
-CANSLIM news (Google News RSS),OK,2026-11-12,"15 extra Google News requests for price-screen names with no saved headline, 69 headlines, 0 failed. Cap is 15 a run. No Yahoo request.",2026-11-12 16:58 IST · 2026-11-12 03:28 PT
-Stock CANSLIM,OK,2026-11-09,4380 stocks have a CANSLIM card for the scorecard. The scanner qualify list is unchanged. News was checked only for names that already passed the price screen.,2026-11-12 16:58 IST · 2026-11-12 03:28 PT
-Column check,PARTIAL,,"A column is blank on every row: scores, stock_canslim, market_today, sectors, scanner_canslim, scanner_episodic_pivot, scanner_52w, sector_rotation, earnings_heatmap, institutional_13f, insider_trading, macro_screener, sector_macro, historical_pe, high_volume, rs_ratings. Blank is missing, not zero.",2026-11-12 16:58 IST · 2026-11-12 03:28 PT
+Universe (Nifty 50),OK,50,reused cache (refreshes once a day),2026-11-12 18:41 IST · 2026-11-12 05:11 PT
+Universe (Nifty Next 50),OK,50,reused cache (refreshes once a day),2026-11-12 18:41 IST · 2026-11-12 05:11 PT
+Universe (Nifty Midcap 150),OK,150,reused cache (refreshes once a day),2026-11-12 18:41 IST · 2026-11-12 05:11 PT
+Universe (Smallcap 250),OK,251,reused cache (refreshes once a day),2026-11-12 18:41 IST · 2026-11-12 05:11 PT
+Universe (Microcap 250),OK,253,reused cache (refreshes once a day),2026-11-12 18:41 IST · 2026-11-12 05:11 PT
+Universe (Total Market),OK,754,reused cache (refreshes once a day),2026-11-12 18:41 IST · 2026-11-12 05:11 PT
+Universe (NSE equity list),OK,2635,reused cache,2026-11-12 18:41 IST · 2026-11-12 05:11 PT
+Universe (Other NSE),OK,1886,NSE shares that are not in the index lists above,2026-11-12 18:41 IST · 2026-11-12 05:11 PT
+Universe (SME),OK,,switch is off,2026-11-12 18:41 IST · 2026-11-12 05:11 PT
+Universe (BSE only),OK,1740,reused cache,2026-11-12 18:41 IST · 2026-11-12 05:11 PT
+Prices (NSE bhavcopy),OK,2026-11-12,"1 sessions added, 2982 bars. 1 dates had no NSE file.",2026-11-12 18:43 IST · 2026-11-12 05:13 PT
+Prices (BSE bhavcopy),OK,2026-11-12,"1 sessions, 1546 bars kept for names missing that day's NSE print. 1 dates failed.",2026-11-12 18:43 IST · 2026-11-12 05:13 PT
+Index levels (NSE ind_close_all),OK,2026-11-12,1 sessions. niftyindices is the second try. 1 dates failed.,2026-11-12 18:43 IST · 2026-11-12 05:13 PT
+Prices (gap fill),CACHED,,4 names were left alone until their retry date. No new download for them.,2026-11-12 18:43 IST · 2026-11-12 05:13 PT
+Prices (Stooq),MISSING,,no gaps to fill,2026-11-12 18:43 IST · 2026-11-12 05:13 PT
+Prices (Yahoo),MISSING,,"0 names, indexes, or the rupee. Yahoo is not used for the full list.",2026-11-12 18:43 IST · 2026-11-12 05:13 PT
+Prices (SENSEX),CACHED,2026-11-12,SENSEX already in the price cache through 2026-11-12.,2026-11-12 18:43 IST · 2026-11-12 05:13 PT
+Prices,OK,2026-11-12,3116121 rows after the fallback chain,2026-11-12 18:43 IST · 2026-11-12 05:13 PT
+Fundamentals (Yahoo statements),CACHED,,6 of 160 failed; kept the saved copy,2026-11-12 18:44 IST · 2026-11-12 05:14 PT
+Analyst and profile (Yahoo Finance),CACHED,,same pass as statements,2026-11-12 18:44 IST · 2026-11-12 05:14 PT
+Earnings dates (Yahoo Finance),CACHED,,same pass as statements,2026-11-12 18:44 IST · 2026-11-12 05:14 PT
+Shareholding (NSE),CACHED,,6 failed; kept the saved copy. Blank cells are not verified.,2026-11-12 18:44 IST · 2026-11-12 05:14 PT
+Insiders (NSE PIT),CACHED,,6 failed; kept the saved copy. Blank cells are not verified.,2026-11-12 18:44 IST · 2026-11-12 05:14 PT
+Statement currency,OK,,1 names had non-INR statements and were converted to rupees using cached INR=X rates,2026-11-12 18:45 IST · 2026-11-12 05:15 PT
+News headlines (RSS),OK,2026-11-12,reused cache (slow sources refresh at most once a day),2026-11-12 18:46 IST · 2026-11-12 05:16 PT
+Option walls (NSE),OK,,reused cache (slow sources refresh at most once a day),2026-11-12 18:46 IST · 2026-11-12 05:16 PT
+Put/call (NSE open interest),OK,,reused cache,2026-11-12 18:46 IST · 2026-11-12 05:16 PT
+FII and DII cash (NSE),OK,,reused cache (slow sources refresh at most once a day),2026-11-12 18:46 IST · 2026-11-12 05:16 PT
+FII derivatives (NSE participant OI),OK,2026-11-11,4 rows from the participant file,2026-11-12 18:46 IST · 2026-11-12 05:16 PT
+Macro (World Bank and FRED),OK,,reused cache (slow sources refresh at most once a day),2026-11-12 18:46 IST · 2026-11-12 05:16 PT
+Backtest,OK,,reused the last test (it rebuilds on the after-close run),2026-11-12 18:46 IST · 2026-11-12 05:16 PT
+Price candles,OK,2026-11-12,"4306 tickers in letter files, 26 groups rewritten, up to 756 sessions.",2026-11-12 18:47 IST · 2026-11-12 05:17 PT
+Market cap (saved share counts),OK,2026-11-12,"4326 names have a saved share count in cache/market_cap.csv. Market cap = shares x close, in Rs crore. 0 asked from Yahoo this run, 0 found.",2026-11-12 18:48 IST · 2026-11-12 05:18 PT
+Pattern scanners,OK,2026-11-12,"VCP 70, CANSLIM 439, box 52, flag 90, Qullamaggie 81, Marios 66, Episodic Pivot 165, leaders 298, 52-week 1562. No new downloads.",2026-11-12 18:48 IST · 2026-11-12 05:18 PT
+Buy setups,OK,2026-11-12,"161 chart setups, 21 with a BUY or Not scored yet label. The market check passes when the Nifty 50 or SENSEX is in an uptrend. This desk never places trades.",2026-11-12 18:48 IST · 2026-11-12 05:18 PT
+Sector rotation,OK,2026-11-12,"12 sectors, 3 weekly Leading. Skipped (no price or not enough history): none. Macro: no 10-year or curve file. Oil and gold are not on file. 12 sectors, 1 weekly Leading. Skipped (no price or not enough history): none. Macro: no 10-year or curve file. Oil and gold are not on file.",2026-11-12 18:48 IST · 2026-11-12 05:18 PT
+Financials backfill,OK,2026-11-12T10:13Z,"At 200 statements and 200 shareholding names a run, the first pass of about 4,300 stocks takes well under a day when the free sources answer. Liquid names come first, then the rest of the NSE list, then BSE-only names. A name with no shareholding filing is saved for later in the pass, and a name no source answers for is tried again after a few days, so hard names do not stop the batch.",2026-11-12 18:48 IST · 2026-11-12 05:18 PT
+High volume scanner,OK,2026-11-12,"Session 2026-11-12. 37 stocks at 2x or more of their 50-day average volume, 46 at 1.5x or more. Close over Rs 20 and at least Rs 1 crore traded. Built from the saved daily bars. No new download. Delivery % is not in the saved bars, so that column stays blank.",2026-11-12 18:49 IST · 2026-11-12 05:19 PT
+Gap Up scanner,OK,2026-11-12,Session 2026-11-12. 73 stocks gapped above the day before's high on 1.5x or more of their 50-day volume in the last 21 sessions and have held the gap-day low. Gap Up does not feed Buy setups. Built from the saved daily bars. No new download.,2026-11-12 18:49 IST · 2026-11-12 05:19 PT
+Trading Floor headlines (Google News RSS),OK,2026-11-12,left for the main run after the bhavcopy. No new request on this run.,2026-11-12 18:49 IST · 2026-11-12 05:19 PT
+Trading Floor,OK,2026-11-12,"15 stocks debated: Buy 3, Wait 7, Skip 5. Advice only. No orders and no alerts.",2026-11-12 18:49 IST · 2026-11-12 05:19 PT
+Trading Floor paper test,OK,2026-11-12,"FAKE MONEY. Value Rs 1001471.73, cash Rs 92984.24, open 9, waiting 0, closed 1. Next-day bhavcopy open. No orders.",2026-11-12 18:49 IST · 2026-11-12 05:19 PT
+Relative strength,OK,,Reused the last after-close rank. Only the 3:00 AM PT run recalculates it.,2026-11-12 18:49 IST · 2026-11-12 05:19 PT
+Sector leaders,OK,2026-11-12,6 leader stocks. Strong sectors come from the sector index versus the Nifty 50 when that table is on file.,2026-11-12 18:49 IST · 2026-11-12 05:19 PT
+CANSLIM news (Google News RSS),OK,2026-11-12,left for the main run after the bhavcopy. No new request on this run.,2026-11-12 18:49 IST · 2026-11-12 05:19 PT
+Stock CANSLIM,OK,2026-11-12,4380 stocks have a CANSLIM card for the scorecard. The scanner qualify list is unchanged. News was checked only for names that already passed the price screen.,2026-11-12 18:50 IST · 2026-11-12 05:20 PT
+Column check,PARTIAL,,"A column is blank on every row: scores, stock_canslim, market_today, sectors, scanner_canslim, scanner_episodic_pivot, scanner_52w, sector_rotation, earnings_heatmap, institutional_13f, insider_trading, macro_screener, sector_macro, historical_pe, high_volume, rs_ratings. Blank is missing, not zero.",2026-11-12 18:50 IST · 2026-11-12 05:20 PT
