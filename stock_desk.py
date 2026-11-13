@@ -2764,17 +2764,48 @@ def _flow_today(flows):
     return {"date": str(row.get("date") or "")[:10], "fii_net": row.get("fii_net"), "dii_net": row.get("dii_net")}
 
 
-def _rs_map(scores):
-    """RS score by ticker when another change has added it. Empty until that column exists."""
-    if scores is None or len(getattr(scores, "index", [])) == 0 or "ticker" not in getattr(scores, "columns", []):
-        return {}
-    for key in ("rs_score", "rs", "rs_rank"):
-        if key in scores.columns:
-            return {str(t): v for t, v in zip(scores["ticker"].astype(str), scores[key])}
-    return {}
+def load_rs_table(close, universe, cfg, cache, mode, asof, rs_on=True):
+    """The desk's one RS Rating table (relative_strength.py).
+
+    The main after-close run recalculates it and, with feature.rs_rank on, saves
+    cache/rs_ratings.csv. Other runs reuse that file. When nothing is saved yet
+    (first run, or the switch was off) it is built in memory from the closes
+    already loaded, so CANSLIM's L and the MarketSmith screens still have a number.
+    Fund units and ETFs (ISIN INF) are left out of the race.
+    """
+    rs_cache = os.path.join(cache, "rs_ratings.csv")
+    cached_rs = read_csv(rs_cache) if rs_on else pd.DataFrame()
+    names = []
+    if universe is not None and len(universe) and "ticker" in universe.columns:
+        names = [t for t in dict.fromkeys(universe["ticker"].astype(str)) if t and not str(t).startswith("^")]
+    funds = relative_strength.fund_tickers(universe)
+    have_close = close is not None and len(close)
+    # No prices on a close run: keep the last rank instead of replacing it with blanks.
+    calc_mode = "full" if (mode == "full" and have_close) else "cached"
+    table = relative_strength.resolve(close, names, cfg, calc_mode, cached_rs if len(cached_rs) else None, skip=funds)
+    built_now = calc_mode == "full"
+    if (table is None or len(table) == 0) and have_close and names:
+        table = relative_strength.build(close, names, cfg, skip=funds)
+        built_now = True
+    ranked = int(pd.to_numeric(table["rs"], errors="coerce").notna().sum()) if len(table) and "rs" in table.columns else 0
+    if not rs_on:
+        log("Relative strength", "OK", "", "Switch feature.rs_rank is off. The RS column, filter and file are hidden. "
+            "CANSLIM's L and the MarketSmith screens still use a rank built in memory (%d stocks)." % ranked)
+        return table
+    if calc_mode == "full":
+        table.to_csv(rs_cache, index=False)
+        log("Relative strength", "OK" if ranked else "MISSING", asof,
+            "%d stocks ranked 1 to 99 against every stock on the desk (MarketSmith style RS Rating) from saved daily closes. "
+            "A name with less than a year of prices, and funds or ETFs, are left blank. No new download." % ranked)
+    elif built_now:
+        log("Relative strength", "OK" if ranked else "MISSING", asof,
+            "No saved rank yet, so %d stocks were ranked from the closes already loaded. The after-close run saves it." % ranked)
+    else:
+        log("Relative strength", "OK", "", "Reused the last after-close rank. Only the 3:00 AM PT run recalculates it.")
+    return table
 
 
-def load_trading_floor(buy, frames, close, opn, vol, news, scores, asof, cfg, cache, mode, flows=None, instruments=None):
+def load_trading_floor(buy, frames, close, opn, vol, news, scores, asof, cfg, cache, mode, flows=None, instruments=None, rs_lookup=None):
     """Trading Floor. Built from scanners, saved bars, saved headlines, and FII/DII cash.
 
     Google News RSS (no key) runs only on the main close run, once a day, and only for picks
@@ -2783,10 +2814,11 @@ def load_trading_floor(buy, frames, close, opn, vol, news, scores, asof, cfg, ca
     """
     p = trading_floor.config(cfg)
     picks = trading_floor.pick_stocks(buy, frames, close, p, cfg=cfg, instruments=instruments)
-    rs = _rs_map(scores)
+    rs = rs_lookup or {}
     for pk in picks:
-        if pk["ticker"] in rs:
-            pk["rs_score"] = rs[pk["ticker"]]
+        key = str(pk["ticker"]).strip().upper()
+        if key in rs:
+            pk["rs_score"] = rs[key]
     path = os.path.join(cache, "trading_floor_news.csv")
     cached = read_csv(path)
     floor_news = cached
@@ -3246,6 +3278,13 @@ def main(argv=None):
                 "note": note,
             })
     inst = pd.DataFrame(inst_rows)
+    # RS Rating (MarketSmith style, 1 to 99 versus every stock on the desk). Only the
+    # after-close main run (mode full, 16:30 IST, 3:00 AM PT) recalculates and saves it,
+    # from closes already in memory. No new download. Built before the scanners so
+    # CANSLIM's L and the MarketSmith screens use the same number as the RS column.
+    rs_on = features.get("rs_rank", True)
+    rs_table = load_rs_table(close, universe, cfg, cache, mode, asof, rs_on)
+    rs_lookup = relative_strength.rs_map(rs_table)
     setup_universe = universe
     if len(universe) and len(scores) and "liquid" in scores.columns and (cfg.get("liquidity") or {}).get("enabled", True):
         allowed = set(scores.loc[scores["liquid"].astype(str).eq("yes"), "ticker"].astype(str))
@@ -3275,7 +3314,7 @@ def main(argv=None):
     if len(close) and len(setup_universe):
         opn = wide_from_long(long, "open") if long is not None and len(long) and "open" in long.columns else None
         setup_frames = setups.build_setups(close, high, low, vol, setup_universe, quarters, annual, holders, features, scores=scores, cfg=cfg, opn=opn,
-                                           earnings=earnings, shares=shares_by_ticker, ep_universe=ep_universe)
+                                           earnings=earnings, shares=shares_by_ticker, ep_universe=ep_universe, rs_map=rs_lookup)
     else:
         setup_frames = {k: pd.DataFrame() for k in (
             "scanner_vcp", "scanner_canslim", "scanner_box", "scanner_flag", "scanner_leaders",
@@ -3429,6 +3468,58 @@ def main(argv=None):
             gap_note = "The Gap Up scan did not run this time. The rest of the desk updated as normal."
             log("Gap Up scanner", "MISSING", asof, (gap_note + " " + str(exc))[:200])
 
+    # MarketSmith style screens: Highest EPS and RS, Minervini 1-Month and 5-Month.
+    # Saved bars, saved statements, and the RS Rating only. Each has its own switch
+    # and its own try, so a problem here can never stop the rest of the update.
+    ms_frames = {"scanner_eps_rs": pd.DataFrame(), "scanner_minervini_1m": pd.DataFrame(), "scanner_minervini_5m": pd.DataFrame()}
+    ms_notes = {
+        "scanner_eps_rs": "Highest EPS and RS is off.",
+        "scanner_minervini_1m": "Minervini 1-Month is off.",
+        "scanner_minervini_5m": "Minervini 5-Month is off.",
+    }
+    eps_on = features.get("scanner_eps_rs", True)
+    m1_on = features.get("scanner_minervini_1m", True)
+    m5_on = features.get("scanner_minervini_5m", True)
+    if (eps_on or m1_on or m5_on) and len(close) and len(setup_universe):
+        import ms_screens
+        ms_spec = ms_screens.settings(cfg)
+        eps_lookup = {}
+        eps_table = pd.DataFrame()
+        try:
+            eps_table = ms_screens.eps_ratings(quarters, annual, list(universe["ticker"].astype(str)), cfg)
+            eps_lookup = {t: v for t, v in zip(eps_table["ticker"], eps_table["eps_rating"]) if pd.notna(v)}
+            log("EPS Rating", "OK" if eps_lookup else "MISSING", asof,
+                "%d stocks rated 1 to 99 from saved quarterly and yearly EPS. A stock without the latest quarter or the yearly growth is left blank. No new download." % len(eps_lookup))
+        except Exception as exc:
+            log("EPS Rating", "MISSING", asof, ("The EPS Rating was not built. " + str(exc))[:200])
+        if eps_on:
+            try:
+                rows, cnt = ms_screens.build_eps_rs(close, setup_universe, eps_table, rs_lookup,
+                                                    ms_screens.pivot_map(setup_frames), cfg)
+                ms_frames["scanner_eps_rs"] = rows
+                ms_notes["scanner_eps_rs"] = (
+                    "%d liquid stocks have both ratings, %d are at EPS %d+ and RS %d+, %d were dropped as extended, %d listed." % (
+                        cnt["rated_both"], cnt["over_min"], ms_spec["min_eps_rating"], ms_spec["min_rs"], cnt["extended"], cnt["listed"]))
+                log("Highest EPS and RS", "OK" if len(rows) else "MISSING", asof, ms_notes["scanner_eps_rs"])
+            except Exception as exc:
+                ms_notes["scanner_eps_rs"] = "The Highest EPS and RS screen did not run this time. The rest of the desk updated as normal."
+                log("Highest EPS and RS", "MISSING", asof, (ms_notes["scanner_eps_rs"] + " " + str(exc))[:200])
+        for key, on, sessions, label in (
+            ("scanner_minervini_1m", m1_on, ms_spec["rising_1m_sessions"], "Minervini 1-Month"),
+            ("scanner_minervini_5m", m5_on, ms_spec["rising_5m_sessions"], "Minervini 5-Month"),
+        ):
+            if not on:
+                continue
+            try:
+                rows = ms_screens.build_template(close, high, low, setup_universe, rs_lookup, sessions, cfg, eps_lookup, label)
+                ms_frames[key] = rows
+                ms_notes[key] = "%d liquid stocks pass all 8 trend template rules (200-day rising over %d sessions, RS %d+)." % (
+                    len(rows), sessions, ms_spec["template_rs_min"])
+                log(label, "OK" if len(rows) else "MISSING", asof, ms_notes[key])
+            except Exception as exc:
+                ms_notes[key] = "The %s screen did not run this time. The rest of the desk updated as normal." % label
+                log(label, "MISSING", asof, (ms_notes[key] + " " + str(exc))[:200])
+
     # Trading Floor, then the fake-money paper test. Both run on the main close run
     # (3:00 AM PT, after the bhavcopy) and on the late-bhavcopy retry. The morning
     # run leaves the saved files alone. Offline rebuilds from the cache only.
@@ -3442,7 +3533,8 @@ def main(argv=None):
             opn = wide_from_long(long, "open") if long is not None and len(long) and "open" in long.columns else None
             floor_asof = _session_asof(long, asof)
             instruments = trading_floor.instrument_table(long, universe, buy)
-            floor = load_trading_floor(buy, setup_frames, close, opn, vol, news, scores, floor_asof, cfg, cache, mode, flows, instruments)
+            floor = load_trading_floor(buy, setup_frames, close, opn, vol, news, scores, floor_asof, cfg, cache, mode, flows, instruments,
+                                       rs_lookup=rs_lookup if rs_on else None)
             floor_ran = True
         except Exception as exc:
             log("Trading Floor", "MISSING", asof, ("The debate did not run this time. " + str(exc))[:200])
@@ -3483,28 +3575,9 @@ def main(argv=None):
     aaii_note = "There is no free AAII survey for India. India VIX and FII or DII cash were not available, so this page has no number."
     mood = build_mood(close, fii) if features.get("aaii_sentiment", True) else None
 
-    # Relative strength. Only the after-close main run (mode full, 16:30 IST,
-    # 3:00 AM PT) calculates it, from closes already in memory. No new download.
-    rs_on = features.get("rs_rank", True)
-    rs_table = pd.DataFrame()
+    # RS Rating columns. The table itself is built before the scanners (see
+    # load_rs_table), because CANSLIM's L and the MarketSmith screens use it.
     if rs_on:
-        rs_cache = os.path.join(cache, "rs_ratings.csv")
-        cached_rs = read_csv(rs_cache)
-        names = []
-        if universe is not None and len(universe) and "ticker" in universe.columns:
-            names = [t for t in dict.fromkeys(universe["ticker"].astype(str)) if t and not str(t).startswith("^")]
-        # No prices on a close run: keep the last rank instead of replacing it with blanks.
-        calc_mode = mode if (mode == "full" and close is not None and len(close)) else ("cached" if mode == "full" else mode)
-        rs_table = relative_strength.resolve(close, names, cfg, "full" if calc_mode == "full" else "cached", cached_rs if len(cached_rs) else None)
-        if calc_mode == "full":
-            rs_table.to_csv(rs_cache, index=False)
-            ranked = int(pd.to_numeric(rs_table["rs"], errors="coerce").notna().sum()) if len(rs_table) and "rs" in rs_table.columns else 0
-            log("Relative strength", "OK" if ranked else "MISSING", asof,
-                "%d stocks ranked 1 to 99 from saved daily closes. A name with less than a year of prices is left blank. No new download." % ranked)
-        elif len(rs_table):
-            log("Relative strength", "OK", "", "Reused the last after-close rank. Only the 3:00 AM PT run recalculates it.")
-        else:
-            log("Relative strength", "MISSING", "", "No rank yet. The after-close run (3:00 AM PT) builds it from saved prices.")
         def _stamp(frame):
             return relative_strength.attach(frame, rs_table)
         g, q, d, w = (_stamp(x) for x in (g, q, d, w))
@@ -3514,8 +3587,8 @@ def main(argv=None):
         buy = _stamp(buy)
         hv = _stamp(hv)
         gap = _stamp(gap)
-    else:
-        log("Relative strength", "OK", "", "Switch feature.rs_rank is off.")
+        for _ms_key in list(ms_frames):
+            ms_frames[_ms_key] = _stamp(ms_frames[_ms_key])
 
     leaders_on = features.get("sector_leaders", True)
     if leaders_on:
@@ -3624,6 +3697,9 @@ def main(argv=None):
         "gainers_losers": gated(gl, "gainers_losers", features.get("gainers_losers", True), "No gainers."),
         "high_volume": gated(hv, "high_volume", hv_on, hv_note),
         "scanner_gap_up": gated(gap, "scanner_gap_up", gap_on, gap_note),
+        "scanner_eps_rs": gated(ms_frames["scanner_eps_rs"], "scanner_eps_rs", eps_on, ms_notes["scanner_eps_rs"]),
+        "scanner_minervini_1m": gated(ms_frames["scanner_minervini_1m"], "scanner_minervini_1m", m1_on, ms_notes["scanner_minervini_1m"]),
+        "scanner_minervini_5m": gated(ms_frames["scanner_minervini_5m"], "scanner_minervini_5m", m5_on, ms_notes["scanner_minervini_5m"]),
         "rs_ratings": gated(rs_table, "rs_ratings", rs_on, "No relative strength rank yet. The after-close run builds it from saved prices."),
         "sector_performance": gated(tables.sector_perf(scores), "sector_performance", features.get("sector_performance", True), "No sector performance."),
         "heatmaps": gated(heat, "heatmaps", features.get("heatmaps", True), "No heatmap."),

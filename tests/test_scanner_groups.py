@@ -13,9 +13,9 @@ sys.path.insert(0, os.path.join(ROOT, "site"))
 import build_pages  # noqa: E402
 import tables  # noqa: E402
 
-TECHNICAL = ["vcp", "box", "flag", "qullamaggie", "marios", "episodic", "gapup", "week52", "breakouts",
+TECHNICAL = ["vcp", "box", "flag", "qullamaggie", "marios", "episodic", "gapup", "min1m", "min5m", "week52", "breakouts",
              "highvol", "pullbacks", "trends", "wheel"]
-FUNDAMENTAL = ["canslim", "leaders", "growth", "quality", "dividend", "divfund", "scorecard", "top"]
+FUNDAMENTAL = ["canslim", "leaders", "epsrs", "growth", "quality", "dividend", "divfund", "scorecard", "top"]
 
 
 def _read(*parts):
@@ -88,8 +88,8 @@ def test_every_chart_viewer_scanner_has_a_group():
         assert i in groups, i
     tech = [i for i in ids if groups[i] == "technical"]
     fund = [i for i in ids if groups[i] == "fundamental"]
-    assert fund == ["canslim", "growth", "quality", "dividend", "leaders"] or set(fund) == {"canslim", "leaders", "growth", "quality", "dividend"}
-    assert {"vcp", "box", "flag", "qullamaggie", "marios", "episodic", "gapup", "week52", "breakouts", "highvol", "pullbacks", "trends", "wheel"} == set(tech)
+    assert set(fund) == {"canslim", "leaders", "epsrs", "growth", "quality", "dividend"}
+    assert {"vcp", "box", "flag", "qullamaggie", "marios", "episodic", "gapup", "min1m", "min5m", "week52", "breakouts", "highvol", "pullbacks", "trends", "wheel"} == set(tech)
 
 
 def test_menu_split_code():

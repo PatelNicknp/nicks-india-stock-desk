@@ -1,4 +1,19 @@
-"""IBD and Minervini style relative strength rank, from saved daily closes.
+"""MarketSmith / O'Neil style RS Rating (1 to 99), from saved daily closes.
+
+This is the desk's only RS score. It ranks every stock in the desk's India
+universe against every other stock, the way MarketSmith India and IBD do. It is
+not measured against the Nifty 50. The RS line on the chart (stock close divided
+by the Nifty 50) is a separate drawing and is not this number.
+
+Formula choice: discrete quarters (below), not overlapping windows. O'Neil's
+published method weights the latest three months 40% and each of the three
+earlier quarters 20%. Discrete quarters keep each quarter's move in its own
+bucket, so the latest quarter really counts double. The overlapping form
+(0.4*ROC63 + 0.2*ROC126 + 0.2*ROC189 + 0.2*ROC252) counts the latest quarter in
+all four terms, which gives it about 100% of the weight instead of 40%.
+
+Fund units and ETFs (ISIN starting INF) are not stocks, so they are left out of
+the race and stay blank, like MarketSmith's stock-only ranking.
 
 No download and no API key. The after-close run (stock_desk.py --close, mode
 "full", 16:30 IST, 3:00 AM PT, one hour later in summer) is the only run that
@@ -38,6 +53,7 @@ LEADER_MIN = 70
 MAIN_MODE = "full"
 
 SHORT_NOTE = "Needs a full year of daily prices."
+FUND_NOTE = "Funds and ETFs are not ranked. RS compares stocks only."
 GAP_NOTE = "A price in the past year was missing, so RS is blank."
 
 COLUMNS = [
@@ -162,9 +178,24 @@ def _closes_of(close, ticker):
     return series.to_numpy(dtype=float)
 
 
-def build(close, tickers, cfg=None, as_of=""):
-    """One row per covered stock. Ranked names get 1 to 99. The rest stay blank."""
+def fund_tickers(universe):
+    """Tickers whose ISIN starts with INF (mutual fund units and ETFs)."""
+    if universe is None or not isinstance(universe, pd.DataFrame) or len(universe) == 0:
+        return set()
+    if "ticker" not in universe.columns or "isin" not in universe.columns:
+        return set()
+    isin = universe["isin"].astype(str).str.strip().str.upper()
+    return set(universe.loc[isin.str.startswith("INF"), "ticker"].astype(str))
+
+
+def build(close, tickers, cfg=None, as_of="", skip=None):
+    """One row per covered stock. Ranked names get 1 to 99. The rest stay blank.
+
+    skip: tickers left out of the race (fund units and ETFs). They keep a row
+    with a blank RS and a note, so the page can say why.
+    """
     spec = settings_from(cfg)
+    skip = set(str(t) for t in (skip or ()))
     names = []
     seen = set()
     for ticker in list(tickers or []):
@@ -180,13 +211,15 @@ def build(close, tickers, cfg=None, as_of=""):
         bars = int(values.size)
         quarters = None
         note = ""
-        if bars < spec["min_bars"]:
+        if name in skip:
+            note = FUND_NOTE
+        elif bars < spec["min_bars"]:
             note = SHORT_NOTE
         else:
             quarters = quarter_returns(values, spec["quarter"])
             if quarters is None:
                 note = GAP_NOTE
-        raw = raw_score(quarters, spec["weights"]) if quarters is not None else None
+        raw = raw_score(quarters, spec["weights"]) if quarters is not None and name not in skip else None
         if raw is None and not note:
             note = GAP_NOTE
         if raw is not None:
@@ -222,7 +255,7 @@ def build(close, tickers, cfg=None, as_of=""):
     return pd.DataFrame(rows, columns=COLUMNS)
 
 
-def resolve(close, tickers, cfg, mode, cached=None):
+def resolve(close, tickers, cfg, mode, cached=None, skip=None):
     """Calculate on the after-close main run only. Every other mode reuses cached.
 
     `cached` is the table saved by the last main run. Morning, retry, offline,
@@ -233,7 +266,21 @@ def resolve(close, tickers, cfg, mode, cached=None):
         if cached is None:
             return empty_table()
         return cached
-    return build(close, tickers, cfg)
+    return build(close, tickers, cfg, skip=skip)
+
+
+def rs_map(ratings):
+    """{TICKER: rs} for ranked names only. Blank ranks are left out."""
+    out = {}
+    if ratings is None or not isinstance(ratings, pd.DataFrame) or len(ratings) == 0:
+        return out
+    if "ticker" not in ratings.columns or "rs" not in ratings.columns:
+        return out
+    nums = pd.to_numeric(ratings["rs"], errors="coerce")
+    for ticker, val in zip(ratings["ticker"].astype(str), nums):
+        if np.isfinite(val):
+            out[ticker.strip().upper()] = int(val)
+    return out
 
 
 def attach(frame, ratings):

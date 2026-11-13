@@ -770,9 +770,7 @@
         if (ir != null) bits.push("industry rank " + D.fmt(ir, 0));
         return bits.join(" · ");
       }
-      const bits = ["RS " + D.fmt(rs, 0)];
-      const bench = scoreRow && !D.isBlank(scoreRow.rs_benchmark) ? String(scoreRow.rs_benchmark) : "Nifty 50";
-      bits[0] += " vs " + bench;
+      const bits = ["RS Rating " + D.fmt(rs, 0) + " vs every stock on the desk"];
       bits.push("rank " + String(Math.max(1, 100 - Math.round(rs))) + " of 99");
       if (ir != null) bits.push("industry rank " + D.fmt(ir, 0));
       return bits.join(" · ");
@@ -801,7 +799,7 @@
       ["A", "Annual EPS growth", "25% or more vs last year."],
       ["N", "New highs", "Within 15% of the 52-week closing high."],
       ["S", "Supply and demand", "20-day volume of 200,000 shares or more."],
-      ["L", "Leader / RS", "RS percentile 80 or higher vs Nifty 50 (SENSEX if BSE-only)."],
+      ["L", "Leader / RS", "RS Rating 80 or higher, versus every stock on the desk."],
       ["I", "Institutional buying", "FII and DII bought more than they sold last quarter."],
       ["M", "Market direction", "The Nifty 50 or SENSEX is in an uptrend."],
     ];
@@ -1529,7 +1527,7 @@
       T("strength", "CANSLIM strength (raw)", "num", { dec: 0 }), T("qualify", "Qualify", "pass"),
       T("c_quarterly_eps", "C: quarter EPS vs yr ago %", "pct", { dec: 1 }), T("a_annual_eps", "A: annual EPS %", "pct", { dec: 1 }),
       T("n_pct_from_high", "N: % from 52w high", "pct", { dec: 1 }), T("s_adv", "S: avg daily volume", "shares"),
-      T("l_rs_percentile", "L: RS percentile", "num", { dec: 0 }), T("i_trend", "I: holders trend", "itrend"),
+      T("rs", "L: RS Rating", "rs", { dec: 0, title: RS_TITLE }), T("i_trend", "I: holders trend", "itrend"),
       T("m_market", "M: market", "market"), T("freshness", "Data", "fresh")],
     cards(all) {
       return card("Ready", String(countWhere(all, (r) => r.status === "READY"))) +
@@ -1659,6 +1657,69 @@
       return '<div class="panel pad"><div class="ptitle">Why this name</div>' + whyLines(row ? [row] : []) + "</div>";
     },
   });
+
+  // MarketSmith style screens. Rows come from ms_screens.py. Every row passes, so there is no
+  // status filter. Numbers live in the marketsmith_screens block of config.json.
+  function msNotice(all, raw) {
+    const asOf = (all[0] && all[0].price_as_of) || "";
+    const empty = all.length ? "" : (D.noteOf(raw) || "No stock passes today.");
+    return '<p class="cap">' + (asOf ? "Prices to the " + D.esc(gapDay(asOf)) + " close. " : "") + D.esc(empty) +
+      " Tap a row to see the chart. Research only.</p>";
+  }
+  const RS_RATING_COL = T("rs", "RS Rating", "rs", { dec: 0, title: RS_TITLE });
+  const epsrs = passesPage({
+    file: "scanner_eps_rs.csv",
+    caption: "Stocks with an EPS Rating and an RS Rating of 80 or higher, ranked by the two added together. Stocks already too far past their buy point are left out.",
+    sort: "combined",
+    noticeAbove: true,
+    notice: msNotice,
+    filters: { sector: true, ticker: true, index: true },
+    columns: [TK, T("company", "Company", "text", { ellipsis: true, width: "200px" }), SE,
+      T("eps_rating", "EPS Rating", "num", { dec: 0, title: "1 to 99. 99 is the strongest earnings growth on the desk." }), RS_RATING_COL,
+      T("combined", "EPS + RS", "num", { dec: 0 }),
+      T("eps_q_yoy", "Latest quarter EPS vs year ago %", "pct", { dec: 0, color: true }),
+      T("eps_prev_q_yoy", "Quarter before vs year ago %", "pct", { dec: 0, color: true }),
+      T("eps_annual_growth", "Yearly EPS growth %", "pct", { dec: 0, color: true }),
+      T("eps_growth_years", "Years", "num", { dec: 0, hide: "md" }),
+      T("eps_parts", "EPS parts used", "num", { dec: 0, hide: "md", title: "3 when the quarter before the latest had a year-ago match on file, else 2." }),
+      T("price", "Last close", "num", { dec: 2 }),
+      T("above_sma50_pct", "Above 50-day %", "pct", { dec: 1, color: true }),
+      T("extended_check", "Extended check", "text", { wrap: true })],
+    cards(all) {
+      return card("Stocks listed", String(all.length)) +
+        card("Average EPS Rating", ntext(avg(all, "eps_rating"), 0)) +
+        card("Average RS Rating", ntext(avg(all, "rs"), 0)) +
+        card("With a buy point on file", String(countWhere(all, (r) => !D.isBlank(r.buy_point))));
+    },
+  });
+  function templatePage(file, months) {
+    return passesPage({
+      file: file,
+      caption: "All 8 of Mark Minervini's trend template rules pass, with the 200-day average rising for at least " + months + ". Strongest RS first.",
+      sort: "rs",
+      noticeAbove: true,
+      notice: msNotice,
+      filters: { sector: true, ticker: true, index: true },
+      columns: [TK, T("company", "Company", "text", { ellipsis: true, width: "200px" }), SE, RS_RATING_COL,
+        T("price", "Last close", "num", { dec: 2 }),
+        T("above_low_pct", "Above 52-week low %", "pct", { dec: 0, color: true }),
+        T("off_high_pct", "From 52-week high %", "pct", { dec: 1, color: true }),
+        T("sma200_change_pct", "200-day change %", "pct", { dec: 2, color: true }),
+        T("sma50", "50-day", "num", { dec: 2, hide: "md" }),
+        T("sma150", "150-day", "num", { dec: 2, hide: "md" }),
+        T("sma200", "200-day", "num", { dec: 2, hide: "md" }),
+        T("eps_rating", "EPS Rating", "num", { dec: 0 }),
+        T("reason", "Why", "text", { wrap: true })],
+      cards(all) {
+        return card("Stocks passing", String(all.length)) +
+          card("RS 90 or higher", String(countWhere(all, (r) => (D.num(r.rs) || 0) >= 90))) +
+          card("Within 5% of the 52-week high", String(countWhere(all, (r) => (D.num(r.off_high_pct) ?? -99) >= -5))) +
+          card("Average RS Rating", ntext(avg(all, "rs"), 0));
+      },
+    });
+  }
+  const min1m = templatePage("scanner_minervini_1m.csv", "1 month (21 trading days)");
+  const min5m = templatePage("scanner_minervini_5m.csv", "5 months (105 trading days)");
 
   // Episodic Pivot: a big jump on news, end-of-day only. Rows come from setups.scan_episodic_pivot.
   const epStatus = ["EP TODAY", "BROKEN OUT today", "IN TRADE", "WATCHING"];
@@ -3876,7 +3937,7 @@
       "The 52-week low rule is 25%. A close exactly 25% above the low passes. The number is vcp.above_low_pct.",
       "Volume dried up looks at the last pullback only, and stops the day before price closes over the buy line. It wants volume under the 50-day average, and at least one day at half that average or quieter. The breakout day's 1.5 times volume check is separate.",
       "Price has to tighten in that same last pullback. Daily bars after the low have to be narrower than the bars on the way down. vcp.dry_up_tighten_on is on. Set it to false to turn this off. If there are not yet two days on each side, it shows WAITING. That is not a pass.",
-      "RS vs benchmark is the stock price divided by the Nifty 50 (SENSEX for a BSE-only stock). It is not an IBD 1 to 99 rating. The 1 to 99 rank, the RS 70 filter, the chart RS line, and sector leaders stay as they are.",
+      "Rule 8 here is the RS line: the stock price divided by the Nifty 50 (SENSEX for a BSE-only stock), the same as Nick's indicator. It is not the 1 to 99 RS Rating. The RS column next to the ticker is the RS Rating.",
       "READY means price is still under the buy line. BROKEN OUT today means it closed above the buy line on volume at least 1.5 times the 50-day average.",
       "WATCHING means the trend is 8 of 8 but it is not ready yet. Price went over the line on low volume, or there is only one pullback so far. WAITING means a check has no data yet. It is not a pass.",
       "A stock still in a trade stays on the list if its buy printed with 8 of 8. Set vcp.show_weaker_trend to true to also see stocks with a weaker trend. They show as WATCHING (trend not 8/8).",
@@ -3926,7 +3987,21 @@
     ] },
     canslim: { title: SCAN, note: LIQUID_LINE, lines: [
       "William O'Neil's method. It checks earnings growth versus a year ago, how close price is to its 52-week high, and trading volume.",
-      "It also checks strength versus the Nifty 50 (SENSEX for BSE-only stocks), shareholding changes, and whether the market is in an uptrend.",
+      "L is the RS Rating, the same 1 to 99 number as the RS column. It also checks shareholding changes, and whether the market is in an uptrend.",
+    ] },
+    epsrs: { title: SCAN, note: LIQUID_LINE, lines: [
+      "Our copy of MarketSmith's Highest EPS and RS list. MarketSmith's own EPS and RS Ratings are private, so these are close copies built from the desk's own data.",
+      "EPS Rating is 1 to 99. It ranks three things across every stock on the desk, equally: the latest quarter's EPS versus a year ago, the quarter before that versus its year ago, and yearly EPS growth over 3 to 5 years. The latest quarter and the yearly growth are needed. The quarter before counts when its year-ago numbers are saved, which today is only some stocks.",
+      "Both ratings must be 80 or higher. Stocks are ranked by EPS Rating plus RS Rating, highest first. At most 50 are shown.",
+      "Stocks that have run too far are left out. With a buy point from VCP, Box, Flag, Qullamaggie or Marios, that means more than 5% above it. With no buy point, the stand-in is more than 25% above the 50-day average.",
+    ] },
+    min1m: { title: SCAN, note: LIQUID_LINE, lines: [
+      "Mark Minervini's trend template, the early version. He calls it his heads up list, because it catches stocks just turning into uptrends.",
+      "All 8 rules must pass: price above the 150 and 200-day averages, the 150-day above the 200-day, the 200-day higher than 1 month (21 trading days) ago, the 50-day above the 150 and 200-day, price above the 50-day, at least 30% above the 52-week low, within 25% of the 52-week high, and RS 70 or higher.",
+    ] },
+    min5m: { title: SCAN, note: LIQUID_LINE, lines: [
+      "Mark Minervini's trend template, the main version. The 200-day average must have been rising for about 5 months, so these are steadier uptrends.",
+      "All 8 rules must pass: price above the 150 and 200-day averages, the 150-day above the 200-day, the 200-day higher than 105 trading days ago, the 50-day above the 150 and 200-day, price above the 50-day, at least 30% above the 52-week low, within 25% of the 52-week high, and RS 70 or higher.",
     ] },
     leaders: { title: SCAN, note: LIQUID_LINE, lines: [
       "Stocks that are a READY or just broken out VCP, or a strict CANSLIM pass. One row per stock.",
@@ -4119,7 +4194,7 @@
       "The RS line in the lower part of the price chart, below the candles and above the volume, is the stock close divided by the Nifty 50. A blue dot is a new 52-week high in that line. An amber dot means the line made that high before the price did. The RS line chip turns it off on this device.",
     ], splitNeedsToggle: true, splitLines: [
       "One big chart at a time. Pick Technical or Fundamental at the top, then a list: every stock in that group, one scanner, Buy setups, or your watchlist.",
-      "Technical is the chart scanners (VCP, breakouts, Episodic Pivot, Gap Up, 52-week, High volume, Pullbacks, Trends, Liquid stocks). Fundamental is CANSLIM, Leaders, Growth, Quality and Dividend. Your last choice is remembered on this device.",
+      "Technical is the chart scanners (VCP, breakouts, Episodic Pivot, Gap Up, Minervini 1-Month and 5-Month, 52-week, High volume, Pullbacks, Trends, Liquid stocks). Fundamental is CANSLIM, Leaders, Highest EPS and RS, Growth, Quality and Dividend. Your last choice is remembered on this device.",
       "All technical stocks and All fundamental stocks put the stocks found by the most scanners in that group first, then the strongest. The box on the chart shows only that group's reasons, plus Buy setups and your watchlist.",
       "Tap Full screen. Swipe right for the next chart and left to go back. The Swipe chip flips that. The arrows and the left and right keys work too.",
       "Drag the chart slowly to see older days on the same chart, and pinch to zoom. Flick fast, or swipe on the top row, to change the chart. On a phone the chip bar scrolls sideways. The Drag chip switches between Drag: move chart and Drag: next chart.",
@@ -4136,7 +4211,7 @@
     ] },
   };
 
-  ["vcp", "box", "flag", "qullamaggie", "marios", "episodic", "gapup", "canslim", "leaders", "buysetups", "week52", "breakouts", "pullbacks", "highvol", "growth", "quality", "dividend", "wheel", "trends"].forEach((id) => {
+  ["vcp", "box", "flag", "qullamaggie", "marios", "episodic", "gapup", "epsrs", "min1m", "min5m", "canslim", "leaders", "buysetups", "week52", "breakouts", "pullbacks", "highvol", "growth", "quality", "dividend", "wheel", "trends"].forEach((id) => {
     if (ABOUT[id]) ABOUT[id].rs = true;
   });
 
@@ -4159,6 +4234,9 @@
     qullamaggie: qullamaggie,
     marios: marios,
     episodic: episodic,
+    epsrs: epsrs,
+    min1m: min1m,
+    min5m: min5m,
     leaders: leaders,
     calendar: { files: ["earnings_calendar.csv"], render: renderCalendar },
     heatmap: { files: ["earnings_heatmap.csv"], render: renderHeat },

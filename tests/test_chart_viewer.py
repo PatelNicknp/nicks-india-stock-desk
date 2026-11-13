@@ -140,6 +140,7 @@ def test_every_scanner_is_a_source():
     block = desk[start:desk.index("const CV_MAS", start)]
     for f in ("buy_setups.csv", "scanner_vcp.csv", "scanner_canslim.csv", "scanner_box.csv", "scanner_flag.csv",
               "scanner_qullamaggie.csv", "scanner_marios.csv", "scanner_episodic_pivot.csv", "scanner_gap_up.csv", "scanner_leaders.csv",
+              "scanner_eps_rs.csv", "scanner_minervini_1m.csv", "scanner_minervini_5m.csv",
               "scanner_52w.csv", "breakouts.csv", "high_volume.csv", "pullbacks.csv", "trends.csv", "scanner_growth.csv",
               "scanner_quality.csv", "scanner_dividend.csv", "scanner_wheel.csv", "watchlist.csv"):
         assert '"' + f + '"' in block, f

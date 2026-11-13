@@ -39,7 +39,10 @@
       ["Marios breakout", "marios.html", "marios"],
       ["Episodic Pivot", "episodic_pivot.html", "episodic"],
       ["Gap Up", "gap_up.html", "gapup"],
+      ["Minervini 1-Month", "minervini-1m.html", "min1m"],
+      ["Minervini 5-Month", "minervini-5m.html", "min5m"],
       ["Leaders", "leaders.html", "leaders"],
+      ["Highest EPS and RS", "eps-rs.html", "epsrs"],
       ["52-week", "52-week.html", "week52"],
       ["High volume", "high-volume.html", "highvol"],
     ]],
@@ -2055,6 +2058,7 @@
   // Quality, Dividend, Liquid stocks and Pullbacks count rows that pass. High volume counts
   // the rows its page lists by default. 52-week counts a new high, a new low, or near the high.
   // Gap Up counts every stock still holding its gap (chart_viewer.include_gap_up).
+  // Highest EPS and RS and the two Minervini screens count every row (each row passes).
   // Trends counts stocks above the 20, 50, 100, and 200-day averages (chart_viewer.include_trends).
   // Buy setups and the Watchlist are shown in the reason box but do not add to the count.
   const CV_WATCHING = ["WATCHING", "DELAYED WATCH"];
@@ -2067,7 +2071,10 @@
     { id: "marios", label: "Marios breakout", short: "Marios", file: "scanner_marios.csv", href: "marios.html", kind: "pattern" },
     { id: "episodic", label: "Episodic Pivot", short: "EP", file: "scanner_episodic_pivot.csv", href: "episodic_pivot.html", kind: "pattern" },
     { id: "gapup", label: "Gap Up", short: "Gap Up", file: "scanner_gap_up.csv", href: "gap_up.html", kind: "gap", opt: "include_gap_up" },
+    { id: "min1m", label: "Minervini 1-Month", short: "Minervini 1M", file: "scanner_minervini_1m.csv", href: "minervini-1m.html", kind: "pattern" },
+    { id: "min5m", label: "Minervini 5-Month", short: "Minervini 5M", file: "scanner_minervini_5m.csv", href: "minervini-5m.html", kind: "pattern" },
     { id: "leaders", label: "Leaders", short: "Leaders", file: "scanner_leaders.csv", href: "leaders.html", kind: "pattern" },
+    { id: "epsrs", label: "Highest EPS and RS", short: "EPS and RS", file: "scanner_eps_rs.csv", href: "eps-rs.html", kind: "pattern" },
     { id: "week52", label: "52-week highs and lows", short: "52-week", file: "scanner_52w.csv", href: "52-week.html", kind: "w52" },
     { id: "breakouts", label: "52-week breakouts", short: "Breakouts", file: "breakouts.csv", href: "breakouts.html", kind: "brk" },
     { id: "highvol", label: "High volume", short: "High volume", file: "high_volume.csv", href: "high-volume.html", kind: "hv" },
@@ -3163,9 +3170,9 @@
   // The order here is the menu order. Off: one combined menu and one All list, as before.
   const GROUP_DEFAULTS = {
     vcp: "technical", box: "technical", flag: "technical", qullamaggie: "technical", marios: "technical",
-    episodic: "technical", gapup: "technical", week52: "technical", breakouts: "technical", highvol: "technical",
+    episodic: "technical", gapup: "technical", min1m: "technical", min5m: "technical", week52: "technical", breakouts: "technical", highvol: "technical",
     pullbacks: "technical", trends: "technical", wheel: "technical",
-    canslim: "fundamental", leaders: "fundamental", growth: "fundamental", quality: "fundamental",
+    canslim: "fundamental", leaders: "fundamental", epsrs: "fundamental", growth: "fundamental", quality: "fundamental",
     dividend: "fundamental", divfund: "fundamental", scorecard: "fundamental", top: "fundamental",
   };
   const GROUP_IDS = ["technical", "fundamental"];
@@ -3483,6 +3490,9 @@
     marios: "feature.scanner_marios",
     episodic: "feature.scanner_episodic_pivot",
     gapup: "feature.scanner_gap_up",
+    epsrs: "feature.scanner_eps_rs",
+    min1m: "feature.scanner_minervini_1m",
+    min5m: "feature.scanner_minervini_5m",
     leaders: "feature.scanner_leaders",
     week52: "feature.scanner_52w",
     highvol: "feature.high_volume_scanner",

@@ -219,7 +219,8 @@ def test_canslim_does_not_invent_missing_letters():
         {"ticker": "AAA", "inst_up": 10, "inst_down": 4, "ownership_pct": 60},
     ])
     uni = _uni(["AAA", "BBB"])
-    out, market = setups.scan_canslim(close_w, high_w, low_w, vol_w, uni, quarters, annual, holders)
+    out, market = setups.scan_canslim(close_w, high_w, low_w, vol_w, uni, quarters, annual, holders,
+                                      rs_map={"AAA": 88, "BBB": 88})
     assert market["qqq"] == "not verified"
     assert "QQQ" in market["text"]
     assert "not verified" in market["text"]
@@ -318,13 +319,13 @@ def test_leaders_prefers_the_vcp_plan():
         "ticker": "AAA", "company": "Alpha", "sector": "Tech", "index_membership": "SP500 / NDX100",
         "status": "READY", "pivot": 110, "stop": "", "target": "", "strength": 140,
         "reason": "can", "freshness": "FRESH", "price": 99, "price_as_of": "2026-10-23",
-        "qualify": "strict", "l_rs_percentile": 88, "c_status": "not verified",
+        "qualify": "strict", "rs": 88, "c_status": "not verified",
         "a_status": "20%", "i_trend": "up",
     }, {
         "ticker": "BBB", "company": "Beta", "sector": "Tech", "index_membership": "NDX100",
         "status": "WATCHING", "pivot": 50, "stop": "", "target": "", "strength": 100,
         "reason": "can", "freshness": "PARTIAL", "price": 40, "price_as_of": "2026-10-23",
-        "qualify": "soft", "l_rs_percentile": 50, "c_status": "not verified",
+        "qualify": "soft", "rs": 50, "c_status": "not verified",
         "a_status": "not verified", "i_trend": "not verified",
     }])
     out = setups.combine_leaders(vcp, cans)
@@ -520,3 +521,22 @@ if __name__ == "__main__":
     test_high_volume_scanner()
     test_high_volume_scanner_empty_is_safe()
     print("setups ok")
+
+
+def test_canslim_l_uses_the_rs_rating():
+    """L is the desk's 1 to 99 RS Rating. No rating means no row; a low rating is not listed."""
+    n = 260
+    idx = _dates(n)
+    close = 50 * (1.002 ** np.arange(n))
+    frame = pd.DataFrame({"close": close, "high": close * 1.01, "low": close * 0.99,
+                          "volume": np.full(n, 2_000_000.0)}, index=idx)
+    close_w, high_w, low_w, vol_w = _panel(["AAA", "BBB", "CCC"], {"AAA": frame, "BBB": frame.copy(), "CCC": frame.copy()})
+    uni = _uni(["AAA", "BBB", "CCC"])
+    out, _m = setups.scan_canslim(close_w, high_w, low_w, vol_w, uni, pd.DataFrame(), pd.DataFrame(), pd.DataFrame(),
+                                  rs_map={"AAA": 91, "BBB": 12})
+    assert list(out["ticker"]) == ["AAA"]
+    row = out.iloc[0]
+    assert row["rs"] == 91
+    assert "RS Rating 91 of 99" in row["l_status"]
+    assert "l_rs_percentile" not in out.columns
+    assert "Nifty" not in row["l_status"]
