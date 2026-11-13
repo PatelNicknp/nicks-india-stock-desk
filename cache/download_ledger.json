@@ -12,8 +12,8 @@
    "last_error": "skipped after repeated failures in this run"
   },
   "BSE shareholding": {
-   "cooldown_until": "2026-11-13T12:21Z",
-   "fails": 10,
+   "cooldown_until": "2026-11-13T20:51Z",
+   "fails": 11,
    "last_error": "skipped after repeated failures in this run"
   },
   "NSE shareholding": {
@@ -33,8 +33,8 @@
   },
   "Yahoo BO": {
    "cooldown_until": "",
-   "fails": 1,
-   "last_error": "skipped after repeated failures in this run"
+   "fails": 0,
+   "last_error": ""
   },
   "Yahoo NS": {
    "cooldown_until": "",

@@ -41,10 +41,10 @@
   "JAYKAYPP": "2026-11-12",
   "OLAPP": "2026-11-12"
  },
- "last_batch_at": "2026-11-13T10:58Z",
- "last_statements_ok": 0,
+ "last_batch_at": "2026-11-13T14:54Z",
+ "last_statements_ok": 2,
  "last_statements_fail": 0,
- "last_shareholding_ok": 58,
+ "last_shareholding_ok": 61,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
   "BIRET": "2026-11-13",
@@ -61,7 +61,7 @@
   "JAYKAYPP": "2026-11-13",
   "QDLCCPS": "2026-11-13",
   "SURAJINDPP": "2026-11-13",
-  "VERTEXPP": "2026-11-12",
+  "VERTEXPP": "2026-11-13",
   "ICICIPRULI": "2026-10-27",
   "ACESEPP": "2026-11-13",
   "SHIVAM-RE1": "2026-11-13",
@@ -70,7 +70,7 @@
   "OLAPP": "2026-11-13",
   "SUVID-RE": "2026-11-13"
  },
- "last_shareholding_empty": 17,
+ "last_shareholding_empty": 18,
  "last_shareholding_skipped": 0,
  "statements_failures": {
   "BAGMANE": {
