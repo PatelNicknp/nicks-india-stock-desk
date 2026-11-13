@@ -1,10 +1,10 @@
 sector,day_pct,week_pct,month_pct,month3_pct,ytd_pct,pct_above_sma50,score_avg,n,data_status,note,disclaimer
-,0.14,2.79,7.44,3.02,36.28,90.6,1.03,223,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+,-0.29,2.29,6.64,-0.17,-1.97,90.5,1.03,221,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 Communication Services,-0.27,2.19,0.26,-2.6,-10.49,44.6,2.24,112,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-Consumer Discretionary,-0.22,1.68,0.62,-0.17,5.97,46.3,0.15,792,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+Consumer Discretionary,-0.1,1.82,0.86,0.54,16.65,46.4,0.15,793,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 Consumer Staples,-0.36,1.43,-0.55,-2.96,3.2,42.2,0.27,332,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 Energy,-0.36,0.75,-5.0,-4.13,21.45,27.7,-0.21,47,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-Financials,-0.24,2.71,17.83,22.11,8.19,47.8,0.83,600,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+Financials,-0.24,2.71,17.8,22.31,8.27,47.9,0.84,601,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 Health Care,-0.08,3.01,3.02,2.64,19.98,49.6,2.2,264,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 Industrials,-0.24,1.72,-0.6,9.66,9.45,40.6,0.22,756,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 Information Technology,-0.31,1.65,1.58,-1.38,3.6,38.0,1.07,303,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."

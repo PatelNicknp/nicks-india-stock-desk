@@ -1,2 +1,5 @@
 ticker,kind,text,score,score_prev,verdict,verdict_prev,price,data_status,note,disclaimer
-,info,No verdict changes or score crossings this run.,,,,,,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+PANIDPR,verdict_change,PANIDPR changed from Not scored yet to HOLD.,4,2,HOLD,Not scored yet,90.0,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+PANIDPR,score_jump,PANIDPR score moved from 2 to 4.,4,2,HOLD,Not scored yet,90.0,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+PANIDPR,score_cross,PANIDPR crossed the hold line (4).,4,2,HOLD,Not scored yet,90.0,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+NOBPOL,verdict_change,NOBPOL changed from Not scored yet to AVOID.,0,0,AVOID,Not scored yet,41.15,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."

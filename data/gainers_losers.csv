@@ -1,5 +1,5 @@
 side,ticker,company,sector,price,day_pct,score,verdict,data_status,note,disclaimer
-gainer,NOBPOL,,,41.15,96.05,0,Not scored yet,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+gainer,NOBPOL,NOBLE POLYMERS LIMITED,Consumer Discretionary,41.15,96.05,0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 gainer,ANUP,The Anup Engineering Limited,Industrials,1725.0,19.99,-1,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 gainer,CHEMTECH,CHEMTECH INDUSTRIAL VALVES LTD,Industrials,60.28,19.98,-1,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 gainer,MSTCLTD,MSTC Ltd.,Industrials,783.35,19.95,-3,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
@@ -17,7 +17,7 @@ gainer,BEEYU,BEEYU OVERSEAS LTD.,Financials,2.84,13.6,1,AVOID,OK,,"Research only
 loser,PURSHOTTAM,PURSHOTTAM INVESTOFIN LTD,Financials,38.99,-11.31,0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 loser,V2RETAIL,V2 Retail Ltd.,Consumer Discretionary,164.1,-11.87,3,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 loser,NDASEC,NDA SECURITIES LTD.,Financials,19.89,-11.95,1,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-loser,ABATEAS,ABATE AS INDUSTRIES LIMITED,Financials,6.86,-12.05,-1,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+loser,ABATEAS,ABATE AS INDUSTRIES LIMITED,Financials,6.86,-12.05,0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 loser,MORARJEE,Morarjee Textiles Limited,Consumer Discretionary,4.96,-13.13,-2,Not scored yet,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 loser,BLUECHIP,Blue Chip India Limited,Financials,1.59,-14.97,1,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 loser,APOORVA,Apoorva Leasing Finance and Investment Company Limited,Financials,27.25,-23.56,-5,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
