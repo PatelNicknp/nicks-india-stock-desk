@@ -1,8 +1,2 @@
 ticker,kind,text,score,score_prev,verdict,verdict_prev,price,data_status,note,disclaimer
-FINCABLES,score_jump,FINCABLES score moved from 5 to 7.,7,5,HOLD,HOLD,1253.1,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-AJWAFUN,verdict_change,AJWAFUN changed from Not scored yet to AVOID.,3,2,AVOID,Not scored yet,40.95,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-ESFL,verdict_change,ESFL changed from Not scored yet to AVOID.,2,2,AVOID,Not scored yet,122.4,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-RATNAMANI,score_jump,RATNAMANI score moved from -3 to -1.,-1,-3,AVOID,AVOID,2486.9,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-FLUOROCHEM,score_jump,FLUOROCHEM score moved from -2 to -4.,-4,-2,AVOID,AVOID,4804.0,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-FRONTFN,verdict_change,FRONTFN changed from Not scored yet to AVOID.,-4,0,AVOID,Not scored yet,27.23,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-FRONTFN,score_jump,FRONTFN score moved from 0 to -4.,-4,0,AVOID,Not scored yet,27.23,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+,info,No verdict changes or score crossings this run.,,,,,,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
