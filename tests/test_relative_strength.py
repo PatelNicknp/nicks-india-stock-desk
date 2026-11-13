@@ -174,7 +174,8 @@ def test_help_and_page_copy_are_plain():
     assert "3:00 AM PT" in text
     assert "63" in text
     assert "left blank" in text
-    assert "Nifty" in text and "not replaced" in text
+    assert "MarketSmith" in text and "every stock" in text
+    assert "not against the Nifty 50" in text and "RS line" in text
     assert "\u2014" not in text
     pages = open(os.path.join(os.path.dirname(os.path.dirname(__file__)), "site", "js", "pages.js"), encoding="utf-8").read()
     desk = open(os.path.join(os.path.dirname(os.path.dirname(__file__)), "site", "js", "desk.js"), encoding="utf-8").read()

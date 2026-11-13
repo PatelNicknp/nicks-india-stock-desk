@@ -35,9 +35,9 @@ PINE = {
 
 # NSE scan constants, kept so the US page matches that method.
 NSE_ADV_MIN = 200_000
-NSE_RS_LONG = 126
-NSE_RS_SHORT = 63
 NSE_NEAR_HIGH = -15.0  # percent from the 52-week closing high
+# L uses the desk's one RS Rating (relative_strength.py, 1 to 99 versus every
+# stock in the universe, MarketSmith style). Same cut lines as before.
 NSE_RS_STRICT = 55.0
 NSE_RS_SOFT = 40.0
 
@@ -1164,7 +1164,12 @@ def _range_pct(close, win):
     return (float(seg.max()) - float(seg.min())) / mean * 100.0
 
 
-def scan_canslim(close, high, low, vol, universe, quarters, annual, holders, cfg=None):
+def scan_canslim(close, high, low, vol, universe, quarters, annual, holders, cfg=None, rs_map=None):
+    """CANSLIM scanner. L is the desk's 1 to 99 RS Rating from rs_map ({TICKER: rs}).
+
+    A stock with no RS Rating (under a year of prices) cannot pass L, so it is not listed.
+    """
+    rs_map = {str(k).strip().upper(): v for k, v in (rs_map or {}).items()}
     rows = []
     if close is None or len(close) == 0 or universe is None or len(universe) == 0:
         return pd.DataFrame(), {}
@@ -1181,25 +1186,15 @@ def scan_canslim(close, high, low, vol, universe, quarters, annual, holders, cfg
 
     screened = []
     for ticker in list(universe["ticker"]):
-        stock_col, stock_word = _stock_benchmark(close, ticker, universe, cfg)
-        bench = close[stock_col].dropna() if close is not None and stock_col in close.columns else None
-        bench_r63 = _ret(bench, NSE_RS_SHORT) if bench is not None else None
-        bench_r126 = _ret(bench, NSE_RS_LONG) if bench is not None else None
-        got = _bars(close, high, low, vol, ticker, bench)
+        rs_val = _num(rs_map.get(str(ticker).strip().upper()))
+        if rs_val is None:
+            continue
+        got = _bars(close, high, low, vol, ticker, None)
         if got is None:
             continue
         frame, _spy_aligned = got
         c = frame["close"]
-        if len(c) < 150 or bench is None or bench_r63 is None or bench_r126 is None:
-            continue
-        aligned = bench.reindex(c.index).ffill()
-        common = c.index.intersection(aligned.dropna().index)
-        c = c.loc[common]
         if len(c) < 150:
-            continue
-        r63 = _ret(c, NSE_RS_SHORT)
-        r126 = _ret(c, NSE_RS_LONG)
-        if r63 is None or r126 is None:
             continue
         e21, e50, e200 = _ema(c, 21), _ema(c, 50), _ema(c, 200)
         last = float(c.iloc[-1])
@@ -1253,9 +1248,7 @@ def scan_canslim(close, high, low, vol, universe, quarters, annual, holders, cfg
         big_vol = bool(np.isfinite(vol_s.iloc[-1]) and np.isfinite(avg50.iloc[-1]) and float(vol_s.iloc[-1]) > float(avg50.iloc[-1]) * VOL_MULT)
         screened.append({
             "ticker": ticker, "last": last, "liquid": liquid, "adv": adv,
-            "bench_word": stock_word,
-            "rs63": (r63 - bench_r63) * 100.0, "rs126": (r126 - bench_r126) * 100.0,
-            "rs_rel": (0.6 * (r126 - bench_r126) + 0.4 * (r63 - bench_r63)) * 100.0,
+            "rs": rs_val,
             "pct_from_high": pct_from_high, "hi52": hi52, "near": near,
             "above50": above50, "above200": above200, "above21": above21, "rising": rising,
             "e21": e21v, "e50": e50v, "e200": e200v, "trend": trend,
@@ -1267,16 +1260,13 @@ def scan_canslim(close, high, low, vol, universe, quarters, annual, holders, cfg
     df = pd.DataFrame(screened)
     if len(df) == 0:
         return pd.DataFrame(), market
-    liquid = df[df["liquid"]].copy()
-    if len(liquid) == 0:
+    if not df["liquid"].any():
         return pd.DataFrame(), market
-    liquid["rs_percentile"] = liquid["rs_rel"].rank(pct=True, method="average") * 100.0
-    pct_map = liquid.set_index("ticker")["rs_percentile"]
 
     for rec in screened:
-        if not rec["liquid"] or rec["ticker"] not in pct_map.index:
+        if not rec["liquid"]:
             continue
-        rs_p = float(pct_map.loc[rec["ticker"]])
+        rs_p = float(rec["rs"])
         strict = (
             rec["above50"] and rec["above200"] and rec["rising"]
             and rs_p >= NSE_RS_STRICT and (rec["vcp_score"] >= 2 or rec["near"])
@@ -1305,8 +1295,7 @@ def scan_canslim(close, high, low, vol, universe, quarters, annual, holders, cfg
             % rec["pct_from_high"]
         )
         s_txt = "20-day average volume %s shares. Float tightness is not verified." % "{:,.0f}".format(round(rec["adv"]))
-        rs_word = rec.get("bench_word") or bench_word
-        l_txt = "RS percentile %.0f in this liquid universe versus %s. Industry group rank is not verified." % (rs_p, rs_word)
+        l_txt = "RS Rating %.0f of 99 versus every stock on the desk. Industry group rank is not verified." % rs_p
         if rec["contracting"]:
             vcp_txt = "20/40/60 day ranges %.1f%% / %.1f%% / %.1f%%, contracting." % (rec["r20"], rec["r40"], rec["r60"])
         elif rec["mild"]:
@@ -1321,13 +1310,12 @@ def scan_canslim(close, high, low, vol, universe, quarters, annual, holders, cfg
             vcp_txt += " Higher lows on the 10-day rolling low."
         qualify = "strict" if strict else "soft"
         reason = (
-            "%s versus %s. %s %s %s %s %s Market: %s "
+            "%s. %s %s %s %s %s Market: %s "
             "Pivot is the 52-week closing high from the NSE method, not the VCP buy point. "
             "Stop: not verified. Target: not verified. That scan does not set either one. "
             "A close under EMA50 (%s) would fail its trend rule."
             % (
                 "Strict qualify" if strict else "Soft watch, not a full qualify",
-                rs_word,
                 "C %s." % c_txt, "A %s." % a_txt, "N %s" % n_txt, "S %s" % s_txt, "L %s" % l_txt,
                 market["text"], _round(rec["e50"]),
             )
@@ -1375,7 +1363,7 @@ def scan_canslim(close, high, low, vol, universe, quarters, annual, holders, cfg
             "n_status": n_txt,
             "s_adv": _round(rec["adv"], 0),
             "s_status": s_txt,
-            "l_rs_percentile": round(rs_p, 1),
+            "rs": int(round(rs_p)),
             "l_status": l_txt,
             "i_trend": i_trend,
             "i_status": i_text,
@@ -3629,7 +3617,7 @@ def combine_leaders(vcp, canslim):
         use_v = vr is not None and vr.get("pivot") not in ("", None)
         src = vr if use_v else cr
         v_strength = _num(vr["strength"]) if vr is not None else None
-        c_rs = _num(cr["l_rs_percentile"]) if cr is not None else None
+        c_rs = _num(cr.get("rs")) if cr is not None else None
         if v_strength is not None and c_rs is not None:
             strength = round(0.5 * v_strength + 0.5 * min(c_rs, 100.0), 1)
         elif v_strength is not None:
@@ -3642,8 +3630,8 @@ def combine_leaders(vcp, canslim):
         if vr is not None:
             parts.append("VCP %s, trend %s, buy point %s." % (vr["status"], vr.get("trend_score", ""), vr.get("pivot", "")))
         if cr is not None:
-            parts.append("CANSLIM %s, RS percentile %s. C %s. A %s. I %s." % (
-                cr["status"], cr.get("l_rs_percentile", ""), cr.get("c_status", NOT_VERIFIED),
+            parts.append("CANSLIM %s, RS %s. C %s. A %s. I %s." % (
+                cr["status"], cr.get("rs", ""), cr.get("c_status", NOT_VERIFIED),
                 cr.get("a_status", NOT_VERIFIED), cr.get("i_trend", NOT_VERIFIED)))
         if use_v:
             parts.append("Stop and target come from the VCP buy rules.")
@@ -4242,8 +4230,10 @@ def _buy_market_row(snap):
 
 
 def build_setups(close, high, low, vol, universe, quarters, annual, holders, features, scores=None, cfg=None, opn=None,
-                 earnings=None, shares=None, ep_universe=None):
+                 earnings=None, shares=None, ep_universe=None, rs_map=None):
     """Return the scanner frames. Each is empty when that switch is off.
+
+    rs_map: {TICKER: RS Rating 1 to 99} from relative_strength.py. CANSLIM's L uses it.
 
     ep_universe: the names the Episodic Pivot scan looks at (the liquid list unless its switch says otherwise).
     """
@@ -4258,7 +4248,7 @@ def build_setups(close, high, low, vol, universe, quarters, annual, holders, fea
     want_m = features.get("scanner_marios", True)
     want_ep = features.get("scanner_episodic_pivot", True)
     vcp = scan_vcp(close, high, low, vol, universe, cfg) if (want_v or want_l) else pd.DataFrame()
-    canslim, _market = scan_canslim(close, high, low, vol, universe, quarters, annual, holders, cfg) if (want_c or want_l) else (pd.DataFrame(), {})
+    canslim, _market = scan_canslim(close, high, low, vol, universe, quarters, annual, holders, cfg, rs_map=rs_map) if (want_c or want_l) else (pd.DataFrame(), {})
     box = scan_box(close, high, low, vol, universe) if want_b else pd.DataFrame()
     flag = scan_flag(close, high, low, vol, universe) if want_f else pd.DataFrame()
     qull = scan_qullamaggie(close, high, low, vol, universe, cfg, opn=opn, scores=scores) if want_q else pd.DataFrame()
