@@ -7,8 +7,8 @@
  "needs_person": {},
  "providers": {
   "BSE results": {
-   "cooldown_until": "2026-11-12T22:58Z",
-   "fails": 4,
+   "cooldown_until": "2026-11-14T00:30Z",
+   "fails": 5,
    "last_error": "skipped after repeated failures in this run"
   },
   "BSE shareholding": {
@@ -33,13 +33,13 @@
   },
   "Yahoo BO": {
    "cooldown_until": "",
-   "fails": 0,
-   "last_error": ""
+   "fails": 1,
+   "last_error": "skipped after repeated failures in this run"
   },
   "Yahoo NS": {
    "cooldown_until": "",
-   "fails": 0,
-   "last_error": ""
+   "fails": 1,
+   "last_error": "skipped after repeated failures in this run"
   }
  },
  "stalls": {
@@ -53,7 +53,7 @@
   },
   "statements": {
    "cooldown_until": "",
-   "runs": 0
+   "runs": 1
   }
  },
  "unavailable": {
@@ -113,39 +113,39 @@
   },
   "statements:ABHIINFRA": {
    "kind": "statements",
-   "last_on": "2026-11-13",
+   "last_on": "2026-11-14",
    "note": "no statement source answered",
-   "retry_after": "2026-11-14",
+   "retry_after": "2026-11-15",
    "since": "2026-11-11",
    "ticker": "ABHIINFRA",
-   "tries": 3
+   "tries": 4
   },
   "statements:BAGMANE": {
    "kind": "statements",
-   "last_on": "2026-11-13",
+   "last_on": "2026-11-14",
    "note": "no statement source answered",
-   "retry_after": "2026-11-14",
+   "retry_after": "2026-11-17",
    "since": "2026-11-11",
    "ticker": "BAGMANE",
-   "tries": 3
+   "tries": 4
   },
   "statements:DUMMYHEG": {
    "kind": "statements",
-   "last_on": "2026-11-13",
+   "last_on": "2026-11-14",
    "note": "no statement source answered",
-   "retry_after": "2026-11-14",
+   "retry_after": "2026-11-17",
    "since": "2026-11-11",
    "ticker": "DUMMYHEG",
-   "tries": 3
+   "tries": 4
   },
   "statements:DUMMYINXGN": {
    "kind": "statements",
-   "last_on": "2026-11-13",
+   "last_on": "2026-11-14",
    "note": "no statement source answered",
-   "retry_after": "2026-11-14",
+   "retry_after": "2026-11-17",
    "since": "2026-11-11",
    "ticker": "DUMMYINXGN",
-   "tries": 3
+   "tries": 4
   },
   "statements:POWERIETF": {
    "kind": "statements",
@@ -167,12 +167,12 @@
   },
   "statements:SUVID-RE": {
    "kind": "statements",
-   "last_on": "2026-11-13",
+   "last_on": "2026-11-14",
    "note": "no statement source answered",
-   "retry_after": "2026-11-14",
+   "retry_after": "2026-11-15",
    "since": "2026-11-12",
    "ticker": "SUVID-RE",
-   "tries": 2
+   "tries": 3
   },
   "statements:TEAM24": {
    "kind": "statements",
@@ -185,12 +185,12 @@
   },
   "statements:VEEFIN": {
    "kind": "statements",
-   "last_on": "2026-11-13",
+   "last_on": "2026-11-14",
    "note": "no statement source answered",
-   "retry_after": "2026-11-14",
+   "retry_after": "2026-11-15",
    "since": "2026-11-11",
    "ticker": "VEEFIN",
-   "tries": 3
+   "tries": 4
   }
  }
 }
