@@ -12,8 +12,8 @@
    "last_error": "skipped after repeated failures in this run"
   },
   "BSE shareholding": {
-   "cooldown_until": "2026-11-13T20:51Z",
-   "fails": 11,
+   "cooldown_until": "2026-11-14T03:22Z",
+   "fails": 12,
    "last_error": "skipped after repeated failures in this run"
   },
   "NSE shareholding": {
@@ -53,7 +53,7 @@
   },
   "statements": {
    "cooldown_until": "",
-   "runs": 1
+   "runs": 2
   }
  },
  "unavailable": {
@@ -149,12 +149,12 @@
   },
   "statements:POWERIETF": {
    "kind": "statements",
-   "last_on": "2026-11-13",
+   "last_on": "2026-11-14",
    "note": "no statement source answered",
-   "retry_after": "2026-11-14",
+   "retry_after": "2026-11-15",
    "since": "2026-11-11",
    "ticker": "POWERIETF",
-   "tries": 3
+   "tries": 4
   },
   "statements:SANCF": {
    "kind": "statements",
@@ -176,12 +176,12 @@
   },
   "statements:TEAM24": {
    "kind": "statements",
-   "last_on": "2026-11-13",
+   "last_on": "2026-11-14",
    "note": "no statement source answered",
-   "retry_after": "2026-11-14",
+   "retry_after": "2026-11-17",
    "since": "2026-11-11",
    "ticker": "TEAM24",
-   "tries": 3
+   "tries": 4
   },
   "statements:VEEFIN": {
    "kind": "statements",
