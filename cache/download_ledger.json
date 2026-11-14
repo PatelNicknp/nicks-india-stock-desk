@@ -1,14 +1,16 @@
 {
  "incomplete": {
   "statements": [
+   "POWERIETF",
+   "SUVID-RE",
    "SANCF"
   ]
  },
  "needs_person": {},
  "providers": {
   "BSE results": {
-   "cooldown_until": "2026-11-14T00:30Z",
-   "fails": 5,
+   "cooldown_until": "2026-11-15T01:09Z",
+   "fails": 6,
    "last_error": "skipped after repeated failures in this run"
   },
   "BSE shareholding": {
@@ -33,13 +35,13 @@
   },
   "Yahoo BO": {
    "cooldown_until": "",
-   "fails": 1,
-   "last_error": "skipped after repeated failures in this run"
+   "fails": 0,
+   "last_error": ""
   },
   "Yahoo NS": {
    "cooldown_until": "",
-   "fails": 1,
-   "last_error": "skipped after repeated failures in this run"
+   "fails": 0,
+   "last_error": ""
   }
  },
  "stalls": {
@@ -53,7 +55,7 @@
   },
   "statements": {
    "cooldown_until": "",
-   "runs": 2
+   "runs": 0
   }
  },
  "unavailable": {
@@ -111,15 +113,6 @@
    "ticker": "4THGEN",
    "tries": 1
   },
-  "statements:ABHIINFRA": {
-   "kind": "statements",
-   "last_on": "2026-11-14",
-   "note": "no statement source answered",
-   "retry_after": "2026-11-15",
-   "since": "2026-11-11",
-   "ticker": "ABHIINFRA",
-   "tries": 4
-  },
   "statements:BAGMANE": {
    "kind": "statements",
    "last_on": "2026-11-14",
@@ -149,12 +142,12 @@
   },
   "statements:POWERIETF": {
    "kind": "statements",
-   "last_on": "2026-11-14",
-   "note": "no statement source answered",
-   "retry_after": "2026-11-15",
+   "last_on": "2026-11-15",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-22",
    "since": "2026-11-11",
    "ticker": "POWERIETF",
-   "tries": 4
+   "tries": 5
   },
   "statements:SANCF": {
    "kind": "statements",
@@ -167,12 +160,12 @@
   },
   "statements:SUVID-RE": {
    "kind": "statements",
-   "last_on": "2026-11-14",
-   "note": "no statement source answered",
-   "retry_after": "2026-11-15",
+   "last_on": "2026-11-15",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-22",
    "since": "2026-11-12",
    "ticker": "SUVID-RE",
-   "tries": 3
+   "tries": 4
   },
   "statements:TEAM24": {
    "kind": "statements",
@@ -181,15 +174,6 @@
    "retry_after": "2026-11-17",
    "since": "2026-11-11",
    "ticker": "TEAM24",
-   "tries": 4
-  },
-  "statements:VEEFIN": {
-   "kind": "statements",
-   "last_on": "2026-11-14",
-   "note": "no statement source answered",
-   "retry_after": "2026-11-15",
-   "since": "2026-11-11",
-   "ticker": "VEEFIN",
    "tries": 4
   }
  }

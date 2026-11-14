@@ -15,12 +15,10 @@
   "SUGALESL": "2026-11-16",
   "TRANOCE": "2026-11-04",
   "BRIGHTOUTD": "2026-11-07",
-  "VEEFIN": "2026-11-15",
   "4THGEN": "2026-11-12",
-  "ABHIINFRA": "2026-11-15",
-  "POWERIETF": "2026-11-15",
+  "POWERIETF": "2026-11-22",
   "SANCF": "2026-11-18",
-  "SUVID-RE": "2026-11-15"
+  "SUVID-RE": "2026-11-22"
  },
  "shareholding_retry_after": {
   "08AGG": "2026-10-27",
@@ -41,34 +39,34 @@
   "JAYKAYPP": "2026-11-12",
   "OLAPP": "2026-11-12"
  },
- "last_batch_at": "2026-11-14T17:16Z",
- "last_statements_ok": 0,
+ "last_batch_at": "2026-11-14T19:13Z",
+ "last_statements_ok": 4,
  "last_statements_fail": 0,
  "last_shareholding_ok": 58,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
-  "BIRET": "2026-11-14",
-  "EMBASSY": "2026-11-14",
-  "BAGMANE": "2026-11-14",
-  "DUMMYHEG": "2026-11-14",
+  "BIRET": "2026-11-15",
+  "EMBASSY": "2026-11-15",
+  "BAGMANE": "2026-11-15",
+  "DUMMYHEG": "2026-11-15",
   "DUMMYINGL1": "2026-11-04",
   "DUMMYINGL2": "2026-11-04",
-  "DUMMYINXGN": "2026-11-14",
+  "DUMMYINXGN": "2026-11-15",
   "OLAELEC-RE": "2026-10-27",
-  "APLABPP": "2026-11-14",
-  "ATLPP": "2026-11-14",
-  "GSAILPP": "2026-11-14",
-  "JAYKAYPP": "2026-11-14",
-  "QDLCCPS": "2026-11-14",
-  "SURAJINDPP": "2026-11-14",
-  "VERTEXPP": "2026-11-14",
+  "APLABPP": "2026-11-15",
+  "ATLPP": "2026-11-15",
+  "GSAILPP": "2026-11-15",
+  "JAYKAYPP": "2026-11-15",
+  "QDLCCPS": "2026-11-15",
+  "SURAJINDPP": "2026-11-15",
+  "VERTEXPP": "2026-11-15",
   "ICICIPRULI": "2026-10-27",
-  "ACESEPP": "2026-11-14",
-  "SHIVAM-RE1": "2026-11-14",
-  "ANIRITPP": "2026-11-14",
-  "CENTEXTPP": "2026-11-14",
-  "OLAPP": "2026-11-14",
-  "SUVID-RE": "2026-11-14"
+  "ACESEPP": "2026-11-15",
+  "SHIVAM-RE1": "2026-11-15",
+  "ANIRITPP": "2026-11-15",
+  "CENTEXTPP": "2026-11-15",
+  "OLAPP": "2026-11-15",
+  "SUVID-RE": "2026-11-15"
  },
  "last_shareholding_empty": 18,
  "last_shareholding_skipped": 0,
@@ -103,29 +101,17 @@
    "retry_after": "2026-11-17",
    "note": "no statement source answered"
   },
-  "VEEFIN": {
-   "count": 4,
-   "last_on": "2026-11-14",
-   "retry_after": "2026-11-15",
-   "note": "no statement source answered"
-  },
   "4THGEN": {
    "count": 1,
    "last_on": "2026-11-11",
    "retry_after": "2026-11-12",
    "note": "no statement source answered"
   },
-  "ABHIINFRA": {
-   "count": 4,
-   "last_on": "2026-11-14",
-   "retry_after": "2026-11-15",
-   "note": "no statement source answered"
-  },
   "POWERIETF": {
-   "count": 4,
-   "last_on": "2026-11-14",
-   "retry_after": "2026-11-15",
-   "note": "no statement source answered"
+   "count": 0,
+   "last_on": "2026-11-15",
+   "retry_after": "2026-11-22",
+   "note": "quote only, no results"
   },
   "SANCF": {
    "count": 0,
@@ -134,10 +120,10 @@
    "note": "quote only, no results"
   },
   "SUVID-RE": {
-   "count": 3,
-   "last_on": "2026-11-14",
-   "retry_after": "2026-11-15",
-   "note": "no statement source answered"
+   "count": 0,
+   "last_on": "2026-11-15",
+   "retry_after": "2026-11-22",
+   "note": "quote only, no results"
   }
  },
  "shareholding_failures": {
