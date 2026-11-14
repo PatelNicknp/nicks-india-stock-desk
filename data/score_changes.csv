@@ -1,3 +1,4 @@
 ticker,company,price,day_pct,score,score_prev,score_change,verdict,data_status,note,disclaimer
 PANIDPR,PANTHER INDUSTRIAL PRODUCTS LT,90.0,0.0,4.0,2.0,2.0,HOLD,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+ABHIINFRA,Abhishek Infraventures Limited,9.61,-0.1,1.0,2.0,-1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 ABATEAS,ABATE AS INDUSTRIES LIMITED,6.86,-12.05,0.0,-1.0,1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."

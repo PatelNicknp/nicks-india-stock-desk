@@ -23279,22 +23279,6 @@ AARNAV,Sentiment,Institutional 13F trend,0,zero,,,
 AARNAV,Sentiment,Insider buys vs sells,,n/a,,,
 AARNAV,Earnings,Latest earnings vs estimate,,n/a,,,
 AARNAV,Sector,"Sector vs S&P 500, 3 months",,n/a,8.75,,
-ABHIINFRA,Technical,Trend vs 20-day and 50-day,1,plus 1,,,
-ABHIINFRA,Technical,Oscillator (RSI-14),1,plus 1,66.2,,
-ABHIINFRA,Financials,Forward P/E (lower is better),,n/a,,,
-ABHIINFRA,Financials,Trailing P/E (lower is better),,n/a,,,
-ABHIINFRA,Financials,Price / sales (lower is better),,n/a,,,
-ABHIINFRA,Financials,Debt / equity (lower is better),,n/a,,,
-ABHIINFRA,Financials,Price / free cash flow (lower is better),,n/a,,,
-ABHIINFRA,Financials,Revenue growth (higher is better),,n/a,,,
-ABHIINFRA,Financials,EPS growth (higher is better),,n/a,,,
-ABHIINFRA,Financials,Return on equity (higher is better),,n/a,,,
-ABHIINFRA,Financials,Dividend yield (higher is better),,n/a,,,
-ABHIINFRA,Sentiment,Analyst rating,,n/a,,,
-ABHIINFRA,Sentiment,Institutional 13F trend,0,zero,,,
-ABHIINFRA,Sentiment,Insider buys vs sells,,n/a,,,
-ABHIINFRA,Earnings,Latest earnings vs estimate,,n/a,,,
-ABHIINFRA,Sector,"Sector vs S&P 500, 3 months",,n/a,5.42,,
 ARTEMISMED,Technical,Trend vs 20-day and 50-day,1,plus 1,,,
 ARTEMISMED,Technical,Oscillator (RSI-14),1,plus 1,59.9,,
 ARTEMISMED,Financials,Forward P/E (lower is better),,n/a,23.072874,,
@@ -26276,7 +26260,7 @@ ABCINDQ,Technical,Oscillator (RSI-14),1,plus 1,48.3,,
 ABCINDQ,Financials,Forward P/E (lower is better),,n/a,,20.282115548996472,
 ABCINDQ,Financials,Trailing P/E (lower is better),1,plus 1,13.483146067415733,20.282115548996472,1.0
 ABCINDQ,Financials,Price / sales (lower is better),1,plus 1,0.1897158030373416,0.3371210444851074,1.0
-ABCINDQ,Financials,Debt / equity (lower is better),1,plus 1,0.24061514899695757,0.4400713091960015,0.0
+ABCINDQ,Financials,Debt / equity (lower is better),1,plus 1,0.24061514899695757,0.4400713091960015,1.0
 ABCINDQ,Financials,Price / free cash flow (lower is better),1,plus 1,6.507338303362962,48.72774810452826,1.0
 ABCINDQ,Financials,Revenue growth (higher is better),-1,minus 1,-11.31,12.87,-1.0
 ABCINDQ,Financials,EPS growth (higher is better),-1,minus 1,-6.58,-18.82,-1.0
@@ -32175,6 +32159,22 @@ VIVIMEDLAB,Sentiment,Institutional 13F trend,0,zero,,,
 VIVIMEDLAB,Sentiment,Insider buys vs sells,,n/a,,,
 VIVIMEDLAB,Earnings,Latest earnings vs estimate,-1,minus 1,,,
 VIVIMEDLAB,Sector,"Sector vs S&P 500, 3 months",1,plus 1,7.12,,
+ABHIINFRA,Technical,Trend vs 20-day and 50-day,1,plus 1,,,
+ABHIINFRA,Technical,Oscillator (RSI-14),1,plus 1,66.2,,
+ABHIINFRA,Financials,Forward P/E (lower is better),,n/a,,,
+ABHIINFRA,Financials,Trailing P/E (lower is better),,n/a,,,
+ABHIINFRA,Financials,Price / sales (lower is better),,n/a,,,
+ABHIINFRA,Financials,Debt / equity (lower is better),-1,minus 1,0.34064598126709583,0.2886519778561735,-1.0
+ABHIINFRA,Financials,Price / free cash flow (lower is better),,n/a,,,
+ABHIINFRA,Financials,Revenue growth (higher is better),,n/a,,,
+ABHIINFRA,Financials,EPS growth (higher is better),,n/a,,,
+ABHIINFRA,Financials,Return on equity (higher is better),1,plus 1,-6.66,-3.98,-1.0
+ABHIINFRA,Financials,Dividend yield (higher is better),0,zero,0.0,0.0,0.0
+ABHIINFRA,Sentiment,Analyst rating,,n/a,,,
+ABHIINFRA,Sentiment,Institutional 13F trend,0,zero,,,
+ABHIINFRA,Sentiment,Insider buys vs sells,,n/a,,,
+ABHIINFRA,Earnings,Latest earnings vs estimate,,n/a,,,
+ABHIINFRA,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,5.42,,
 ADHBHUTIN,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
 ADHBHUTIN,Technical,Oscillator (RSI-14),0,zero,45.2,,
 ADHBHUTIN,Financials,Forward P/E (lower is better),,n/a,,,
@@ -47192,7 +47192,7 @@ TOTAL,Financials,Debt / equity (lower is better),-1,minus 1,0.44076536048562875,
 TOTAL,Financials,Price / free cash flow (lower is better),,n/a,7.900844877856061,,1.0
 TOTAL,Financials,Revenue growth (higher is better),-1,minus 1,-6.56,9.49,-1.0
 TOTAL,Financials,EPS growth (higher is better),-1,minus 1,-12.82,266.37,-1.0
-TOTAL,Financials,Return on equity (higher is better),1,plus 1,9.95,6.45,0.0
+TOTAL,Financials,Return on equity (higher is better),1,plus 1,9.95,6.45,1.0
 TOTAL,Financials,Dividend yield (higher is better),-1,minus 1,0.0,0.41,0.0
 TOTAL,Sentiment,Analyst rating,,n/a,,,
 TOTAL,Sentiment,Institutional 13F trend,0,zero,,,
