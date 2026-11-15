@@ -29,7 +29,7 @@ benchPick   = input.string("US: SPY", "Benchmark for relative strength", options
 benchCustom = input.symbol("SPY", "Custom benchmark symbol", group = grpTT, tooltip = "Used only when Benchmark is Custom symbol. Examples: NASDAQ:QQQ or BSE:SENSEX.")
 
 grpVCP = "VCP (contractions)"
-lookback  = input.int(100, "Base lookback (bars)", minval = 30, maxval = 300, group = grpVCP)
+lookback  = input.int(225, "Base lookback (bars)", minval = 30, maxval = 300, group = grpVCP, tooltip = "How far back a base can start. 45 weeks is 225 daily bars. The old 100-bar window could not see a long base. T1 to T4 still come from the latest shrinking pullbacks.")
 pivL      = input.int(4, "Swing size: bars to the left", minval = 1, maxval = 20, group = grpVCP)
 pivR      = input.int(3, "Swing size: bars to the right (confirm delay)", minval = 1, maxval = 20, group = grpVCP)
 minBars   = input.int(2, "Min bars from swing high to swing low", minval = 1, maxval = 50, group = grpVCP)
@@ -52,6 +52,11 @@ requireDry = input.bool(true, "VCP and BUY need a quiet final contraction", grou
 quietFrac  = input.float(0.5, "Quiet day: at or under this fraction of 50-day volume", minval = 0.1, maxval = 1.0, step = 0.05, group = grpDry, tooltip = "0.50 means a day at half the 50-day average volume, or quieter. The book looks for one or two days like that.")
 minQuiet   = input.int(1, "Quiet days needed", minval = 1, maxval = 5, group = grpDry, tooltip = "How many quiet days the last contraction must have. 1 is the minimum. Set 2 to require two. More than that still passes.")
 requireTight = input.bool(true, "VCP and BUY need tighter bars after the low", group = grpDry, tooltip = "Last contraction only. Daily bars after the low must be narrower than the bars from the high down to the low. The window stops the day before the close over the buy line. Fewer than 2 days on either side waits, and a wait does not pass. Turn this off to ignore it.")
+requireDepth = input.bool(true, "VCP and BUY need a shallow enough base", group = grpVCP, tooltip = "The deepest pullback in the current base must be no deeper than the limit. Each counted pullback is already smaller than the one before it. A fail blocks the VCP tag and BUY. Turn this off to ignore it.")
+maxDepthPct = input.float(35.0, "Deepest pullback allowed (%)", minval = 10.0, maxval = 60.0, step = 1.0, group = grpVCP, tooltip = "35 means the largest contraction, from its high to its low, may be 35% and no more. Exactly 35% passes.")
+requireBase = input.bool(true, "VCP and BUY need the base length in range", group = grpVCP, tooltip = "On a daily chart, the base is measured from its starting high to today. Under the minimum waits. Over the maximum fails. Either one blocks the VCP tag and BUY. Turn this off to ignore it.")
+baseMinW = input.int(3, "Base minimum (weeks)", minval = 1, maxval = 45, group = grpVCP, tooltip = "One week is 5 daily bars.")
+baseMaxW = input.int(45, "Base maximum (weeks)", minval = 3, maxval = 60, group = grpVCP, tooltip = "One week is 5 daily bars. 45 weeks is 225 daily bars.")
 
 // --------- MOVING AVERAGES ---------
 sma50  = ta.sma(close, 50)
@@ -133,7 +138,7 @@ else
 
 // Bottom-right on purpose. Ten short rows. A long sentence in a cell makes
 // TradingView stretch this box across the chart, which is what covered the iPad view.
-var table tt = table.new(position.bottom_right, 2, 11, bgcolor = color.new(color.black, 20), border_width = 1)
+var table tt = table.new(position.bottom_right, 2, 13, bgcolor = color.new(color.black, 20), border_width = 1)
 
 // Helper: write one rule row into the table. The tip is not drawn in the cell.
 rowRule(int row, string name, bool ok, string tip) =>
@@ -242,6 +247,18 @@ while runStart > 0
 
 cnt = array.size(cDepth)
 shrinking = cnt >= 2   // the run is shrinking by construction; need 2+ for a VCP
+
+// Deepest pullback in the whole current base, not only the last few T labels.
+// Later pullbacks in the counted run are already smaller than the one before them.
+float largestDepth = na
+int baseStartBar = na
+if baseIdx >= 0 and array.size(hDepth) > baseIdx
+    largestDepth := array.get(hDepth, baseIdx)
+    baseStartBar := array.get(hBar, baseIdx)
+    if array.size(hDepth) - 1 > baseIdx
+        for di = baseIdx + 1 to array.size(hDepth) - 1
+            if array.get(hDepth, di) > largestDepth
+                largestDepth := array.get(hDepth, di)
 
 // Uptrend filter: full 8/8 (default) or at least the core rules 1 & 2
 trendOK = requireAll ? score == 8 : (r1 and r2)
@@ -371,7 +388,42 @@ if not requireDry
 if not requireTight
     tightDetail := tightDetail + " The switch is off, so this does not block the VCP tag or BUY."
 
-isVCP = shrinking and trendOK and (not requireDry or dryUpOk) and (not requireTight or tightOk)
+string depthStatus = "WAIT"
+string depthDetail = "No pullback yet."
+bool depthOk = false
+if not na(largestDepth)
+    depthDetail := "Deepest pullback in this base is " + str.tostring(largestDepth, "0.0") + "%. The limit is " + str.tostring(maxDepthPct, "0") + "%. Each counted pullback is smaller than the one before it."
+    if largestDepth <= maxDepthPct
+        depthStatus := "PASS"
+        depthOk := true
+    else
+        depthStatus := "FAIL"
+        depthDetail := depthDetail + " Deeper than the limit."
+if not requireDepth
+    depthDetail := depthDetail + " The switch is off, so this does not block the VCP tag or BUY."
+
+string baseStatus = "WAIT"
+string baseDetail = "No base yet."
+bool baseOk = false
+float baseWeeks = na
+if not onDaily
+    baseDetail := "Open a 1-day chart. One week is 5 daily bars."
+else if not na(baseStartBar)
+    baseWeeks := (bar_index - baseStartBar) / 5.0
+    baseDetail := "From the base's starting high to today is " + str.tostring(baseWeeks, "0.0") + " weeks. Pass is " + str.tostring(baseMinW) + " to " + str.tostring(baseMaxW) + " weeks. One week is 5 daily bars."
+    if baseWeeks < baseMinW
+        baseStatus := "WAIT"
+        baseDetail := baseDetail + " Shorter than the minimum. A wait is not a pass."
+    else if baseWeeks > baseMaxW
+        baseStatus := "FAIL"
+        baseDetail := baseDetail + " Longer than the maximum."
+    else
+        baseStatus := "PASS"
+        baseOk := true
+if not requireBase
+    baseDetail := baseDetail + " The switch is off, so this does not block the VCP tag or BUY."
+
+isVCP = shrinking and trendOK and (not requireDry or dryUpOk) and (not requireTight or tightOk) and (not requireDepth or depthOk) and (not requireBase or baseOk)
 
 // One "VCP" tag only, for the current base: delete the old one, drawn above the last contraction's high if valid
 var label vcpLbl = na
@@ -394,7 +446,7 @@ if barstate.islast
 
 // Score table. Last bar only, bottom-right, short cells. Long notes are tips, not rows.
 if barstate.islast
-    table.clear(tt, 0, 0, 1, 10)
+    table.clear(tt, 0, 0, 1, 12)
     if showTable
         string rsShow = benchName
         if str.length(rsShow) > 12
@@ -414,7 +466,15 @@ if barstate.islast
             tightShow := tightStatus + " " + str.tostring(tightRatio, "0.00") + "x"
         color rsCol = rsStatus == "PASS" ? color.lime : rsStatus == "FAIL" ? color.red : color.orange
         color dryCol = dryStatus == "PASS" ? color.lime : dryStatus == "FAIL" ? color.red : color.orange
+        string depthShow = requireDepth ? depthStatus : "OFF"
+        if requireDepth and (depthStatus == "PASS" or depthStatus == "FAIL") and not na(largestDepth)
+            depthShow := depthStatus + " " + str.tostring(largestDepth, "0.0") + "%"
+        string baseShow = requireBase ? baseStatus : "OFF"
+        if requireBase and not na(baseWeeks)
+            baseShow := baseStatus + " " + str.tostring(baseWeeks, "0.0") + "w"
         color tightCol = not requireTight ? color.gray : tightStatus == "PASS" ? color.lime : tightStatus == "FAIL" ? color.red : color.orange
+        color depthCol = not requireDepth ? color.gray : depthStatus == "PASS" ? color.lime : depthStatus == "FAIL" ? color.red : color.orange
+        color baseCol = not requireBase ? color.gray : baseStatus == "PASS" ? color.lime : baseStatus == "FAIL" ? color.red : color.orange
         table.cell(tt, 0, 0, "Trend Template", text_color = color.white, text_size = size.small, tooltip = "Eight rules. A red FAIL means that rule missed. Press a row for the numbers.")
         table.cell(tt, 1, 0, str.tostring(score) + "/8", text_color = color.white, text_size = size.normal, bgcolor = score == 8 ? color.new(color.green, 0) : score >= 6 ? color.new(color.orange, 0) : color.new(color.red, 0), tooltip = "Eight rules. A red FAIL means that rule missed.")
         if showDetail
@@ -431,6 +491,10 @@ if barstate.islast
             table.cell(tt, 1, 9, dryCell, text_color = dryCol, text_size = size.small, tooltip = dryDetail)
             table.cell(tt, 0, 10, "Bars tightened", text_color = color.white, text_size = size.small, text_halign = text.align_left, tooltip = tightDetail)
             table.cell(tt, 1, 10, tightShow, text_color = tightCol, text_size = size.small, tooltip = tightDetail)
+            table.cell(tt, 0, 11, "Depth", text_color = color.white, text_size = size.small, text_halign = text.align_left, tooltip = depthDetail)
+            table.cell(tt, 1, 11, depthShow, text_color = depthCol, text_size = size.small, tooltip = depthDetail)
+            table.cell(tt, 0, 12, "Base", text_color = color.white, text_size = size.small, text_halign = text.align_left, tooltip = baseDetail)
+            table.cell(tt, 1, 12, baseShow, text_color = baseCol, text_size = size.small, tooltip = baseDetail)
 
 // --------- BUY POINT (pivot) ---------
 // Pivot = high of the most recent (tightest) contraction in the current base
@@ -452,7 +516,7 @@ else if not na(buyLine)
 // avgVol and bigVol are calculated above. The triangles, the 1.5x breakout test, and the exits share that same 50-day average.
 // Big-volume triangles are drawn ONLY inside the current base (from the base high to today).
 // Redrawn on the last bar, so old ones outside the base disappear.
-baseStartBar = baseIdx >= 0 ? array.get(hBar, baseIdx) : na
+// baseStartBar is worked out once above, in the Depth section.
 var array<label> vLbl = array.new<label>()
 if barstate.islast
     for lb in vLbl
