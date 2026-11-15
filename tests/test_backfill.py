@@ -37,7 +37,13 @@ def test_missing_liquid_comes_before_other_bands_and_refreshes():
     annual = pd.DataFrame({"ticker": ["LIQOLD", "LIQNEW"]})
     holders = pd.DataFrame(columns=["ticker"])
     earn = pd.DataFrame(columns=["ticker", "earnings_dt"])
-    queue = bf.build_queue(_universe(), _scores(), info, annual, holders, earn, {}, "2026-10-25", {"statements": 90, "shareholding": 90}, "statements")
+    # Six quarters so a freshly fetched name is not pulled in only to lengthen history.
+    qrows = []
+    for t in ("LIQOLD", "LIQNEW"):
+        for i, frame in enumerate(["CY2025Q1", "CY2025Q2", "CY2025Q3", "CY2025Q4", "CY2026Q1", "CY2026Q2"]):
+            qrows.append({"ticker": t, "frame": frame, "end": "2025-03-31", "eps": 1.0})
+    quarters = pd.DataFrame(qrows)
+    queue = bf.build_queue(_universe(), _scores(), info, annual, holders, earn, {}, "2026-10-25", {"statements": 90, "shareholding": 90}, "statements", quarters=quarters)
     due = [r["ticker"] for r in bf.take_batch(queue, 10)]
     assert due[:3] == ["LIQMISS", "NSEMISS", "BSEMISS"]
     assert due[3] == "LIQOLD"
@@ -101,8 +107,11 @@ def test_screener_table_reads_the_latest_quarter():
     assert row["fii_chg"] == round(19.07 - 19.21, 2)
     assert row["dii_pct"] == 19.90
     assert row["public_pct"] == 10.40
-    assert row["as_of"] == "2026-09-01"
+    assert row["as_of"] == "2026-09-30"
     assert row["source"] == "Screener"
+    assert len(row["_history"]) == 2
+    assert row["_history"][0]["quarter_end"] == "2026-06-30"
+    assert row["_history"][-1]["fii_pct"] == 19.07
 
 
 def test_first_good_stops_after_the_first_answer():
@@ -144,7 +153,7 @@ def test_screener_reads_the_table_not_the_tab_button():
     assert row["fii_pct"] == 0.40
     assert row["dii_pct"] == 8.99
     assert row["public_pct"] == 15.62
-    assert row["as_of"] == "2026-09-01"
+    assert row["as_of"] == "2026-09-30"
     assert row["source"] == "Screener"
 
 
@@ -423,7 +432,7 @@ if __name__ == "__main__":
 def test_statements_try_nse_before_yahoo(monkeypatch):
     calls = []
 
-    def nse(symbol, cfg, ticker=None):
+    def nse(symbol, cfg, ticker=None, **kwargs):
         calls.append("nse:" + symbol)
         return {
             "info": {"ticker": ticker, "source": "NSE", "financial_currency": "INR"},
@@ -473,3 +482,51 @@ def test_bse_only_skips_nse_statements(monkeypatch):
     assert source == "BSE results"
     assert calls == ["bse:530621"]
     assert value["info"]["financial_currency"] == "INR"
+
+
+def test_short_quarter_history_makes_a_covered_name_due():
+    info = pd.DataFrame([{"ticker": "LIQNEW", "fetched_on": "2026-10-20", "company": "New"}])
+    annual = pd.DataFrame({"ticker": ["LIQNEW"]})
+    quarters = pd.DataFrame([{"ticker": "LIQNEW", "frame": "CY2026Q2", "eps": 1.0}])
+    queue = bf.build_queue(
+        _universe(), _scores(), info, annual, pd.DataFrame(columns=["ticker"]),
+        pd.DataFrame(columns=["ticker", "earnings_dt"]), {}, "2026-10-25",
+        {"statements": 90, "shareholding": 90}, "statements", quarters=quarters,
+    )
+    due = [r["ticker"] for r in bf.take_batch(queue, 10)]
+    assert "LIQNEW" in due
+    hit = [r for r in queue if r["ticker"] == "LIQNEW"][0]
+    assert hit["gap"] is True
+
+
+def test_missing_fii_dii_change_is_due_even_when_levels_exist():
+    holders = pd.DataFrame([
+        {"ticker": "LIQNEW", "promoter_pct": 50, "fii_pct": 10, "dii_pct": 8, "fetched_on": "2026-10-20", "as_of": "2026-09-30"},
+        {"ticker": "LIQOLD", "promoter_pct": 50, "fii_pct": 10, "dii_pct": 8, "fii_chg": 0.4, "dii_chg": -0.1, "fetched_on": "2026-10-20", "as_of": "2026-09-30"},
+    ])
+    queue = bf.build_queue(
+        _universe(), _scores(), pd.DataFrame(columns=["ticker"]), pd.DataFrame(columns=["ticker"]),
+        holders, pd.DataFrame(columns=["ticker", "earnings_dt"]), {}, "2026-10-25",
+        {"statements": 90, "shareholding": 90}, "shareholding",
+    )
+    due = [r["ticker"] for r in bf.take_batch(queue, 10)]
+    assert "LIQNEW" in due
+    assert "LIQOLD" not in due
+
+
+def test_union_keeps_older_quarters_when_a_short_refresh_arrives():
+    old = pd.DataFrame([
+        {"ticker": "AAA", "frame": "CY2025Q1", "eps": 1.0},
+        {"ticker": "AAA", "frame": "CY2025Q2", "eps": 1.1},
+        {"ticker": "AAA", "frame": "CY2025Q3", "eps": 1.2},
+        {"ticker": "BBB", "frame": "CY2025Q1", "eps": 2.0},
+    ])
+    add = pd.DataFrame([
+        {"ticker": "AAA", "frame": "CY2025Q3", "eps": 1.25},
+        {"ticker": "AAA", "frame": "CY2025Q4", "eps": 1.3},
+    ])
+    out = bf.union_statement_frames(old, add)
+    aaa = out[out["ticker"] == "AAA"].sort_values("frame")
+    assert list(aaa["frame"]) == ["CY2025Q1", "CY2025Q2", "CY2025Q3", "CY2025Q4"]
+    assert float(aaa[aaa["frame"] == "CY2025Q3"]["eps"].iloc[0]) == 1.25
+    assert "BBB" in set(out["ticker"])

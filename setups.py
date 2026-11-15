@@ -1226,6 +1226,58 @@ def _sales_rule(quarters, ticker, min_pct=SALES_MIN_PCT):
     return ok, sales_pct, prior_pct, text
 
 
+def _annual_eps_streak(annual, ticker, min_pct=25.0, years=3):
+    """Yearly EPS growth for each of the last `years` years.
+
+    Returns (ok, n_computed, pcts, text). ok is True when every one of those
+    years is on file and each grew by min_pct or more, False when every year
+    is on file and at least one is short, and None when there is not enough
+    history (not verified, and not a fail).
+    """
+    if annual is None or len(annual) == 0 or "eps" not in annual.columns:
+        return None, 0, [], "A 3-year streak is not verified."
+    sub = annual[annual["ticker"] == ticker].copy()
+    if len(sub) == 0:
+        return None, 0, [], "A 3-year streak is not verified."
+    sub["k"] = sub["frame"].map(_frame_key)
+    sub["eps_n"] = pd.to_numeric(sub["eps"], errors="coerce")
+    sub = sub.dropna(subset=["k", "eps_n"])
+    sub = sub[~sub["frame"].astype(str).str.contains("Q")]
+    if len(sub) == 0:
+        return None, 0, [], "A 3-year streak is not verified."
+    sub = sub.sort_values("k")
+    latest_k = sub.iloc[-1]["k"]
+    pcts = []
+    for i in range(int(years)):
+        now_k = latest_k - 10 * i
+        old_k = now_k - 10
+        now = sub[sub["k"] == now_k]
+        old = sub[sub["k"] == old_k]
+        if len(now) == 0 or len(old) == 0:
+            return None, len(pcts), pcts, "A 3-year streak is not verified."
+        old_v = float(old.iloc[-1]["eps_n"])
+        now_v = float(now.iloc[-1]["eps_n"])
+        if old_v == 0:
+            return None, len(pcts), pcts, "A 3-year streak is not verified."
+        pcts.append((now_v - old_v) / abs(old_v) * 100.0)
+    if all(p >= min_pct for p in pcts):
+        text = "Annual EPS grew %.0f%% or more in each of the last %d years (%s)." % (
+            min_pct, years, ", ".join("%.1f%%" % p for p in pcts))
+        return True, len(pcts), pcts, text
+    text = "Annual EPS did not grow %.0f%% in each of the last %d years (%s)." % (
+        min_pct, years, ", ".join("%.1f%%" % p for p in pcts))
+    return False, len(pcts), pcts, text
+
+
+def _eps_acceleration(quarters, ticker):
+    """Latest quarterly EPS YoY versus the prior quarter's YoY. None when either side is missing."""
+    latest, _, _ = _yoy_eps(quarters, ticker, True)
+    prior = _prior_quarter_yoy(quarters, ticker, "eps")
+    if latest is None or prior is None:
+        return None, prior
+    return bool(latest > prior), prior
+
+
 def _up_down_volume(close, volume, window=UD_LEN):
     """Up/down volume ratio over the last `window` sessions. None when it cannot be computed.
 
@@ -1321,16 +1373,21 @@ def _range_pct(close, win):
     return (float(seg.max()) - float(seg.min())) / mean * 100.0
 
 
-def scan_canslim(close, high, low, vol, universe, quarters, annual, holders, cfg=None, rs_map=None):
+def scan_canslim(close, high, low, vol, universe, quarters, annual, holders, cfg=None, rs_map=None, include_near=False):
     """O'Neil CANSLIM scanner. A stock must pass every rule. There is no soft tier.
 
     L is the desk's 1 to 99 RS Rating from rs_map ({TICKER: rs}). A stock with no
     RS Rating (under a year of prices, or a fund/ETF) cannot pass L, so it is not listed.
     M is shown and never blocks a READY name or empties the list.
+    The optional near-miss list (include_near=True) is stocks that pass the same
+    universe and trend checks and fail exactly one of C, A, N, S, L, or I.
     """
     rs_map = {str(k).strip().upper(): v for k, v in (rs_map or {}).items()}
     rows = []
+    near_rows = []
     if close is None or len(close) == 0 or universe is None or len(universe) == 0:
+        if include_near:
+            return pd.DataFrame(), {}, pd.DataFrame()
         return pd.DataFrame(), {}
     panel = _panel_date(close)
     snap = market_snapshot(close, cfg)
@@ -1366,30 +1423,36 @@ def scan_canslim(close, high, low, vol, universe, quarters, annual, holders, cfg
             continue
         hi52 = float(c.iloc[-252:].max()) if len(c) >= 252 else float(c.max())
         pct_from_high = (last / hi52 - 1.0) * 100.0 if hi52 else None
-        if pct_from_high is None or pct_from_high < NSE_NEAR_HIGH:
-            continue
-        if rs_val < nums["l_rs_min"]:
-            continue
         trend_ok, sma50, sma200 = _sma_stack_ok(c.to_numpy(dtype=float))
         if not trend_ok:
             continue
 
+        n_ok = pct_from_high is not None and pct_from_high >= NSE_NEAR_HIGH
+        l_ok = rs_val >= nums["l_rs_min"]
+
         c_pct, c_now, c_old = _yoy_eps(quarters, ticker, True)
         sales_ok, sales_pct, prior_sales, sales_txt = _sales_rule(quarters, ticker, nums["sales_min_pct"])
-        if c_pct is None or c_pct < nums["c_min_pct"] or not sales_ok:
-            continue
+        c_ok = c_pct is not None and c_pct >= nums["c_min_pct"] and sales_ok
+        accel, prior_eps_yoy = _eps_acceleration(quarters, ticker)
         a_pct, a_now, a_old = _yoy_eps(annual, ticker, False)
-        if a_pct is None or a_pct < nums["a_min_pct"]:
-            continue
         roe = _latest_roe(annual, ticker)
-        if roe is not None and roe < nums["roe_min_pct"]:
-            continue
+        streak_ok, streak_n, streak_pcts, streak_txt = _annual_eps_streak(annual, ticker, nums["a_min_pct"])
+        a_ok = (
+            a_pct is not None and a_pct >= nums["a_min_pct"]
+            and (roe is None or roe >= nums["roe_min_pct"])
+            and streak_ok is not False
+        )
         i_trend, i_text, i_ok = _fii_dii_letter(holders, ticker)
-        if i_ok is False:
-            continue
-
+        # Missing I is not a fail.
+        i_pass = i_ok is not False
         ud = _up_down_volume(c.to_numpy(dtype=float), vol_s.to_numpy(dtype=float), UD_LEN)
-        if ud is not None and ud < nums["ud_min"]:
+        s_ok = ud is None or ud >= nums["ud_min"]
+
+        letters = {"C": c_ok, "A": a_ok, "N": n_ok, "S": s_ok, "L": l_ok, "I": i_pass}
+        missed = [name for name, ok in letters.items() if ok is False]
+        if len(missed) > 1:
+            continue
+        if len(missed) == 1 and not include_near:
             continue
 
         # Display-only VCP heuristic. It is not a gate.
@@ -1408,7 +1471,7 @@ def scan_canslim(close, high, low, vol, universe, quarters, annual, holders, cfg
             vcp_score += 2
         if higher_lows:
             vcp_score += 2
-        near = pct_from_high >= NSE_NEAR_HIGH
+        near = bool(n_ok)
         if near:
             vcp_score += 1
         if r20 is not None and r20 < 8:
@@ -1424,9 +1487,12 @@ def scan_canslim(close, high, low, vol, universe, quarters, annual, holders, cfg
         circuit_band = ep_upper_circuit(prev_close, last_high, last)
         locked = bool(circuit_band)
 
-        if (not locked) and new_high and big_vol:
+        is_near = len(missed) == 1
+        if is_near:
+            status = "NEAR MISS"
+        elif (not locked) and new_high and big_vol:
             status = "BROKEN OUT today"
-        elif (not locked) and pct_from_high >= -5:
+        elif (not locked) and pct_from_high is not None and pct_from_high >= -5:
             status = "READY"
         else:
             status = "WATCHING"
@@ -1439,16 +1505,29 @@ def scan_canslim(close, high, low, vol, universe, quarters, annual, holders, cfg
             + (5 if near else 0)
             + max(0.0, 10 + (pct_from_high or -10)) * 0.3
         )
-        c_txt = "%.1f%% versus the year-ago quarter (%.2f vs %.2f). %s" % (c_pct, c_now, c_old, sales_txt)
-        a_txt = "%.1f%% versus the prior year (%.2f vs %.2f)." % (a_pct, a_now, a_old)
+        if c_pct is None:
+            c_txt = "Quarterly EPS versus the year-ago quarter is not verified. " + sales_txt
+        else:
+            c_txt = "%.1f%% versus the year-ago quarter (%.2f vs %.2f). %s" % (c_pct, c_now, c_old, sales_txt)
+        if accel is True:
+            c_txt += " Quarterly EPS is accelerating."
+        elif accel is False and prior_eps_yoy is not None:
+            c_txt += " Quarterly EPS is not accelerating (the quarter before was %.1f%%)." % prior_eps_yoy
+        if a_pct is None:
+            a_txt = "Yearly EPS versus the prior year is not verified. " + streak_txt
+        else:
+            a_txt = "%.1f%% versus the prior year (%.2f vs %.2f). %s" % (a_pct, a_now, a_old, streak_txt)
         if roe is None:
             a_txt += " ROE is not verified."
         else:
             a_txt += " ROE is %.1f%%." % roe
-        n_txt = (
-            "%.1f%% from the 52-week closing high. Product or news catalyst is not verified."
-            % pct_from_high
-        )
+        if pct_from_high is None:
+            n_txt = "Distance from the 52-week closing high is not verified."
+        else:
+            n_txt = (
+                "%.1f%% from the 52-week closing high. Product or news catalyst is not verified."
+                % pct_from_high
+            )
         if ud is None:
             ud_txt = "Up/down volume is not verified."
         else:
@@ -1469,29 +1548,49 @@ def scan_canslim(close, high, low, vol, universe, quarters, annual, holders, cfg
         if higher_lows:
             vcp_txt += " Higher lows on the 10-day rolling low."
         vcp_txt += " The VCP reading is shown only. It is not a qualify rule."
-        reason = (
-            "Passed every CANSLIM rule. C %s A %s N %s S %s L %s I %s Market (display only, it does not block this list): %s "
-            "Pivot is the 52-week closing high from the NSE method, not the VCP buy point. "
-            "Stop: not verified. Target: not verified. That scan does not set either one. "
-            "A close under the 50-day average (%s) or the 200-day average (%s), or the 50-day slipping under the 200-day, would fail the trend rule."
-            % (
-                c_txt, a_txt, n_txt, s_txt, l_txt,
-                i_text or "FII and DII change is not verified.",
-                market["text"],
-                _round(sma50) if sma50 is not None else NOT_VERIFIED,
-                _round(sma200) if sma200 is not None else NOT_VERIFIED,
+        if is_near:
+            reason = (
+                "Passed every CANSLIM rule except %s. C %s A %s N %s S %s L %s I %s Market (display only, it does not block this list): %s "
+                "Pivot is the 52-week closing high from the NSE method, not the VCP buy point. "
+                "Stop: not verified. Target: not verified. That scan does not set either one. "
+                "A close under the 50-day average (%s) or the 200-day average (%s), or the 50-day slipping under the 200-day, would fail the trend rule."
+                % (
+                    missed[0],
+                    c_txt, a_txt, n_txt, s_txt, l_txt,
+                    i_text or "FII and DII change is not verified.",
+                    market["text"],
+                    _round(sma50) if sma50 is not None else NOT_VERIFIED,
+                    _round(sma200) if sma200 is not None else NOT_VERIFIED,
+                )
             )
-        )
-        if locked:
+        else:
+            reason = (
+                "Passed every CANSLIM rule. C %s A %s N %s S %s L %s I %s Market (display only, it does not block this list): %s "
+                "Pivot is the 52-week closing high from the NSE method, not the VCP buy point. "
+                "Stop: not verified. Target: not verified. That scan does not set either one. "
+                "A close under the 50-day average (%s) or the 200-day average (%s), or the 50-day slipping under the 200-day, would fail the trend rule."
+                % (
+                    c_txt, a_txt, n_txt, s_txt, l_txt,
+                    i_text or "FII and DII change is not verified.",
+                    market["text"],
+                    _round(sma50) if sma50 is not None else NOT_VERIFIED,
+                    _round(sma200) if sma200 is not None else NOT_VERIFIED,
+                )
+            )
+        if (not is_near) and locked:
             reason = "The close was locked at the %s%% upper circuit, so this is WATCHING, not a breakout or a ready buy. " % circuit_band + reason
-        elif status == "BROKEN OUT today":
+        elif (not is_near) and status == "BROKEN OUT today":
             reason = "Closed at a new high on volume above 1.5 times the 50-day average. " + reason
-        elif new_high and not big_vol:
+        elif (not is_near) and new_high and not big_vol:
             reason = "Closed at a new high, but volume was not above 1.5 times the 50-day average. " + reason
         meta = _meta_row(universe, ticker)
         gaps = []
         if roe is None:
             gaps.append("ROE not verified")
+        if streak_ok is None:
+            gaps.append("3-year EPS streak not verified")
+        if accel is None:
+            gaps.append("EPS acceleration not verified")
         if ud is None:
             gaps.append("up/down volume not verified")
         gaps.append("product catalyst not verified")
@@ -1506,7 +1605,7 @@ def scan_canslim(close, high, low, vol, universe, quarters, annual, holders, cfg
         short_history = len(c) < 252
         if short_history:
             gaps.append("52-week window is shorter than 252 sessions")
-        rows.append({
+        rec = {
             "ticker": ticker,
             "company": meta["company"],
             "sector": meta["sector"],
@@ -1520,13 +1619,15 @@ def scan_canslim(close, high, low, vol, universe, quarters, annual, holders, cfg
             "freshness": _freshness(c.index[-1], panel, len(c), 252),
             "price": _round(last),
             "price_as_of": str(pd.Timestamp(c.index[-1]).date()),
-            "c_quarterly_eps": round(c_pct, 1),
+            "c_quarterly_eps": "" if c_pct is None else round(c_pct, 1),
             "c_status": c_txt,
             "c_sales": "" if sales_pct is None else round(sales_pct, 1),
-            "a_annual_eps": round(a_pct, 1),
+            "c_eps_accel": "" if accel is None else ("yes" if accel else "no"),
+            "a_annual_eps": "" if a_pct is None else round(a_pct, 1),
             "a_status": a_txt,
             "a_roe": "" if roe is None else round(roe, 1),
-            "n_pct_from_high": round(pct_from_high, 1),
+            "a_streak": "" if streak_ok is None else ("%d/3" % sum(1 for p in streak_pcts if p >= nums["a_min_pct"])),
+            "n_pct_from_high": "" if pct_from_high is None else round(pct_from_high, 1),
             "n_status": n_txt,
             "s_adv": _round(adv, 0),
             "s_ud": "" if ud is None else round(ud, 2),
@@ -1540,17 +1641,26 @@ def scan_canslim(close, high, low, vol, universe, quarters, annual, holders, cfg
             "m_sensex": market.get("sensex") or "",
             "m_qqq": market["qqq"],
             "m_status": market["text"],
-            "qualify": "strict",
+            "qualify": "near miss" if is_near else "strict",
+            "missed_rule": missed[0] if is_near else "",
             "vcp_heuristic": vcp_score,
             "data_status": "OK",
             "note": "; ".join(gaps) + ".",
-        })
+        }
+        if is_near:
+            near_rows.append(rec)
+        else:
+            rows.append(rec)
     out = pd.DataFrame(rows)
-    if len(out) == 0:
-        return out, market
-    rank = {"BROKEN OUT today": 0, "READY": 1, "WATCHING": 2}
-    out["_k"] = out["status"].map(rank)
-    out = out.sort_values(["_k", "strength"], ascending=[True, False]).drop(columns="_k")
+    if len(out):
+        rank = {"BROKEN OUT today": 0, "READY": 1, "WATCHING": 2}
+        out["_k"] = out["status"].map(rank)
+        out = out.sort_values(["_k", "strength"], ascending=[True, False]).drop(columns="_k")
+    near = pd.DataFrame(near_rows)
+    if len(near):
+        near = near.sort_values(["missed_rule", "strength"], ascending=[True, False])
+    if include_near:
+        return out, market, near
     return out, market
 
 
@@ -1736,6 +1846,8 @@ def build_stock_canslim(close, high, low, vol, universe, quarters, annual, holde
 
         sales_ok, sales_pct, _prior_sales, sales_txt = _sales_rule(quarters, ticker, nums["sales_min_pct"])
         c_sales = "" if sales_pct is None else round(sales_pct, 1)
+        accel, prior_eps_yoy = _eps_acceleration(quarters, ticker)
+        c_eps_accel = "" if accel is None else ("yes" if accel else "no")
         if c_pct is None:
             c_mark, c_val, c_txt = NOT_VERIFIED, "", "Quarterly EPS versus the year-ago quarter is not verified. " + sales_txt
         else:
@@ -1744,6 +1856,12 @@ def build_stock_canslim(close, high, low, vol, universe, quarters, annual, holde
             c_val = round(c_pct, 1)
             c_txt = "%.1f%% versus the year-ago quarter (%.2f vs %.2f). The check wants +%.0f%% or more. %s" % (
                 c_pct, c_now, c_old, nums["c_min_pct"], sales_txt)
+        if accel is True:
+            c_txt += " Quarterly EPS is accelerating. That reading is shown only."
+        elif accel is False and prior_eps_yoy is not None:
+            c_txt += " Quarterly EPS is not accelerating (the quarter before was %.1f%%). That reading is shown only." % prior_eps_yoy
+        else:
+            c_txt += " EPS acceleration is not verified."
 
         roe = _latest_roe(annual, ticker)
         a_roe = "" if roe is None else round(roe, 1)
@@ -1757,16 +1875,17 @@ def build_stock_canslim(close, high, low, vol, universe, quarters, annual, holde
             a_roe_mark = "fail"
             roe_txt = "ROE is %.1f%%. The check wants %.0f%% or more when it is on file." % (roe, nums["roe_min_pct"])
 
+        streak_ok, streak_n, streak_pcts, streak_txt = _annual_eps_streak(annual, ticker, nums["a_min_pct"])
+        a_streak = "" if streak_ok is None else ("%d/3" % sum(1 for p in streak_pcts if p >= nums["a_min_pct"]))
         if a_pct is None:
-            a_mark, a_val, a_txt = NOT_VERIFIED, "", "Yearly EPS versus the prior year is not verified. A 3-year streak is not verified. " + roe_txt
+            a_mark, a_val, a_txt = NOT_VERIFIED, "", "Yearly EPS versus the prior year is not verified. " + streak_txt + " " + roe_txt
         else:
-            a_ok = a_pct >= nums["a_min_pct"] and (roe is None or roe >= nums["roe_min_pct"])
+            a_ok = a_pct >= nums["a_min_pct"] and (roe is None or roe >= nums["roe_min_pct"]) and streak_ok is not False
             a_mark = _letter_mark(a_ok)
             a_val = round(a_pct, 1)
             a_txt = (
-                "%.1f%% versus the prior year (%.2f vs %.2f). The check wants +%.0f%% or more. "
-                "A 3-year streak is not verified. %s"
-                % (a_pct, a_now, a_old, nums["a_min_pct"], roe_txt)
+                "%.1f%% versus the prior year (%.2f vs %.2f). The check wants +%.0f%% or more. %s %s"
+                % (a_pct, a_now, a_old, nums["a_min_pct"], streak_txt, roe_txt)
             )
 
         if price is None or price["pct_from_high"] is None:
@@ -1879,6 +1998,10 @@ def build_stock_canslim(close, high, low, vol, universe, quarters, annual, holde
             gaps.append("A not verified")
         if a_roe_mark == NOT_VERIFIED:
             gaps.append("ROE not verified")
+        if streak_ok is None:
+            gaps.append("3-year EPS streak not verified")
+        if accel is None:
+            gaps.append("EPS acceleration not verified")
         if n_mark == NOT_VERIFIED:
             gaps.append("N not verified")
         if n_news_mark == NOT_VERIFIED:
@@ -1904,11 +2027,13 @@ def build_stock_canslim(close, high, low, vol, universe, quarters, annual, holde
             "c_mark": c_mark,
             "c_status": c_txt,
             "c_sales": c_sales,
+            "c_eps_accel": c_eps_accel,
             "a_value": a_val,
             "a_mark": a_mark,
             "a_status": a_txt,
             "a_roe": a_roe,
             "a_roe_mark": a_roe_mark,
+            "a_streak": a_streak,
             "n_value": n_val,
             "n_mark": n_mark,
             "n_status": n_txt,
@@ -4409,7 +4534,12 @@ def build_setups(close, high, low, vol, universe, quarters, annual, holders, fea
     want_m = features.get("scanner_marios", True)
     want_ep = features.get("scanner_episodic_pivot", True)
     vcp = scan_vcp(close, high, low, vol, universe, cfg) if (want_v or want_l) else pd.DataFrame()
-    canslim, _market = scan_canslim(close, high, low, vol, universe, quarters, annual, holders, cfg, rs_map=rs_map) if (want_c or want_l) else (pd.DataFrame(), {})
+    if want_c or want_l:
+        canslim, _market, canslim_near = scan_canslim(
+            close, high, low, vol, universe, quarters, annual, holders, cfg, rs_map=rs_map, include_near=True,
+        )
+    else:
+        canslim, _market, canslim_near = pd.DataFrame(), {}, pd.DataFrame()
     box = scan_box(close, high, low, vol, universe) if want_b else pd.DataFrame()
     flag = scan_flag(close, high, low, vol, universe) if want_f else pd.DataFrame()
     qull = scan_qullamaggie(close, high, low, vol, universe, cfg, opn=opn, scores=scores) if want_q else pd.DataFrame()
@@ -4425,9 +4555,11 @@ def build_setups(close, high, low, vol, universe, quarters, annual, holders, fea
         vcp = pd.DataFrame()
     if not want_c:
         canslim = pd.DataFrame()
+        canslim_near = pd.DataFrame()
     return {
         "scanner_vcp": vcp,
         "scanner_canslim": canslim,
+        "scanner_canslim_near": canslim_near,
         "scanner_box": box,
         "scanner_flag": flag,
         "scanner_qullamaggie": qull,

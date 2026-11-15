@@ -511,16 +511,34 @@ def _download_xbrl(url, cfg, referer):
     return resp.text or ""
 
 
-def _bundle_from_filings(ticker, quarterly_items, annual_items, cfg, source, referer):
+def _day_key(value):
+    if value is None:
+        return ""
+    if hasattr(value, "strftime"):
+        return value.strftime("%Y-%m-%d")
+    return str(value)[:10]
+
+
+def _bundle_from_filings(ticker, quarterly_items, annual_items, cfg, source, referer,
+                         have_quarter_ends=None, have_annual_ends=None, fill_only=False):
     spec = settings(cfg)
     rows_q, rows_a = [], []
     currencies = []
     newest = None
+    have = {True: set(have_quarter_ends or []), False: set(have_annual_ends or [])}
+    for group in (have[True], have[False]):
+        for day in group:
+            end_ts = _parse_day(day)
+            if end_ts is not None and (newest is None or end_ts > newest):
+                newest = end_ts
     for quarterly, items, dest, cap in (
         (True, quarterly_items, rows_q, spec["xbrl_quarters"]),
         (False, annual_items, rows_a, spec["xbrl_annuals"]),
     ):
         for start, end, xbrl, item in select_filings(items, quarterly, cap):
+            key = _day_key(end)
+            if fill_only and key and key in have[quarterly]:
+                continue
             text = _download_xbrl(xbrl, cfg, referer)
             if spec["xbrl_pause"]:
                 time.sleep(spec["xbrl_pause"])
@@ -564,7 +582,7 @@ def _bundle_from_filings(ticker, quarterly_items, annual_items, cfg, source, ref
     }
 
 
-def fetch_nse_statements(symbol, cfg, ticker=None):
+def fetch_nse_statements(symbol, cfg, ticker=None, have_quarter_ends=None, have_annual_ends=None, fill_only=False):
     """Download rupee statements for one NSE symbol. None if nothing useful."""
     symbol = str(symbol or "").strip().upper()
     ticker = str(ticker or symbol).strip().upper()
@@ -576,6 +594,8 @@ def fetch_nse_statements(symbol, cfg, ticker=None):
         return None
     return _bundle_from_filings(
         ticker, quarterly, annual, cfg, "NSE", NSE_FILINGS_REFERER,
+        have_quarter_ends=have_quarter_ends, have_annual_ends=have_annual_ends,
+        fill_only=fill_only,
     )
 
 

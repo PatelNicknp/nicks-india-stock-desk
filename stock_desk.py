@@ -2303,6 +2303,9 @@ def load_shareholding(tickers, focus, cfg, cache, mode):
     focus_set = set(_stock_names(focus))
     decision = _need_fetch("shareholding", path, mode)
     if decision != "fetch":
+        hist = read_csv(os.path.join(cache, "holders_history.csv"))
+        if len(cached) and len(hist):
+            cached = india_data.enrich_holders_from_history(cached, hist)
         have = len(cached) > 0
         note = _slow_note(mode, have) if have else "data not available for free"
         status = "OK" if have else "MISSING"
@@ -2346,21 +2349,18 @@ def load_shareholding(tickers, focus, cfg, cache, mode):
         return cached
     for i, t in enumerate(todo):
         try:
-            history = india_data.fetch_shareholding_master(t, cfg)
-            split = {}
-            if t in focus_set and history and history[-1].get("xbrl"):
-                try:
-                    split = india_data.fetch_xbrl_split(history[-1]["xbrl"], cfg)
-                except Exception:
-                    split = {}
-            row = india_data.shareholding_row(t, history, split) or {"ticker": t}
+            if t in focus_set:
+                row = india_data.collect_nse_shareholding(t, cfg, xbrl_limit=4) or {"ticker": t}
+            else:
+                history = india_data.fetch_shareholding_master(t, cfg)
+                row = india_data.shareholding_row(t, history, {}) or {"ticker": t}
             buys, sells = None, None
             if t in focus_set:
                 try:
                     buys, sells = india_data.fetch_pit_counts(t, cfg)
                 except Exception:
                     buys, sells = None, None
-            if not history and buys is None and sells is None and not split:
+            if not row.get("promoter_pct") and not row.get("fii_pct") and not row.get("dii_pct") and not row.get("as_of") and buys is None and sells is None:
                 raise RuntimeError("empty shareholding")
             chg = row.get("fii_chg")
             if chg is None:
@@ -2388,13 +2388,29 @@ def load_shareholding(tickers, focus, cfg, cache, mode):
                 print("NSE shareholding stopped after %d failures in a row" % streak)
                 break
         if (i + 1) % 15 == 0:
-            pd.DataFrame(list(by_t.values())).to_csv(path, index=False)
+            mid = []
+            for rec in by_t.values():
+                item = dict(rec)
+                item.pop("_history", None)
+                mid.append(item)
+            pd.DataFrame(mid).to_csv(path, index=False)
             progress_save(cache, "shareholding", done)
             print("Shareholding %d / %d" % (i + 1, len(todo)))
         time.sleep(0.35)
+    hist_rows = []
+    for rec in list(by_t.values()):
+        hist_rows.extend(rec.pop("_history", None) or [])
     out = pd.DataFrame(list(by_t.values())) if by_t else pd.DataFrame()
     if len(out):
+        if "_history" in out.columns:
+            out = out.drop(columns=["_history"])
         out.to_csv(path, index=False)
+    if hist_rows:
+        hist_path = os.path.join(cache, "holders_history.csv")
+        old_hist = read_csv(hist_path)
+        merged = india_data.merge_holders_history(old_hist, hist_rows)
+        if len(merged):
+            merged.to_csv(hist_path, index=False)
     progress_save(cache, "shareholding", done)
     if todo and (streak >= 6 or fails == len(todo)):
         status = "CACHED" if len(out) else "MISSING"
@@ -3317,7 +3333,7 @@ def main(argv=None):
                                            earnings=earnings, shares=shares_by_ticker, ep_universe=ep_universe, rs_map=rs_lookup)
     else:
         setup_frames = {k: pd.DataFrame() for k in (
-            "scanner_vcp", "scanner_canslim", "scanner_box", "scanner_flag", "scanner_leaders",
+            "scanner_vcp", "scanner_canslim", "scanner_canslim_near", "scanner_box", "scanner_flag", "scanner_leaders",
             "scanner_qullamaggie", "scanner_marios", "scanner_episodic_pivot", "scanner_52w", "highs_lows_history",
         )}
     if ep_on and ep_cfg.get("market_cap", True) and len(mcap_table):
@@ -3657,6 +3673,7 @@ def main(argv=None):
         "scanner_wheel": gated(w, "scanner_wheel", features.get("scanner_wheel", True), "Liquid stock screen off or empty."),
         "scanner_vcp": gated(setup_frames["scanner_vcp"], "scanner_vcp", features.get("scanner_vcp", True), "No VCP setups. The scan used cached prices only."),
         "scanner_canslim": gated(setup_frames["scanner_canslim"], "scanner_canslim", features.get("scanner_canslim", True), "No CANSLIM setups. Missing letters stay not verified. No new downloads."),
+        "scanner_canslim_near": gated(setup_frames.get("scanner_canslim_near"), "scanner_canslim_near", features.get("scanner_canslim", True), "No CANSLIM near misses. A near miss passes every rule except exactly one of C, A, N, S, L, or I."),
         "scanner_box": gated(setup_frames["scanner_box"], "scanner_box", features.get("scanner_box", True), "No box setups in the cached prices."),
         "scanner_flag": gated(setup_frames["scanner_flag"], "scanner_flag", features.get("scanner_flag", True), "No flag setups in the cached prices."),
         "scanner_qullamaggie": gated(setup_frames.get("scanner_qullamaggie"), "scanner_qullamaggie", features.get("scanner_qullamaggie", True), "No Qullamaggie setups in the cached prices."),

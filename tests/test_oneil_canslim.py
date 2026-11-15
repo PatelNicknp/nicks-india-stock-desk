@@ -79,6 +79,23 @@ def _passing_annual(*tickers, roe=25.0):
     return pd.DataFrame(rows)
 
 
+def _streak_annual(*tickers, roe=25.0, pcts=(30, 30, 30)):
+    """Four years of EPS so three YoY figures can be computed. pcts is latest-first."""
+    rows = []
+    for t in tickers:
+        # Work backwards from a latest EPS of 10.
+        latest = 10.0
+        years = [latest]
+        for p in pcts:
+            prev = years[-1] / (1.0 + p / 100.0)
+            years.append(prev)
+        years = list(reversed(years))  # oldest first, 4 values
+        for i, eps in enumerate(years):
+            rec = {"ticker": t, "frame": "CY%d" % (2021 + i), "eps": eps, "net_income": roe, "equity": 100.0}
+            rows.append(rec)
+    return pd.DataFrame(rows)
+
+
 def _passing_holders(*tickers, fii=0.5, dii=0.0):
     return pd.DataFrame([{"ticker": t, "fii_chg": fii, "dii_chg": dii} for t in tickers])
 
@@ -340,6 +357,8 @@ def test_help_describes_the_new_rules():
     assert "upper circuit" in scan
     assert "display only" in scan
     assert "feature.stock_canslim" in card
+    assert "near miss" in scan.lower() or "near misses" in scan.lower()
+    assert "three years" in scan.lower() or "3-year" in scan.lower() or "3 year" in scan.lower()
 
 
 def test_market_does_not_empty_the_list():
@@ -350,6 +369,93 @@ def test_market_does_not_empty_the_list():
     assert "m_status" in out.columns
     assert out.iloc[0]["m_status"]
     assert "block" in out.iloc[0]["reason"]
+
+
+def test_short_annual_history_does_not_fail_the_streak():
+    # Two years can compute latest YoY, but not a 3-year streak. That stays not verified.
+    out, _ = _scan(["AAA"], annual=_passing_annual("AAA"))
+    assert list(out["ticker"]) == ["AAA"]
+    assert out.iloc[0]["a_streak"] == "" or out.iloc[0]["a_streak"] != "3/3"
+    assert "not verified" in str(out.iloc[0]["a_status"]).lower() or "3-year" in str(out.iloc[0]["a_status"])
+
+
+def test_three_year_streak_is_a_gate_when_history_exists():
+    good = _streak_annual("GOOD", pcts=(30, 40, 50))
+    bad = _streak_annual("BAD", pcts=(40, 10, 40))  # middle year only 10%
+    annual = pd.concat([good, bad], ignore_index=True)
+    out, market, near = setups.scan_canslim(
+        *_climb_panel(["GOOD", "BAD"]), _uni(["GOOD", "BAD"]),
+        _passing_quarters("GOOD", "BAD"), annual, _passing_holders("GOOD", "BAD"),
+        _cfg(), rs_map={"GOOD": 88, "BAD": 88}, include_near=True,
+    )
+    assert list(out["ticker"]) == ["GOOD"]
+    assert out.iloc[0]["a_streak"] == "3/3"
+    assert list(near["ticker"]) == ["BAD"]
+    assert near.iloc[0]["missed_rule"] == "A"
+    # Scorecard A also fails when the streak is short.
+    close, high, low, vol = _climb_panel(["BAD"])
+    card = setups.build_stock_canslim(close, high, low, vol, _uni(["BAD"]), _passing_quarters("BAD"), bad, _passing_holders("BAD"), _cfg())
+    assert card.iloc[0]["a_mark"] == "fail"
+    assert card.iloc[0]["a_streak"] == "2/3"
+
+
+def test_near_miss_is_exactly_one_rule_and_does_not_change_the_main_list():
+    close, high, low, vol = _climb_panel(["AAA", "LOWL", "LOWC", "BOTH"])
+    uni = _uni(["AAA", "LOWL", "LOWC", "BOTH"])
+    quarters = pd.concat([
+        _passing_quarters("AAA", "LOWL"),
+        pd.DataFrame([
+            {"ticker": "LOWC", "frame": "CY2024Q3", "eps": 1.0, "revenue": 100.0},
+            {"ticker": "LOWC", "frame": "CY2025Q3", "eps": 1.05, "revenue": 101.0},  # C fails
+            {"ticker": "BOTH", "frame": "CY2024Q3", "eps": 1.0, "revenue": 100.0},
+            {"ticker": "BOTH", "frame": "CY2025Q3", "eps": 1.05, "revenue": 101.0},  # C fails
+        ]),
+    ], ignore_index=True)
+    annual = _passing_annual("AAA", "LOWL", "LOWC", "BOTH")
+    holders = _passing_holders("AAA", "LOWL", "LOWC", "BOTH")
+    rs_map = {"AAA": 88, "LOWL": 79, "LOWC": 88, "BOTH": 79}  # LOWL misses L; BOTH misses C and L
+    main, _, near = setups.scan_canslim(close, high, low, vol, uni, quarters, annual, holders, _cfg(), rs_map=rs_map, include_near=True)
+    assert list(main["ticker"]) == ["AAA"]
+    assert "near miss" not in set(main["qualify"])
+    names = dict(zip(near["ticker"], near["missed_rule"]))
+    assert names["LOWL"] == "L"
+    assert names["LOWC"] == "C"
+    assert "BOTH" not in names
+    assert "AAA" not in names
+    # Leaders and the usual unpack still use the main list only.
+    main2, _ = setups.scan_canslim(close, high, low, vol, uni, quarters, annual, holders, _cfg(), rs_map=rs_map)
+    assert list(main2["ticker"]) == ["AAA"]
+
+
+def test_eps_acceleration_is_shown_and_is_not_a_gate():
+    # Latest EPS YoY 40%, prior quarter YoY 50% so acceleration is no, but C still passes on +25% / sales +25%.
+    quarters = pd.DataFrame([
+        {"ticker": "AAA", "frame": "CY2024Q2", "eps": 1.0, "revenue": 100.0},
+        {"ticker": "AAA", "frame": "CY2024Q3", "eps": 1.0, "revenue": 100.0},
+        {"ticker": "AAA", "frame": "CY2025Q2", "eps": 1.5, "revenue": 130.0},
+        {"ticker": "AAA", "frame": "CY2025Q3", "eps": 1.4, "revenue": 130.0},
+    ])
+    out, _ = _scan(["AAA"], quarters=quarters)
+    assert list(out["ticker"]) == ["AAA"]
+    assert out.iloc[0]["c_eps_accel"] == "no"
+
+
+def test_i_down_is_a_near_miss_and_missing_i_is_not():
+    close, high, low, vol = _climb_panel(["DOWN", "MISS"])
+    uni = _uni(["DOWN", "MISS"])
+    quarters = _passing_quarters("DOWN", "MISS")
+    annual = _passing_annual("DOWN", "MISS")
+    holders = pd.DataFrame([
+        {"ticker": "DOWN", "fii_chg": -0.8, "dii_chg": 0.0},
+        {"ticker": "MISS"},
+    ])
+    main, _, near = setups.scan_canslim(
+        close, high, low, vol, uni, quarters, annual, holders, _cfg(),
+        rs_map={"DOWN": 88, "MISS": 88}, include_near=True,
+    )
+    assert list(main["ticker"]) == ["MISS"]
+    assert list(near["ticker"]) == ["DOWN"]
+    assert near.iloc[0]["missed_rule"] == "I"
 
 
 if __name__ == "__main__":
@@ -371,4 +477,9 @@ if __name__ == "__main__":
     test_vcp_heuristic_is_not_a_gate()
     test_help_describes_the_new_rules()
     test_market_does_not_empty_the_list()
+    test_short_annual_history_does_not_fail_the_streak()
+    test_three_year_streak_is_a_gate_when_history_exists()
+    test_near_miss_is_exactly_one_rule_and_does_not_change_the_main_list()
+    test_eps_acceleration_is_shown_and_is_not_a_gate()
+    test_i_down_is_a_near_miss_and_missing_i_is_not()
     print("oneil canslim ok")
