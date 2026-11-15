@@ -32,8 +32,8 @@ UNCHANGED = {
     ),
     "labels": (
         "var label vcpLbl = na",
-        'array.push(cLbl, label.new(array.get(cLowBar, i), array.get(cLow, i), txt, style = label.style_label_up, color = color.new(color.purple, 0), textcolor = color.white, size = size.small))\n',
-        "9d62df74ae113ff4c9d800da80e994adabf622972f1ecf381d93742a2993ac68",
+        'array.push(cLbl, label.new(array.get(cLowBar, i), array.get(cLow, i) * 0.985, txt, style = label.style_label_up, color = color.new(color.purple, 0), textcolor = color.white, size = size.tiny))\n',
+        "432c0407c700f4bd28ac28894ab75b8102785785e47164734007980b187c0574",
     ),
     "buy": (
         "pivotPrice = cnt > 0 ? array.get(cHigh, cnt - 1) : na",
@@ -42,8 +42,8 @@ UNCHANGED = {
     ),
     "vol_draw": (
         "baseStartBar = baseIdx >= 0 ? array.get(hBar, baseIdx) : na",
-        'array.push(vLbl, label.new(bar_index - k, low[k], "", yloc = yloc.belowbar, style = label.style_triangleup, color = up ? color.new(color.green, 0) : color.new(color.red, 0), size = size.tiny))\n',
-        "d8a06216dcf6c174dd48c84ff089c043950107b54365f7fc4338b2aea1b666f6",
+        'array.push(vLbl, label.new(markBar, low[k], "", yloc = yloc.belowbar, style = label.style_triangleup, color = up ? color.new(color.green, 0) : color.new(color.red, 0), size = size.tiny))\n',
+        "61e87ab36e913cd4e65c9d8175c55a415296c9ed6145223f4ea43f2d4d21bdca",
     ),
     "alert": (
         'crossUp = ta.crossover(close, pivotPrice)',
@@ -491,6 +491,29 @@ class SourceLockTests(unittest.TestCase):
         self.assertNotIn("rsRating", src)
         self.assertIn("fake number", src)
 
+    def test_score_box_stays_small_and_rules_stay(self):
+        src = pine_text()
+        self.assertIn("table.new(position.bottom_right, 2, 10,", src)
+        self.assertNotIn("table.merge_cells", src)
+        self.assertNotIn("table.cell(tt, 0, 9, rsDetail", src)
+        self.assertNotIn("table.cell(tt, 0, 11, dryDetail", src)
+        self.assertIn("tooltip = rsTip", src)
+        self.assertIn("tooltip = dryDetail", src)
+        self.assertIn("Both 6 months and 12 months have to beat the benchmark.", src)
+        self.assertIn("Average volume is ", src)
+        self.assertIn('showNumbers = input.bool(true, "Show short numbers in the score box"', src)
+        self.assertIn('volMarks = input.int(8, "Big-volume marks to draw"', src)
+        self.assertIn("marked < volMarks and bigVol[k]", src)
+        self.assertIn("breakout = not na(pivotPrice) and crossUp and (not needVolume or bigVol) and isVCP", src)
+        self.assertNotIn("volMarks", src.split("breakout = not na(pivotPrice)")[1].split("\n")[0])
+        self.assertIn("r6 = close >= low52 * 1.25", src)
+        self.assertIn("r8 = beat6 and beat12 and rsMonthUp and rsAboveAvg", src)
+        self.assertIn("dryMeanRatio < 1.0", src)
+        self.assertIn("quietN >= minQuiet", src)
+        self.assertIn("rightAvg < pullAvg", src)
+        self.assertIn("array.get(cLow, i) * 0.985", src)
+        self.assertIn('stopPct    = input.float(7.0,', src)
+
     def test_pine_structure(self):
         src = pine_text()
         self.assertNotIn("\t", src)
@@ -570,6 +593,24 @@ class RelativeStrengthTests(unittest.TestCase):
         got = rs_status(stock, bench, True)
         self.assertEqual(got["status"], "PASS")
         self.assertTrue(got["r8"] and got["beat6"] and got["beat12"] and got["month_up"] and got["above"])
+
+    def test_lagging_the_benchmark_fails(self):
+        # Same shape as the AMZN daily screenshot: stock behind SPY over 6 and 12 months.
+        # A red FAIL there is the rule. The layout change must not turn it into a pass.
+        n = 400
+        stock = [100.0] * n
+        bench = [100.0] * n
+        stock[-1] = 103.6
+        stock[-127] = 103.6 / (1 - 0.049)
+        stock[-253] = 103.6 / 1.036
+        bench[-1] = 100.0
+        bench[-127] = 100.0 / (1 - 0.003)
+        bench[-253] = 100.0 / 1.086
+        got = rs_status(stock, bench, True)
+        self.assertEqual(got["status"], "FAIL")
+        self.assertFalse(got["beat6"])
+        self.assertFalse(got["beat12"])
+        self.assertFalse(got["r8"])
 
     def test_tie_does_not_pass(self):
         stock = [100] * 400

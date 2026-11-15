@@ -21,6 +21,7 @@ show200 = input.bool(true, "Show 200-day SMA", group = grpMA)
 grpTT  = "Trend Template"
 showTable  = input.bool(true, "Show score table", group = grpTT)
 showDetail = input.bool(true, "Show each rule (pass/fail)", group = grpTT)
+showNumbers = input.bool(true, "Show short numbers in the score box", group = grpTT, tooltip = "Puts a short number on the RS row and the quiet-volume row. The long note stays off the chart. Press and hold a row on iPad, or hover on a computer, to read it. This does not change pass or fail.")
 requireAll = input.bool(true, "Require 8/8 for VCP (off = price > 150/200 & 150 > 200)", group = grpTT)
 benchPick   = input.string("US: SPY", "Benchmark for relative strength", options = ["US: SPY", "India: Nifty 50", "Custom symbol"], group = grpTT, tooltip = "US stocks: US: SPY. India stocks: India: Nifty 50. This is the stock versus that benchmark. It is not IBD's 1-99 rating.")
 benchCustom = input.symbol("SPY", "Custom benchmark symbol", group = grpTT, tooltip = "Used only when Benchmark is Custom symbol. Examples: NASDAQ:QQQ or BSE:SENSEX.")
@@ -42,6 +43,7 @@ needVolume = input.bool(true, "Alert needs big volume on breakout", group = grpB
 grpVol = "Volume"
 volMult  = input.float(1.5, "Big volume = this many x 50-day average", minval = 1.0, step = 0.1, group = grpVol, tooltip = "Breakout day only. A heavy breakout does not cancel the quiet-volume check, and a quiet contraction does not replace this.")
 showVol  = input.bool(true, "Mark big-volume bars", group = grpVol)
+volMarks = input.int(8, "Big-volume marks to draw", minval = 0, maxval = 40, group = grpVol, tooltip = "How many of the latest big-volume marks to draw inside the current base. The 1.5x breakout test is unchanged. Set 0 to hide the marks.")
 
 grpDry = "Quiet final contraction"
 requireDry = input.bool(true, "VCP and BUY need a quiet final contraction", group = grpDry, tooltip = "The last contraction must quiet down before the breakout. Turn this off to mark VCP the old way. The status line still shows.")
@@ -126,12 +128,14 @@ else
         rsDetail := rsDetail + " RS line is higher than 21 days ago and above its 50-day average."
 
 
-var table tt = table.new(position.bottom_right, 2, 13, bgcolor = color.new(color.black, 20), border_width = 1)
+// Bottom-right on purpose. Ten short rows. A long sentence in a cell makes
+// TradingView stretch this box across the chart, which is what covered the iPad view.
+var table tt = table.new(position.bottom_right, 2, 10, bgcolor = color.new(color.black, 20), border_width = 1)
 
-// Helper: write one rule row into the table
-rowRule(int row, string name, bool ok) =>
-    table.cell(tt, 0, row, name, text_color = color.white, text_size = size.small, text_halign = text.align_left)
-    table.cell(tt, 1, row, ok ? "PASS" : "FAIL", text_color = ok ? color.lime : color.red, text_size = size.small)
+// Helper: write one rule row into the table. The tip is not drawn in the cell.
+rowRule(int row, string name, bool ok, string tip) =>
+    table.cell(tt, 0, row, name, text_color = color.white, text_size = size.small, text_halign = text.align_left, tooltip = tip)
+    table.cell(tt, 1, row, ok ? "PASS" : "FAIL", text_color = ok ? color.lime : color.red, text_size = size.small, tooltip = tip)
 
 // ───────── VCP DETECTION ─────────
 // Find swing highs/lows. These return na on most bars and only confirm
@@ -257,6 +261,7 @@ string dryStatus = "WAIT"
 string dryDetail = "No contraction yet."
 bool dryUpOk = false
 float dryMeanRatio = na
+int dryQuietN = 0
 if cnt > 0
     float dPiv = array.get(cHigh, cnt - 1)
     int dHiBar = array.get(cBar, cnt - 1)
@@ -332,6 +337,7 @@ if cnt > 0
                 nums := nums + " It must be under 1.00x."
             if mature and not quietOk
                 nums := nums + " Not enough quiet days."
+            dryQuietN := quietN
             if not mature
                 dryStatus := "WAIT"
                 dryUpOk := false
@@ -363,32 +369,42 @@ if barstate.islast
     if showLbls and cnt > 0
         for i = 0 to cnt - 1
             txt = "T" + str.tostring(i + 1) + " " + str.tostring(math.round(array.get(cDepth, i))) + "%"
-            array.push(cLbl, label.new(array.get(cLowBar, i), array.get(cLow, i), txt, style = label.style_label_up, color = color.new(color.purple, 0), textcolor = color.white, size = size.small))
+            // A small step under the low keeps the tag off the candle. The low used for the count is unchanged.
+            array.push(cLbl, label.new(array.get(cLowBar, i), array.get(cLow, i) * 0.985, txt, style = label.style_label_up, color = color.new(color.purple, 0), textcolor = color.white, size = size.tiny))
 
-// Score table. Drawn on the last bar only, same corner as before.
+// Score table. Last bar only, bottom-right, short cells. Long notes are tips, not rows.
 if barstate.islast
-    table.clear(tt, 0, 0, 1, 12)
+    table.clear(tt, 0, 0, 1, 9)
     if showTable
-        table.cell(tt, 0, 0, "Trend Template", text_color = color.white, text_size = size.small)
-        table.cell(tt, 1, 0, str.tostring(score) + "/8", text_color = color.white, text_size = size.normal, bgcolor = score == 8 ? color.new(color.green, 0) : score >= 6 ? color.new(color.orange, 0) : color.new(color.red, 0))
+        string rsShow = benchName
+        if str.length(rsShow) > 12
+            rsShow := str.substring(rsShow, 0, 12)
+        string rsTip = rsDetail
+        if str.length(rsTip) > 0
+            rsTip := rsTip + " "
+        rsTip := rsTip + "Not IBD's RS Rating and not a 1-99 rank. Daily chart only. Rising means the RS line is above 21 days ago and above its 50-day average."
+        string rsCell = rsStatus
+        if showNumbers and (rsStatus == "PASS" or rsStatus == "FAIL") and not na(stockRet6) and not na(benchRet6)
+            rsCell := rsStatus + " " + f_pct(stockRet6) + "/" + f_pct(benchRet6)
+        string dryCell = dryStatus
+        if showNumbers and not na(dryMeanRatio)
+            dryCell := dryStatus + " " + str.tostring(dryMeanRatio, "0.00") + "x " + str.tostring(dryQuietN) + "d"
+        color rsCol = rsStatus == "PASS" ? color.lime : rsStatus == "FAIL" ? color.red : color.orange
+        color dryCol = dryStatus == "PASS" ? color.lime : dryStatus == "FAIL" ? color.red : color.orange
+        table.cell(tt, 0, 0, "Trend Template", text_color = color.white, text_size = size.small, tooltip = "Eight rules. A red FAIL means that rule missed. Press a row for the numbers.")
+        table.cell(tt, 1, 0, str.tostring(score) + "/8", text_color = color.white, text_size = size.normal, bgcolor = score == 8 ? color.new(color.green, 0) : score >= 6 ? color.new(color.orange, 0) : color.new(color.red, 0), tooltip = "Eight rules. A red FAIL means that rule missed.")
         if showDetail
-            rowRule(1, "Price > 150 & 200 SMA", r1)
-            rowRule(2, "150 SMA > 200 SMA", r2)
-            rowRule(3, "200 SMA rising (1 mo)", r3)
-            rowRule(4, "50 SMA > 150 & 200", r4)
-            rowRule(5, "Price > 50 SMA", r5)
-            rowRule(6, "25%+ above 52w low", r6)
-            rowRule(7, "Within 25% of 52w high", r7)
-            table.cell(tt, 0, 8, "RS vs " + benchName, text_color = color.white, text_size = size.small, text_halign = text.align_left)
-            table.cell(tt, 1, 8, rsStatus, text_color = rsStatus == "PASS" ? color.lime : rsStatus == "FAIL" ? color.red : color.orange, text_size = size.small)
-            table.cell(tt, 0, 9, rsDetail, text_color = color.gray, text_size = size.tiny, text_halign = text.align_left)
-            table.merge_cells(tt, 0, 9, 1, 9)
-            table.cell(tt, 0, 10, "Last contraction quiet", text_color = color.white, text_size = size.small, text_halign = text.align_left)
-            table.cell(tt, 1, 10, dryStatus, text_color = dryStatus == "PASS" ? color.lime : dryStatus == "FAIL" ? color.red : color.orange, text_size = size.small)
-            table.cell(tt, 0, 11, dryDetail, text_color = color.gray, text_size = size.tiny, text_halign = text.align_left)
-            table.merge_cells(tt, 0, 11, 1, 11)
-            table.cell(tt, 0, 12, "*Not IBD's RS Rating and not a 1-99 rank. Daily chart only. Rising = RS line above 21 days ago and above its 50-day average.", text_color = color.gray, text_size = size.tiny, text_halign = text.align_left)
-            table.merge_cells(tt, 0, 12, 1, 12)
+            rowRule(1, "Price > 150 & 200 SMA", r1, "Price is above the 150-day and the 200-day average.")
+            rowRule(2, "150 SMA > 200 SMA", r2, "The 150-day average is above the 200-day average.")
+            rowRule(3, "200 SMA rising (1 mo)", r3, "The 200-day average is higher than it was about one month ago.")
+            rowRule(4, "50 SMA > 150 & 200", r4, "The 50-day average is above the 150-day and the 200-day.")
+            rowRule(5, "Price > 50 SMA", r5, "Price is above the 50-day average.")
+            rowRule(6, "25%+ above 52w low", r6, "Close is at least 25% above the 52-week low. Exactly 25% passes.")
+            rowRule(7, "Within 25% of 52w high", r7, "Close is within 25% of the 52-week high.")
+            table.cell(tt, 0, 8, "RS vs " + rsShow, text_color = color.white, text_size = size.small, text_halign = text.align_left, tooltip = rsTip)
+            table.cell(tt, 1, 8, rsCell, text_color = rsCol, text_size = size.small, tooltip = rsTip)
+            table.cell(tt, 0, 9, "Last contraction quiet", text_color = color.white, text_size = size.small, text_halign = text.align_left, tooltip = dryDetail)
+            table.cell(tt, 1, 9, dryCell, text_color = dryCol, text_size = size.small, tooltip = dryDetail)
 
 // ───────── BUY POINT (pivot) ─────────
 // Pivot = high of the most recent (tightest) contraction in the current base
@@ -416,12 +432,23 @@ if barstate.islast
     for lb in vLbl
         label.delete(lb)
     array.clear(vLbl)
-    if showVol and not na(baseStartBar)
+    if showVol and volMarks > 0 and not na(baseStartBar)
         span = math.min(bar_index - baseStartBar, 400)
+        int marked = 0
+        int markBar = 0
+        bool onTag = false
         for k = 0 to span
-            if bigVol[k]
-                up = close[k] >= open[k]
-                array.push(vLbl, label.new(bar_index - k, low[k], "", yloc = yloc.belowbar, style = label.style_triangleup, color = up ? color.new(color.green, 0) : color.new(color.red, 0), size = size.tiny))
+            if marked < volMarks and bigVol[k]
+                markBar := bar_index - k
+                onTag := false
+                if showLbls and cnt > 0
+                    for ti = 0 to cnt - 1
+                        if array.get(cLowBar, ti) == markBar
+                            onTag := true
+                if not onTag
+                    up = close[k] >= open[k]
+                    array.push(vLbl, label.new(markBar, low[k], "", yloc = yloc.belowbar, style = label.style_triangleup, color = up ? color.new(color.green, 0) : color.new(color.red, 0), size = size.tiny))
+                    marked := marked + 1
 
 // ───────── ALERT ─────────
 crossUp = ta.crossover(close, pivotPrice)   // calculated every bar (Pine needs this)

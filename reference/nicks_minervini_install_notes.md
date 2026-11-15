@@ -24,21 +24,27 @@ Three things. The exits and the way contractions are counted are the same as bef
 
 ## What the box on the chart is saying
 
-Leave **Show each rule** on. The bottom-right box is a little taller than before.
+The box stays in the **bottom-right**. Each row is a short name and PASS or FAIL. It does not print a paragraph on the chart. A long sentence in that box is what made it stretch across an iPad chart.
+
+Press and hold a row on iPad, or hover on a computer, for the full note. **Show short numbers in the score box** (on by default) adds only a short number, such as `FAIL -4.9%/-0.3%` on the RS row or `FAIL 1.27x 0d` on the quiet row. Turn that switch off for the smallest box. Neither switch changes pass or fail.
+
+A red **FAIL** means that rule missed. On the AMZN daily chart that was sent, RS vs SPY and the quiet contraction were FAIL because the stock lagged SPY and the last contraction was not quiet. That result is the rule, not a broken box.
 
 **RS vs SPY** (or Nifty 50, or your symbol) is one of these:
 
-- **PASS** — on a 1-day chart, the stock beat the benchmark over about 6 months and about 12 months, and the relative-strength line is rising.
-- **FAIL** — the history is there, and at least one of those pieces missed. The gray line under it says which one.
-- **NEED DAILY** — the chart is not a 1-day chart. Open Daily.
-- **NO BENCHMARK** — TradingView has no price for the symbol you picked. The rest of the script still runs.
-- **NEED HISTORY** — the stock or the benchmark does not have about a year of daily prices yet.
+- **PASS**. On a 1-day chart, the stock beat the benchmark over about 6 months and about 12 months, and the relative-strength line is rising.
+- **FAIL**. The history is there, and at least one of those pieces missed. The row tip says which one. The short number, when shown, is the 6-month stock change and the 6-month benchmark change.
+- **NEED DAILY**. The chart is not a 1-day chart. Open Daily.
+- **NO BENCHMARK**. TradingView has no price for the symbol you picked. The rest of the script still runs.
+- **NEED HISTORY**. The stock or the benchmark does not have about a year of daily prices yet.
 
 **Last contraction quiet** is one of these:
 
-- **PASS** — volume dried up and price tightened before the breakout.
-- **FAIL** — there are enough days to judge, and the contraction is not quiet. The gray line says whether volume is still heavy, a quiet day is missing, or the daily bars did not get tighter.
-- **WAIT** — the last contraction is not finished enough to judge. It does not count as a pass yet.
+- **PASS**. Volume dried up and price tightened before the breakout.
+- **FAIL**. There are enough days to judge, and the contraction is not quiet. The tip says whether volume is still heavy, a quiet day is missing, or the daily bars did not get tighter. The short number is the volume multiple and how many quiet days were found.
+- **WAIT**. The last contraction is not finished enough to judge. It does not count as a pass yet.
+
+**Big-volume marks to draw** defaults to 8, the latest marks in the current base, and it skips the bar that carries a T label so the triangles do not sit on that tag. The 1.5x breakout test is unchanged. Set the number to 0 to hide the marks. The T label sits a little under the contraction low so the box is not on the candle. The contraction count is unchanged.
 
 ## How the quiet check is calculated
 
@@ -76,8 +82,9 @@ If the stock's market is closed when the benchmark is open, or the other way aro
 - "Sell part" at a 20% profit.
 - "Climax" when price is up 25% in 10 days.
 - "SELL" when the close falls under the trail average (20-day, unless you pick 10 or 50).
-- Contraction labels, the buy line, and the rule that a breakout does not erase the base.
-- The website was not changed. It still uses the older 30% low and the older 6-month and 12-month comparison.
+- Contraction counting, the buy line, and the rule that a breakout does not erase the base.
+- BUY, STOP, Sell part, Climax, and SELL still use the same prices and the same volume test.
+- This layout fix does not change the website.
 
 ## What this does not do
 
