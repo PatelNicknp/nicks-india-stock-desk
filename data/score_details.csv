@@ -3999,6 +3999,22 @@ ECLERX,Sentiment,Institutional 13F trend,0,zero,,,
 ECLERX,Sentiment,Insider buys vs sells,,n/a,,,
 ECLERX,Earnings,Latest earnings vs estimate,-1,minus 1,,,
 ECLERX,Sector,"Sector vs S&P 500, 3 months",0,zero,-21.49,,
+EMAMILTD,Technical,Trend vs 20-day and 50-day,1,plus 1,,,
+EMAMILTD,Technical,Oscillator (RSI-14),1,plus 1,65.9,,
+EMAMILTD,Financials,Forward P/E (lower is better),1,plus 1,20.464935,34.18757241126759,-1.0
+EMAMILTD,Financials,Trailing P/E (lower is better),1,plus 1,23.795918367346943,34.18757241126759,-1.0
+EMAMILTD,Financials,Price / sales (lower is better),1,plus 1,4.545628974963151,6.93107137933022,-1.0
+EMAMILTD,Financials,Debt / equity (lower is better),-1,minus 1,0.055377445694143275,0.03700881244678253,1.0
+EMAMILTD,Financials,Price / free cash flow (lower is better),1,plus 1,23.499723005473445,32.174650123156745,-1.0
+EMAMILTD,Financials,Revenue growth (higher is better),-1,minus 1,-0.53,5.83,-1.0
+EMAMILTD,Financials,EPS growth (higher is better),-1,minus 1,-3.9,12.9,-1.0
+EMAMILTD,Financials,Return on equity (higher is better),-1,minus 1,25.59,29.09,1.0
+EMAMILTD,Financials,Dividend yield (higher is better),1,plus 1,2.94,1.43,1.0
+EMAMILTD,Sentiment,Analyst rating,2,plus 2,1.43478,,
+EMAMILTD,Sentiment,Institutional 13F trend,0,zero,,,
+EMAMILTD,Sentiment,Insider buys vs sells,,n/a,,,
+EMAMILTD,Earnings,Latest earnings vs estimate,1,plus 1,,,
+EMAMILTD,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,-0.57,,
 ENDURANCE,Technical,Trend vs 20-day and 50-day,0,zero,,,
 ENDURANCE,Technical,Oscillator (RSI-14),1,plus 1,59.0,,
 ENDURANCE,Financials,Forward P/E (lower is better),1,plus 1,21.727194,42.01127850511778,-1.0
@@ -10735,22 +10751,6 @@ EIHOTEL,Sentiment,Institutional 13F trend,0,zero,,,
 EIHOTEL,Sentiment,Insider buys vs sells,,n/a,,,
 EIHOTEL,Earnings,Latest earnings vs estimate,-1,minus 1,,,
 EIHOTEL,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,-6.38,,
-EMAMILTD,Technical,Trend vs 20-day and 50-day,1,plus 1,,,
-EMAMILTD,Technical,Oscillator (RSI-14),1,plus 1,65.9,,
-EMAMILTD,Financials,Forward P/E (lower is better),1,plus 1,18.589703,34.18757241126759,0.0
-EMAMILTD,Financials,Trailing P/E (lower is better),1,plus 1,23.795918367346943,34.18757241126759,-1.0
-EMAMILTD,Financials,Price / sales (lower is better),1,plus 1,4.545628974963151,6.93107137933022,-1.0
-EMAMILTD,Financials,Debt / equity (lower is better),-1,minus 1,0.055377445694143275,0.03700881244678253,1.0
-EMAMILTD,Financials,Price / free cash flow (lower is better),1,plus 1,23.499723005473445,32.174650123156745,-1.0
-EMAMILTD,Financials,Revenue growth (higher is better),-1,minus 1,-0.53,5.83,-1.0
-EMAMILTD,Financials,EPS growth (higher is better),-1,minus 1,-3.9,12.9,-1.0
-EMAMILTD,Financials,Return on equity (higher is better),-1,minus 1,25.59,29.09,1.0
-EMAMILTD,Financials,Dividend yield (higher is better),1,plus 1,2.94,1.43,1.0
-EMAMILTD,Sentiment,Analyst rating,2,plus 2,1.43478,,
-EMAMILTD,Sentiment,Institutional 13F trend,0,zero,,,
-EMAMILTD,Sentiment,Insider buys vs sells,,n/a,,,
-EMAMILTD,Earnings,Latest earnings vs estimate,-1,minus 1,,,
-EMAMILTD,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,-0.57,,
 IDFCFIRSTB,Technical,Trend vs 20-day and 50-day,0,zero,,,
 IDFCFIRSTB,Technical,Oscillator (RSI-14),1,plus 1,56.4,,
 IDFCFIRSTB,Financials,Forward P/E (lower is better),1,plus 1,10.283888,25.263329759229038,1.0
@@ -16241,7 +16241,7 @@ BDL,Earnings,Latest earnings vs estimate,1,plus 1,,,
 BDL,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,-18.53,,
 DODLA,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
 DODLA,Technical,Oscillator (RSI-14),0,zero,38.1,,
-DODLA,Financials,Forward P/E (lower is better),1,plus 1,18.233692,31.864060070749048,0.0
+DODLA,Financials,Forward P/E (lower is better),1,plus 1,18.233692,31.864060070749048,1.0
 DODLA,Financials,Trailing P/E (lower is better),1,plus 1,23.876838693592617,31.864060070749048,-1.0
 DODLA,Financials,Price / sales (lower is better),1,plus 1,1.3415857515153953,1.7248315285229452,-1.0
 DODLA,Financials,Debt / equity (lower is better),0,zero,0.034045544988563874,0.034544960225308105,1.0
