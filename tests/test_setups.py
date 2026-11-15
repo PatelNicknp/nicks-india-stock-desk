@@ -208,15 +208,15 @@ def test_canslim_does_not_invent_missing_letters():
         "SPY": pd.DataFrame({"close": spy, "high": spy * 1.01, "low": spy * 0.99, "volume": 1e8}, index=idx),
     })
     quarters = pd.DataFrame([
-        {"ticker": "AAA", "frame": "CY2024Q3", "eps": 1.0},
-        {"ticker": "AAA", "frame": "CY2025Q3", "eps": 1.4},
+        {"ticker": "AAA", "frame": "CY2024Q3", "eps": 1.0, "revenue": 100.0},
+        {"ticker": "AAA", "frame": "CY2025Q3", "eps": 1.4, "revenue": 130.0},
     ])
     annual = pd.DataFrame([
-        {"ticker": "AAA", "frame": "CY2023", "eps": 2.0},
-        {"ticker": "AAA", "frame": "CY2024", "eps": 2.5},
+        {"ticker": "AAA", "frame": "CY2023", "eps": 2.0, "net_income": 20.0, "equity": 100.0},
+        {"ticker": "AAA", "frame": "CY2024", "eps": 2.5, "net_income": 25.0, "equity": 100.0},
     ])
     holders = pd.DataFrame([
-        {"ticker": "AAA", "inst_up": 10, "inst_down": 4, "ownership_pct": 60},
+        {"ticker": "AAA", "fii_chg": 0.8, "dii_chg": 0.2, "ownership_pct": 60},
     ])
     uni = _uni(["AAA", "BBB"])
     out, market = setups.scan_canslim(close_w, high_w, low_w, vol_w, uni, quarters, annual, holders,
@@ -228,19 +228,18 @@ def test_canslim_does_not_invent_missing_letters():
     bbb = out[out.ticker == "BBB"]
     assert len(aaa) == 1
     assert aaa.iloc[0]["c_quarterly_eps"] == 40.0
+    assert aaa.iloc[0]["c_sales"] == 30.0
     assert aaa.iloc[0]["a_annual_eps"] == 25.0
+    assert aaa.iloc[0]["a_roe"] == 25.0
     assert aaa.iloc[0]["i_trend"] == "up"
+    assert aaa.iloc[0]["qualify"] == "strict"
     assert aaa.iloc[0]["stop"] == ""
     assert aaa.iloc[0]["target"] == ""
     assert "not verified" in aaa.iloc[0]["reason"]
     assert "SP500" in aaa.iloc[0]["index_membership"]
-    if len(bbb):
-        assert bbb.iloc[0]["c_status"] == "not verified"
-        assert bbb.iloc[0]["c_quarterly_eps"] == ""
-        assert bbb.iloc[0]["a_status"] == "not verified"
-        assert bbb.iloc[0]["i_trend"] == "not verified"
-    # BBB has no holder row and no EPS. If the price screen dropped it, the letters
-    # are still not invented anywhere in the frame.
+    # BBB has no EPS or sales, so it fails C and is not listed. Missing letters are
+    # not invented anywhere in the frame.
+    assert len(bbb) == 0
     blob = out.to_csv(index=False)
     assert "not verified" in blob
 
@@ -532,7 +531,23 @@ def test_canslim_l_uses_the_rs_rating():
                           "volume": np.full(n, 2_000_000.0)}, index=idx)
     close_w, high_w, low_w, vol_w = _panel(["AAA", "BBB", "CCC"], {"AAA": frame, "BBB": frame.copy(), "CCC": frame.copy()})
     uni = _uni(["AAA", "BBB", "CCC"])
-    out, _m = setups.scan_canslim(close_w, high_w, low_w, vol_w, uni, pd.DataFrame(), pd.DataFrame(), pd.DataFrame(),
+    quarters = pd.DataFrame([
+        {"ticker": "AAA", "frame": "CY2024Q3", "eps": 1.0, "revenue": 100.0},
+        {"ticker": "AAA", "frame": "CY2025Q3", "eps": 1.4, "revenue": 130.0},
+        {"ticker": "BBB", "frame": "CY2024Q3", "eps": 1.0, "revenue": 100.0},
+        {"ticker": "BBB", "frame": "CY2025Q3", "eps": 1.4, "revenue": 130.0},
+        {"ticker": "CCC", "frame": "CY2024Q3", "eps": 1.0, "revenue": 100.0},
+        {"ticker": "CCC", "frame": "CY2025Q3", "eps": 1.4, "revenue": 130.0},
+    ])
+    annual = pd.DataFrame([
+        {"ticker": t, "frame": fr, "eps": ep, "net_income": ni, "equity": 100.0}
+        for t in ("AAA", "BBB", "CCC")
+        for fr, ep, ni in (("CY2023", 2.0, 20.0), ("CY2024", 2.5, 25.0))
+    ])
+    holders = pd.DataFrame([
+        {"ticker": t, "fii_chg": 0.5, "dii_chg": 0.0} for t in ("AAA", "BBB", "CCC")
+    ])
+    out, _m = setups.scan_canslim(close_w, high_w, low_w, vol_w, uni, quarters, annual, holders,
                                   rs_map={"AAA": 91, "BBB": 12})
     assert list(out["ticker"]) == ["AAA"]
     row = out.iloc[0]

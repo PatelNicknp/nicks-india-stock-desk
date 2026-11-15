@@ -3631,7 +3631,7 @@ def main(argv=None):
         else:
             n_card = int(len(stock_canslim)) if stock_canslim is not None else 0
             log("Stock CANSLIM", "OK" if n_card else "MISSING", asof,
-                "%d stocks have a CANSLIM card for the scorecard. The scanner qualify list is unchanged. "
+                "%d stocks have a CANSLIM card for the scorecard. "
                 "News was checked only for names that already passed the price screen." % n_card)
     else:
         stock_canslim = pd.DataFrame()

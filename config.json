@@ -521,10 +521,13 @@
     "greed_line": 0.75
   },
   "stock_canslim": {
-    "_note": "Stock scorecard CANSLIM section (feature.stock_canslim). Every stock gets a C A N S L I M card on the scorecard. This does not change who qualifies on the CANSLIM scanner, Leaders, or Buy setups. C wants quarterly EPS up 25% versus the year-ago quarter. A wants yearly EPS up 25% versus the prior year (a 3-year streak is not verified). N wants the close within 15% of the 52-week closing high, plus an optional news check. S wants 20-day average volume of at least 200,000 shares, plus free float (100 minus promoter percent) when feature.canslim_free_float is on. L wants an RS rank of 80 or higher, plus an industry group rank by median RS when feature.canslim_industry_rank is on. I uses FII and DII change, not promoter change. M is the same market check as the rest of the desk. News (feature.canslim_news) is the only new download: the after-close run looks up Google News RSS for stocks that already passed the CANSLIM price checks and have no saved headline, at most news_per_run names a day, one request each. Morning and offline runs reuse cache/canslim_news.csv. A missing letter stays not verified. It is never stored as 0.",
+    "_note": "Stock scorecard CANSLIM section (feature.stock_canslim). Every stock gets a C A N S L I M card on the scorecard. C wants quarterly EPS up 25% versus the year-ago quarter, and sales up 25% or accelerating (latest sales YoY faster than the quarter before). A wants yearly EPS up 25% versus the prior year (a 3-year streak is not verified), and ROE of 17% or more when that number is on file. A missing ROE does not fail A. N wants the close within 15% of the 52-week closing high, plus an optional news check. S wants 20-day average volume of at least 200,000 shares, plus free float (100 minus promoter percent) when feature.canslim_free_float is on. L wants an RS Rating of 80 or higher, plus an industry group rank by median RS when feature.canslim_industry_rank is on. I uses only FII and DII change, not promoter change and not inst_up. Flat or rising passes. A fall fails. Missing change stays not verified and does not fail. M is the same market check as the rest of the desk. A weak market does not hide names on the CANSLIM scanner. News (feature.canslim_news) is the only new download: the after-close run looks up Google News RSS for stocks that already passed the CANSLIM price checks and have no saved headline, at most news_per_run names a day, one request each. Morning and offline runs reuse cache/canslim_news.csv. A missing letter stays not verified. It is never stored as 0.",
     "c_min_pct": 25,
     "a_min_pct": 25,
     "l_rs_min": 80,
+    "sales_min_pct": 25,
+    "roe_min_pct": 17,
+    "ud_min": 1.0,
     "news_per_run": 15,
     "news_fresh_days": 7,
     "news_keep_days": 14,
