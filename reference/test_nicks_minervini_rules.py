@@ -56,9 +56,9 @@ UNCHANGED = {
         "ae5e6b08af6c7a7cea2eb25960b426a0a56d4ce5b09a8367a25e1473addb36f6",
     ),
     "exit": (
-        "// ───────── EXIT TOOLS (Minervini-style) ─────────",
+        "// --------- EXIT TOOLS (Minervini-style) ---------",
         None,
-        "b39fd84d6269b6123e4d61a341e8a85536eaddf882915c8878b39e0362d5f8f9",
+        "532f133401288d9843a18e3d7bac4553aef9f5708410cc0c97c2ed58400c97c6",
     ),
 }
 
@@ -267,13 +267,20 @@ def dry_up(high, low, close, volume, avg50, hi_ago, lo_ago, pivot, quiet_frac=0.
     price_tight = (
         pull_n >= 2 and right_n >= 2 and pull_avg is not None and right_avg is not None and right_avg < pull_avg
     )
-    mature = vol_n >= 4 and pull_n >= 2 and right_n >= 2 and ref is not None and ref > 0
-    if not mature:
+    vol_ready = vol_n >= 4 and ref is not None and ref > 0 and ratio is not None
+    if not vol_ready:
         status, ok = "WAIT", False
-    elif vol_below and quiet_ok and price_tight:
+    elif vol_below and quiet_ok:
         status, ok = "PASS", True
     else:
         status, ok = "FAIL", False
+    if pull_n >= 2 and right_n >= 2 and pull_avg is not None and right_avg is not None and pull_avg > 0:
+        if price_tight:
+            tight_status, tight_ok = "PASS", True
+        else:
+            tight_status, tight_ok = "FAIL", False
+    else:
+        tight_status, tight_ok = "WAIT", False
     return {
         "status": status,
         "ok": ok,
@@ -287,12 +294,14 @@ def dry_up(high, low, close, volume, avg50, hi_ago, lo_ago, pivot, quiet_frac=0.
         "vol_below": vol_below,
         "quiet_ok": quiet_ok,
         "price_tight": price_tight,
+        "tight_status": tight_status,
+        "tight_ok": tight_ok,
         "included": list(range(end_ago, hi_ago + 1)),
     }
 
 
-def is_vcp(shrinking, trend_ok, require_dry, dry_ok):
-    return shrinking and trend_ok and ((not require_dry) or dry_ok)
+def is_vcp(shrinking, trend_ok, require_dry, dry_ok, require_tight=False, tight_ok=False):
+    return shrinking and trend_ok and ((not require_dry) or dry_ok) and ((not require_tight) or tight_ok)
 
 
 class Contractions:
@@ -463,7 +472,7 @@ class SourceLockTests(unittest.TestCase):
         self.assertIn("rsLine > rsLine[21]", src)
         self.assertIn("rsLine > rsSma50", src)
         self.assertIn("ta.sma(rsLine, 50)", src)
-        self.assertIn("isVCP = shrinking and trendOK and (not requireDry or dryUpOk)", src)
+        self.assertIn("isVCP = shrinking and trendOK and (not requireDry or dryUpOk) and (not requireTight or tightOk)", src)
         self.assertIn("breakout = not na(pivotPrice) and crossUp and (not needVolume or bigVol) and isVCP", src)
         self.assertIn("if dBreakAgo < 0 and not na(close[bk]) and close[bk] > dPiv", src)
         self.assertIn("int dEndAgo = dBreakAgo >= 0 ? dBreakAgo + 1 : 0", src)
@@ -493,12 +502,15 @@ class SourceLockTests(unittest.TestCase):
 
     def test_score_box_stays_small_and_rules_stay(self):
         src = pine_text()
-        self.assertIn("table.new(position.bottom_right, 2, 10,", src)
+        self.assertIn("table.new(position.bottom_right, 2, 11,", src)
+        self.assertIn('requireTight = input.bool(true, "VCP and BUY need tighter bars after the low"', src)
+        self.assertIn('"Bars tightened"', src)
         self.assertNotIn("table.merge_cells", src)
         self.assertNotIn("table.cell(tt, 0, 9, rsDetail", src)
         self.assertNotIn("table.cell(tt, 0, 11, dryDetail", src)
         self.assertIn("tooltip = rsTip", src)
         self.assertIn("tooltip = dryDetail", src)
+        self.assertIn("tooltip = tightDetail", src)
         self.assertIn("Both 6 months and 12 months have to beat the benchmark.", src)
         self.assertIn("Average volume is ", src)
         self.assertIn('showNumbers = input.bool(true, "Show short numbers in the score box"', src)
@@ -513,6 +525,11 @@ class SourceLockTests(unittest.TestCase):
         self.assertIn("rightAvg < pullAvg", src)
         self.assertIn("array.get(cLow, i) * 0.985", src)
         self.assertIn('stopPct    = input.float(7.0,', src)
+
+    def test_script_is_plain_ascii(self):
+        src = pine_text()
+        bad = sorted({ch for ch in src if ord(ch) > 127})
+        self.assertEqual(bad, [], "non-ASCII: " + " ".join(hex(ord(ch)) for ch in bad))
 
     def test_pine_structure(self):
         src = pine_text()
@@ -721,6 +738,8 @@ class DryUpTests(unittest.TestCase):
         self.assertLess(got["ratio"], 1)
         self.assertGreaterEqual(got["quiet_n"], 1)
         self.assertTrue(got["price_tight"])
+        self.assertEqual(got["tight_status"], "PASS")
+        self.assertTrue(is_vcp(True, True, True, got["ok"], True, got["tight_ok"]))
         self.assertEqual(got["break_ago"], -1)
         self.assertEqual(got["included"], [0, 1, 2, 3, 4, 5])
 
@@ -782,8 +801,11 @@ class DryUpTests(unittest.TestCase):
         high, low, close, volume, avg = bars_ago_frame(n, chrono_close, chrono_high, chrono_low, chrono_vol, chrono_avg)
         got = dry_up(high, low, close, volume, avg, 5, 3, 10)
         self.assertFalse(got["price_tight"])
+        self.assertEqual(got["tight_status"], "FAIL")
         self.assertTrue(got["vol_below"] and got["quiet_ok"])
-        self.assertEqual(got["status"], "FAIL")
+        self.assertEqual(got["status"], "PASS")
+        self.assertFalse(is_vcp(True, True, True, got["ok"], True, got["tight_ok"]))
+        self.assertTrue(is_vcp(True, True, True, got["ok"], False, got["tight_ok"]))
 
     def test_too_few_days_after_the_low_waits(self):
         # Low is yesterday. Only today is after the low, so the tighten test is not ready.
@@ -797,8 +819,9 @@ class DryUpTests(unittest.TestCase):
         got = dry_up(high, low, close, volume, avg, hi_ago=3, lo_ago=1, pivot=10)
         self.assertEqual(got["right_n"], 1)
         self.assertGreaterEqual(got["pull_n"], 2)
-        self.assertEqual(got["status"], "WAIT")
-        self.assertFalse(got["ok"])
+        self.assertEqual(got["tight_status"], "WAIT")
+        self.assertFalse(got["tight_ok"])
+        self.assertFalse(is_vcp(True, True, True, True, True, got["tight_ok"]))
 
     def test_no_average_and_out_of_reach_wait(self):
         n = 6

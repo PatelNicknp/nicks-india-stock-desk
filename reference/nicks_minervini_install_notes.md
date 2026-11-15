@@ -1,4 +1,4 @@
-# Nick's Minervini indicator — how to put this on TradingView
+# Nick's Minervini indicator: how to put this on TradingView
 
 Use this on a **Daily** chart (the normal 1-day chart). The script name is still **Nick's Minervini with Exit Strategy**.
 
@@ -38,11 +38,20 @@ A red **FAIL** means that rule missed. On the AMZN daily chart that was sent, RS
 - **NO BENCHMARK**. TradingView has no price for the symbol you picked. The rest of the script still runs.
 - **NEED HISTORY**. The stock or the benchmark does not have about a year of daily prices yet.
 
-**Last contraction quiet** is one of these:
+**Last contraction quiet** is the volume check only:
 
-- **PASS**. Volume dried up and price tightened before the breakout.
-- **FAIL**. There are enough days to judge, and the contraction is not quiet. The tip says whether volume is still heavy, a quiet day is missing, or the daily bars did not get tighter. The short number is the volume multiple and how many quiet days were found.
-- **WAIT**. The last contraction is not finished enough to judge. It does not count as a pass yet.
+- **PASS**. Volume dried up before the breakout.
+- **FAIL**. There are enough days to judge, and the contraction is not quiet. The tip says whether volume is still heavy or a quiet day is missing. The short number is the volume multiple and how many quiet days were found.
+- **WAIT**. Volume is not ready to judge yet. It does not count as a pass.
+
+**Bars tightened** is its own row. It is on by default. The switch is **VCP and BUY need tighter bars after the low**.
+
+- **PASS**. In the last pullback, the daily bars after the low are narrower than the bars on the way down. The short number is how the two ranges compare. Under 1.00x passes.
+- **FAIL**. Both sides have at least two days, and the bars after the low are not narrower.
+- **WAIT**. There are not yet two days on the way down and two days after the low. A wait is not a pass, so the green VCP tag and BUY stay off while this switch is on.
+- **OFF**. You turned the switch off. The row does not block the tag or BUY.
+
+Press and hold the row for the full note. The note stays off the chart so the box does not stretch.
 
 **Big-volume marks to draw** defaults to 8, the latest marks in the current base, and it skips the bar that carries a T label so the triangles do not sit on that tag. The 1.5x breakout test is unchanged. Set the number to 0 to hide the marks. The T label sits a little under the contraction low so the box is not on the candle. The contraction count is unchanged.
 
@@ -52,19 +61,20 @@ It looks only at the **last** contraction (the newest T, the same high as the bu
 
 It uses every day from that contraction's high through the **last day before** price first closes above the buy point. The breakout day is left out. A big breakout day cannot make this check fail.
 
-It passes only when all three are true:
+The quiet row passes only when both are true:
 
 - Average volume on those days is **below** the 50-day average volume (under 1.00x, not equal).
 - At least one day has volume **at or under half** the usual 50-day volume. That count is "Quiet days." Set **Quiet days needed** to 2 if you want two. Extra quiet days are fine.
-- After the low, and still before the breakout, the daily bars are **narrower** than the bars from the high down to the low. Each side needs at least two days. Until then the line says WAIT.
 
-The old **Big volume** setting (1.5 times the 50-day average) is only the breakout day. It is a separate switch. A quiet contraction does not replace it.
+The bars-tightened row uses the same days, but it compares ranges, not volume. From the contraction high down to the low, it takes the average daily high-to-low range. Then it does the same for the days after the low, up to the day before the close over the buy line. The second average has to be smaller. Each side needs at least two days. The breakout day is left out of both checks.
 
-To mark VCP the old way, turn off **VCP and BUY need a quiet final contraction**. The quiet line still shows.
+The **Big volume** setting (1.5 times the 50-day average) is only the breakout day. It is separate. A quiet contraction does not replace it.
+
+The green VCP tag and the BUY label need the quiet row and the bars-tightened row while those switches are on. Turn off **VCP and BUY need a quiet final contraction** to skip the volume check. Turn off **VCP and BUY need tighter bars after the low** to skip the range check. The rows still show.
 
 ## How relative strength is calculated
 
-This is **not** IBD's 1–99 rating. TradingView does not give that number here, and this script does not invent one. IBD ranks a stock against thousands of other stocks. This chart can only see this stock and the one benchmark you pick.
+This is **not** IBD's 1-99 rating. TradingView does not give that number here, and this script does not invent one. IBD ranks a stock against thousands of other stocks. This chart can only see this stock and the one benchmark you pick.
 
 On a **1-day** chart:
 
