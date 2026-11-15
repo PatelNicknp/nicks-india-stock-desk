@@ -588,3 +588,30 @@ def test_history_merge_drops_periods_that_have_not_ended_yet():
     ])
     out = india_data.merge_holders_history(old, [])
     assert list(out["quarter_end"]) == ["2026-06-30"]
+
+
+def test_exchange_gap_fill_is_topped_up_with_recent_yahoo_quarters(monkeypatch):
+    import exchange_financials, india_data
+    old_q = [{"ticker": "LIQNEW", "frame": "CY2024Q4", "end": "2024-12-31", "eps": 1.0, "source": "NSE"}]
+    monkeypatch.setattr(exchange_financials, "fetch_nse_statements", lambda *a, **k: {
+        "info": {"ticker": "LIQNEW", "source": "NSE", "company": ""}, "annual": [], "quarters": old_q, "earn": []})
+    monkeypatch.setattr(india_data, "fetch_yahoo_bundle", lambda t, cfg, symbol=None: (
+        {"company": "New Co"}, [], [{"ticker": "LIQNEW", "frame": "CY2026Q3", "end": "2026-09-30", "eps": 2.0}], []))
+    rec = {"ticker": "LIQNEW", "nse_symbol": "LIQNEW", "bse_symbol": "", "exchange": "NSE", "in_bse_only": "no", "gap": True}
+    book = __import__("fallback").SourceBook()
+    value, source = bf.fetch_statements(rec, {}, book, {}, existing_quarters=pd.DataFrame(columns=["ticker", "end"]))
+    assert source == "NSE results"
+    frames = [r["frame"] for r in value["quarters"]]
+    assert frames == ["CY2026Q3", "CY2024Q4"]
+    assert value["info"]["company"] == "New Co"
+
+
+def test_full_exchange_answer_is_not_topped_up(monkeypatch):
+    import exchange_financials, india_data
+    monkeypatch.setattr(exchange_financials, "fetch_nse_statements", lambda *a, **k: {
+        "info": {"ticker": "LIQNEW"}, "annual": [], "quarters": [{"ticker": "LIQNEW", "frame": "CY2026Q3", "eps": 1.0}], "earn": []})
+    called = []
+    monkeypatch.setattr(india_data, "fetch_yahoo_bundle", lambda *a, **k: called.append(1))
+    rec = {"ticker": "LIQNEW", "nse_symbol": "LIQNEW", "bse_symbol": "", "exchange": "NSE", "in_bse_only": "no"}
+    value, source = bf.fetch_statements(rec, {}, __import__("fallback").SourceBook(), {})
+    assert source == "NSE results" and called == []

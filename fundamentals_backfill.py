@@ -537,12 +537,52 @@ def fetch_statements(rec, cfg, book, codes=None, existing_quarters=None, existin
         steps.append(("NSE results", attempt_nse))
     if code:
         steps.append(("BSE results", attempt_bse))
+    yahoo_steps = []
     for symbol in statement_symbols(rec):
         # One label per listing so three failures skip that listing for the rest of the run.
         label = "Yahoo BO" if str(symbol).endswith(".BO") else "Yahoo NS"
-        steps.append((label, attempt(symbol)))
+        yahoo_steps.append((label, attempt(symbol)))
+    steps.extend(yahoo_steps)
     value, source, _outcome = first_good("statements:" + ticker, steps, book, pause=0.2)
+    if value and fill_only and source in EXCHANGE_STATEMENT_SOURCES:
+        value = add_recent_quarters(ticker, value, yahoo_steps, book)
     return value, source
+
+
+EXCHANGE_STATEMENT_SOURCES = ("NSE results", "BSE results")
+
+
+def add_recent_quarters(ticker, value, yahoo_steps, book):
+    """Top up an exchange gap fill with Yahoo's recent quarters.
+
+    NSE's structured XBRL list stops around the end of 2024 (later results moved
+    to integrated PDF filings), so a gap fill brings back older quarters but not
+    the latest ones. The prior-quarter YoY needs both ends, so ask the first
+    Yahoo listing that answers and add its rows. Exchange rows stay last so they
+    win where both have the same quarter. A Yahoo miss leaves the exchange answer.
+    """
+    for name, fn in yahoo_steps or []:
+        if not book.allow(name):
+            continue
+        try:
+            extra = fn()
+        except Exception as exc:
+            book.hit("statements:" + ticker, name, "FAILED", str(exc)[:160])
+            continue
+        if not extra:
+            continue
+        book.ok("statements:" + ticker, name, "recent quarters")
+        out = dict(value)
+        out["quarters"] = list(extra.get("quarters") or []) + list(value.get("quarters") or [])
+        out["annual"] = list(extra.get("annual") or []) + list(value.get("annual") or [])
+        info = dict(extra.get("info") or {})
+        for key, val in (value.get("info") or {}).items():
+            if not blank(val):
+                info[key] = val
+        out["info"] = info
+        out["earn"] = list(value.get("earn") or []) + list(extra.get("earn") or [])
+        return out
+    return value
 
 
 def parse_screener_shareholding(html):
