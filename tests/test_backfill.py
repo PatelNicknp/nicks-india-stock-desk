@@ -485,7 +485,7 @@ def test_bse_only_skips_nse_statements(monkeypatch):
 
 
 def test_short_quarter_history_makes_a_covered_name_due():
-    info = pd.DataFrame([{"ticker": "LIQNEW", "fetched_on": "2026-10-20", "company": "New"}])
+    info = pd.DataFrame([{"ticker": "LIQNEW", "fetched_on": "2026-10-10", "company": "New"}])
     annual = pd.DataFrame({"ticker": ["LIQNEW"]})
     quarters = pd.DataFrame([{"ticker": "LIQNEW", "frame": "CY2026Q2", "eps": 1.0}])
     queue = bf.build_queue(
@@ -530,3 +530,61 @@ def test_union_keeps_older_quarters_when_a_short_refresh_arrives():
     assert list(aaa["frame"]) == ["CY2025Q1", "CY2025Q2", "CY2025Q3", "CY2025Q4"]
     assert float(aaa[aaa["frame"] == "CY2025Q3"]["eps"].iloc[0]) == 1.25
     assert "BBB" in set(out["ticker"])
+
+
+def test_short_history_name_asked_this_week_waits():
+    # Asked two days ago and still short: wait a week, do not refetch every night.
+    assert bf.statements_due(True, "2026-10-23", [], "2026-10-25", 90, short_history=True) is False
+    # Asked over a week ago: due again.
+    assert bf.statements_due(True, "2026-10-10", [], "2026-10-25", 90, short_history=True) is True
+    # Never stamped: due.
+    assert bf.statements_due(True, "", [], "2026-10-25", 90, short_history=True) is True
+    # A new result still makes a recently asked short name due.
+    assert bf.statements_due(True, "2026-10-23", ["2026-10-24"], "2026-10-25", 90, short_history=True) is True
+
+
+def test_screener_off_cycle_column_is_not_a_future_quarter():
+    html = """
+    <div id="quarterly-shp">
+      <table><thead><tr><th class="text"></th><th>Sep 2026</th><th>Oct 2026</th></tr></thead>
+      <tbody>
+        <tr><td class="text">Promoters&nbsp;</td><td>6.18%</td><td>5.88%</td></tr>
+        <tr><td class="text">FIIs&nbsp;</td><td>53.97%</td><td>56.00%</td></tr>
+        <tr><td class="text">DIIs&nbsp;</td><td>23.66%</td><td>22.69%</td></tr>
+        <tr><td class="text">Public&nbsp;</td><td>16.18%</td><td>15.41%</td></tr>
+      </tbody></table>
+    </div>
+    <div id="yearly-shp"></div>
+    """
+    row = bf.parse_screener_shareholding(html)
+    assert row["as_of"] == "2026-10-31"
+    ends = [h["quarter_end"] for h in row["_history"]]
+    assert ends == ["2026-09-30", "2026-10-31"]
+    assert row["fii_chg"] == round(56.00 - 53.97, 2)
+
+
+def test_quarter_end_keeps_quarter_months_and_month_ends_off_cycle():
+    import india_data
+    assert india_data.quarter_end("Sep 2026") == "2026-09-30"
+    assert india_data.quarter_end("2026-09-01") == "2026-09-30"
+    assert india_data.quarter_end("Dec 2025") == "2025-12-31"
+    assert india_data.quarter_end("Oct 2026") == "2026-10-31"
+    assert india_data.quarter_end("2026-11-01") == "2026-11-30"
+    assert india_data.quarter_end("Feb 2024") == "2024-02-29"
+    assert india_data.quarter_end("") == ""
+
+
+def test_future_dated_shareholding_is_due_again():
+    assert bf.shareholding_due(True, "2026-11-16", "2026-12-31", "2026-11-16", 90) is True
+    assert bf.shareholding_due(True, "2026-11-16", "2026-09-30", "2026-11-16", 90) is False
+
+
+def test_history_merge_drops_periods_that_have_not_ended_yet():
+    import india_data
+    far = (pd.Timestamp.now() + pd.DateOffset(months=3)).strftime("%Y-%m-%d")
+    old = pd.DataFrame([
+        {"ticker": "X", "as_of": "2026-06-30", "quarter_end": "2026-06-30", "fii_pct": 1.0},
+        {"ticker": "X", "as_of": far, "quarter_end": far, "fii_pct": 9.0},
+    ])
+    out = india_data.merge_holders_history(old, [])
+    assert list(out["quarter_end"]) == ["2026-06-30"]

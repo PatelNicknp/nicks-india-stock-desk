@@ -1553,7 +1553,7 @@
     T("rs", "L: RS Rating", "rs", { dec: 0, title: RS_TITLE }), T("i_trend", "I: holders trend", "itrend"),
     T("freshness", "Data", "fresh")];
   const canslim = {
-    files: ["scanner_canslim.csv", "scanner_canslim_near.csv"],
+    files: ["scanner_canslim.csv"],
     optional: ["scanner_canslim_near.csv"],
     render(ctx) {
       canslimCore.render(ctx);

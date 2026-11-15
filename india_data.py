@@ -531,7 +531,14 @@ HOLDERS_HISTORY_COLS = (
 
 
 def quarter_end(value):
-    """Map a date or 'Sep 2026' label to the calendar quarter end, for joining sources."""
+    """Map a date or 'Sep 2026' label to its period end, for joining sources.
+
+    Dates in a quarter-end month (Mar, Jun, Sep, Dec) map to that quarter end.
+    An off-cycle filing (for example Screener's 'Oct 2026' column after an
+    allotment) maps to its own month end. Rolling it forward to the next
+    quarter end would invent a future quarter (Dec 2026 in November) and keep
+    the row from ever looking stale.
+    """
     text = str(value or "").strip()
     if not text or text.lower() in ("nan", "none"):
         return ""
@@ -542,8 +549,9 @@ def quarter_end(value):
     if stamp is None or pd.isna(stamp):
         return ""
     stamp = pd.Timestamp(stamp)
-    q = ((int(stamp.month) - 1) // 3) + 1
-    month = q * 3
+    if int(stamp.month) % 3 != 0:
+        return (stamp.normalize() + pd.offsets.MonthEnd(0)).strftime("%Y-%m-%d")
+    month = int(stamp.month)
     day = 31 if month in (3, 12) else 30
     return pd.Timestamp(year=int(stamp.year), month=month, day=day).strftime("%Y-%m-%d")
 
@@ -643,6 +651,11 @@ def merge_holders_history(old, new_rows):
         if missing.any():
             frame.loc[missing, "quarter_end"] = frame.loc[missing, "as_of"].map(quarter_end)
     frame = frame[frame["ticker"].ne("") & frame["quarter_end"].astype(str).str.len().ge(10)]
+    # A period that ends after this month cannot have been filed yet. Older code
+    # rolled off-cycle filings (Screener 'Oct 2026') forward to the next quarter
+    # end, which then sat on top of the history as the newest quarter forever.
+    limit = (pd.Timestamp.now(tz=IST).tz_localize(None).normalize() + pd.offsets.MonthEnd(0)).strftime("%Y-%m-%d")
+    frame = frame[frame["quarter_end"].astype(str).str[:10] <= limit]
     # Keep the last row for each ticker+quarter so a refresh wins.
     frame = frame.drop_duplicates(["ticker", "quarter_end"], keep="last")
     cols = [c for c in HOLDERS_HISTORY_COLS if c in frame.columns] + [c for c in frame.columns if c not in HOLDERS_HISTORY_COLS]

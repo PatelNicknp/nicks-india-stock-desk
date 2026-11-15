@@ -224,12 +224,20 @@ def band_for(row, liquid):
     return NSE
 
 
-def statements_due(covered, fetched_on, earnings_days, today, refresh_days, short_history=False):
+SHORT_HISTORY_RETRY_DAYS = 7
+
+
+def statements_due(covered, fetched_on, earnings_days, today, refresh_days, short_history=False,
+                   short_retry_days=SHORT_HISTORY_RETRY_DAYS):
     if not covered:
         return True
     if short_history:
         # Need about six quarters so the prior-quarter EPS and sales YoY can be computed.
-        return True
+        # A name that was just asked and still came back short (new listing, or a
+        # source that only keeps four quarters) waits a week instead of being asked
+        # again every night ahead of names that have never been tried.
+        if not fetched_on or fetched_on <= shift_days(today, -int(short_retry_days)):
+            return True
     if not fetched_on:
         return True
     if fetched_on <= shift_days(today, -int(refresh_days)):
@@ -242,6 +250,10 @@ def statements_due(covered, fetched_on, earnings_days, today, refresh_days, shor
 
 def shareholding_due(covered, fetched_on, as_of, today, refresh_days, change_covered=True):
     if not covered:
+        return True
+    if as_of and as_of > today:
+        # A filing dated in the future was mislabelled (an off-cycle column read as
+        # the next quarter end). Ask again so the corrected reader can fix it.
         return True
     if not change_covered:
         # Levels exist, but FII+DII change is still blank. Try again so the I letter can fill in.
