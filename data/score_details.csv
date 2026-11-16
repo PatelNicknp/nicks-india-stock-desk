@@ -5217,7 +5217,7 @@ JYOTIRES,Earnings,Latest earnings vs estimate,,n/a,,,
 JYOTIRES,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,-3.29,,
 KAJARIR,Technical,Trend vs 20-day and 50-day,1,plus 1,,,
 KAJARIR,Technical,Oscillator (RSI-14),1,plus 1,52.4,,
-KAJARIR,Financials,Forward P/E (lower is better),1,plus 1,2.0169837,45.29106800766284,1.0
+KAJARIR,Financials,Forward P/E (lower is better),1,plus 1,1.9850543,45.29106800766284,1.0
 KAJARIR,Financials,Trailing P/E (lower is better),1,plus 1,34.38888888888889,45.29106800766284,-1.0
 KAJARIR,Financials,Price / sales (lower is better),1,plus 1,0.12726970357518164,0.21312427422340388,1.0
 KAJARIR,Financials,Debt / equity (lower is better),1,plus 1,0.5857778386538028,0.7182410911690439,-1.0
@@ -7553,7 +7553,7 @@ HONASA,Earnings,Latest earnings vs estimate,1,plus 1,,,
 HONASA,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,6.06,,
 INDAG,Technical,Trend vs 20-day and 50-day,0,zero,,,
 INDAG,Technical,Oscillator (RSI-14),1,plus 1,57.7,,
-INDAG,Financials,Forward P/E (lower is better),1,plus 1,6.554098,35.65056489994045,1.0
+INDAG,Financials,Forward P/E (lower is better),1,plus 1,7.137705,35.65056489994045,1.0
 INDAG,Financials,Trailing P/E (lower is better),1,plus 1,20.471698113207548,35.65056489994045,1.0
 INDAG,Financials,Price / sales (lower is better),1,plus 1,1.1864348632897688,1.5690669894649283,0.0
 INDAG,Financials,Debt / equity (lower is better),-1,minus 1,0.07813624510574026,0.0385297469176842,1.0
@@ -25809,7 +25809,7 @@ JSFB,Earnings,Latest earnings vs estimate,,n/a,,,
 JSFB,Sector,"Sector vs S&P 500, 3 months",0,zero,-30.7,,
 KAIRA,Technical,Trend vs 20-day and 50-day,0,zero,,,
 KAIRA,Technical,Oscillator (RSI-14),1,plus 1,51.3,,
-KAIRA,Financials,Forward P/E (lower is better),1,plus 1,20.817785,41.29093746241957,0.0
+KAIRA,Financials,Forward P/E (lower is better),1,plus 1,21.068096,41.29093746241957,0.0
 KAIRA,Financials,Trailing P/E (lower is better),-1,minus 1,55.379746835443036,41.29093746241957,-1.0
 KAIRA,Financials,Price / sales (lower is better),1,plus 1,0.48159883962795064,0.9292143056354051,1.0
 KAIRA,Financials,Debt / equity (lower is better),-1,minus 1,0.07354219862884624,0.014215684626250785,1.0
@@ -63951,6 +63951,22 @@ INDIAHOME,Sentiment,Institutional 13F trend,1,plus 1,,,
 INDIAHOME,Sentiment,Insider buys vs sells,,n/a,,,
 INDIAHOME,Earnings,Latest earnings vs estimate,,n/a,,,
 INDIAHOME,Sector,"Sector vs S&P 500, 3 months",0,zero,-17.25,,
+JGTL,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
+JGTL,Technical,Oscillator (RSI-14),0,zero,40.2,,
+JGTL,Financials,Forward P/E (lower is better),,n/a,,15.387506469576783,
+JGTL,Financials,Trailing P/E (lower is better),0,zero,15.431909007070397,15.387506469576783,1.0
+JGTL,Financials,Price / sales (lower is better),0,zero,3.9593391657254435,4.1463420416519865,-1.0
+JGTL,Financials,Debt / equity (lower is better),-1,minus 1,0.002814817651617689,0.001718280499331535,1.0
+JGTL,Financials,Price / free cash flow (lower is better),,n/a,,,
+JGTL,Financials,Revenue growth (higher is better),-1,minus 1,8.97,-10.92,-1.0
+JGTL,Financials,EPS growth (higher is better),-1,minus 1,0.43,-6.98,-1.0
+JGTL,Financials,Return on equity (higher is better),-1,minus 1,14.86,21.45,1.0
+JGTL,Financials,Dividend yield (higher is better),1,plus 1,2.43,0.45,1.0
+JGTL,Sentiment,Analyst rating,,n/a,,,
+JGTL,Sentiment,Institutional 13F trend,0,zero,,,
+JGTL,Sentiment,Insider buys vs sells,,n/a,,,
+JGTL,Earnings,Latest earnings vs estimate,,n/a,,,
+JGTL,Sector,"Sector vs S&P 500, 3 months",0,zero,-10.24,,
 JMDVL,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
 JMDVL,Technical,Oscillator (RSI-14),0,zero,38.7,,
 JMDVL,Financials,Forward P/E (lower is better),,n/a,,26.75997275334935,
@@ -64593,7 +64609,7 @@ JAIPAN,Earnings,Latest earnings vs estimate,,n/a,,,
 JAIPAN,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,14.89,,
 KALLAM,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
 KALLAM,Technical,Oscillator (RSI-14),0,zero,36.9,,
-KALLAM,Financials,Forward P/E (lower is better),,n/a,0.32954544,,1.0
+KALLAM,Financials,Forward P/E (lower is better),,n/a,0.31249997,,1.0
 KALLAM,Financials,Trailing P/E (lower is better),,n/a,,,
 KALLAM,Financials,Price / sales (lower is better),1,plus 1,0.0384128214209488,0.11191388630942244,1.0
 KALLAM,Financials,Debt / equity (lower is better),-1,minus 1,13.460872576177286,2.1799944687476045,-1.0
@@ -66639,22 +66655,6 @@ INTRGLB,Sentiment,Institutional 13F trend,0,zero,,,
 INTRGLB,Sentiment,Insider buys vs sells,,n/a,,,
 INTRGLB,Earnings,Latest earnings vs estimate,,n/a,,,
 INTRGLB,Sector,"Sector vs S&P 500, 3 months",0,zero,-10.56,,
-JGTL,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
-JGTL,Technical,Oscillator (RSI-14),0,zero,40.2,,
-JGTL,Financials,Forward P/E (lower is better),,n/a,,15.387506469576783,
-JGTL,Financials,Trailing P/E (lower is better),-1,minus 1,16.948008102633352,15.387506469576783,1.0
-JGTL,Financials,Price / sales (lower is better),0,zero,4.1352105856183305,4.1463420416519865,-1.0
-JGTL,Financials,Debt / equity (lower is better),-1,minus 1,0.002814817651617689,0.001718280499331535,1.0
-JGTL,Financials,Price / free cash flow (lower is better),,n/a,,,
-JGTL,Financials,Revenue growth (higher is better),-1,minus 1,8.97,-10.92,-1.0
-JGTL,Financials,EPS growth (higher is better),-1,minus 1,0.43,-6.98,-1.0
-JGTL,Financials,Return on equity (higher is better),-1,minus 1,13.53,21.45,1.0
-JGTL,Financials,Dividend yield (higher is better),1,plus 1,2.43,0.45,1.0
-JGTL,Sentiment,Analyst rating,,n/a,,,
-JGTL,Sentiment,Institutional 13F trend,0,zero,,,
-JGTL,Sentiment,Insider buys vs sells,,n/a,,,
-JGTL,Earnings,Latest earnings vs estimate,,n/a,,,
-JGTL,Sector,"Sector vs S&P 500, 3 months",0,zero,-10.24,,
 MODTHREAD,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
 MODTHREAD,Technical,Oscillator (RSI-14),0,zero,47.1,,
 MODTHREAD,Financials,Forward P/E (lower is better),,n/a,,25.83969847828846,
@@ -68449,7 +68449,7 @@ VITAL,Earnings,Latest earnings vs estimate,,n/a,,,
 VITAL,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,5.27,,
 KELENRG,Technical,Trend vs 20-day and 50-day,1,plus 1,,,
 KELENRG,Technical,Oscillator (RSI-14),0,zero,60.5,,
-KELENRG,Financials,Forward P/E (lower is better),-1,minus 1,97.70837,18.56974333825729,-1.0
+KELENRG,Financials,Forward P/E (lower is better),-1,minus 1,133.91933,18.56974333825729,-1.0
 KELENRG,Financials,Trailing P/E (lower is better),-1,minus 1,58.04772918418839,18.56974333825729,-1.0
 KELENRG,Financials,Price / sales (lower is better),-1,minus 1,2.8967036681611074,0.6899548514128625,-1.0
 KELENRG,Financials,Debt / equity (lower is better),-1,minus 1,0.4788762875408803,0.31870047970608767,-1.0
