@@ -1,12 +1,12 @@
 {
  "statements_retry_after": {
-  "BAGMANE": "2026-11-17",
-  "DUMMYHEG": "2026-11-17",
+  "BAGMANE": "2026-11-24",
+  "DUMMYHEG": "2026-11-24",
   "DUMMYINGL1": "2026-11-05",
   "DUMMYINGL2": "2026-11-05",
-  "DUMMYINXGN": "2026-11-17",
+  "DUMMYINXGN": "2026-11-24",
   "DVL": "2026-10-27",
-  "TEAM24": "2026-11-17",
+  "TEAM24": "2026-11-24",
   "KHAZANCHI": "2026-10-29",
   "SUGALESL": "2026-11-16",
   "TRANOCE": "2026-11-04",
@@ -249,7 +249,9 @@
   "SNXT30BEES": "2026-11-23",
   "SNXT50BEES": "2026-11-23",
   "SNXT50BETA": "2026-11-23",
-  "STDSFAC": "2026-11-23"
+  "STDSFAC": "2026-11-23",
+  "STURDY": "2026-11-18",
+  "SUDTIND-B": "2026-11-18"
  },
  "shareholding_retry_after": {
   "08AGG": "2026-10-27",
@@ -270,54 +272,54 @@
   "JAYKAYPP": "2026-11-12",
   "OLAPP": "2026-11-12"
  },
- "last_batch_at": "2026-11-16T17:39Z",
- "last_statements_ok": 101,
- "last_statements_fail": 0,
+ "last_batch_at": "2026-11-16T20:07Z",
+ "last_statements_ok": 0,
+ "last_statements_fail": 6,
  "last_shareholding_ok": 183,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
-  "BIRET": "2026-11-16",
-  "EMBASSY": "2026-11-16",
-  "BAGMANE": "2026-11-16",
-  "DUMMYHEG": "2026-11-16",
+  "BIRET": "2026-11-17",
+  "EMBASSY": "2026-11-17",
+  "BAGMANE": "2026-11-17",
+  "DUMMYHEG": "2026-11-17",
   "DUMMYINGL1": "2026-11-04",
   "DUMMYINGL2": "2026-11-04",
-  "DUMMYINXGN": "2026-11-16",
+  "DUMMYINXGN": "2026-11-17",
   "OLAELEC-RE": "2026-10-27",
-  "APLABPP": "2026-11-16",
-  "ATLPP": "2026-11-16",
-  "GSAILPP": "2026-11-16",
-  "JAYKAYPP": "2026-11-16",
-  "QDLCCPS": "2026-11-16",
-  "SURAJINDPP": "2026-11-16",
-  "VERTEXPP": "2026-11-16",
+  "APLABPP": "2026-11-17",
+  "ATLPP": "2026-11-17",
+  "GSAILPP": "2026-11-17",
+  "JAYKAYPP": "2026-11-17",
+  "QDLCCPS": "2026-11-17",
+  "SURAJINDPP": "2026-11-17",
+  "VERTEXPP": "2026-11-17",
   "ICICIPRULI": "2026-10-27",
-  "ACESEPP": "2026-11-16",
+  "ACESEPP": "2026-11-17",
   "SHIVAM-RE1": "2026-11-16",
-  "ANIRITPP": "2026-11-16",
-  "CENTEXTPP": "2026-11-16",
-  "OLAPP": "2026-11-16",
-  "SUVID-RE": "2026-11-16"
+  "ANIRITPP": "2026-11-17",
+  "CENTEXTPP": "2026-11-17",
+  "OLAPP": "2026-11-17",
+  "SUVID-RE": "2026-11-17"
  },
  "last_shareholding_empty": 17,
  "last_shareholding_skipped": 0,
  "statements_failures": {
   "BAGMANE": {
-   "count": 5,
-   "last_on": "2026-11-14",
-   "retry_after": "2026-11-17",
+   "count": 6,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-24",
    "note": "no statement source answered"
   },
   "DUMMYHEG": {
-   "count": 5,
-   "last_on": "2026-11-14",
-   "retry_after": "2026-11-17",
+   "count": 6,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-24",
    "note": "no statement source answered"
   },
   "DUMMYINXGN": {
-   "count": 5,
-   "last_on": "2026-11-14",
-   "retry_after": "2026-11-17",
+   "count": 6,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-24",
    "note": "no statement source answered"
   },
   "SUGALESL": {
@@ -327,9 +329,9 @@
    "note": "quote only, no results"
   },
   "TEAM24": {
-   "count": 5,
-   "last_on": "2026-11-14",
-   "retry_after": "2026-11-17",
+   "count": 6,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-24",
    "note": "no statement source answered"
   },
   "POWERIETF": {
@@ -1771,6 +1773,18 @@
    "last_on": "2026-11-16",
    "retry_after": "2026-11-23",
    "note": "quote only, no results"
+  },
+  "STURDY": {
+   "count": 1,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-18",
+   "note": "no statement source answered"
+  },
+  "SUDTIND-B": {
+   "count": 1,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-18",
+   "note": "no statement source answered"
   }
  },
  "shareholding_failures": {

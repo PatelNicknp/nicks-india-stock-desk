@@ -237,13 +237,13 @@
   },
   "Yahoo BO": {
    "cooldown_until": "",
-   "fails": 0,
-   "last_error": ""
+   "fails": 1,
+   "last_error": "skipped after repeated failures in this run"
   },
   "Yahoo NS": {
    "cooldown_until": "",
-   "fails": 0,
-   "last_error": ""
+   "fails": 1,
+   "last_error": "skipped after repeated failures in this run"
   }
  },
  "stalls": {
@@ -257,7 +257,7 @@
   },
   "statements": {
    "cooldown_until": "",
-   "runs": 0
+   "runs": 1
   }
  },
  "unavailable": {
@@ -551,12 +551,12 @@
   },
   "statements:BAGMANE": {
    "kind": "statements",
-   "last_on": "2026-11-14",
+   "last_on": "2026-11-17",
    "note": "no statement source answered",
-   "retry_after": "2026-11-17",
+   "retry_after": "2026-11-24",
    "since": "2026-11-11",
    "ticker": "BAGMANE",
-   "tries": 4
+   "tries": 5
   },
   "statements:BANK10ADD": {
    "kind": "statements",
@@ -794,21 +794,21 @@
   },
   "statements:DUMMYHEG": {
    "kind": "statements",
-   "last_on": "2026-11-14",
+   "last_on": "2026-11-17",
    "note": "no statement source answered",
-   "retry_after": "2026-11-17",
+   "retry_after": "2026-11-24",
    "since": "2026-11-11",
    "ticker": "DUMMYHEG",
-   "tries": 4
+   "tries": 5
   },
   "statements:DUMMYINXGN": {
    "kind": "statements",
-   "last_on": "2026-11-14",
+   "last_on": "2026-11-17",
    "note": "no statement source answered",
-   "retry_after": "2026-11-17",
+   "retry_after": "2026-11-24",
    "since": "2026-11-11",
    "ticker": "DUMMYINXGN",
-   "tries": 4
+   "tries": 5
   },
   "statements:ECAPINSURE": {
    "kind": "statements",
@@ -2466,6 +2466,24 @@
    "ticker": "STDSFAC",
    "tries": 1
   },
+  "statements:STURDY": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-18",
+   "since": "2026-11-17",
+   "ticker": "STURDY",
+   "tries": 1
+  },
+  "statements:SUDTIND-B": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-18",
+   "since": "2026-11-17",
+   "ticker": "SUDTIND-B",
+   "tries": 1
+  },
   "statements:SUVID-RE": {
    "kind": "statements",
    "last_on": "2026-11-15",
@@ -2486,12 +2504,12 @@
   },
   "statements:TEAM24": {
    "kind": "statements",
-   "last_on": "2026-11-14",
+   "last_on": "2026-11-17",
    "note": "no statement source answered",
-   "retry_after": "2026-11-17",
+   "retry_after": "2026-11-24",
    "since": "2026-11-11",
    "ticker": "TEAM24",
-   "tries": 4
+   "tries": 5
   },
   "statements:ZODIAC": {
    "kind": "statements",
