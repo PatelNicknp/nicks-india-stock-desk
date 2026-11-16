@@ -66,7 +66,60 @@
   "BHASKAGR": "2026-11-23",
   "BSE500IETF": "2026-11-23",
   "BSLNIFTY": "2026-11-23",
-  "BSLSENETFG": "2026-11-23"
+  "BSLSENETFG": "2026-11-23",
+  "COMMOIETF": "2026-11-23",
+  "CONSUMAXIS": "2026-11-23",
+  "CONSUMER": "2026-11-23",
+  "CONSUMIETF": "2026-11-23",
+  "CONTCHM": "2026-11-23",
+  "CPSEETF": "2026-11-23",
+  "DEFENCE": "2026-11-23",
+  "DIVIDEND": "2026-11-23",
+  "ECAPINSURE": "2026-11-23",
+  "ELMDIV": "2026-11-23",
+  "ENERGY": "2026-11-23",
+  "ENERGYAXIS": "2026-11-23",
+  "ENEXT50": "2026-11-23",
+  "EQUAL200": "2026-11-23",
+  "EQUAL50": "2026-11-23",
+  "EQUAL50ADD": "2026-11-23",
+  "ESENSEX": "2026-11-23",
+  "ESG": "2026-11-23",
+  "EVIETF": "2026-11-23",
+  "EVINDIA": "2026-11-23",
+  "FINIETF": "2026-11-23",
+  "FLEXIADD": "2026-11-23",
+  "FMCGADD": "2026-11-23",
+  "FMCGIETF": "2026-11-23",
+  "GROWWDEFNC": "2026-11-23",
+  "GROWWHOSPI": "2026-11-23",
+  "GROWWPOWER": "2026-11-23",
+  "GROWWRAIL": "2026-11-23",
+  "HARCR": "2026-11-23",
+  "HDFCBSE500": "2026-11-23",
+  "HDFCGROWTH": "2026-11-23",
+  "HDFCLOWVOL": "2026-11-23",
+  "HDFCMID150": "2026-11-23",
+  "HDFCMOMENT": "2026-11-23",
+  "HDFCNEXT50": "2026-11-23",
+  "HDFCNIF100": "2026-11-23",
+  "HDFCNIFBAN": "2026-11-23",
+  "HDFCNIFIT": "2026-11-23",
+  "HDFCNIFTY": "2026-11-23",
+  "HDFCNIMEG": "2026-11-23",
+  "HDFCPSUBK": "2026-11-23",
+  "HDFCPVTBAN": "2026-11-23",
+  "HDFCQUAL": "2026-11-23",
+  "HDFCSENSEX": "2026-11-23",
+  "HDFCSML250": "2026-11-23",
+  "HDFCVALUE": "2026-11-23",
+  "HEALTHADD": "2026-11-23",
+  "HEALTHAXIS": "2026-11-23",
+  "HEALTHCARE": "2026-11-23",
+  "HEALTHIETF": "2026-11-23",
+  "HEALTHY": "2026-11-23",
+  "HFTSEINDIA": "2026-11-23",
+  "HNGSNGBEES": "2026-11-23"
  },
  "shareholding_retry_after": {
   "08AGG": "2026-10-27",
@@ -87,10 +140,10 @@
   "JAYKAYPP": "2026-11-12",
   "OLAPP": "2026-11-12"
  },
- "last_batch_at": "2026-11-16T01:05Z",
- "last_statements_ok": 1804,
+ "last_batch_at": "2026-11-16T02:21Z",
+ "last_statements_ok": 174,
  "last_statements_fail": 0,
- "last_shareholding_ok": 0,
+ "last_shareholding_ok": 182,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
   "BIRET": "2026-11-16",
@@ -116,7 +169,7 @@
   "OLAPP": "2026-11-16",
   "SUVID-RE": "2026-11-16"
  },
- "last_shareholding_empty": 1,
+ "last_shareholding_empty": 18,
  "last_shareholding_skipped": 0,
  "statements_failures": {
   "BAGMANE": {
@@ -486,6 +539,324 @@
    "note": "quote only, no results"
   },
   "BSLSENETFG": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "COMMOIETF": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "CONSUMAXIS": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "CONSUMER": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "CONSUMIETF": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "CONTCHM": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "CPSEETF": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "DEFENCE": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "DIVIDEND": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "ECAPINSURE": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "ELMDIV": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "ENERGY": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "ENERGYAXIS": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "ENEXT50": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "EQUAL200": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "EQUAL50": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "EQUAL50ADD": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "ESENSEX": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "ESG": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "EVIETF": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "EVINDIA": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "FINIETF": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "FLEXIADD": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "FMCGADD": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "FMCGIETF": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "GROWWDEFNC": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "GROWWHOSPI": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "GROWWPOWER": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "GROWWRAIL": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "HARCR": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "HDFCBSE500": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "HDFCGROWTH": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "HDFCLOWVOL": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "HDFCMID150": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "HDFCMOMENT": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "HDFCNEXT50": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "HDFCNIF100": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "HDFCNIFBAN": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "HDFCNIFIT": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "HDFCNIFTY": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "HDFCNIMEG": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "HDFCPSUBK": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "HDFCPVTBAN": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "HDFCQUAL": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "HDFCSENSEX": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "HDFCSML250": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "HDFCVALUE": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "HEALTHADD": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "HEALTHAXIS": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "HEALTHCARE": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "HEALTHIETF": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "HEALTHY": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "HFTSEINDIA": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "HNGSNGBEES": {
    "count": 0,
    "last_on": "2026-11-16",
    "retry_after": "2026-11-23",
