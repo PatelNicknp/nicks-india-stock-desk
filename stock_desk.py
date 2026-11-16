@@ -30,6 +30,7 @@ import fundamentals_backfill
 import trading_floor
 import trading_floor_paper
 import relative_strength
+import eps_rating
 import sector_leaders
 
 ROOT = None  # set in main so tests can point DESK_ROOT at a temp folder
@@ -3300,6 +3301,17 @@ def main(argv=None):
     # CANSLIM's L and the MarketSmith screens use the same number as the RS column.
     rs_on = features.get("rs_rank", True)
     rs_table = load_rs_table(close, universe, cfg, cache, mode, asof, rs_on)
+    # IBD-style EPS Rating (1-99) from the statements already loaded. No download.
+    eps_rating_on = features.get("eps_rating", True)
+    try:
+        chip_eps_table = eps_rating.build(quarters, annual, list(universe["ticker"]), skip=relative_strength.fund_tickers(universe)) if eps_rating_on else pd.DataFrame()
+        n_eps = int(pd.to_numeric(chip_eps_table.get("eps_rating"), errors="coerce").notna().sum()) if len(chip_eps_table) else 0
+        log("EPS Rating", "OK" if n_eps else "MISSING", asof,
+            "%d stocks rated 1 to 99 on EPS growth (last 2 quarters vs a year ago, blended with 3-year yearly EPS growth) "
+            "versus every India stock with data. A stock with no usable EPS history is left blank." % n_eps)
+    except Exception as exc:
+        chip_eps_table = pd.DataFrame()
+        log("EPS Rating", "MISSING", "", "EPS Rating could not be built: %s" % str(exc)[:120])
     rs_lookup = relative_strength.rs_map(rs_table)
     setup_universe = universe
     if len(universe) and len(scores) and "liquid" in scores.columns and (cfg.get("liquidity") or {}).get("enabled", True):
@@ -3718,6 +3730,7 @@ def main(argv=None):
         "scanner_minervini_1m": gated(ms_frames["scanner_minervini_1m"], "scanner_minervini_1m", m1_on, ms_notes["scanner_minervini_1m"]),
         "scanner_minervini_5m": gated(ms_frames["scanner_minervini_5m"], "scanner_minervini_5m", m5_on, ms_notes["scanner_minervini_5m"]),
         "rs_ratings": gated(rs_table, "rs_ratings", rs_on, "No relative strength rank yet. The after-close run builds it from saved prices."),
+        "eps_ratings": gated(chip_eps_table, "eps_ratings", eps_rating_on, "No EPS Rating yet. It is built from the saved quarterly and yearly EPS."),
         "sector_performance": gated(tables.sector_perf(scores), "sector_performance", features.get("sector_performance", True), "No sector performance."),
         "heatmaps": gated(heat, "heatmaps", features.get("heatmaps", True), "No heatmap."),
         "freshness": gated(fresh, "freshness", features.get("freshness_flags", True), "Freshness flags are off."),

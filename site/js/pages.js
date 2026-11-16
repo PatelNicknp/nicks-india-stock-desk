@@ -4229,6 +4229,7 @@
       "Tap the chips to show or hide the 10, 20, 50, 150 and 200-day averages and the volume. Your choice is saved on this device.",
       "The box in the top left shows every scanner the stock is on, its status, and the reason. Tap it for more. The Reasons chip hides it.",
       "The RS chip and the Why box show the 1 to 99 rank. RS 85 means it beat 85% of stocks over the past year. A stock with less than a year of prices has no rank.",
+      "The EPS chip next to it is the 1 to 99 EPS Rating. EPS 85 means the stock's earnings growth beat about 85% of India stocks. It blends the last 2 quarters' EPS growth versus a year ago with 3-year yearly EPS growth, and uses whichever is on file when one is missing. It turns green at 80 or more. No chip means there is not enough EPS history. Tap and hold it for the numbers.",
       "It uses the daily prices the desk already saves. Nothing new is downloaded.",
       "The RS line in the lower part of the price chart, below the candles and above the volume, is the stock close divided by the Nifty 50. A blue dot is a new 52-week high in that line. An amber dot means the line made that high before the price did. The RS line chip turns it off on this device.",
     ], splitNeedsToggle: true, splitLines: [
@@ -4241,6 +4242,7 @@
       "Tap the chips to show or hide the 10, 20, 50, 150 and 200-day averages and the volume. Your choice is saved on this device.",
       "The box in the top left shows every scanner the stock is on, its status, and the reason. Tap it for more. The Reasons chip hides it.",
       "The RS chip and the Why box show the 1 to 99 rank. RS 85 means it beat 85% of stocks over the past year. A stock with less than a year of prices has no rank.",
+      "The EPS chip next to it is the 1 to 99 EPS Rating. EPS 85 means the stock's earnings growth beat about 85% of India stocks. It blends the last 2 quarters' EPS growth versus a year ago with 3-year yearly EPS growth, and uses whichever is on file when one is missing. It turns green at 80 or more. No chip means there is not enough EPS history. Tap and hold it for the numbers.",
       "It uses the daily prices the desk already saves. Nothing new is downloaded.",
       "The RS line in the lower part of the price chart, below the candles and above the volume, is the stock close divided by the Nifty 50. A blue dot is a new 52-week high in that line. An amber dot means the line made that high before the price did. The RS line chip turns it off on this device.",
     ] },
