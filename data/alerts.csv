@@ -1,8 +1,10 @@
 ticker,kind,text,score,score_prev,verdict,verdict_prev,price,data_status,note,disclaimer
 4THGEN,verdict_change,4THGEN changed from Not scored yet to AVOID.,1,1,AVOID,Not scored yet,6.73,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 PADALPO,score_jump,PADALPO score moved from 2 to 0.,0,2,AVOID,AVOID,19.62,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+SJCORP,score_jump,SJCORP score moved from -2 to 0.,0,-2,AVOID,AVOID,200.6,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 SML,verdict_change,SML changed from Not scored yet to AVOID.,0,1,AVOID,Not scored yet,66.0,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 MARBU,score_jump,MARBU score moved from 1 to -1.,-1,1,AVOID,AVOID,44.29,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+SHRICON,score_jump,SHRICON score moved from 1 to -1.,-1,1,AVOID,AVOID,84.0,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 OSWALEA,verdict_change,OSWALEA changed from Not scored yet to AVOID.,-2,-1,AVOID,Not scored yet,86.69,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 SKILVEN,verdict_change,SKILVEN changed from Not scored yet to AVOID.,-2,-2,AVOID,Not scored yet,19.0,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 COLAB,score_jump,COLAB score moved from -1 to -3.,-3,-1,AVOID,AVOID,120.0,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
