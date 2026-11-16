@@ -119,7 +119,29 @@
   "HEALTHIETF": "2026-11-23",
   "HEALTHY": "2026-11-23",
   "HFTSEINDIA": "2026-11-23",
-  "HNGSNGBEES": "2026-11-23"
+  "HNGSNGBEES": "2026-11-23",
+  "ICICIB22": "2026-11-23",
+  "INFRA": "2026-11-23",
+  "INFRABEES": "2026-11-23",
+  "INFRAIETF": "2026-11-23",
+  "INSURADD": "2026-11-23",
+  "INSUREIETF": "2026-11-23",
+  "INTERNET": "2026-11-23",
+  "ITADD": "2026-11-23",
+  "ITAXIS": "2026-11-23",
+  "ITBEES": "2026-11-23",
+  "ITBETA": "2026-11-23",
+  "ITETF": "2026-11-23",
+  "ITIETF": "2026-11-23",
+  "IVZSENSEX": "2026-11-23",
+  "JUNIORBEES": "2026-11-23",
+  "KIMIABL": "2026-11-23",
+  "LARGEMID50": "2026-11-23",
+  "LICNETFN50": "2026-11-23",
+  "LICNFNHGP": "2026-11-23",
+  "LICNMID100": "2026-11-23",
+  "LOWVOLIETF": "2026-11-23",
+  "MAFANG": "2026-11-23"
  },
  "shareholding_retry_after": {
   "08AGG": "2026-10-27",
@@ -140,8 +162,8 @@
   "JAYKAYPP": "2026-11-12",
   "OLAPP": "2026-11-12"
  },
- "last_batch_at": "2026-11-16T02:21Z",
- "last_statements_ok": 174,
+ "last_batch_at": "2026-11-16T07:11Z",
+ "last_statements_ok": 124,
  "last_statements_fail": 0,
  "last_shareholding_ok": 182,
  "last_shareholding_fail": 0,
@@ -857,6 +879,138 @@
    "note": "quote only, no results"
   },
   "HNGSNGBEES": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "ICICIB22": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "INFRA": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "INFRABEES": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "INFRAIETF": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "INSURADD": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "INSUREIETF": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "INTERNET": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "ITADD": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "ITAXIS": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "ITBEES": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "ITBETA": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "ITETF": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "ITIETF": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "IVZSENSEX": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "JUNIORBEES": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "KIMIABL": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "LARGEMID50": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "LICNETFN50": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "LICNFNHGP": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "LICNMID100": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "LOWVOLIETF": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MAFANG": {
    "count": 0,
    "last_on": "2026-11-16",
    "retry_after": "2026-11-23",
