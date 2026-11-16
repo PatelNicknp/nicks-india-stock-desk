@@ -141,7 +141,70 @@
   "LICNFNHGP": "2026-11-23",
   "LICNMID100": "2026-11-23",
   "LOWVOLIETF": "2026-11-23",
-  "MAFANG": "2026-11-23"
+  "MAFANG": "2026-11-23",
+  "MAHKTECH": "2026-11-23",
+  "MAKEINDIA": "2026-11-23",
+  "MANUFGBEES": "2026-11-23",
+  "MARIS": "2026-11-23",
+  "MASPTOP50": "2026-11-23",
+  "METAL": "2026-11-23",
+  "METALIETF": "2026-11-23",
+  "MID150BEES": "2026-11-23",
+  "MID150CASE": "2026-11-23",
+  "MIDBANKADD": "2026-11-23",
+  "MIDCAPADD": "2026-11-23",
+  "MIDCAPBETA": "2026-11-23",
+  "MIDCAPETF": "2026-11-23",
+  "MIDCAPIETF": "2026-11-23",
+  "MIDQ50ADD": "2026-11-23",
+  "MIDSELIETF": "2026-11-23",
+  "MIDSMALL": "2026-11-23",
+  "MOCAPITAL": "2026-11-23",
+  "MODEFENCE": "2026-11-23",
+  "MODMA": "2026-11-23",
+  "MOHEALTH": "2026-11-23",
+  "MOLOWVOL": "2026-11-23",
+  "MOM100": "2026-11-23",
+  "MOM30IETF": "2026-11-23",
+  "MOM50": "2026-11-23",
+  "MOMENTUM": "2026-11-23",
+  "MOMENTUM50": "2026-11-23",
+  "MOMMIDCAP": "2026-11-23",
+  "MOMOMENTUM": "2026-11-23",
+  "MON100": "2026-11-23",
+  "MONIFTY500": "2026-11-23",
+  "MONQ50": "2026-11-23",
+  "MOQUALITY": "2026-11-23",
+  "MOREALTY": "2026-11-23",
+  "MOSMALL250": "2026-11-23",
+  "MOVALUE": "2026-11-23",
+  "MSCI360": "2026-11-23",
+  "MULTICAP": "2026-11-23",
+  "NETF": "2026-11-23",
+  "NEXT30ADD": "2026-11-23",
+  "NEXT50": "2026-11-23",
+  "NEXT50ADD": "2026-11-23",
+  "NEXT50BETA": "2026-11-23",
+  "NEXT50IETF": "2026-11-23",
+  "NIF100BEES": "2026-11-23",
+  "NIF100IETF": "2026-11-23",
+  "NIF500BETA": "2026-11-23",
+  "NIFTY1": "2026-11-23",
+  "NIFTYADD": "2026-11-23",
+  "NIFTYBEES": "2026-11-23",
+  "NIFTYBETA": "2026-11-23",
+  "NIFTYBETF": "2026-11-23",
+  "NIFTYCASE": "2026-11-23",
+  "NIFTYETF": "2026-11-23",
+  "NIFTYIETF": "2026-11-23",
+  "NIFTYJBLK": "2026-11-23",
+  "NIFTYQLITY": "2026-11-23",
+  "NORRIS": "2026-11-23",
+  "NV20IETF": "2026-11-23",
+  "NXT100CASE": "2026-11-23",
+  "OILIETF": "2026-11-23",
+  "OIVL": "2026-11-23",
+  "ORIENTTR": "2026-11-23"
  },
  "shareholding_retry_after": {
   "08AGG": "2026-10-27",
@@ -162,8 +225,8 @@
   "JAYKAYPP": "2026-11-12",
   "OLAPP": "2026-11-12"
  },
- "last_batch_at": "2026-11-16T07:11Z",
- "last_statements_ok": 124,
+ "last_batch_at": "2026-11-16T09:56Z",
+ "last_statements_ok": 142,
  "last_statements_fail": 0,
  "last_shareholding_ok": 182,
  "last_shareholding_fail": 0,
@@ -1011,6 +1074,384 @@
    "note": "quote only, no results"
   },
   "MAFANG": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MAHKTECH": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MAKEINDIA": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MANUFGBEES": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MARIS": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MASPTOP50": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "METAL": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "METALIETF": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MID150BEES": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MID150CASE": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MIDBANKADD": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MIDCAPADD": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MIDCAPBETA": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MIDCAPETF": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MIDCAPIETF": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MIDQ50ADD": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MIDSELIETF": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MIDSMALL": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MOCAPITAL": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MODEFENCE": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MODMA": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MOHEALTH": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MOLOWVOL": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MOM100": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MOM30IETF": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MOM50": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MOMENTUM": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MOMENTUM50": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MOMMIDCAP": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MOMOMENTUM": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MON100": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MONIFTY500": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MONQ50": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MOQUALITY": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MOREALTY": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MOSMALL250": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MOVALUE": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MSCI360": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "MULTICAP": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "NETF": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "NEXT30ADD": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "NEXT50": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "NEXT50ADD": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "NEXT50BETA": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "NEXT50IETF": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "NIF100BEES": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "NIF100IETF": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "NIF500BETA": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "NIFTY1": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "NIFTYADD": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "NIFTYBEES": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "NIFTYBETA": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "NIFTYBETF": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "NIFTYCASE": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "NIFTYETF": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "NIFTYIETF": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "NIFTYJBLK": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "NIFTYQLITY": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "NORRIS": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "NV20IETF": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "NXT100CASE": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "OILIETF": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "OIVL": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "ORIENTTR": {
    "count": 0,
    "last_on": "2026-11-16",
    "retry_after": "2026-11-23",
