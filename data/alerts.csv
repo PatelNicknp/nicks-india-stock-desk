@@ -1,4 +1,7 @@
 ticker,kind,text,score,score_prev,verdict,verdict_prev,price,data_status,note,disclaimer
+EMAMILTD,verdict_change,EMAMILTD changed from AVOID to HOLD.,5,3,HOLD,AVOID,408.1,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+EMAMILTD,score_jump,EMAMILTD score moved from 3 to 5.,5,3,HOLD,AVOID,408.1,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+EMAMILTD,score_cross,EMAMILTD crossed the hold line (4).,5,3,HOLD,AVOID,408.1,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 PANIDPR,verdict_change,PANIDPR changed from Not scored yet to HOLD.,4,2,HOLD,Not scored yet,90.0,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 PANIDPR,score_jump,PANIDPR score moved from 2 to 4.,4,2,HOLD,Not scored yet,90.0,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 PANIDPR,score_cross,PANIDPR crossed the hold line (4).,4,2,HOLD,Not scored yet,90.0,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
