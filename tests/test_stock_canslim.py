@@ -99,12 +99,12 @@ def test_help_uses_simple_words():
 def test_every_stock_gets_a_card_and_missing_letters_stay_blank():
     close, high, low, vol = _base_panel()
     quarters = pd.DataFrame([
-        {"ticker": "AAA", "frame": "CY2024Q3", "eps": 1.0},
-        {"ticker": "AAA", "frame": "CY2025Q3", "eps": 1.4},
+        {"ticker": "AAA", "frame": "CY2024Q3", "eps": 1.0, "revenue": 100.0},
+        {"ticker": "AAA", "frame": "CY2025Q3", "eps": 1.4, "revenue": 130.0},
     ])
     annual = pd.DataFrame([
-        {"ticker": "AAA", "frame": "CY2023", "eps": 2.0},
-        {"ticker": "AAA", "frame": "CY2024", "eps": 2.5},
+        {"ticker": "AAA", "frame": "CY2023", "eps": 2.0, "net_income": 20.0, "equity": 100.0},
+        {"ticker": "AAA", "frame": "CY2024", "eps": 2.5, "net_income": 25.0, "equity": 100.0},
     ])
     holders = pd.DataFrame([
         {"ticker": "AAA", "promoter_pct": 60.0, "fii_chg": 0.8, "dii_chg": 0.2, "public_pct": 20.0},
@@ -131,7 +131,9 @@ def test_every_stock_gets_a_card_and_missing_letters_stay_blank():
     bbb = out[out.ticker == "BBB"].iloc[0]
     ccc = out[out.ticker == "CCC"].iloc[0]
     assert aaa["c_value"] == 40.0 and aaa["c_mark"] == "pass"
+    assert aaa["c_sales"] == 30.0
     assert aaa["a_value"] == 25.0 and aaa["a_mark"] == "pass"
+    assert aaa["a_roe"] == 25.0 and aaa["a_roe_mark"] == "pass"
     assert aaa["n_mark"] == "pass"
     assert aaa["n_news_mark"] == "pass"
     assert "AAA wins a large order" in aaa["n_news_status"]
@@ -211,29 +213,36 @@ def test_switches_turn_pieces_off():
     assert len(empty) == 0
 
 
-def test_scanner_qualify_is_unchanged():
+def test_scanner_and_scorecard_share_the_oneil_numbers():
     close, high, low, vol = _base_panel()
     quarters = pd.DataFrame([
-        {"ticker": "AAA", "frame": "CY2024Q3", "eps": 1.0},
-        {"ticker": "AAA", "frame": "CY2025Q3", "eps": 1.4},
+        {"ticker": "AAA", "frame": "CY2024Q3", "eps": 1.0, "revenue": 100.0},
+        {"ticker": "AAA", "frame": "CY2025Q3", "eps": 1.4, "revenue": 130.0},
     ])
     annual = pd.DataFrame([
-        {"ticker": "AAA", "frame": "CY2023", "eps": 2.0},
-        {"ticker": "AAA", "frame": "CY2024", "eps": 2.5},
+        {"ticker": "AAA", "frame": "CY2023", "eps": 2.0, "net_income": 20.0, "equity": 100.0},
+        {"ticker": "AAA", "frame": "CY2024", "eps": 2.5, "net_income": 25.0, "equity": 100.0},
     ])
-    holders = pd.DataFrame([{"ticker": "AAA", "inst_up": 10, "inst_down": 4, "ownership_pct": 60}])
-    scanned, _ = setups.scan_canslim(close, high, low, vol, _uni(["AAA", "BBB"]), quarters, annual, holders)
+    holders = pd.DataFrame([{"ticker": "AAA", "fii_chg": 0.8, "dii_chg": 0.2, "ownership_pct": 60}])
+    rs = pd.DataFrame([{"ticker": "AAA", "rs": 88}])
+    scanned, _ = setups.scan_canslim(
+        close, high, low, vol, _uni(["AAA", "BBB"]), quarters, annual, holders, rs_map={"AAA": 88},
+    )
     card = setups.build_stock_canslim(
-        close, high, low, vol, _uni(["AAA", "BBB"]), quarters, annual, holders, cfg=_cfg(),
+        close, high, low, vol, _uni(["AAA", "BBB"]), quarters, annual, holders, cfg=_cfg(), rs_table=rs,
     )
     assert set(card["ticker"]) == {"AAA", "BBB"}
-    if len(scanned):
-        assert set(scanned["ticker"]).issubset({"AAA", "BBB"})
-        aaa = scanned[scanned.ticker == "AAA"].iloc[0]
-        assert aaa["c_quarterly_eps"] == 40.0
-        assert aaa["a_annual_eps"] == 25.0
-        assert "industry rank not verified" in aaa["note"]
-        assert "float not verified" in aaa["note"]
+    assert list(scanned["ticker"]) == ["AAA"]
+    aaa = scanned.iloc[0]
+    assert aaa["c_quarterly_eps"] == 40.0
+    assert aaa["c_sales"] == 30.0
+    assert aaa["a_annual_eps"] == 25.0
+    assert aaa["a_roe"] == 25.0
+    assert aaa["i_trend"] == "up"
+    assert "industry rank not verified" in aaa["note"]
+    assert "float not verified" in aaa["note"]
+    card_aaa = card[card.ticker == "AAA"].iloc[0]
+    assert card_aaa["c_mark"] == "pass" and card_aaa["a_mark"] == "pass" and card_aaa["i_mark"] == "pass"
 
 
 

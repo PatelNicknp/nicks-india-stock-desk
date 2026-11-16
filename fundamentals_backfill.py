@@ -205,6 +205,13 @@ def shareholding_covered(row):
     return False
 
 
+def shareholding_change_covered(row):
+    """True when a FII or DII quarter change is already on the latest holders row."""
+    if not row:
+        return False
+    return (not blank(row.get("fii_chg"))) or (not blank(row.get("dii_chg")))
+
+
 def band_for(row, liquid):
     """0 liquid NSE, 1 other NSE, 2 BSE-only."""
     ticker = str(row.get("ticker") or "").strip()
@@ -217,9 +224,20 @@ def band_for(row, liquid):
     return NSE
 
 
-def statements_due(covered, fetched_on, earnings_days, today, refresh_days):
+SHORT_HISTORY_RETRY_DAYS = 7
+
+
+def statements_due(covered, fetched_on, earnings_days, today, refresh_days, short_history=False,
+                   short_retry_days=SHORT_HISTORY_RETRY_DAYS):
     if not covered:
         return True
+    if short_history:
+        # Need about six quarters so the prior-quarter EPS and sales YoY can be computed.
+        # A name that was just asked and still came back short (new listing, or a
+        # source that only keeps four quarters) waits a week instead of being asked
+        # again every night ahead of names that have never been tried.
+        if not fetched_on or fetched_on <= shift_days(today, -int(short_retry_days)):
+            return True
     if not fetched_on:
         return True
     if fetched_on <= shift_days(today, -int(refresh_days)):
@@ -230,8 +248,15 @@ def statements_due(covered, fetched_on, earnings_days, today, refresh_days):
     return False
 
 
-def shareholding_due(covered, fetched_on, as_of, today, refresh_days):
+def shareholding_due(covered, fetched_on, as_of, today, refresh_days, change_covered=True):
     if not covered:
+        return True
+    if as_of and as_of > today:
+        # A filing dated in the future was mislabelled (an off-cycle column read as
+        # the next quarter end). Ask again so the corrected reader can fix it.
+        return True
+    if not change_covered:
+        # Levels exist, but FII+DII change is still blank. Try again so the I letter can fill in.
         return True
     if not fetched_on:
         return True
@@ -258,7 +283,17 @@ def earnings_by_ticker(earn):
     return out
 
 
-def build_queue(universe, scores, info, annual, holders, earn, cursor, today, refresh_days, kind):
+def statements_short_history(quarters, ticker, min_quarters=6):
+    """True when this name has too few quarterly rows to compute prior-quarter YoY."""
+    if quarters is None or len(quarters) == 0 or "ticker" not in getattr(quarters, "columns", []):
+        return True
+    sub = quarters[quarters["ticker"].astype(str).str.upper() == str(ticker).upper()]
+    if "frame" in sub.columns:
+        sub = sub[sub["frame"].astype(str).str.contains("Q", na=False)]
+    return int(len(sub)) < int(min_quarters)
+
+
+def build_queue(universe, scores, info, annual, holders, earn, cursor, today, refresh_days, kind, quarters=None):
     """Ordered records. Missing names in each band come before any refresh."""
     if universe is None or len(universe) == 0 or "ticker" not in universe.columns:
         return []
@@ -282,15 +317,20 @@ def build_queue(universe, scores, info, annual, holders, earn, cursor, today, re
         if kind == "statements":
             covered = ticker in annual_set or ticker in info_set
             fetched = info_stamp.get(ticker, "")
-            due = statements_due(covered, fetched, earn_map.get(ticker), today, days)
+            short = statements_short_history(quarters, ticker) if covered else False
+            due = statements_due(covered, fetched, earn_map.get(ticker), today, days, short_history=short)
             as_of = ""
         else:
             hold = hold_map.get(ticker) or {}
             covered = shareholding_covered(hold)
             fetched = parse_day(hold.get("fetched_on"))
             as_of = parse_day(hold.get("as_of"))
-            due = shareholding_due(covered, fetched, as_of, today, days)
-            if not covered and is_fund_unit(rec):
+            change_ok = shareholding_change_covered(hold)
+            if is_fund_unit(rec):
+                # Funds and ETFs have no FII/DII pattern to backfill.
+                change_ok = True
+            due = shareholding_due(covered, fetched, as_of, today, days, change_covered=change_ok)
+            if is_fund_unit(rec) and not covered:
                 due = False
         retry_after = parse_day(retry.get(ticker))
         if retry_after and retry_after > today:
@@ -300,6 +340,11 @@ def build_queue(universe, scores, info, annual, holders, earn, cursor, today, re
         if kind == "shareholding":
             stamped = parse_day(((cursor or {}).get("shareholding_empty_on") or {}).get(ticker))
             defer = bool(stamped) and stamped == today
+        gap = False
+        if kind == "statements":
+            gap = bool(covered) and statements_short_history(quarters, ticker)
+        else:
+            gap = bool(covered) and not shareholding_change_covered(hold_map.get(ticker) or {}) and not is_fund_unit(rec)
         rows.append({
             "ticker": ticker,
             "band": band_for(rec, liquid),
@@ -307,6 +352,7 @@ def build_queue(universe, scores, info, annual, holders, earn, cursor, today, re
             "fetched_on": fetched,
             "as_of": as_of,
             "due": due,
+            "gap": gap,
             "retry_after": retry_after,
             "defer": defer,
             "exchange": rec.get("exchange") or "",
@@ -317,6 +363,7 @@ def build_queue(universe, scores, info, annual, holders, earn, cursor, today, re
         })
     rows.sort(key=lambda r: (
         0 if not r["covered"] else 1,
+        0 if r.get("gap") else 1,
         1 if r.get("defer") else 0,
         r["band"],
         r["fetched_on"] or "0000-00-00",
@@ -432,19 +479,35 @@ def _tag_yahoo_rows(rows, symbol, currency):
     return out
 
 
-def fetch_statements(rec, cfg, book, codes=None):
+def _ends_for(frame, ticker):
+    if frame is None or len(frame) == 0 or "ticker" not in getattr(frame, "columns", []):
+        return set()
+    sub = frame[frame["ticker"].astype(str).str.upper() == str(ticker).upper()]
+    if "end" in sub.columns:
+        return {str(v)[:10] for v in sub["end"].tolist() if str(v)[:10] not in ("", "nan", "None")}
+    return set()
+
+
+def fetch_statements(rec, cfg, book, codes=None, existing_quarters=None, existing_annual=None):
     ticker = rec["ticker"]
     nse = str(rec.get("nse_symbol") or "").strip().upper()
     bse_sym = str(rec.get("bse_symbol") or "").strip().upper()
     bse_only = str(rec.get("in_bse_only") or "").lower() == "yes" or str(rec.get("exchange") or "").upper() == "BSE"
     codes = codes or {}
     code = codes.get(ticker) or codes.get(bse_sym) or codes.get(str(rec.get("isin") or "").strip().upper())
+    fill_only = bool(rec.get("gap"))
+    have_q = _ends_for(existing_quarters, ticker) if fill_only else set()
+    have_a = _ends_for(existing_annual, ticker) if fill_only else set()
 
     def attempt_nse():
         symbol = nse or ("" if bse_only else str(ticker).strip().upper())
         if not symbol or bse_only:
             return None
-        return exchange_financials.fetch_nse_statements(symbol, cfg, ticker=ticker)
+        return exchange_financials.fetch_nse_statements(
+            symbol, cfg, ticker=ticker,
+            have_quarter_ends=have_q or None, have_annual_ends=have_a or None,
+            fill_only=fill_only,
+        )
 
     def attempt_bse():
         if not code:
@@ -474,12 +537,52 @@ def fetch_statements(rec, cfg, book, codes=None):
         steps.append(("NSE results", attempt_nse))
     if code:
         steps.append(("BSE results", attempt_bse))
+    yahoo_steps = []
     for symbol in statement_symbols(rec):
         # One label per listing so three failures skip that listing for the rest of the run.
         label = "Yahoo BO" if str(symbol).endswith(".BO") else "Yahoo NS"
-        steps.append((label, attempt(symbol)))
+        yahoo_steps.append((label, attempt(symbol)))
+    steps.extend(yahoo_steps)
     value, source, _outcome = first_good("statements:" + ticker, steps, book, pause=0.2)
+    if value and fill_only and source in EXCHANGE_STATEMENT_SOURCES:
+        value = add_recent_quarters(ticker, value, yahoo_steps, book)
     return value, source
+
+
+EXCHANGE_STATEMENT_SOURCES = ("NSE results", "BSE results")
+
+
+def add_recent_quarters(ticker, value, yahoo_steps, book):
+    """Top up an exchange gap fill with Yahoo's recent quarters.
+
+    NSE's structured XBRL list stops around the end of 2024 (later results moved
+    to integrated PDF filings), so a gap fill brings back older quarters but not
+    the latest ones. The prior-quarter YoY needs both ends, so ask the first
+    Yahoo listing that answers and add its rows. Exchange rows stay last so they
+    win where both have the same quarter. A Yahoo miss leaves the exchange answer.
+    """
+    for name, fn in yahoo_steps or []:
+        if not book.allow(name):
+            continue
+        try:
+            extra = fn()
+        except Exception as exc:
+            book.hit("statements:" + ticker, name, "FAILED", str(exc)[:160])
+            continue
+        if not extra:
+            continue
+        book.ok("statements:" + ticker, name, "recent quarters")
+        out = dict(value)
+        out["quarters"] = list(extra.get("quarters") or []) + list(value.get("quarters") or [])
+        out["annual"] = list(extra.get("annual") or []) + list(value.get("annual") or [])
+        info = dict(extra.get("info") or {})
+        for key, val in (value.get("info") or {}).items():
+            if not blank(val):
+                info[key] = val
+        out["info"] = info
+        out["earn"] = list(value.get("earn") or []) + list(extra.get("earn") or [])
+        return out
+    return value
 
 
 def parse_screener_shareholding(html):
@@ -516,16 +619,21 @@ def parse_screener_shareholding(html):
         if label and nums:
             found[label] = nums
 
-    def pick(*names):
+    def series(*names):
         for name in names:
-            series = found.get(name)
-            if not series:
-                continue
-            latest = series[-1]
-            prev = series[-2] if len(series) >= 2 else None
-            change = None if prev is None else round(latest - prev, 2)
-            return latest, change
-        return None, None
+            vals = found.get(name)
+            if vals:
+                return vals
+        return []
+
+    def pick(*names):
+        vals = series(*names)
+        if not vals:
+            return None, None
+        latest = vals[-1]
+        prev = vals[-2] if len(vals) >= 2 else None
+        change = None if prev is None else round(latest - prev, 2)
+        return latest, change
 
     promoter, promoter_chg = pick("promoters", "promoter")
     fii, fii_chg = pick("fiis", "fii")
@@ -534,11 +642,27 @@ def parse_screener_shareholding(html):
     if promoter is None and fii is None and dii is None and public is None:
         return None
     as_of = ""
+    ends = [india_data.quarter_end(d) for d in dates]
     if dates:
-        try:
-            as_of = pd.to_datetime(dates[-1]).strftime("%Y-%m-%d")
-        except Exception:
-            as_of = ""
+        as_of = ends[-1] or ""
+        if not as_of:
+            try:
+                as_of = pd.to_datetime(dates[-1]).strftime("%Y-%m-%d")
+            except Exception:
+                as_of = ""
+    history = []
+    promo_s, fii_s, dii_s, pub_s = series("promoters", "promoter"), series("fiis", "fii"), series("diis", "dii"), series("public")
+    n = max(len(ends), len(promo_s), len(fii_s), len(dii_s), len(pub_s))
+    for i in range(n):
+        day = ends[i] if i < len(ends) else ""
+        history.append(india_data.history_record(
+            "", day,
+            promo_s[i] if i < len(promo_s) else None,
+            fii_s[i] if i < len(fii_s) else None,
+            dii_s[i] if i < len(dii_s) else None,
+            pub_s[i] if i < len(pub_s) else None,
+            "Screener",
+        ))
     return {
         "promoter_pct": promoter,
         "fii_pct": fii,
@@ -550,18 +674,18 @@ def parse_screener_shareholding(html):
         "public_chg": public_chg,
         "as_of": as_of,
         "source": "Screener",
+        "_history": history,
     }
 
 
 def fetch_nse_shareholding(symbol, cfg):
-    history = india_data.fetch_shareholding_master(symbol, cfg)
-    split = {}
-    if history and history[-1].get("xbrl"):
-        try:
-            split = india_data.fetch_xbrl_split(history[-1]["xbrl"], cfg) or {}
-        except Exception:
-            split = {}
-    row = india_data.shareholding_row(symbol, history, split)
+    limit = 4
+    raw = (cfg or {}).get("fundamentals_backfill") or {}
+    try:
+        limit = max(2, int(raw.get("nse_shareholding_xbrl_quarters", 4)))
+    except (TypeError, ValueError):
+        limit = 4
+    row = india_data.collect_nse_shareholding(symbol, cfg, xbrl_limit=limit)
     if not row or not shareholding_covered(row):
         return None
     return row
@@ -636,40 +760,71 @@ def fetch_bse_shareholding(code, cfg):
     return _bse_share_row(payload)
 
 
-def _bse_share_row(payload):
+def _bse_share_items(payload):
     rows = payload if isinstance(payload, list) else []
     if isinstance(payload, dict):
         for key in ("Table", "Data", "data"):
             if isinstance(payload.get(key), list):
                 rows = payload[key]
                 break
-    if not rows:
-        return None
-    latest = rows[-1] if isinstance(rows[-1], dict) else None
-    if not latest:
-        return None
-    folded = {str(k).lower(): v for k, v in latest.items()}
+        else:
+            if not rows:
+                for val in payload.values():
+                    if isinstance(val, list) and val and isinstance(val[0], dict):
+                        rows = val
+                        break
+    return [item for item in rows if isinstance(item, dict)]
 
-    def grab(*names):
-        for name in names:
-            if name in folded and not blank(folded[name]):
-                return india_data._pct_num(folded[name])
-        return None
 
-    promoter = grab("promoter", "promoters", "promoter_and_promoter_group")
-    fii = grab("fii", "fiis", "foreign")
-    dii = grab("dii", "diis")
-    public = grab("public", "public_shareholding")
-    if promoter is None and fii is None and dii is None and public is None:
+def _bse_grab(folded, *names):
+    for name in names:
+        if name in folded and not blank(folded[name]):
+            return india_data._pct_num(folded[name])
+    return None
+
+
+def _bse_share_row(payload):
+    items = _bse_share_items(payload)
+    if not items:
         return None
-    return {
-        "promoter_pct": promoter,
-        "fii_pct": fii,
-        "dii_pct": dii,
-        "public_pct": public,
-        "as_of": parse_day(folded.get("qtr") or folded.get("date") or ""),
+    history = []
+    snapshots = []
+    for item in items:
+        folded = {str(k).lower(): v for k, v in item.items()}
+        promoter = _bse_grab(folded, "promoter", "promoters", "promoter_and_promoter_group")
+        fii = _bse_grab(folded, "fii", "fiis", "foreign")
+        dii = _bse_grab(folded, "dii", "diis")
+        public = _bse_grab(folded, "public", "public_shareholding")
+        as_of = parse_day(folded.get("qtr") or folded.get("date") or folded.get("as_of") or "")
+        if promoter is None and fii is None and dii is None and public is None:
+            continue
+        end = india_data.quarter_end(as_of) or as_of
+        rec = {
+            "promoter_pct": promoter,
+            "fii_pct": fii,
+            "dii_pct": dii,
+            "public_pct": public,
+            "as_of": end or as_of,
+            "quarter_end": end,
+        }
+        snapshots.append(rec)
+        history.append(india_data.history_record("", rec["as_of"], promoter, fii, dii, public, "BSE shareholding"))
+    if not snapshots:
+        return None
+    latest, prior = india_data.latest_and_prior(history)
+    latest = latest or snapshots[-1]
+    row = {
+        "promoter_pct": latest.get("promoter_pct"),
+        "fii_pct": latest.get("fii_pct"),
+        "dii_pct": latest.get("dii_pct"),
+        "public_pct": latest.get("public_pct"),
+        "as_of": latest.get("as_of") or "",
         "source": "BSE shareholding",
+        "_history": history,
     }
+    if latest and prior:
+        row.update(india_data.changes_from_levels(latest, prior))
+    return row
 
 
 def requests_mod():
@@ -721,14 +876,24 @@ def fetch_shareholding(rec, cfg, codes, book):
     bse_sym = str(rec.get("bse_symbol") or "").strip().upper()
     bse_only = str(rec.get("in_bse_only") or "").lower() == "yes" or str(rec.get("exchange") or "").upper() == "BSE"
     steps = []
+    nse_step = None
     if nse and not bse_only:
-        steps.append(("NSE shareholding", lambda symbol=nse: fetch_nse_shareholding(symbol, cfg)))
+        nse_step = ("NSE shareholding", lambda symbol=nse: fetch_nse_shareholding(symbol, cfg))
     code = codes.get(ticker) or codes.get(bse_sym) or codes.get(str(rec.get("isin") or "").strip().upper())
     slugs = screener_slugs(rec, code)
+    screener_step = None
     if slugs:
-        steps.append(("Screener shareholding", lambda symbols=slugs: fetch_screener_shareholding(symbols, cfg)))
+        screener_step = ("Screener shareholding", lambda symbols=slugs: fetch_screener_shareholding(symbols, cfg))
+    bse_step = None
     if code:
-        steps.append(("BSE shareholding", lambda scrip=code: fetch_bse_shareholding(scrip, cfg)))
+        bse_step = ("BSE shareholding", lambda scrip=code: fetch_bse_shareholding(scrip, cfg))
+    # When levels already exist and only the quarter change is missing, start with
+    # Screener: one page has several quarters. Then BSE, then the NSE XBRL history.
+    if rec.get("gap"):
+        order = (screener_step, bse_step, nse_step)
+    else:
+        order = (nse_step, screener_step, bse_step)
+    steps = [step for step in order if step]
     value, source, outcome = first_good("shareholding:" + ticker, steps, book, pause=0.25)
     if not value:
         return None, source, outcome
@@ -737,19 +902,78 @@ def fetch_shareholding(rec, cfg, codes, book):
     row["source"] = row.get("source") or source
     if row.get("ownership_pct") in (None, ""):
         row["ownership_pct"] = row.get("promoter_pct")
+    history = _history_from_row(ticker, row)
+    # If the first source has levels but no FII+DII change, try the later sources
+    # only to fill the history cache. Do not replace a good first answer's levels.
+    if not shareholding_change_covered(row):
+        started = False
+        for name, fn in steps:
+            if not started:
+                if name == source:
+                    started = True
+                continue
+            try:
+                extra = fn()
+            except Exception:
+                extra = None
+            if not extra:
+                continue
+            extra = dict(extra)
+            extra["ticker"] = ticker
+            history.extend(_history_from_row(ticker, extra))
+            time.sleep(0.25)
+    row["_history"] = history
+    row = india_data.apply_history_changes(row, history)
     return row, source, "ok"
+
+
+def _history_from_row(ticker, row):
+    out = []
+    for rec in (row or {}).get("_history") or []:
+        item = dict(rec)
+        item["ticker"] = ticker
+        item["source"] = item.get("source") or (row.get("source") or "")
+        item["quarter_end"] = item.get("quarter_end") or india_data.quarter_end(item.get("as_of"))
+        out.append(item)
+    # Always keep the latest snapshot, even when the parser did not attach history.
+    if row and (row.get("as_of") or row.get("fii_pct") or row.get("dii_pct") or row.get("promoter_pct")):
+        out.append(india_data.history_record(
+            ticker, row.get("as_of"), row.get("promoter_pct"), row.get("fii_pct"),
+            row.get("dii_pct"), row.get("public_pct"), row.get("source") or "",
+        ))
+    return out
 
 
 def _merge_frames(old, add_rows):
     if not add_rows:
         return old
     add = pd.DataFrame(add_rows)
+    return union_statement_frames(old, add)
+
+
+def union_statement_frames(old, add):
+    """Keep every ticker+frame already saved, and fill or replace with the new rows.
+
+    A shorter Yahoo refresh must not wipe older NSE quarters that the prior-quarter
+    YoY check needs.
+    """
+    if add is None or len(add) == 0:
+        return old
     if old is None or len(old) == 0:
         return add
     if "ticker" not in old.columns:
         return add
-    keep = old[~old["ticker"].astype(str).isin(set(add["ticker"].astype(str)))]
-    return pd.concat([keep, add], ignore_index=True)
+    if "ticker" not in add.columns:
+        return old
+    if "frame" not in old.columns or "frame" not in add.columns:
+        keep = old[~old["ticker"].astype(str).isin(set(add["ticker"].astype(str)))]
+        return pd.concat([keep, add], ignore_index=True)
+    both = pd.concat([old, add], ignore_index=True)
+    both["ticker"] = both["ticker"].astype(str)
+    both["frame"] = both["frame"].astype(str)
+    # The later copy of a ticker+frame wins, so a refresh can correct a cell.
+    both = both.drop_duplicates(["ticker", "frame"], keep="last")
+    return both.reset_index(drop=True)
 
 
 def _mark_retry(cursor, kind, ticker, today):
@@ -956,6 +1180,7 @@ def _run_batch_locked(root, cfg, spec, data, cache):
         quarters = read_csv(os.path.join(cache, "quarters.csv"))
         earn = read_csv(os.path.join(cache, "earnings.csv"))
         holders = read_csv(os.path.join(cache, "holders.csv"))
+        holders_history = read_csv(os.path.join(cache, "holders_history.csv"))
     except download_guard.CacheUnreadable as exc:
         print("NEEDS A PERSON:", exc)
         return {"enabled": True, "cache_unreadable": str(exc), "statements_ok": 0, "shareholding_ok": 0}
@@ -1000,7 +1225,9 @@ def _run_batch_locked(root, cfg, spec, data, cache):
     new_a, new_q, info_rows, earn_rows = [], [], [], []
     if len(info):
         info_rows.extend(info.to_dict("records"))
+    holders = india_data.enrich_holders_from_history(holders, holders_history)
     hold_map = _row_map(holders)
+    history_df = holders_history if holders_history is not None else pd.DataFrame(columns=list(india_data.HOLDERS_HISTORY_COLS))
 
     # Shareholding first so a full statement pass cannot use up the 18 minute budget
     # before any holder rows are saved.
@@ -1032,7 +1259,10 @@ def _run_batch_locked(root, cfg, spec, data, cache):
             up, down = india_data.trend_from_change(chg_n)
             row["inst_up"] = up
             row["inst_down"] = down
+            hist = row.pop("_history", None) or []
             hold_map[ticker] = row
+            if hist:
+                history_df = india_data.merge_holders_history(history_df, hist)
             _clear_retry(cursor, "shareholding", ticker)
             _clear_empty(cursor, ticker)
             _clear_shareholding_failed(cursor, ticker)
@@ -1058,17 +1288,17 @@ def _run_batch_locked(root, cfg, spec, data, cache):
             if guard.record("down"):
                 print("Shareholding stopped for this run: " + guard.reason)
                 break
-        _flush_holders(hold_map, cache)
+        _flush_holders(hold_map, cache, history_df)
         download_guard.save_ledger(cache, ledger)
         save_cursor(cache, cursor)
         if outcome != "retired":
             # Most BSE-only names have one live source (Screener), so keep at
             # least a second between names to stay polite.
             time.sleep(max(pause, SHAREHOLDING_MIN_GAP))
-    _flush_holders(hold_map, cache)
+    _flush_holders(hold_map, cache, history_df)
     save_cursor(cache, cursor)
 
-    state_queue = build_queue(universe, scores, info, annual, holders, earn, cursor, today, refresh, "statements")
+    state_queue = build_queue(universe, scores, info, annual, holders, earn, cursor, today, refresh, "statements", quarters=quarters)
     todo = [] if state_block else take_batch(state_queue, spec["statements_per_run"])
     print("Statements batch %d" % len(todo))
     streak = 0
@@ -1078,7 +1308,7 @@ def _run_batch_locked(root, cfg, spec, data, cache):
             break
         ticker = rec["ticker"]
         try:
-            bundle, source = fetch_statements(rec, cfg, book, codes)
+            bundle, source = fetch_statements(rec, cfg, book, codes, existing_quarters=quarters, existing_annual=annual)
             if not bundle:
                 raise RuntimeError("no statement source answered")
             info_row = dict(bundle["info"])
@@ -1203,14 +1433,12 @@ def _refresh_company_lines(root, cfg, codes, book, spec, deadline):
 def _flush_statements(annual, quarters, new_a, new_q, cache):
     if new_a:
         add = pd.concat(new_a, ignore_index=True)
-        keep = annual[~annual["ticker"].astype(str).isin(set(add["ticker"].astype(str)))] if len(annual) and "ticker" in annual.columns else annual
-        annual = pd.concat([keep, add], ignore_index=True) if len(keep) else add
+        annual = union_statement_frames(annual, add)
         download_guard.atomic_write_df(os.path.join(cache, "annual.csv"), annual)
         new_a.clear()
     if new_q:
         add = pd.concat(new_q, ignore_index=True)
-        keep = quarters[~quarters["ticker"].astype(str).isin(set(add["ticker"].astype(str)))] if len(quarters) and "ticker" in quarters.columns else quarters
-        quarters = pd.concat([keep, add], ignore_index=True) if len(keep) else add
+        quarters = union_statement_frames(quarters, add)
         download_guard.atomic_write_df(os.path.join(cache, "quarters.csv"), quarters)
         new_q.clear()
     return annual, quarters
@@ -1230,10 +1458,17 @@ def _flush_info_earn(info_rows, earn_rows, earn, cache):
         download_guard.atomic_write_df(os.path.join(cache, "earnings.csv"), earn)
 
 
-def _flush_holders(hold_map, cache):
-    if not hold_map:
-        return
-    download_guard.atomic_write_df(os.path.join(cache, "holders.csv"), pd.DataFrame(list(hold_map.values())))
+def _flush_holders(hold_map, cache, history_df=None):
+    if hold_map:
+        rows = []
+        for rec in hold_map.values():
+            item = dict(rec)
+            item.pop("_history", None)
+            rows.append(item)
+        download_guard.atomic_write_df(os.path.join(cache, "holders.csv"), pd.DataFrame(rows))
+    if history_df is not None and len(history_df):
+        download_guard.atomic_write_df(os.path.join(cache, "holders_history.csv"), history_df)
+    return history_df
 
 
 def _write_progress(data, frame):

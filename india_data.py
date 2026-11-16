@@ -449,15 +449,26 @@ def parse_shareholding_xbrl(text):
         found.setdefault(key, {})[instant[:10]] = round(val, 2)
     if not found:
         return {}
+    days = sorted({day for by_day in found.values() for day in by_day})
+    history = []
+    for day in days:
+        history.append({
+            "as_of": day,
+            "quarter_end": quarter_end(day),
+            "promoter_pct": found.get("promoter_pct", {}).get(day),
+            "fii_pct": found.get("fii_pct", {}).get(day),
+            "dii_pct": found.get("dii_pct", {}).get(day),
+            "public_pct": found.get("public_pct", {}).get(day),
+        })
     out = {}
-    dates = []
-    for key, by_day in found.items():
-        ordered = sorted(by_day.items())
-        out[key] = ordered[-1][1]
-        dates.append(ordered[-1][0])
-        if len(ordered) >= 2:
-            out[key.replace("_pct", "_chg")] = round(ordered[-1][1] - ordered[-2][1], 2)
-    out["as_of"] = max(dates) if dates else ""
+    latest, prior = latest_and_prior(history)
+    if latest:
+        for key in ("promoter_pct", "fii_pct", "dii_pct", "public_pct"):
+            out[key] = latest.get(key)
+        out["as_of"] = latest.get("as_of") or ""
+    if latest and prior:
+        out.update(changes_from_levels(latest, prior))
+    out["_history"] = history
     return out
 
 
@@ -468,10 +479,206 @@ def fetch_xbrl_split(url, cfg):
     return parse_shareholding_xbrl(text)
 
 
+def collect_nse_shareholding(symbol, cfg, xbrl_limit=4):
+    """Latest NSE shareholding row plus a quarter history from recent XBRL filings.
+
+    The master list has promoter levels for many quarters, but FII and DII live in
+    the XBRL. One filing often has only the current quarter, so this downloads
+    up to xbrl_limit recent files and computes the change from consecutive levels.
+    """
+    history = fetch_shareholding_master(symbol, cfg)
+    split = {}
+    all_hist = []
+    wanted = [item for item in (history or []) if item.get("xbrl")]
+    # Newest last; take the last xbrl_limit filings.
+    for item in wanted[-max(1, int(xbrl_limit or 1)):]:
+        try:
+            parsed = fetch_xbrl_split(item.get("xbrl"), cfg) or {}
+        except Exception:
+            parsed = {}
+        if parsed:
+            split = parsed
+        for rec in (parsed.get("_history") or []):
+            all_hist.append(history_record(
+                symbol, rec.get("as_of") or item.get("as_of"),
+                rec.get("promoter_pct"), rec.get("fii_pct"), rec.get("dii_pct"),
+                rec.get("public_pct"), "NSE shareholding",
+            ))
+        if parsed and not parsed.get("_history"):
+            all_hist.append(history_record(
+                symbol, parsed.get("as_of") or item.get("as_of"),
+                parsed.get("promoter_pct"), parsed.get("fii_pct"),
+                parsed.get("dii_pct"), parsed.get("public_pct"),
+                "NSE shareholding",
+            ))
+    if split:
+        split = dict(split)
+        split["_history"] = (split.get("_history") or []) + all_hist
+    row = shareholding_row(symbol, history, split)
+    return row
+
+
 def _chg(new, old):
     if new is None or old is None:
         return None
     return round(float(new) - float(old), 2)
+
+
+HOLDERS_HISTORY_COLS = (
+    "ticker", "as_of", "quarter_end",
+    "promoter_pct", "fii_pct", "dii_pct", "public_pct", "source",
+)
+
+
+def quarter_end(value):
+    """Map a date or 'Sep 2026' label to its period end, for joining sources.
+
+    Dates in a quarter-end month (Mar, Jun, Sep, Dec) map to that quarter end.
+    An off-cycle filing (for example Screener's 'Oct 2026' column after an
+    allotment) maps to its own month end. Rolling it forward to the next
+    quarter end would invent a future quarter (Dec 2026 in November) and keep
+    the row from ever looking stale.
+    """
+    text = str(value or "").strip()
+    if not text or text.lower() in ("nan", "none"):
+        return ""
+    try:
+        stamp = pd.to_datetime(text, errors="coerce")
+    except Exception:
+        return ""
+    if stamp is None or pd.isna(stamp):
+        return ""
+    stamp = pd.Timestamp(stamp)
+    if int(stamp.month) % 3 != 0:
+        return (stamp.normalize() + pd.offsets.MonthEnd(0)).strftime("%Y-%m-%d")
+    month = int(stamp.month)
+    day = 31 if month in (3, 12) else 30
+    return pd.Timestamp(year=int(stamp.year), month=month, day=day).strftime("%Y-%m-%d")
+
+
+def _blank_num(value):
+    if value is None or value == "":
+        return None
+    try:
+        if pd.isna(value):
+            return None
+    except (TypeError, ValueError):
+        pass
+    return _pct_num(value) if not isinstance(value, (int, float)) else (None if not np.isfinite(float(value)) else float(value))
+
+
+def changes_from_levels(latest, prior):
+    """FII, DII, promoter, and public point changes between two quarter snapshots."""
+    latest = latest or {}
+    prior = prior or {}
+    out = {}
+    for key in ("promoter", "fii", "dii", "public"):
+        out[key + "_chg"] = _chg(_blank_num(latest.get(key + "_pct")), _blank_num(prior.get(key + "_pct")))
+    return out
+
+
+def history_record(ticker, as_of, promoter=None, fii=None, dii=None, public=None, source=""):
+    end = quarter_end(as_of)
+    return {
+        "ticker": str(ticker or "").strip().upper(),
+        "as_of": str(as_of or "")[:10] or end,
+        "quarter_end": end,
+        "promoter_pct": _blank_num(promoter),
+        "fii_pct": _blank_num(fii),
+        "dii_pct": _blank_num(dii),
+        "public_pct": _blank_num(public),
+        "source": source or "",
+    }
+
+
+def latest_and_prior(rows):
+    """Newest and previous distinct quarter from a list of history records."""
+    usable = []
+    seen = set()
+    for row in sorted((rows or []), key=lambda r: r.get("quarter_end") or r.get("as_of") or ""):
+        key = row.get("quarter_end") or row.get("as_of") or ""
+        if not key or key in seen:
+            # Later row for the same quarter overwrites the earlier one.
+            if key and usable and (usable[-1].get("quarter_end") or usable[-1].get("as_of")) == key:
+                usable[-1] = row
+            continue
+        seen.add(key)
+        usable.append(row)
+    if not usable:
+        return None, None
+    if len(usable) == 1:
+        return usable[-1], None
+    return usable[-1], usable[-2]
+
+
+def apply_history_changes(row, history_rows):
+    """Fill missing FII/DII (and other) quarter changes from consecutive saved levels."""
+    row = dict(row or {})
+    latest, prior = latest_and_prior(history_rows)
+    if not latest or not prior:
+        return row
+    chg = changes_from_levels(latest, prior)
+    for key, val in chg.items():
+        if val is None:
+            continue
+        cur = row.get(key)
+        if cur is None or cur == "":
+            row[key] = val
+            continue
+        try:
+            if pd.isna(cur):
+                row[key] = val
+        except (TypeError, ValueError):
+            pass
+    return row
+
+
+def merge_holders_history(old, new_rows):
+    """Union on ticker + quarter_end. A newer row fills blank cells and can replace levels."""
+    add = list(new_rows or [])
+    if old is None or len(old) == 0:
+        return pd.DataFrame(add, columns=list(HOLDERS_HISTORY_COLS)) if add else pd.DataFrame(columns=list(HOLDERS_HISTORY_COLS))
+    frame = old.copy()
+    if add:
+        frame = pd.concat([frame, pd.DataFrame(add)], ignore_index=True)
+    if len(frame) == 0:
+        return pd.DataFrame(columns=list(HOLDERS_HISTORY_COLS))
+    frame["ticker"] = frame["ticker"].astype(str).str.strip().str.upper()
+    if "quarter_end" not in frame.columns:
+        frame["quarter_end"] = frame.get("as_of", pd.Series(dtype=str)).map(quarter_end)
+    else:
+        missing = frame["quarter_end"].isna() | (frame["quarter_end"].astype(str).str.strip() == "")
+        if missing.any():
+            frame.loc[missing, "quarter_end"] = frame.loc[missing, "as_of"].map(quarter_end)
+    frame = frame[frame["ticker"].ne("") & frame["quarter_end"].astype(str).str.len().ge(10)]
+    # A period that ends after this month cannot have been filed yet. Older code
+    # rolled off-cycle filings (Screener 'Oct 2026') forward to the next quarter
+    # end, which then sat on top of the history as the newest quarter forever.
+    limit = (pd.Timestamp.now(tz=IST).tz_localize(None).normalize() + pd.offsets.MonthEnd(0)).strftime("%Y-%m-%d")
+    frame = frame[frame["quarter_end"].astype(str).str[:10] <= limit]
+    # Keep the last row for each ticker+quarter so a refresh wins.
+    frame = frame.drop_duplicates(["ticker", "quarter_end"], keep="last")
+    cols = [c for c in HOLDERS_HISTORY_COLS if c in frame.columns] + [c for c in frame.columns if c not in HOLDERS_HISTORY_COLS]
+    return frame[cols].reset_index(drop=True)
+
+
+def enrich_holders_from_history(holders, history):
+    """Copy computed FII+DII changes onto the latest holders row when those cells are blank."""
+    if holders is None or len(holders) == 0 or history is None or len(history) == 0:
+        return holders
+    if "ticker" not in holders.columns or "ticker" not in history.columns:
+        return holders
+    out = holders.copy()
+    hist_map = {}
+    for rec in history.to_dict("records"):
+        ticker = str(rec.get("ticker") or "").strip().upper()
+        if ticker:
+            hist_map.setdefault(ticker, []).append(rec)
+    rows = []
+    for rec in out.to_dict("records"):
+        ticker = str(rec.get("ticker") or "").strip().upper()
+        rows.append(apply_history_changes(rec, hist_map.get(ticker) or []))
+    return pd.DataFrame(rows)
 
 
 def shareholding_row(symbol, history, split):
@@ -506,6 +713,23 @@ def shareholding_row(symbol, history, split):
         "company": latest.get("name") or "",
         "source": "NSE shareholding" if split else "NSE shareholding summary",
     }
+    hist = list(split.get("_history") or [])
+    # Master rows usually have promoter only. Still store the date so later FII/DII can join.
+    for item in (history or []):
+        hist.append(history_record(
+            symbol, item.get("as_of"), item.get("promoter_pct"),
+            item.get("fii_pct"), item.get("dii_pct"), item.get("public_pct"),
+            "NSE shareholding",
+        ))
+    tagged = []
+    for item in hist:
+        rec = dict(item)
+        rec.setdefault("ticker", str(symbol or "").strip().upper())
+        rec.setdefault("source", row["source"])
+        rec["quarter_end"] = rec.get("quarter_end") or quarter_end(rec.get("as_of"))
+        tagged.append(rec)
+    row = apply_history_changes(row, tagged)
+    row["_history"] = tagged
     return row
 
 

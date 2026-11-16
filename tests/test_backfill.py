@@ -37,7 +37,13 @@ def test_missing_liquid_comes_before_other_bands_and_refreshes():
     annual = pd.DataFrame({"ticker": ["LIQOLD", "LIQNEW"]})
     holders = pd.DataFrame(columns=["ticker"])
     earn = pd.DataFrame(columns=["ticker", "earnings_dt"])
-    queue = bf.build_queue(_universe(), _scores(), info, annual, holders, earn, {}, "2026-10-25", {"statements": 90, "shareholding": 90}, "statements")
+    # Six quarters so a freshly fetched name is not pulled in only to lengthen history.
+    qrows = []
+    for t in ("LIQOLD", "LIQNEW"):
+        for i, frame in enumerate(["CY2025Q1", "CY2025Q2", "CY2025Q3", "CY2025Q4", "CY2026Q1", "CY2026Q2"]):
+            qrows.append({"ticker": t, "frame": frame, "end": "2025-03-31", "eps": 1.0})
+    quarters = pd.DataFrame(qrows)
+    queue = bf.build_queue(_universe(), _scores(), info, annual, holders, earn, {}, "2026-10-25", {"statements": 90, "shareholding": 90}, "statements", quarters=quarters)
     due = [r["ticker"] for r in bf.take_batch(queue, 10)]
     assert due[:3] == ["LIQMISS", "NSEMISS", "BSEMISS"]
     assert due[3] == "LIQOLD"
@@ -101,8 +107,11 @@ def test_screener_table_reads_the_latest_quarter():
     assert row["fii_chg"] == round(19.07 - 19.21, 2)
     assert row["dii_pct"] == 19.90
     assert row["public_pct"] == 10.40
-    assert row["as_of"] == "2026-09-01"
+    assert row["as_of"] == "2026-09-30"
     assert row["source"] == "Screener"
+    assert len(row["_history"]) == 2
+    assert row["_history"][0]["quarter_end"] == "2026-06-30"
+    assert row["_history"][-1]["fii_pct"] == 19.07
 
 
 def test_first_good_stops_after_the_first_answer():
@@ -144,7 +153,7 @@ def test_screener_reads_the_table_not_the_tab_button():
     assert row["fii_pct"] == 0.40
     assert row["dii_pct"] == 8.99
     assert row["public_pct"] == 15.62
-    assert row["as_of"] == "2026-09-01"
+    assert row["as_of"] == "2026-09-30"
     assert row["source"] == "Screener"
 
 
@@ -423,7 +432,7 @@ if __name__ == "__main__":
 def test_statements_try_nse_before_yahoo(monkeypatch):
     calls = []
 
-    def nse(symbol, cfg, ticker=None):
+    def nse(symbol, cfg, ticker=None, **kwargs):
         calls.append("nse:" + symbol)
         return {
             "info": {"ticker": ticker, "source": "NSE", "financial_currency": "INR"},
@@ -473,3 +482,136 @@ def test_bse_only_skips_nse_statements(monkeypatch):
     assert source == "BSE results"
     assert calls == ["bse:530621"]
     assert value["info"]["financial_currency"] == "INR"
+
+
+def test_short_quarter_history_makes_a_covered_name_due():
+    info = pd.DataFrame([{"ticker": "LIQNEW", "fetched_on": "2026-10-10", "company": "New"}])
+    annual = pd.DataFrame({"ticker": ["LIQNEW"]})
+    quarters = pd.DataFrame([{"ticker": "LIQNEW", "frame": "CY2026Q2", "eps": 1.0}])
+    queue = bf.build_queue(
+        _universe(), _scores(), info, annual, pd.DataFrame(columns=["ticker"]),
+        pd.DataFrame(columns=["ticker", "earnings_dt"]), {}, "2026-10-25",
+        {"statements": 90, "shareholding": 90}, "statements", quarters=quarters,
+    )
+    due = [r["ticker"] for r in bf.take_batch(queue, 10)]
+    assert "LIQNEW" in due
+    hit = [r for r in queue if r["ticker"] == "LIQNEW"][0]
+    assert hit["gap"] is True
+
+
+def test_missing_fii_dii_change_is_due_even_when_levels_exist():
+    holders = pd.DataFrame([
+        {"ticker": "LIQNEW", "promoter_pct": 50, "fii_pct": 10, "dii_pct": 8, "fetched_on": "2026-10-20", "as_of": "2026-09-30"},
+        {"ticker": "LIQOLD", "promoter_pct": 50, "fii_pct": 10, "dii_pct": 8, "fii_chg": 0.4, "dii_chg": -0.1, "fetched_on": "2026-10-20", "as_of": "2026-09-30"},
+    ])
+    queue = bf.build_queue(
+        _universe(), _scores(), pd.DataFrame(columns=["ticker"]), pd.DataFrame(columns=["ticker"]),
+        holders, pd.DataFrame(columns=["ticker", "earnings_dt"]), {}, "2026-10-25",
+        {"statements": 90, "shareholding": 90}, "shareholding",
+    )
+    due = [r["ticker"] for r in bf.take_batch(queue, 10)]
+    assert "LIQNEW" in due
+    assert "LIQOLD" not in due
+
+
+def test_union_keeps_older_quarters_when_a_short_refresh_arrives():
+    old = pd.DataFrame([
+        {"ticker": "AAA", "frame": "CY2025Q1", "eps": 1.0},
+        {"ticker": "AAA", "frame": "CY2025Q2", "eps": 1.1},
+        {"ticker": "AAA", "frame": "CY2025Q3", "eps": 1.2},
+        {"ticker": "BBB", "frame": "CY2025Q1", "eps": 2.0},
+    ])
+    add = pd.DataFrame([
+        {"ticker": "AAA", "frame": "CY2025Q3", "eps": 1.25},
+        {"ticker": "AAA", "frame": "CY2025Q4", "eps": 1.3},
+    ])
+    out = bf.union_statement_frames(old, add)
+    aaa = out[out["ticker"] == "AAA"].sort_values("frame")
+    assert list(aaa["frame"]) == ["CY2025Q1", "CY2025Q2", "CY2025Q3", "CY2025Q4"]
+    assert float(aaa[aaa["frame"] == "CY2025Q3"]["eps"].iloc[0]) == 1.25
+    assert "BBB" in set(out["ticker"])
+
+
+def test_short_history_name_asked_this_week_waits():
+    # Asked two days ago and still short: wait a week, do not refetch every night.
+    assert bf.statements_due(True, "2026-10-23", [], "2026-10-25", 90, short_history=True) is False
+    # Asked over a week ago: due again.
+    assert bf.statements_due(True, "2026-10-10", [], "2026-10-25", 90, short_history=True) is True
+    # Never stamped: due.
+    assert bf.statements_due(True, "", [], "2026-10-25", 90, short_history=True) is True
+    # A new result still makes a recently asked short name due.
+    assert bf.statements_due(True, "2026-10-23", ["2026-10-24"], "2026-10-25", 90, short_history=True) is True
+
+
+def test_screener_off_cycle_column_is_not_a_future_quarter():
+    html = """
+    <div id="quarterly-shp">
+      <table><thead><tr><th class="text"></th><th>Sep 2026</th><th>Oct 2026</th></tr></thead>
+      <tbody>
+        <tr><td class="text">Promoters&nbsp;</td><td>6.18%</td><td>5.88%</td></tr>
+        <tr><td class="text">FIIs&nbsp;</td><td>53.97%</td><td>56.00%</td></tr>
+        <tr><td class="text">DIIs&nbsp;</td><td>23.66%</td><td>22.69%</td></tr>
+        <tr><td class="text">Public&nbsp;</td><td>16.18%</td><td>15.41%</td></tr>
+      </tbody></table>
+    </div>
+    <div id="yearly-shp"></div>
+    """
+    row = bf.parse_screener_shareholding(html)
+    assert row["as_of"] == "2026-10-31"
+    ends = [h["quarter_end"] for h in row["_history"]]
+    assert ends == ["2026-09-30", "2026-10-31"]
+    assert row["fii_chg"] == round(56.00 - 53.97, 2)
+
+
+def test_quarter_end_keeps_quarter_months_and_month_ends_off_cycle():
+    import india_data
+    assert india_data.quarter_end("Sep 2026") == "2026-09-30"
+    assert india_data.quarter_end("2026-09-01") == "2026-09-30"
+    assert india_data.quarter_end("Dec 2025") == "2025-12-31"
+    assert india_data.quarter_end("Oct 2026") == "2026-10-31"
+    assert india_data.quarter_end("2026-11-01") == "2026-11-30"
+    assert india_data.quarter_end("Feb 2024") == "2024-02-29"
+    assert india_data.quarter_end("") == ""
+
+
+def test_future_dated_shareholding_is_due_again():
+    assert bf.shareholding_due(True, "2026-11-16", "2026-12-31", "2026-11-16", 90) is True
+    assert bf.shareholding_due(True, "2026-11-16", "2026-09-30", "2026-11-16", 90) is False
+
+
+def test_history_merge_drops_periods_that_have_not_ended_yet():
+    import india_data
+    far = (pd.Timestamp.now() + pd.DateOffset(months=3)).strftime("%Y-%m-%d")
+    old = pd.DataFrame([
+        {"ticker": "X", "as_of": "2026-06-30", "quarter_end": "2026-06-30", "fii_pct": 1.0},
+        {"ticker": "X", "as_of": far, "quarter_end": far, "fii_pct": 9.0},
+    ])
+    out = india_data.merge_holders_history(old, [])
+    assert list(out["quarter_end"]) == ["2026-06-30"]
+
+
+def test_exchange_gap_fill_is_topped_up_with_recent_yahoo_quarters(monkeypatch):
+    import exchange_financials, india_data
+    old_q = [{"ticker": "LIQNEW", "frame": "CY2024Q4", "end": "2024-12-31", "eps": 1.0, "source": "NSE"}]
+    monkeypatch.setattr(exchange_financials, "fetch_nse_statements", lambda *a, **k: {
+        "info": {"ticker": "LIQNEW", "source": "NSE", "company": ""}, "annual": [], "quarters": old_q, "earn": []})
+    monkeypatch.setattr(india_data, "fetch_yahoo_bundle", lambda t, cfg, symbol=None: (
+        {"company": "New Co"}, [], [{"ticker": "LIQNEW", "frame": "CY2026Q3", "end": "2026-09-30", "eps": 2.0}], []))
+    rec = {"ticker": "LIQNEW", "nse_symbol": "LIQNEW", "bse_symbol": "", "exchange": "NSE", "in_bse_only": "no", "gap": True}
+    book = __import__("fallback").SourceBook()
+    value, source = bf.fetch_statements(rec, {}, book, {}, existing_quarters=pd.DataFrame(columns=["ticker", "end"]))
+    assert source == "NSE results"
+    frames = [r["frame"] for r in value["quarters"]]
+    assert frames == ["CY2026Q3", "CY2024Q4"]
+    assert value["info"]["company"] == "New Co"
+
+
+def test_full_exchange_answer_is_not_topped_up(monkeypatch):
+    import exchange_financials, india_data
+    monkeypatch.setattr(exchange_financials, "fetch_nse_statements", lambda *a, **k: {
+        "info": {"ticker": "LIQNEW"}, "annual": [], "quarters": [{"ticker": "LIQNEW", "frame": "CY2026Q3", "eps": 1.0}], "earn": []})
+    called = []
+    monkeypatch.setattr(india_data, "fetch_yahoo_bundle", lambda *a, **k: called.append(1))
+    rec = {"ticker": "LIQNEW", "nse_symbol": "LIQNEW", "bse_symbol": "", "exchange": "NSE", "in_bse_only": "no"}
+    value, source = bf.fetch_statements(rec, {}, __import__("fallback").SourceBook(), {})
+    assert source == "NSE results" and called == []

@@ -795,13 +795,13 @@
     const rows = ctx.files["stock_canslim.csv"] || [];
     const row = rows.find((r) => String(r.ticker || "").toUpperCase() === String(ticker || "").toUpperCase()) || null;
     const letters = [
-      ["C", "Current quarterly EPS", "25% or more vs the year-ago quarter."],
-      ["A", "Annual EPS growth", "25% or more vs last year."],
+      ["C", "Current quarterly EPS", "25% or more vs the year-ago quarter, and sales up 25% or accelerating."],
+      ["A", "Annual EPS growth", "25% or more vs last year. ROE 17% or more when it is on file."],
       ["N", "New highs", "Within 15% of the 52-week closing high."],
       ["S", "Supply and demand", "20-day volume of 200,000 shares or more."],
       ["L", "Leader / RS", "RS Rating 80 or higher, versus every stock on the desk."],
-      ["I", "Institutional buying", "FII and DII bought more than they sold last quarter."],
-      ["M", "Market direction", "The Nifty 50 or SENSEX is in an uptrend."],
+      ["I", "Institutional buying", "FII and DII holdings are flat or rising versus last quarter."],
+      ["M", "Market direction", "The Nifty 50 or SENSEX is in an uptrend. This does not hide names on the CANSLIM list."],
     ];
     const chips = letters.map((item) => {
       const tone = row ? clTone(row[item[0].toLowerCase() + "_mark"]) : "na";
@@ -1158,13 +1158,13 @@
   function canslimGuide() {
     if (!D.featureOn("feature.canslim_guide")) return "";
     const rows = [
-      ["C", "Current quarterly earnings", "Profit this quarter versus the same quarter last year. The scan wants +25% or more."],
-      ["A", "Annual earnings growth", "Yearly profit growth. The scan wants +25% for 3 years."],
-      ["N", "New", "A new product, new management, or a new 52-week high."],
-      ["S", "Supply and demand", "Shares available, and big volume on up days."],
-      ["L", "Leader or laggard", "A top stock in its group. The scan wants an RS rank of 80 or higher."],
-      ["I", "Institutional sponsorship", "Are big funds buying? That means FII, DII, and mutual funds."],
-      ["M", "Market direction", "Is the overall market in an uptrend? This desk shows the Nifty 50, SENSEX, and Bank Nifty. The check passes when the Nifty 50 or SENSEX is in an uptrend."],
+      ["C", "Current quarterly earnings", "Profit this quarter versus the same quarter last year, at +25% or more, and sales up 25% or accelerating."],
+      ["A", "Annual earnings growth", "Yearly profit up 25% or more versus last year. When three years of yearly EPS are on file, each year must also be up 25% or more. A shorter history does not fail. ROE of 17% or more when that number is on file."],
+      ["N", "New", "The close is within 15% of the 52-week closing high."],
+      ["S", "Supply and demand", "20-day average volume of at least 200,000 shares, and an up/down volume ratio of 1.0 or more when it can be computed."],
+      ["L", "Leader or laggard", "A top stock. The scan wants an RS Rating of 80 or higher versus every stock on the desk."],
+      ["I", "Institutional sponsorship", "FII and DII holdings are flat or rising versus last quarter. A missing reading does not fail."],
+      ["M", "Market direction", "This desk shows the Nifty 50, SENSEX, and Bank Nifty. A weak market does not hide or block names on this list."],
     ];
     const narrow = window.matchMedia("(max-width: 900px)").matches;
     const body = rows.map((r) => '<div class="ckey"><b>' + r[0] + '</b><div><div class="t">' + D.esc(r[1]) +
@@ -1499,7 +1499,7 @@
     },
   });
 
-  const canslim = patternPage({
+  const canslimPage = patternPage({
     file: "scanner_canslim.csv",
     caption: "Stop and target are blank on every row on purpose. A dash is missing, not zero. Product, float and industry rank are not verified.",
     filters: {
@@ -1525,8 +1525,12 @@
     },
     columns: [TK, T("index_membership", "Index"), T("status", "Status", "setup"), T("pivot", "Buy point", "num", { dec: 2 }),
       T("strength", "CANSLIM strength (raw)", "num", { dec: 0 }), T("qualify", "Qualify", "pass"),
-      T("c_quarterly_eps", "C: quarter EPS vs yr ago %", "pct", { dec: 1 }), T("a_annual_eps", "A: annual EPS %", "pct", { dec: 1 }),
+      T("c_quarterly_eps", "C: quarter EPS vs yr ago %", "pct", { dec: 1 }), T("c_sales", "C: sales vs yr ago %", "pct", { dec: 1 }),
+      T("c_eps_accel", "C: EPS accelerating", "text"),
+      T("a_annual_eps", "A: annual EPS %", "pct", { dec: 1 }), T("a_roe", "A: ROE %", "pct", { dec: 1 }),
+      T("a_streak", "A: 3-year EPS streak", "text"),
       T("n_pct_from_high", "N: % from 52w high", "pct", { dec: 1 }), T("s_adv", "S: avg daily volume", "shares"),
+      T("s_ud", "S: up/down volume", "num", { dec: 2 }),
       T("rs", "L: RS Rating", "rs", { dec: 0, title: RS_TITLE }), T("i_trend", "I: holders trend", "itrend"),
       T("m_market", "M: market", "market"), T("freshness", "Data", "fresh")],
     cards(all) {
@@ -1539,6 +1543,40 @@
       return letterBlock(byStatus(rows).slice(0, 8), row);
     },
   });
+  const canslimCore = canslimPage;
+  const nearCols = [TK, T("missed_rule", "Missed rule", "text"), T("index_membership", "Index"), T("status", "Status", "setup"),
+    T("c_quarterly_eps", "C: quarter EPS vs yr ago %", "pct", { dec: 1 }), T("c_sales", "C: sales vs yr ago %", "pct", { dec: 1 }),
+    T("c_eps_accel", "C: EPS accelerating", "text"),
+    T("a_annual_eps", "A: annual EPS %", "pct", { dec: 1 }), T("a_roe", "A: ROE %", "pct", { dec: 1 }),
+    T("a_streak", "A: 3-year EPS streak", "text"),
+    T("n_pct_from_high", "N: % from 52w high", "pct", { dec: 1 }), T("s_ud", "S: up/down volume", "num", { dec: 2 }),
+    T("rs", "L: RS Rating", "rs", { dec: 0, title: RS_TITLE }), T("i_trend", "I: holders trend", "itrend"),
+    T("freshness", "Data", "fresh")];
+  const canslim = {
+    files: ["scanner_canslim.csv"],
+    optional: ["scanner_canslim_near.csv"],
+    render(ctx) {
+      canslimCore.render(ctx);
+      const near = D.realRows(ctx.files["scanner_canslim_near.csv"] || []);
+      const host = document.createElement("div");
+      host.id = "canslim-near";
+      const cap = ctx.page.querySelector(".cap");
+      if (cap && cap.parentNode === ctx.page) ctx.page.insertBefore(host, cap);
+      else ctx.page.appendChild(host);
+      const counts = {};
+      near.forEach((r) => { const k = String(r.missed_rule || ""); counts[k] = (counts[k] || 0) + 1; });
+      const bits = Object.keys(counts).sort().map((k) => D.esc(k) + " " + counts[k]).join(" · ");
+      host.innerHTML = '<div class="panel" style="margin-top:16px"><div class="pad" style="padding-bottom:0"><div class="ptitle">Near misses</div><div class="psub">These names pass the same liquidity and trend checks, and every CANSLIM rule except exactly one. They are not on the main list, Leaders, or Buy setups.</div>' +
+        (near.length ? '<div class="m2" style="margin-top:8px">' + near.length + " names" + (bits ? " · " + bits : "") + "</div>" : "") +
+        "</div><div id=\"canslim-near-tbl\"></div></div>";
+      const state = { sort: "missed_rule", dir: "asc", sort2: "strength", dir2: "desc", page: 0 };
+      D.drawTable(document.getElementById("canslim-near-tbl"), {
+        rows: near, columns: withRs(nearCols), state: state, pageSize: 12,
+        empty: "No near misses in the saved scan.",
+        title: "",
+      });
+    },
+  };
 
   const box = patternPage({
     file: "scanner_box.csv",
@@ -3986,8 +4024,9 @@
       "Close in gap-day range shows where the gap day closed: 0 is the low of the day and 100 is the high. Also on shows the other scanners that list the same stock.",
     ] },
     canslim: { title: SCAN, note: LIQUID_LINE, lines: [
-      "William O'Neil's method. It checks earnings growth versus a year ago, how close price is to its 52-week high, and trading volume.",
-      "L is the RS Rating, the same 1 to 99 number as the RS column. It also checks shareholding changes, and whether the market is in an uptrend.",
+      "William O'Neil's method. A stock must pass every rule. There is no soft watch list.",
+      "C needs quarterly EPS up 25% and sales up 25% or accelerating. A needs yearly EPS up 25%, and when three years of yearly EPS are on file each of those years must also be up 25% or more. A shorter history does not fail A. ROE of 17% or more when it is on file. N is within 15% of the 52-week closing high. S shows the 50-day up/down volume ratio. L is the RS Rating, 80 or higher, the same 1 to 99 number as the RS column. I uses FII and DII change only: flat or rising passes. M is shown but does not hide names. Price must also be above the 50-day and 200-day averages, with the 50-day above the 200-day.",
+      "EPS acceleration is shown as a column and is not a qualify rule. A second table lists near misses: stocks that pass the same liquidity and trend checks and every rule except exactly one of C, A, N, S, L, or I. Near misses are not added to Leaders or Buy setups.",
     ] },
     epsrs: { title: SCAN, note: LIQUID_LINE, lines: [
       "Our copy of MarketSmith's Highest EPS and RS list. MarketSmith's own EPS and RS Ratings are private, so these are close copies built from the desk's own data.",
@@ -4069,7 +4108,7 @@
     scorecard: { lines: [
       "One stock at a time. Type a ticker to see its total score and how each point was earned, versus its own 3-year average and versus its sector.",
       "It also shows the plan (entry, stop, target), recent earnings surprises, and headlines.",
-      "The CAN SLIM card sits under the ticker. It has 7 letter chips and 7 rows, each marked PASS, FAIL, No data yet, or Not verified. Grey means the letter is not a fail. C and A can show Not verified while statements are still being saved. L passes at an RS rank of 80 or higher (stock_canslim.l_rs_min). The CANSLIM scanner list is unchanged. Turn the card off with feature.stock_canslim, the industry rank with feature.canslim_industry_rank, free float with feature.canslim_free_float, and the news check with feature.canslim_news.",
+      "The CAN SLIM card sits under the ticker. It has 7 letter chips and 7 rows, each marked PASS, FAIL, No data yet, or Not verified. Grey means the letter is not a fail. C needs quarterly EPS up 25% and sales up 25% or accelerating. EPS acceleration is shown and is not a fail rule. A needs yearly EPS up 25%, and when three years of yearly EPS are on file each year must also be up 25% or more. A shorter history does not fail A. ROE of 17% or more when it is on file. I uses only FII and DII change: flat or rising passes, and a missing reading is not a fail. L passes at an RS rank of 80 or higher (stock_canslim.l_rs_min). Turn the card off with feature.stock_canslim, the industry rank with feature.canslim_industry_rank, free float with feature.canslim_free_float, and the news check with feature.canslim_news.",
       "The Shareholding box sits under the CAN SLIM card. It shows promoter, FII, and DII percent, plus public when the file has it, and the change versus last quarter. Green is up and red is down. Pledge shows when the file has it. If a stock has no filing yet, the box says shareholding is not on file. Turn it off with feature.stock_shareholding.",
     ] },
     watchlist: { lines: [
