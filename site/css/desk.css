@@ -471,6 +471,7 @@ tr.selrow .rowexp{color:var(--accent)}
 .cvchip.cvflip{color:var(--text2)}
 .cvchip.rschip{cursor:default;font-weight:700;color:var(--text)}
 .cvchip.rschip.hot{color:var(--green);border-color:var(--green)}
+.cvchip.epschip{margin-left:4px}
 .cv-why-rs{font-weight:700;color:var(--text);margin:0 0 4px;line-height:1.35;overflow-wrap:anywhere}
 .cv-rsnote{margin:8px 0 0;font-size:13px;line-height:18px;color:var(--text2);overflow-wrap:anywhere}
 .leadgrid{display:grid;grid-template-columns:1fr;gap:12px;align-items:start}

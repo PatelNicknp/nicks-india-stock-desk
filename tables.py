@@ -358,6 +358,10 @@ COLS["rs_ratings"] = [
     "ticker", "rs", "rs_raw", "q1", "q2", "q3", "q4", "bars",
     "rs_label", "rs_note", "as_of", "data_status", "note", "disclaimer",
 ]
+COLS["eps_ratings"] = [
+    "ticker", "eps_rating", "eps_raw", "eps_q_growth", "eps_a_growth", "eps_a_years", "eps_note",
+    "data_status", "note", "disclaimer",
+]
 # MarketSmith style screens (ms_screens.py). Rows are only stocks that pass.
 COLS["scanner_eps_rs"] = list(_ms.EPS_RS_COLS)
 COLS["scanner_minervini_1m"] = list(_ms.TEMPLATE_COLS)

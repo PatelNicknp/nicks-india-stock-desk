@@ -2087,7 +2087,7 @@
   ];
   const CV_BUY = { id: "buysetups", label: "Buy setups", short: "Buy setups", file: "buy_setups.csv", href: "buy-setups.html", kind: "buy", extra: true };
   const CV_WATCH = { id: "watchlist", label: "Watchlist", short: "Watchlist", file: "watchlist.csv", href: "watchlist.html", kind: "watch", extra: true };
-  const CV_FILES = CV_SOURCES.concat([CV_BUY, CV_WATCH]).map((s) => s.file).concat(["rs_ratings.csv", "institutional_13f.csv"]);
+  const CV_FILES = CV_SOURCES.concat([CV_BUY, CV_WATCH]).map((s) => s.file).concat(["rs_ratings.csv", "eps_ratings.csv", "institutional_13f.csv"]);
   const CV_MAS = [
     { id: "ma_10", label: "10", n: 10, color: "#38BDF8" },
     { id: "ma_20", label: "20", n: 20, color: "#7C9CFF" },
@@ -2244,6 +2244,18 @@
       const ticker = String(r.ticker || "").trim().toUpperCase();
       if (ticker) rsMap.set(ticker, r);
     });
+    const epsMap = new Map();
+    realRows(files["eps_ratings.csv"] || []).forEach((r) => {
+      const ticker = String(r.ticker || "").trim().toUpperCase();
+      if (ticker && num(r.eps_rating) != null) epsMap.set(ticker, r);
+    });
+    const fillEps = (rec) => {
+      const e = rec ? epsMap.get(rec.ticker) : null;
+      if (!e) return;
+      if (rec.eps_rating == null) rec.eps_rating = num(e.eps_rating);
+      if (!rec.eps_note && !isBlank(e.eps_note)) rec.eps_note = String(e.eps_note);
+    };
+    all.forEach((rec) => fillEps(rec));
     all.forEach((rec) => {
       const extra = rsMap.get(rec.ticker);
       if (!extra) return;
@@ -2256,6 +2268,7 @@
     const choices = [{ id: "all", label: group ? "All " + group + " stocks" : "All scanner stocks" }];
     const fillRs = (rec) => {
       if (!rec) return rec;
+      fillEps(rec);
       const extra = rsMap.get(rec.ticker);
       if (!extra) return rec;
       if (rec.rs == null && num(extra.rs) != null) rec.rs = num(extra.rs);
@@ -2610,12 +2623,31 @@
       el.title = full || short;
       el.classList.toggle("hot", num(rec && rec.rs) >= rsLeaderMin());
     };
+    // EPS Rating chip, next to the RS chip. Green at 80 or more. No chip without a rating.
+    const paintEps = () => {
+      if (!chipsEl || !featureOn("feature.eps_rating")) return;
+      let el = document.getElementById("cveps");
+      if (!el) {
+        const rsEl = document.getElementById("cvrs");
+        const html = '<span class="cvchip rschip epschip" id="cveps" hidden></span>';
+        if (rsEl) rsEl.insertAdjacentHTML("afterend", html); else chipsEl.insertAdjacentHTML("afterbegin", html);
+        el = document.getElementById("cveps");
+      }
+      const rec = st.list[st.i];
+      const short = epsShort(rec);
+      if (!short) { el.hidden = true; el.textContent = ""; el.removeAttribute("title"); return; }
+      el.hidden = false;
+      el.textContent = short;
+      el.title = (rec && rec.eps_note) || short;
+      el.classList.toggle("hot", num(rec.eps_rating) >= 80);
+    };
     const paintChips = () => {
       const scroll = chipsEl.scrollLeft;
       const buttons = chipsHtml();
       chipsEl.innerHTML = buttons;
       paintRs();
-      chipsEl.hidden = !buttons && !rsShort(st.list[st.i]);
+      paintEps();
+      chipsEl.hidden = !buttons && !rsShort(st.list[st.i]) && !epsShort(st.list[st.i]);
       chipsEl.scrollLeft = scroll;
     };
 
@@ -2902,6 +2934,7 @@
       const count = document.getElementById("cvcount");
       if (count) count.textContent = st.list.length ? (st.i + 1) + " of " + st.list.length : "0 of 0";
       paintRs();
+      paintEps();
       const holdEl = document.getElementById("cvhold");
       if (holdEl) holdEl.innerHTML = shareholdingHtml(shareholdingOf(ctx.files["institutional_13f.csv"], rec ? rec.ticker : ""));
       if (!bars || !bars.length) { px.innerHTML = ""; return; }
@@ -3547,6 +3580,13 @@
     const n = num(row.rs);
     if (n == null) return "";
     return "RS " + Math.round(n);
+  }
+  // "EPS 85" from the EPS Rating file. Blank when the stock has no rating.
+  function epsShort(row) {
+    if (!featureOn("feature.eps_rating") || !row) return "";
+    const n = num(row.eps_rating);
+    if (n == null) return "";
+    return "EPS " + Math.round(n);
   }
   function featureOn(key) {
     if (!key) return true;
