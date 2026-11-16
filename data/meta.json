@@ -1,7 +1,7 @@
 {
- "updated_pt": "2026-11-16 05:43 IST \u00b7 2026-11-15 16:13 PT",
+ "updated_pt": "2026-11-16 08:13 IST \u00b7 2026-11-15 18:43 PT",
  "price_as_of": "2026-11-12",
- "mode": "rescore",
+ "mode": "morning",
  "label": "Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts.",
  "n_stocks": 4292,
  "tabs": [
@@ -53,6 +53,7 @@
   "scanner_52w",
   "scanner_box",
   "scanner_canslim",
+  "scanner_canslim_near",
   "scanner_dividend",
   "scanner_episodic_pivot",
   "scanner_eps_rs",
@@ -79,7 +80,6 @@
   "sectors",
   "settings",
   "stock_canslim",
-  "trading_floor",
   "trends",
   "universe",
   "updates_log",

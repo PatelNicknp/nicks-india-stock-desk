@@ -597,6 +597,8 @@ ABREL,score_jump,ABREL score moved from 0 to -3.,-3,0,AVOID,AVOID,1203.0,OK,,"Re
 AXISCADES,score_jump,AXISCADES score moved from -5 to -3.,-3,-5,AVOID,AVOID,1914.4,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 PCJEWELLER,score_jump,PCJEWELLER score moved from -1 to -3.,-3,-1,AVOID,AVOID,15.5,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 ANNAPURNA,score_jump,ANNAPURNA score moved from -1 to -3.,-3,-1,AVOID,AVOID,126.5,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+HINDMOTORS,verdict_change,HINDMOTORS changed from Not scored yet to AVOID.,-3,-1,AVOID,Not scored yet,13.93,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+HINDMOTORS,score_jump,HINDMOTORS score moved from -1 to -3.,-3,-1,AVOID,Not scored yet,13.93,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 HYUNDAI,score_jump,HYUNDAI score moved from -2 to -4.,-4,-2,AVOID,AVOID,2076.0,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 SNOWMAN,score_jump,SNOWMAN score moved from 0 to -4.,-4,0,AVOID,AVOID,33.77,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 RKFORGE,score_jump,RKFORGE score moved from -2 to -4.,-4,-2,AVOID,AVOID,784.7,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
