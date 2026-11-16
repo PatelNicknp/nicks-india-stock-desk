@@ -1,2 +1,6 @@
 ticker,kind,text,score,score_prev,verdict,verdict_prev,price,data_status,note,disclaimer
-,info,No verdict changes or score crossings this run.,,,,,,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+NSE,verdict_change,NSE changed from AVOID to HOLD.,4,1,HOLD,AVOID,1990.05,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+NSE,score_jump,NSE score moved from 1 to 4.,4,1,HOLD,AVOID,1990.05,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+NSE,score_cross,NSE crossed the hold line (4).,4,1,HOLD,AVOID,1990.05,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+MORARKFI,score_jump,MORARKFI score moved from -4 to -2.,-2,-4,AVOID,AVOID,55.99,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+NATFIT,score_jump,NATFIT score moved from -7 to -5.,-5,-7,AVOID,AVOID,290.9,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
