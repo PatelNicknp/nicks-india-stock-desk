@@ -10,7 +10,6 @@
   "KHAZANCHI": "2026-10-29",
   "SUGALESL": "2026-11-16",
   "TRANOCE": "2026-11-04",
-  "4THGEN": "2026-11-12",
   "POWERIETF": "2026-11-22",
   "SANCF": "2026-11-18",
   "SUVID-RE": "2026-11-22",
@@ -204,7 +203,23 @@
   "NXT100CASE": "2026-11-23",
   "OILIETF": "2026-11-23",
   "OIVL": "2026-11-23",
-  "ORIENTTR": "2026-11-23"
+  "ORIENTTR": "2026-11-23",
+  "RAJVIR": "2026-11-23",
+  "11QPR": "2026-11-23",
+  "ABSLMSCIN": "2026-11-23",
+  "KLIFESTYL": "2026-11-23",
+  "PHARMABEES": "2026-11-23",
+  "PSUBANK": "2026-11-23",
+  "PSUBANKADD": "2026-11-23",
+  "PSUBNKBEES": "2026-11-23",
+  "PSUBNKIETF": "2026-11-23",
+  "PVTBANIETF": "2026-11-23",
+  "PVTBANKADD": "2026-11-23",
+  "QNIFTY": "2026-11-23",
+  "QUAL30IETF": "2026-11-23",
+  "RALEGRA": "2026-11-23",
+  "RAMGOPOLY": "2026-11-23",
+  "RRPDEFENSE": "2026-11-23"
  },
  "shareholding_retry_after": {
   "08AGG": "2026-10-27",
@@ -225,10 +240,10 @@
   "JAYKAYPP": "2026-11-12",
   "OLAPP": "2026-11-12"
  },
- "last_batch_at": "2026-11-16T09:56Z",
- "last_statements_ok": 142,
+ "last_batch_at": "2026-11-16T16:51Z",
+ "last_statements_ok": 138,
  "last_statements_fail": 0,
- "last_shareholding_ok": 182,
+ "last_shareholding_ok": 183,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
   "BIRET": "2026-11-16",
@@ -254,7 +269,7 @@
   "OLAPP": "2026-11-16",
   "SUVID-RE": "2026-11-16"
  },
- "last_shareholding_empty": 18,
+ "last_shareholding_empty": 17,
  "last_shareholding_skipped": 0,
  "statements_failures": {
   "BAGMANE": {
@@ -285,12 +300,6 @@
    "count": 5,
    "last_on": "2026-11-14",
    "retry_after": "2026-11-17",
-   "note": "no statement source answered"
-  },
-  "4THGEN": {
-   "count": 1,
-   "last_on": "2026-11-11",
-   "retry_after": "2026-11-12",
    "note": "no statement source answered"
   },
   "POWERIETF": {
@@ -1452,6 +1461,102 @@
    "note": "quote only, no results"
   },
   "ORIENTTR": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "RAJVIR": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "11QPR": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "ABSLMSCIN": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "KLIFESTYL": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "PHARMABEES": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "PSUBANK": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "PSUBANKADD": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "PSUBNKBEES": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "PSUBNKIETF": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "PVTBANIETF": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "PVTBANKADD": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "QNIFTY": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "QUAL30IETF": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "RALEGRA": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "RAMGOPOLY": {
+   "count": 0,
+   "last_on": "2026-11-16",
+   "retry_after": "2026-11-23",
+   "note": "quote only, no results"
+  },
+  "RRPDEFENSE": {
    "count": 0,
    "last_on": "2026-11-16",
    "retry_after": "2026-11-23",
