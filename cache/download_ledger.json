@@ -1,6 +1,36 @@
 {
  "incomplete": {
   "statements": [
+   "STDSFAC",
+   "SNXT50BETA",
+   "SNXT50BEES",
+   "SNXT30BEES",
+   "SML100CASE",
+   "SMALLIETF",
+   "SMALLCAP",
+   "SMALLADD",
+   "SMALL250",
+   "SILVERO",
+   "SICAPIT",
+   "SHARIABEES",
+   "SETFSN50",
+   "SETFBSE100",
+   "SENSEXIETF",
+   "SENSEXETF",
+   "SENSEXBETA",
+   "SENSEXBEES",
+   "SENSEXAXIS",
+   "SENSEXADD",
+   "SENSEX1",
+   "SELECTIPO",
+   "SEL",
+   "SECLEDBETA",
+   "SCOOBEEDAY",
+   "SCBL",
+   "SBIVALETF",
+   "SBISMLETF",
+   "SBISENSEX",
+   "SBIMIDMOM",
    "RRPDEFENSE",
    "RAMGOPOLY",
    "RALEGRA",
@@ -170,37 +200,7 @@
    "BANKBETA",
    "BANKBEES",
    "BANKADD",
-   "BANK10BETF",
-   "BANK10ADD",
-   "AUTOIETF",
-   "AMBARPIL",
-   "ALPL30IETF",
-   "ALPHAETF",
-   "ALPHA",
-   "AGVENTURES",
-   "ABSLPSE",
-   "ABSLNN50ET",
-   "ABSLBANETF",
-   "ABSL10BANK",
-   "11QPD",
-   "11MPR",
-   "11MPD",
-   "11GPG",
-   "11DPR",
-   "11DPD",
-   "11AQD",
-   "11AMD",
-   "11AGG",
-   "08MPD",
-   "08GPG",
-   "08AGG",
-   "SHIVAM-RE1",
-   "ZODIAC",
-   "ORTEL",
-   "LAKPRE",
-   "IL&FSTRANS",
-   "GUJRAFFIA",
-   "GOLDENTOBC"
+   "BANK10BETF"
   ]
  },
  "needs_person": {},
@@ -2178,6 +2178,177 @@
    "ticker": "SANCF",
    "tries": 1
   },
+  "statements:SBIMIDMOM": {
+   "kind": "statements",
+   "last_on": "2026-11-16",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-23",
+   "since": "2026-11-16",
+   "ticker": "SBIMIDMOM",
+   "tries": 1
+  },
+  "statements:SBISENSEX": {
+   "kind": "statements",
+   "last_on": "2026-11-16",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-23",
+   "since": "2026-11-16",
+   "ticker": "SBISENSEX",
+   "tries": 1
+  },
+  "statements:SBISMLETF": {
+   "kind": "statements",
+   "last_on": "2026-11-16",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-23",
+   "since": "2026-11-16",
+   "ticker": "SBISMLETF",
+   "tries": 1
+  },
+  "statements:SBIVALETF": {
+   "kind": "statements",
+   "last_on": "2026-11-16",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-23",
+   "since": "2026-11-16",
+   "ticker": "SBIVALETF",
+   "tries": 1
+  },
+  "statements:SCBL": {
+   "kind": "statements",
+   "last_on": "2026-11-16",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-23",
+   "since": "2026-11-16",
+   "ticker": "SCBL",
+   "tries": 1
+  },
+  "statements:SCOOBEEDAY": {
+   "kind": "statements",
+   "last_on": "2026-11-16",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-23",
+   "since": "2026-11-16",
+   "ticker": "SCOOBEEDAY",
+   "tries": 1
+  },
+  "statements:SECLEDBETA": {
+   "kind": "statements",
+   "last_on": "2026-11-16",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-23",
+   "since": "2026-11-16",
+   "ticker": "SECLEDBETA",
+   "tries": 1
+  },
+  "statements:SEL": {
+   "kind": "statements",
+   "last_on": "2026-11-16",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-23",
+   "since": "2026-11-16",
+   "ticker": "SEL",
+   "tries": 1
+  },
+  "statements:SELECTIPO": {
+   "kind": "statements",
+   "last_on": "2026-11-16",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-23",
+   "since": "2026-11-16",
+   "ticker": "SELECTIPO",
+   "tries": 1
+  },
+  "statements:SENSEX1": {
+   "kind": "statements",
+   "last_on": "2026-11-16",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-23",
+   "since": "2026-11-16",
+   "ticker": "SENSEX1",
+   "tries": 1
+  },
+  "statements:SENSEXADD": {
+   "kind": "statements",
+   "last_on": "2026-11-16",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-23",
+   "since": "2026-11-16",
+   "ticker": "SENSEXADD",
+   "tries": 1
+  },
+  "statements:SENSEXAXIS": {
+   "kind": "statements",
+   "last_on": "2026-11-16",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-23",
+   "since": "2026-11-16",
+   "ticker": "SENSEXAXIS",
+   "tries": 1
+  },
+  "statements:SENSEXBEES": {
+   "kind": "statements",
+   "last_on": "2026-11-16",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-23",
+   "since": "2026-11-16",
+   "ticker": "SENSEXBEES",
+   "tries": 1
+  },
+  "statements:SENSEXBETA": {
+   "kind": "statements",
+   "last_on": "2026-11-16",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-23",
+   "since": "2026-11-16",
+   "ticker": "SENSEXBETA",
+   "tries": 1
+  },
+  "statements:SENSEXETF": {
+   "kind": "statements",
+   "last_on": "2026-11-16",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-23",
+   "since": "2026-11-16",
+   "ticker": "SENSEXETF",
+   "tries": 1
+  },
+  "statements:SENSEXIETF": {
+   "kind": "statements",
+   "last_on": "2026-11-16",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-23",
+   "since": "2026-11-16",
+   "ticker": "SENSEXIETF",
+   "tries": 1
+  },
+  "statements:SETFBSE100": {
+   "kind": "statements",
+   "last_on": "2026-11-16",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-23",
+   "since": "2026-11-16",
+   "ticker": "SETFBSE100",
+   "tries": 1
+  },
+  "statements:SETFSN50": {
+   "kind": "statements",
+   "last_on": "2026-11-16",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-23",
+   "since": "2026-11-16",
+   "ticker": "SETFSN50",
+   "tries": 1
+  },
+  "statements:SHARIABEES": {
+   "kind": "statements",
+   "last_on": "2026-11-16",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-23",
+   "since": "2026-11-16",
+   "ticker": "SHARIABEES",
+   "tries": 1
+  },
   "statements:SHIVAM-RE1": {
    "kind": "statements",
    "last_on": "2026-11-16",
@@ -2187,6 +2358,24 @@
    "ticker": "SHIVAM-RE1",
    "tries": 1
   },
+  "statements:SICAPIT": {
+   "kind": "statements",
+   "last_on": "2026-11-16",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-23",
+   "since": "2026-11-16",
+   "ticker": "SICAPIT",
+   "tries": 1
+  },
+  "statements:SILVERO": {
+   "kind": "statements",
+   "last_on": "2026-11-16",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-23",
+   "since": "2026-11-16",
+   "ticker": "SILVERO",
+   "tries": 1
+  },
   "statements:SINGERIND": {
    "kind": "statements",
    "last_on": "2026-11-16",
@@ -2194,6 +2383,87 @@
    "retry_after": "2026-11-23",
    "since": "2026-11-16",
    "ticker": "SINGERIND",
+   "tries": 1
+  },
+  "statements:SMALL250": {
+   "kind": "statements",
+   "last_on": "2026-11-16",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-23",
+   "since": "2026-11-16",
+   "ticker": "SMALL250",
+   "tries": 1
+  },
+  "statements:SMALLADD": {
+   "kind": "statements",
+   "last_on": "2026-11-16",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-23",
+   "since": "2026-11-16",
+   "ticker": "SMALLADD",
+   "tries": 1
+  },
+  "statements:SMALLCAP": {
+   "kind": "statements",
+   "last_on": "2026-11-16",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-23",
+   "since": "2026-11-16",
+   "ticker": "SMALLCAP",
+   "tries": 1
+  },
+  "statements:SMALLIETF": {
+   "kind": "statements",
+   "last_on": "2026-11-16",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-23",
+   "since": "2026-11-16",
+   "ticker": "SMALLIETF",
+   "tries": 1
+  },
+  "statements:SML100CASE": {
+   "kind": "statements",
+   "last_on": "2026-11-16",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-23",
+   "since": "2026-11-16",
+   "ticker": "SML100CASE",
+   "tries": 1
+  },
+  "statements:SNXT30BEES": {
+   "kind": "statements",
+   "last_on": "2026-11-16",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-23",
+   "since": "2026-11-16",
+   "ticker": "SNXT30BEES",
+   "tries": 1
+  },
+  "statements:SNXT50BEES": {
+   "kind": "statements",
+   "last_on": "2026-11-16",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-23",
+   "since": "2026-11-16",
+   "ticker": "SNXT50BEES",
+   "tries": 1
+  },
+  "statements:SNXT50BETA": {
+   "kind": "statements",
+   "last_on": "2026-11-16",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-23",
+   "since": "2026-11-16",
+   "ticker": "SNXT50BETA",
+   "tries": 1
+  },
+  "statements:STDSFAC": {
+   "kind": "statements",
+   "last_on": "2026-11-16",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-23",
+   "since": "2026-11-16",
+   "ticker": "STDSFAC",
    "tries": 1
   },
   "statements:SUVID-RE": {
