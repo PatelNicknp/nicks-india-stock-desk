@@ -2628,15 +2628,6 @@
    "ticker": "STURDY",
    "tries": 1
   },
-  "statements:SUDTIND-B": {
-   "kind": "statements",
-   "last_on": "2026-11-17",
-   "note": "no statement source answered",
-   "retry_after": "2026-11-18",
-   "since": "2026-11-17",
-   "ticker": "SUDTIND-B",
-   "tries": 1
-  },
   "statements:SUVID-RE": {
    "kind": "statements",
    "last_on": "2026-11-15",
