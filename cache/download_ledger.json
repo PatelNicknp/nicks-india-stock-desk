@@ -1,6 +1,18 @@
 {
  "incomplete": {
   "statements": [
+   "ZMILGFIN",
+   "VIKASPROP",
+   "VALUEAXIS",
+   "VALUE",
+   "VAL30IETF",
+   "TPINDIA",
+   "TOP20",
+   "TOP15IETF",
+   "TOP10ADD",
+   "TOP100CASE",
+   "TELECANOR",
+   "TECH",
    "STDSFAC",
    "SNXT50BETA",
    "SNXT50BEES",
@@ -188,31 +200,19 @@
    "BSLSENETFG",
    "BSLNIFTY",
    "BSE500IETF",
-   "BHASKAGR",
-   "BFSI",
-   "BBNPNBETF",
-   "BARODARY",
-   "BANKPSU",
-   "BANKNIFTY1",
-   "BANKIETF",
-   "BANKETF",
-   "BANKBETF",
-   "BANKBETA",
-   "BANKBEES",
-   "BANKADD",
-   "BANK10BETF"
+   "BHASKAGR"
   ]
  },
  "needs_person": {},
  "providers": {
   "BSE results": {
-   "cooldown_until": "2026-11-16T22:33Z",
-   "fails": 9,
+   "cooldown_until": "2026-11-17T06:33Z",
+   "fails": 10,
    "last_error": "skipped after repeated failures in this run"
   },
   "BSE shareholding": {
-   "cooldown_until": "2026-11-16T22:33Z",
-   "fails": 21,
+   "cooldown_until": "2026-11-17T06:33Z",
+   "fails": 22,
    "last_error": "skipped after repeated failures in this run"
   },
   "NSE results": {
@@ -237,8 +237,8 @@
   },
   "Yahoo BO": {
    "cooldown_until": "",
-   "fails": 1,
-   "last_error": "skipped after repeated failures in this run"
+   "fails": 0,
+   "last_error": ""
   },
   "Yahoo NS": {
    "cooldown_until": "",
@@ -257,7 +257,7 @@
   },
   "statements": {
    "cooldown_until": "",
-   "runs": 1
+   "runs": 0
   }
  },
  "unavailable": {
@@ -2510,6 +2510,114 @@
    "since": "2026-11-11",
    "ticker": "TEAM24",
    "tries": 5
+  },
+  "statements:TECH": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-24",
+   "since": "2026-11-17",
+   "ticker": "TECH",
+   "tries": 1
+  },
+  "statements:TELECANOR": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-24",
+   "since": "2026-11-17",
+   "ticker": "TELECANOR",
+   "tries": 1
+  },
+  "statements:TOP100CASE": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-24",
+   "since": "2026-11-17",
+   "ticker": "TOP100CASE",
+   "tries": 1
+  },
+  "statements:TOP10ADD": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-24",
+   "since": "2026-11-17",
+   "ticker": "TOP10ADD",
+   "tries": 1
+  },
+  "statements:TOP15IETF": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-24",
+   "since": "2026-11-17",
+   "ticker": "TOP15IETF",
+   "tries": 1
+  },
+  "statements:TOP20": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-24",
+   "since": "2026-11-17",
+   "ticker": "TOP20",
+   "tries": 1
+  },
+  "statements:TPINDIA": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-24",
+   "since": "2026-11-17",
+   "ticker": "TPINDIA",
+   "tries": 1
+  },
+  "statements:VAL30IETF": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-24",
+   "since": "2026-11-17",
+   "ticker": "VAL30IETF",
+   "tries": 1
+  },
+  "statements:VALUE": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-24",
+   "since": "2026-11-17",
+   "ticker": "VALUE",
+   "tries": 1
+  },
+  "statements:VALUEAXIS": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-24",
+   "since": "2026-11-17",
+   "ticker": "VALUEAXIS",
+   "tries": 1
+  },
+  "statements:VIKASPROP": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-24",
+   "since": "2026-11-17",
+   "ticker": "VIKASPROP",
+   "tries": 1
+  },
+  "statements:ZMILGFIN": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-24",
+   "since": "2026-11-17",
+   "ticker": "ZMILGFIN",
+   "tries": 1
   },
   "statements:ZODIAC": {
    "kind": "statements",

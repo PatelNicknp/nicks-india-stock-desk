@@ -251,7 +251,19 @@
   "SNXT50BETA": "2026-11-23",
   "STDSFAC": "2026-11-23",
   "STURDY": "2026-11-18",
-  "SUDTIND-B": "2026-11-18"
+  "SUDTIND-B": "2026-11-18",
+  "TECH": "2026-11-24",
+  "TELECANOR": "2026-11-24",
+  "TOP100CASE": "2026-11-24",
+  "TOP10ADD": "2026-11-24",
+  "TOP15IETF": "2026-11-24",
+  "TOP20": "2026-11-24",
+  "TPINDIA": "2026-11-24",
+  "VAL30IETF": "2026-11-24",
+  "VALUE": "2026-11-24",
+  "VALUEAXIS": "2026-11-24",
+  "VIKASPROP": "2026-11-24",
+  "ZMILGFIN": "2026-11-24"
  },
  "shareholding_retry_after": {
   "08AGG": "2026-10-27",
@@ -272,9 +284,9 @@
   "JAYKAYPP": "2026-11-12",
   "OLAPP": "2026-11-12"
  },
- "last_batch_at": "2026-11-16T20:07Z",
- "last_statements_ok": 0,
- "last_statements_fail": 6,
+ "last_batch_at": "2026-11-17T00:51Z",
+ "last_statements_ok": 116,
+ "last_statements_fail": 0,
  "last_shareholding_ok": 183,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
@@ -1785,6 +1797,78 @@
    "last_on": "2026-11-17",
    "retry_after": "2026-11-18",
    "note": "no statement source answered"
+  },
+  "TECH": {
+   "count": 0,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-24",
+   "note": "quote only, no results"
+  },
+  "TELECANOR": {
+   "count": 0,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-24",
+   "note": "quote only, no results"
+  },
+  "TOP100CASE": {
+   "count": 0,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-24",
+   "note": "quote only, no results"
+  },
+  "TOP10ADD": {
+   "count": 0,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-24",
+   "note": "quote only, no results"
+  },
+  "TOP15IETF": {
+   "count": 0,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-24",
+   "note": "quote only, no results"
+  },
+  "TOP20": {
+   "count": 0,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-24",
+   "note": "quote only, no results"
+  },
+  "TPINDIA": {
+   "count": 0,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-24",
+   "note": "quote only, no results"
+  },
+  "VAL30IETF": {
+   "count": 0,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-24",
+   "note": "quote only, no results"
+  },
+  "VALUE": {
+   "count": 0,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-24",
+   "note": "quote only, no results"
+  },
+  "VALUEAXIS": {
+   "count": 0,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-24",
+   "note": "quote only, no results"
+  },
+  "VIKASPROP": {
+   "count": 0,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-24",
+   "note": "quote only, no results"
+  },
+  "ZMILGFIN": {
+   "count": 0,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-24",
+   "note": "quote only, no results"
   }
  },
  "shareholding_failures": {
