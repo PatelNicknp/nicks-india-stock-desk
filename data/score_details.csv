@@ -5399,7 +5399,7 @@ CITADEL,Financials,Price / sales (lower is better),1,plus 1,7.204455013102979,9.
 CITADEL,Financials,Debt / equity (lower is better),1,plus 1,0.792408604036919,1.157206459751672,-1.0
 CITADEL,Financials,Price / free cash flow (lower is better),,n/a,,,
 CITADEL,Financials,Revenue growth (higher is better),-1,minus 1,10.93,12.02,-1.0
-CITADEL,Financials,EPS growth (higher is better),1,plus 1,21.77,6.46,0.0
+CITADEL,Financials,EPS growth (higher is better),1,plus 1,21.77,6.46,1.0
 CITADEL,Financials,Return on equity (higher is better),0,zero,8.39,8.61,1.0
 CITADEL,Financials,Dividend yield (higher is better),1,plus 1,1.4,0.0,1.0
 CITADEL,Sentiment,Analyst rating,,n/a,,,
@@ -10455,7 +10455,7 @@ ANANTRAJ,Financials,Price / sales (lower is better),1,plus 1,6.462208857077552,8
 ANANTRAJ,Financials,Debt / equity (lower is better),1,plus 1,0.12669491245566644,0.2230856530471703,1.0
 ANANTRAJ,Financials,Price / free cash flow (lower is better),,n/a,,,
 ANANTRAJ,Financials,Revenue growth (higher is better),-1,minus 1,13.68,46.94,0.0
-ANANTRAJ,Financials,EPS growth (higher is better),-1,minus 1,20.2,63.61,-1.0
+ANANTRAJ,Financials,EPS growth (higher is better),-1,minus 1,20.2,63.61,0.0
 ANANTRAJ,Financials,Return on equity (higher is better),1,plus 1,9.86,7.62,1.0
 ANANTRAJ,Financials,Dividend yield (higher is better),1,plus 1,0.15,0.11,1.0
 ANANTRAJ,Sentiment,Analyst rating,1,plus 1,1.5,,
@@ -41569,13 +41569,13 @@ PATELENG,Earnings,Latest earnings vs estimate,-1,minus 1,,,
 PATELENG,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,-11.65,,
 PRESTIGE,Technical,Trend vs 20-day and 50-day,1,plus 1,,,
 PRESTIGE,Technical,Oscillator (RSI-14),1,plus 1,66.5,,
-PRESTIGE,Financials,Forward P/E (lower is better),1,plus 1,30.78425,67.03448324604638,-1.0
+PRESTIGE,Financials,Forward P/E (lower is better),1,plus 1,31.859522,67.03448324604638,-1.0
 PRESTIGE,Financials,Trailing P/E (lower is better),-1,minus 1,78.0932594644506,67.03448324604638,-1.0
 PRESTIGE,Financials,Price / sales (lower is better),1,plus 1,5.745130285592626,6.55742894441958,-1.0
 PRESTIGE,Financials,Debt / equity (lower is better),0,zero,1.0140988057764855,0.9970129674131373,-1.0
 PRESTIGE,Financials,Price / free cash flow (lower is better),,n/a,,,
-PRESTIGE,Financials,Revenue growth (higher is better),-1,minus 1,74.11,-6.34,1.0
-PRESTIGE,Financials,EPS growth (higher is better),-1,minus 1,148.08,-10.71,1.0
+PRESTIGE,Financials,Revenue growth (higher is better),-1,minus 1,53.67,-6.34,1.0
+PRESTIGE,Financials,EPS growth (higher is better),-1,minus 1,3.64,-10.71,-1.0
 PRESTIGE,Financials,Return on equity (higher is better),-1,minus 1,5.6,8.21,1.0
 PRESTIGE,Financials,Dividend yield (higher is better),-1,minus 1,0.11,0.15,1.0
 PRESTIGE,Sentiment,Analyst rating,2,plus 2,1.42857,,
@@ -41649,13 +41649,13 @@ TATASTEEL,Earnings,Latest earnings vs estimate,-1,minus 1,,,
 TATASTEEL,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,-4.11,,
 WHIRLPOOL,Technical,Trend vs 20-day and 50-day,1,plus 1,,,
 WHIRLPOOL,Technical,Oscillator (RSI-14),0,zero,50.0,,
-WHIRLPOOL,Financials,Forward P/E (lower is better),1,plus 1,24.802774,76.50169010058623,-1.0
+WHIRLPOOL,Financials,Forward P/E (lower is better),1,plus 1,24.232517,76.50169010058623,-1.0
 WHIRLPOOL,Financials,Trailing P/E (lower is better),1,plus 1,44.67297297297298,76.50169010058623,-1.0
 WHIRLPOOL,Financials,Price / sales (lower is better),1,plus 1,1.225711251922969,2.6729743715015655,-1.0
 WHIRLPOOL,Financials,Debt / equity (lower is better),-1,minus 1,0.07747997717765209,0.05544401819705704,1.0
 WHIRLPOOL,Financials,Price / free cash flow (lower is better),,n/a,,102.28506991363656,
-WHIRLPOOL,Financials,Revenue growth (higher is better),-1,minus 1,1.45,9.21,-1.0
-WHIRLPOOL,Financials,EPS growth (higher is better),-1,minus 1,-18.2,32.27,-1.0
+WHIRLPOOL,Financials,Revenue growth (higher is better),-1,minus 1,2.49,9.21,-1.0
+WHIRLPOOL,Financials,EPS growth (higher is better),-1,minus 1,-39.12,32.27,-1.0
 WHIRLPOOL,Financials,Return on equity (higher is better),-1,minus 1,5.56,7.06,-1.0
 WHIRLPOOL,Financials,Dividend yield (higher is better),1,plus 1,0.61,0.34,1.0
 WHIRLPOOL,Sentiment,Analyst rating,0,zero,2.54545,,
