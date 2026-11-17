@@ -14,11 +14,7 @@ ticker,company,sector,industry,forward_pe,analyst_mean,analyst_count,target_mean
 11MPR,Nippon India Mutual Fund,,,,,,,,,Yahoo BO,2026-11-16,,
 11QPD,Nippon India Mutual Fund,,,,,,,,,Yahoo BO,2026-11-16,,
 1STCUS,FIRST CUSTODIAN FUND (INDIA) L,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,,
-20MICRONS,20 MICRONS LTD,Basic Materials,Other Industrial Metals & Mining,,,,,,,Yahoo NS,2026-10-25,,
-21STCENMGM,21ST CENTURY MGMT SERVICE,Financial Services,Capital Markets,,,,,,,Yahoo NS,2026-10-26,,
-360ONE,360 ONE WAM LIMITED,Financial Services,Asset Management,24.16004,1.1,10.0,1316.0,1327.5,1792058400.0,Yahoo NS,2026-10-26,"360 One Wam Limited, together with its subsidiaries, provides wealth and asset management services in India.",
 3BBLACKBIO,3B BLACKBIO DX LTD.,Healthcare,Biotechnology,,,,,,,Yahoo NS,2026-11-16,3B Blackbio Dx Limited manufactures and sells molecular diagnostic kits in India.,INR
-3IINFOLTD,3I INFOTECH LIMITED,Technology,Information Technology Services,,,,,,,Yahoo NS,2026-10-26,,
 3MINDIA,3M INDIA LIMITED,Industrials,Conglomerates,37.075397,,1.0,37500.0,37500.0,,NSE results,2026-11-16,,INR
 3PLAND,3P LAND HOLDINGS LIMITED,Real Estate,Real Estate Services,,,,,,,Yahoo NS,2026-11-16,3P Land Holdings Limited engages in the real estate leasing business in India.,INR
 5PAISA,5PAISA CAPITAL LIMITED,Financial Services,Capital Markets,21.741936,,,,,,Yahoo NS,2026-11-16,"5paisa Capital Limited provides an online technology platform for trading in National Stock Exchange of India Limited, BSE Ltd, and MCX in India.",INR
@@ -27,28 +23,23 @@ ticker,company,sector,industry,forward_pe,analyst_mean,analyst_count,target_mean
 7SEASL,7SEAS ENTERTAINMENT LIMITED,Communication Services,Electronic Gaming & Multimedia,,,,,,,Yahoo BO,2026-10-26,,
 7TEC,SAVEN TECHNOLOGIES LTD.,Technology,Information Technology Services,,,,,,,Yahoo BO,2026-11-16,"Saven Technologies Limited, a technology consulting company, provides software services in the United States of America and India.",INR
 A1L,A-1 LIMITED,Basic Materials,Chemicals,,,,,,,Yahoo BO,2026-10-26,,
-A2ZINFRA,A2Z INFRA ENGINEERING LTD,Industrials,Engineering & Construction,,,,,,,Yahoo NS,2026-10-26,,
 AAATECH,AAA TECHNOLOGIES LIMITED,Technology,Information Technology Services,,,,,,,NSE results,2026-11-16,,INR
 AADHARHFC,AADHAR HOUSING FINANCE L,Financial Services,Mortgage Finance,11.9383335,,14.0,600.3571,605.0,,NSE results,2026-11-16,,INR
 AADIIND,AADI INDUSTRIES LTD.,Basic Materials,Specialty Chemicals,,,,,,,Yahoo BO,2026-10-26,,
 AAIL,Akar Auto Industries Limited,Consumer Cyclical,Auto Parts,,,,,,,Yahoo BO,2026-11-16,"Akar Auto Industries Limited manufactures, sells, exports, imports, and trades in automotive components in India and internationally.",INR
 AAKASH,AAKASH EXPLORATION SER L,Energy,Oil & Gas Equipment & Services,,,,,,,Yahoo NS,2026-11-16,Aakash Exploration Services Limited provides oil and gas field services in India.,INR
 AANCHALISP,Aanchal Ispat Limited,Basic Materials,Steel,,,,,,,Yahoo BO,2026-10-26,,
-AAREYDRUGS,AAREY DRUGS & PHARM LTD,Healthcare,Drug Manufacturers - Specialty & Generic,,,,,,,Yahoo NS,2026-10-25,,
 AARNAV,AARNAV FASHIONS LIMITED,,,,,,,,,Yahoo NS,2026-11-16,Aarnav Fashions Limited engages in the manufacture and trade of textiles in India and internationally.,INR
 AARON,AARON INDUSTRIES LIMITED,Industrials,Specialty Industrial Machinery,,,,,,,Yahoo NS,2026-11-16,Aaron Industries Limited engages in the manufacture and sale of elevators and elevator parts in India.,INR
 AARSHYAM,Aar Shyam India Investment Com,Financial Services,Credit Services,,,,,,,Yahoo BO,2026-11-03,"Avudari Engineering Limited, through its subsidiary, provides diversified commercial services in India.",
 AARTECH,AARTECH SOLONICS LIMITED,Industrials,Electrical Equipment & Parts,,,,,,,Yahoo NS,2026-11-16,Aartech Solonics Limited operates as a system solution oriented research and development enterprise in the field of specialized and selected energy appliances in India and internationally.,INR
 AARTIDRUGS,AARTI DRUGS LTD.,Healthcare,Drug Manufacturers - Specialty & Generic,16.166134,2.0,1.0,553.0,553.0,,NSE results,2026-11-16,"Aarti Drugs Limited, through its subsidiaries, engages in the manufacture and marketing of active pharmaceutical ingredients (APIs), pharmaceutical intermediates, specialty chemicals, and formulations in India and internationally.",INR
-AARTIIND,AARTI INDUSTRIES LTD,Basic Materials,Specialty Chemicals,22.204836,1.75,24.0,537.7083,526.5,1793354400.0,Yahoo NS,2026-11-05,Aarti Industries Limited engages in the manufacturing and dealing in specialty chemicals and intermediates in India and internationally.,
 AARTIPHARM,AARTI PHARMALABS LIMITED,Healthcare,Drug Manufacturers - Specialty & Generic,39.058823,,1.0,740.0,740.0,,NSE results,2026-11-16,"Aarti Pharmalabs Limited, together with its subsidiaries, manufactures and sells active pharmaceutical ingredients, pharmaceutical intermediates, and xanthine derivatives in India and internationally.",INR
 AARTISURF,AARTI SURFACTANTS LIMITED,Basic Materials,Specialty Chemicals,,,,,,,Yahoo NS,2026-11-16,"Aarti Surfactants Limited, together with its subsidiary, produces and sells ionic and non-ionic surfactants for the home and personal care, agro and oil, and industrial applications in India and internationally.",INR
-AARVI,AARVI ENCON LIMITED,Industrials,Staffing & Employment Services,,,,,,,Yahoo NS,2026-10-26,,
 AASTAFIN,Aastamangalam Finance Limited,Financial Services,Credit Services,,,,,,,Yahoo BO,2026-10-26,,
 AASTHA,AASTHA SPINTEX LIMITED,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo NS,2026-11-16,Aastha Spintex Limited manufactures and trades in cotton yarns and bales for knitting and weaving applications in India.,INR
 AAVAS,AAVAS FINANCIERS LIMITED,Financial Services,Mortgage Finance,9.72156,,21.0,1659.8572,1675.0,1793008800.0,NSE results,2026-11-16,Aavas Financiers Limited provides housing finance services to low- and middle-income customers in semi-urban and rural areas in India.,INR
 AAYUSH,AAYUSH WELLNESS LIMITED,Consumer Defensive,Packaged Foods,,,,,,,Yahoo BO,2026-11-16,"Aayush Wellness Limited engages in the development, production, marketing and distribution of health and wellness products in India.",INR
-ABAN,ABAN OFFSHORE LTD.,Energy,Oil & Gas Drilling,0.29505584,,,,,,Yahoo NS,2026-10-26,,
 ABANSENT,ABANS ENTERPRISES LTD.,Financial Services,Capital Markets,,,,,,,Yahoo NS,2026-11-16,"ABans Enterprises Limited, together with its subsidiaries, engages in the trading of precious metal, agricultural and non-agricultural commodities in India, the United Arab Emirates, and Mauritius.",INR
 ABATEAS,ABATE AS INDUSTRIES LIMITED,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,,
 ABB,ABB INDIA LIMITED,Industrials,Specialty Industrial Machinery,66.02069,3.33333,27.0,7035.3335,7094.0,1794564000.0,Yahoo NS,2026-11-13,"ABB India Limited develops and sells products and system solutions to utilities, industries, channel partners, and original equipment manufacturers in India and internationally.",INR
@@ -62,11 +53,8 @@ ABFRL,ADITYA BIRLA FASHION & RT,Consumer Cyclical,Apparel Manufacturing,-5.94922
 ABHICAP,ABHINAV CAPITAL SERVICES LTD.,Financial Services,Credit Services,,,,,,,Yahoo BO,2026-10-26,,
 ABHIFIN,Abhishek Finlease limited,Financial Services,Asset Management,,,,,,,Yahoo BO,2026-10-26,,
 ABHIINFRA,Abhishek Infraventures Limited,Industrials,Engineering & Construction,,,,,,,Yahoo BO,2026-11-15,Abhishek Infraventures Limited engages in the construction and infrastructure project-related activities in India.,INR
-ABINFRA,A B INFRABUILD LIMITED,Industrials,Engineering & Construction,,,,,,,Yahoo NS,2026-10-26,,
 ABIRAFN,ABIRAMI FINANCIAL SERVICES (IN,Financial Services,Credit Services,,,,,,,Yahoo BO,2026-11-16,Abirami Financial Services (India) Limited engages in the hire purchase business.,INR
 ABLBL,ADITYA BIRLA LIFES BRAN L,Consumer Cyclical,Apparel Retail,26.533415,1.81818,11.0,124.90909,120.0,,Yahoo NS,2026-11-16,Aditya Birla Lifestyle Brands Limited engages in the retail of garments and accessories in India and the Middle East.,INR
-ABMINTLLTD,ABM INTERNATIONAL LTD,Basic Materials,Specialty Chemicals,,,,,,,Yahoo NS,2026-10-26,,
-ABMKNO,A B M KNOWLEDGEWARE LTD.,Technology,Software - Application,,,,,,,Yahoo NS,2026-10-26,,
 ABREL,ADITYA BIRLA REAL EST LTD,Real Estate,Real Estate Services,24.845995,1.07692,13.0,1692.5385,1663.0,,NSE results,2026-11-16,"Aditya Birla Real Estate Limited develops, leases, and invests in real estate properties and primarily in India.",INR
 ABSL10BANK,Aditya Birla Sun Life Mutual F,,,,,,,,,Yahoo BO,2026-11-16,,
 ABSLAMC,ADIT BIRL SUN LIF AMC LTD,Financial Services,Asset Management,21.425852,2.06667,15.0,1102.5333,1120.0,,NSE results,2026-11-16,Aditya Birla Sun Life AMC Limited is privately owned investment manager.,INR
@@ -76,8 +64,6 @@ ABSLPSE,Aditya Birla Sun Life Mutual F,,,,,,,,,Yahoo BO,2026-11-16,,
 ACC,ACC LIMITED,Basic Materials,Building Materials,14.203453,2.72,24.0,1371.5416,1275.0,1793095200.0,Yahoo NS,2026-11-16,ACC Limited engages in the manufacture and sale of cement and ready-mix concrete in India.,INR
 ACCEDERE,ACCEDERE LIMITED,Technology,Information Technology Services,,,,,,,Yahoo BO,2026-10-26,,
 ACCEL,ACCEL LIMITED,Technology,Information Technology Services,,,,,,,Yahoo BO,2026-11-16,"Accel Limited, together with its subsidiaries, engages in the information technology service, animation, engineering, real estate, and academic businesses in India and internationally.",INR
-ACCELYA,ACCELYA SOLN INDIA LTD,Technology,Information Technology Services,15.209265,,,,,,Yahoo NS,2026-10-25,,
-ACCURACY,ACCURACY SHIPPING LIMITED,Industrials,Integrated Freight & Logistics,,,,,,,Yahoo NS,2026-10-26,,
 ACE,ACTION CONST EQUIP LTD,Industrials,Farm & Heavy Construction Machinery,25.05308,,1.0,1320.0,1320.0,,NSE results,2026-11-16,Action Construction Equipment Limited manufactures and sells material handling and construction equipment primarily in India and internationally.,INR
 ACEEDU,ACE EDUTREND LTD.,Consumer Defensive,Education & Training Services,,,,,,,Yahoo BO,2026-10-26,ACE Edutrend Limited offers educational and vocational services in India.,
 ACEENGITEC,ACE ENGITECH LIMITED,Technology,Information Technology Services,,,,,,,Yahoo BO,2026-10-26,,
@@ -4646,3 +4632,17 @@ TIRUFOAM,TIRUPATI FOAM LIMITED,Consumer Cyclical,"Furnishings, Fixtures & Applia
 TNSTLTU,TAMILNADU STEEL TUBES LTD.,Basic Materials,Steel,,,,,,,Yahoo BO,2026-11-17,"Tamilnadu Steel Tubes Limited manufactures and sells black, galvanized, and stainless-steel pipes in India.",INR
 IMPERA,IMPERA WORLDWIDE LIMITED,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo BO,2026-11-17,Impera Worldwide Limited manufactures and sells textile products.,INR
 STDSHOE,STANDARD SHOE SOLE AND MOULD (,Basic Materials,Chemicals,,,,,,,Yahoo BO,2026-11-17,"Standard Shoe Sole and Mould (India) Limited engages in the trading of footwear, footwear components, and allied products in India.",INR
+20MICRONS,20 MICRONS LTD,Basic Materials,Other Industrial Metals & Mining,,,,,,,Yahoo,2026-11-17,20 Microns Limited manufactures and markets micronized industrial minerals and specialty chemicals primarily in India and internationally.,INR
+21STCENMGM,21ST CENTURY MGMT SERVICE,Financial Services,Capital Markets,,,,,,,Yahoo,2026-11-17,"Twentyfirst Century Management Services Limited, together with its subsidiary, engages in the investment business in India.",INR
+360ONE,360 ONE WAM LIMITED,Financial Services,Asset Management,29.660036,,10.0,1316.0,1327.5,1792058400.0,Yahoo,2026-11-17,"360 One Wam Limited, together with its subsidiaries, provides wealth and asset management services in India.",INR
+3IINFOLTD,3I INFOTECH LIMITED,Technology,Information Technology Services,,,,,,,Yahoo,2026-11-17,3i Infotech Limited provides information technology services and solutions in India and internationally.,INR
+A2ZINFRA,A2Z INFRA ENGINEERING LTD,Industrials,Engineering & Construction,,,,,,,Yahoo,2026-11-17,"A2Z Infra Engineering Limited offers engineering, procurement, and construction (EPC) and facility management services in India and internationally. it operates through the Engineering Services (ES), Facility Management Services, Municipal Solid Waste Management, and Others segments.",INR
+AAREYDRUGS,AAREY DRUGS & PHARM LTD,Healthcare,Drug Manufacturers - Specialty & Generic,,,,,,,Yahoo,2026-11-17,"Aarey Drugs & Pharmaceuticals Limited manufactures and sells active pharmaceutical ingredients, intermediates, and specialty chemicals for various industrial applications in India.",INR
+AARTIIND,AARTI INDUSTRIES LTD,Basic Materials,Specialty Chemicals,23.288818,1.72,25.0,537.36,523.0,1793354400.0,Yahoo,2026-11-17,Aarti Industries Limited engages in the manufacturing and dealing in specialty chemicals and intermediates in India and internationally.,INR
+AARVI,AARVI ENCON LIMITED,Industrials,Staffing & Employment Services,,,,,,,Yahoo,2026-11-17,Aarvi Encon Limited offers manpower supply and consultancy services in India and internationally.,INR
+ABAN,ABAN OFFSHORE LTD.,Energy,Oil & Gas Drilling,0.28708133,,,,,,Yahoo,2026-11-17,"Aban Offshore Limited, together with its subsidiaries, provides offshore drilling and production services for exploration, development, and production of oil and gas in India and internationally.",INR
+ABINFRA,A B INFRABUILD LIMITED,Industrials,Engineering & Construction,,,,,,,Yahoo,2026-11-17,A B Infrabuild Limited engages in the civil construction business in India.,INR
+ABMINTLLTD,ABM INTERNATIONAL LTD,Basic Materials,Specialty Chemicals,,,,,,,Yahoo,2026-11-17,ABM International Limited engages in the importing and trading of plastic raw materials in India.,INR
+ABMKNO,A B M KNOWLEDGEWARE LTD.,Technology,Software - Application,,,,,,,Yahoo,2026-11-17,"ABM Knowledgeware Limited, together with its subsidiaries, provides e-governance information security, technology-enabled applications through cloud services, and other software services in India.",INR
+ACCELYA,ACCELYA SOLN INDIA LTD,Technology,Information Technology Services,15.632587,,,,,,Yahoo,2026-11-17,"Accelya Solutions India Limited engages in the provision of software solutions to the airline, cargo, and travel industries in the Asia Pacific, the Middle East, Africa, the Americas, and Europe.",INR
+ACCURACY,ACCURACY SHIPPING LIMITED,Industrials,Integrated Freight & Logistics,,,,,,,Yahoo,2026-11-17,Accuracy Shipping Limited provides third party logistics solutions in India and internationally.,INR
