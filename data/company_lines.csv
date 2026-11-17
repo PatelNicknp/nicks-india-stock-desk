@@ -12,11 +12,11 @@ ticker,line,source,as_of
 11MPR,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-17
 11QPD,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-17
 1STCUS,Provides securities brokerage services in India.,Yahoo,2026-10-26
-20MICRONS,Makes and sells micronized industrial minerals and specialty chemicals in India and abroad.,Yahoo,2026-10-26
-21STCENMGM,Works in the investment business in India.,Yahoo,2026-10-26
-360ONE,Provides wealth and asset management services in India.,Yahoo,2026-10-26
+20MICRONS,Makes and sells micronized industrial minerals and specialty chemicals in India and abroad.,Yahoo,2026-11-17
+21STCENMGM,Works in the investment business in India.,Yahoo,2026-11-17
+360ONE,Provides wealth and asset management services in India.,Yahoo,2026-11-17
 3BBLACKBIO,Makes and sells molecular diagnostic kits in India.,Yahoo,2026-11-16
-3IINFOLTD,Provides information technology services and solutions in India and abroad.,Yahoo,2026-10-26
+3IINFOLTD,Provides information technology services and solutions in India and abroad.,Yahoo,2026-11-17
 3MINDIA,Makes and sells many products in India and abroad.,Yahoo,2026-10-26
 3PLAND,Works in the real estate leasing business in India.,Yahoo,2026-11-16
 5PAISA,"Provides an online technology platform for trading in National Stock Exchange of India Limited, BSE Ltd, and MCX in India.",Yahoo,2026-11-16
@@ -25,27 +25,27 @@ ticker,line,source,as_of
 7SEASL,Works in the development and publishing of digital games and interactive content in India.,Yahoo,2026-10-26
 7TEC,Provides software services in the United States of America and India.,Yahoo,2026-11-16
 A1L,Trades many chemicals and acid products in India and abroad.,Yahoo,2026-10-26
-A2ZINFRA,"Offers engineering, procurement, and construction and facility management services in India and abroad. it operates through the Engineering Services, Facility.",Yahoo,2026-10-26
+A2ZINFRA,"Offers engineering, procurement, and construction and facility management services in India and abroad. it operates through the Engineering Services, Facility.",Yahoo,2026-11-17
 AAATECH,"Provides IT security audit, cyber security audit, IT assurance and compliance, and IT governance services in India.",Yahoo,2026-10-26
 AADHARHFC,Works in the housing finance business in India.,Yahoo,2026-10-26
 AADIIND,Makes and sells plastic and plastic products in India.,Yahoo,2026-10-26
 AAIL,"Makes and sells imports, and trades in automotive components in India and abroad.",Yahoo,2026-11-16
 AAKASH,Provides oil and gas field services in India.,Yahoo,2026-11-16
 AANCHALISP,"Makes and sells mild steel TMT re-bars, structural re-bars, angles, channels, TMT bars, MS rounds, and other sectional products.",Yahoo,2026-10-26
-AAREYDRUGS,"Makes and sells active pharmaceutical ingredients, intermediates, and specialty chemicals for many industrial applications in India.",Yahoo,2026-10-26
+AAREYDRUGS,"Makes and sells active pharmaceutical ingredients, intermediates, and specialty chemicals for many industrial applications in India.",Yahoo,2026-11-17
 AARNAV,Works in the manufacture and trade of textiles in India and abroad.,Yahoo,2026-11-16
 AARON,Makes and sells elevators and elevator parts in India.,Yahoo,2026-11-16
 AARTECH,A system solution oriented research and development enterprise in the field of specialized and selected energy appliances.,Yahoo,2026-11-16
 AARTIDRUGS,"Makes and sells active pharmaceutical ingredients, pharmaceutical intermediates, specialty chemicals, and formulations in India and abroad.",Yahoo,2026-11-16
-AARTIIND,Works in the manufacturing and dealing in specialty chemicals and intermediates in India and abroad.,Yahoo,2026-11-05
+AARTIIND,Works in the manufacturing and dealing in specialty chemicals and intermediates in India and abroad.,Yahoo,2026-11-17
 AARTIPHARM,"Makes and sells active pharmaceutical ingredients, pharmaceutical intermediates, and xanthine derivatives in India and abroad.",Yahoo,2026-11-16
 AARTISURF,"Makes and sells ionic and non-ionic surfactants for the home and personal care, agro and oil, and industrial applications.",Yahoo,2026-11-16
-AARVI,Offers manpower supply and consultancy services in India and abroad.,Yahoo,2026-10-26
+AARVI,Offers manpower supply and consultancy services in India and abroad.,Yahoo,2026-11-17
 AASTAFIN,Works in financial activities in India.,Yahoo,2026-10-26
 AASTHA,Makes and sells cotton yarns and bales for knitting and weaving applications in India.,Yahoo,2026-11-16
 AAVAS,Provides housing finance services to low- and middle-income customers in semi-urban and rural areas in India.,Yahoo,2026-11-16
 AAYUSH,"Works in the development, production, marketing and distribution of health and wellness products in India.",Yahoo,2026-11-16
-ABAN,"Provides offshore drilling and production services for exploration, development, and production of oil and gas in India and abroad.",Yahoo,2026-10-26
+ABAN,"Provides offshore drilling and production services for exploration, development, and production of oil and gas in India and abroad.",Yahoo,2026-11-17
 ABANSENT,"Trades precious metal, agricultural and non-agricultural commodities in India, the United Arab Emirates, and Mauritius.",Yahoo,2026-11-16
 ABATEAS,Provides eye healthcare services in India.,Yahoo,2026-10-26
 ABB,"Develops and sells products and system solutions to utilities, industries, channel partners, and original equipment manufacturers in India and abroad.",Yahoo,2026-11-13
@@ -57,11 +57,11 @@ ABDL,Makes and sells alcoholic beverages in India and abroad.,Yahoo,2026-11-16
 ABFRL,"Makes and sells, and retails fashion apparel and accessories in India and abroad.",Yahoo,2026-11-16
 ABHICAP,A non-banking finance company.,Yahoo,2026-10-26
 ABHIFIN,A non-deposit taking core investment company in India.,Yahoo,2026-10-26
-ABINFRA,Works in the civil construction business in India.,Yahoo,2026-10-26
+ABINFRA,Works in the civil construction business in India.,Yahoo,2026-11-17
 ABIRAFN,Works in the hire purchase business.,Yahoo,2026-11-16
 ABLBL,Works in the retail of garments and accessories in India and the Middle East.,Yahoo,2026-11-16
-ABMINTLLTD,Works in the importing and trading of plastic raw materials in India.,Yahoo,2026-10-26
-ABMKNO,"Provides e-governance information security, technology-enabled applications through cloud services, and other software services in India.",Yahoo,2026-10-26
+ABMINTLLTD,Works in the importing and trading of plastic raw materials in India.,Yahoo,2026-11-17
+ABMKNO,"Provides e-governance information security, technology-enabled applications through cloud services, and other software services in India.",Yahoo,2026-11-17
 ABREL,"Develops, leases, and invests in real estate properties and in India.",Yahoo,2026-11-16
 ABSL10BANK,"A fund, such as an ETF, that trades on the stock exchange.",Industry fallback,2026-11-17
 ABSLAMC,Aditya Birla Sun Life AMC Limited is privately owned investment manager.,Yahoo,2026-11-16
@@ -72,8 +72,8 @@ ABSLPSE,"A fund, such as an ETF, that trades on the stock exchange.",Industry fa
 ACC,Makes and sells cement and ready-mix concrete in India.,Yahoo,2026-11-16
 ACCEDERE,"Provides compliance audits, technical risk assessments, and cybersecurity consulting services in India.",Yahoo,2026-10-26
 ACCEL,"Works in the information technology service, animation, engineering, real estate, and academic businesses in India and abroad.",Yahoo,2026-11-16
-ACCELYA,"Provides software solutions to the airline, cargo, and travel industries.",Yahoo,2026-10-26
-ACCURACY,Provides third party logistics solutions in India and abroad.,Yahoo,2026-10-26
+ACCELYA,"Provides software solutions to the airline, cargo, and travel industries.",Yahoo,2026-11-17
+ACCURACY,Provides third party logistics solutions in India and abroad.,Yahoo,2026-11-17
 ACE,Makes and sells material handling and construction equipment in India and abroad.,Yahoo,2026-11-16
 ACEEDU,Offers educational and vocational services in India.,Yahoo,2026-10-26
 ACEENGITEC,Provides information technology services.,Yahoo,2026-10-26
