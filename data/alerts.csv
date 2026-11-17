@@ -1,5 +1,2 @@
 ticker,kind,text,score,score_prev,verdict,verdict_prev,price,data_status,note,disclaimer
-ROLCOEN,score_jump,ROLCOEN score moved from -1 to 1.,1,-1,AVOID,AVOID,512.0,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-NUTRICIRCLE,verdict_change,NUTRICIRCLE changed from Not scored yet to AVOID.,0,0,AVOID,Not scored yet,259.35,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-360ONE,score_jump,360ONE score moved from -1 to -3.,-3,-1,AVOID,AVOID,1202.85,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-ABINFRA,score_jump,ABINFRA score moved from -3 to -5.,-5,-3,AVOID,AVOID,11.99,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+,info,No verdict changes or score crossings this run.,,,,,,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
