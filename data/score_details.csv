@@ -2962,7 +2962,7 @@ NORTHARC,Sector,"Sector vs S&P 500, 3 months",0,zero,-1.01,,
 RUSTOMJEE,Technical,Trend vs 20-day and 50-day,1,plus 1,,,
 RUSTOMJEE,Technical,Oscillator (RSI-14),1,plus 1,55.7,,
 RUSTOMJEE,Financials,Forward P/E (lower is better),1,plus 1,12.3269,60.073733209362125,1.0
-RUSTOMJEE,Financials,Trailing P/E (lower is better),1,plus 1,21.806569343065693,60.073733209362125,0.0
+RUSTOMJEE,Financials,Trailing P/E (lower is better),1,plus 1,21.806569343065693,60.073733209362125,-1.0
 RUSTOMJEE,Financials,Price / sales (lower is better),1,plus 1,1.600749499650068,5.529786327993519,1.0
 RUSTOMJEE,Financials,Debt / equity (lower is better),0,zero,0.516257333856611,0.5217884192779146,-1.0
 RUSTOMJEE,Financials,Price / free cash flow (lower is better),,n/a,,32.89092903891821,
@@ -14479,6 +14479,22 @@ LUMINO,Sentiment,Institutional 13F trend,,n/a,,,
 LUMINO,Sentiment,Insider buys vs sells,,n/a,,,
 LUMINO,Earnings,Latest earnings vs estimate,,n/a,,,
 LUMINO,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,,,
+MADHUDIN,Technical,Trend vs 20-day and 50-day,1,plus 1,,,
+MADHUDIN,Technical,Oscillator (RSI-14),1,plus 1,54.3,,
+MADHUDIN,Financials,Forward P/E (lower is better),,n/a,,16.596602182539684,
+MADHUDIN,Financials,Trailing P/E (lower is better),1,plus 1,12.717770034843207,16.596602182539684,1.0
+MADHUDIN,Financials,Price / sales (lower is better),1,plus 1,14.403311063798546,28.349284696553884,-1.0
+MADHUDIN,Financials,Debt / equity (lower is better),0,zero,0.0,0.0,1.0
+MADHUDIN,Financials,Price / free cash flow (lower is better),,n/a,,,
+MADHUDIN,Financials,Revenue growth (higher is better),0,zero,4.6,4.83,-1.0
+MADHUDIN,Financials,EPS growth (higher is better),,n/a,,-60.23,
+MADHUDIN,Financials,Return on equity (higher is better),-1,minus 1,4.98,5.35,0.0
+MADHUDIN,Financials,Dividend yield (higher is better),0,zero,0.0,0.0,0.0
+MADHUDIN,Sentiment,Analyst rating,,n/a,,,
+MADHUDIN,Sentiment,Institutional 13F trend,0,zero,,,
+MADHUDIN,Sentiment,Insider buys vs sells,,n/a,,,
+MADHUDIN,Earnings,Latest earnings vs estimate,,n/a,,,
+MADHUDIN,Sector,"Sector vs S&P 500, 3 months",0,zero,-4.32,,
 MAJESAUT,Technical,Trend vs 20-day and 50-day,1,plus 1,,,
 MAJESAUT,Technical,Oscillator (RSI-14),0,zero,51.8,,
 MAJESAUT,Financials,Forward P/E (lower is better),,n/a,,43.374160121353974,
@@ -21570,13 +21586,13 @@ YARNSYN,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,-2.26,,
 YURANUS,Technical,Trend vs 20-day and 50-day,1,plus 1,,,
 YURANUS,Technical,Oscillator (RSI-14),0,zero,61.4,,
 YURANUS,Financials,Forward P/E (lower is better),,n/a,,,
-YURANUS,Financials,Trailing P/E (lower is better),,n/a,56.98067632850242,,-1.0
-YURANUS,Financials,Price / sales (lower is better),1,plus 1,2.2216150496609175,18.983431638879598,-1.0
-YURANUS,Financials,Debt / equity (lower is better),-1,minus 1,0.5116052325109011,0.21830802963701926,-1.0
+YURANUS,Financials,Trailing P/E (lower is better),,n/a,20.620629370629374,,1.0
+YURANUS,Financials,Price / sales (lower is better),1,plus 1,1.5519270097139937,18.983431638879598,-1.0
+YURANUS,Financials,Debt / equity (lower is better),-1,minus 1,0.38513059499295543,0.21830802963701926,0.0
 YURANUS,Financials,Price / free cash flow (lower is better),,n/a,,,
 YURANUS,Financials,Revenue growth (higher is better),,n/a,-65.72,,-1.0
 YURANUS,Financials,EPS growth (higher is better),,n/a,,,
-YURANUS,Financials,Return on equity (higher is better),1,plus 1,19.56,9.28,1.0
+YURANUS,Financials,Return on equity (higher is better),1,plus 1,43.36,9.28,1.0
 YURANUS,Financials,Dividend yield (higher is better),0,zero,0.0,0.0,0.0
 YURANUS,Sentiment,Analyst rating,,n/a,,,
 YURANUS,Sentiment,Institutional 13F trend,1,plus 1,,,
@@ -24054,7 +24070,7 @@ ALEMBICLTD,Financials,Trailing P/E (lower is better),0,zero,9.149839743589745,9.
 ALEMBICLTD,Financials,Price / sales (lower is better),1,plus 1,12.255294962955059,15.52793189490029,-1.0
 ALEMBICLTD,Financials,Debt / equity (lower is better),-1,minus 1,0.004350972415853253,0.0034546280300983916,1.0
 ALEMBICLTD,Financials,Price / free cash flow (lower is better),1,plus 1,67.46158235604265,112.38250575357975,-1.0
-ALEMBICLTD,Financials,Revenue growth (higher is better),-1,minus 1,13.06,33.93,0.0
+ALEMBICLTD,Financials,Revenue growth (higher is better),-1,minus 1,13.06,33.93,-1.0
 ALEMBICLTD,Financials,EPS growth (higher is better),-1,minus 1,5.49,28.32,-1.0
 ALEMBICLTD,Financials,Return on equity (higher is better),1,plus 1,13.11,11.58,1.0
 ALEMBICLTD,Financials,Dividend yield (higher is better),-1,minus 1,2.09,2.27,1.0
@@ -27935,22 +27951,6 @@ LIMECHM,Sentiment,Institutional 13F trend,0,zero,,,
 LIMECHM,Sentiment,Insider buys vs sells,,n/a,,,
 LIMECHM,Earnings,Latest earnings vs estimate,,n/a,,,
 LIMECHM,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,-15.45,,
-MADHUDIN,Technical,Trend vs 20-day and 50-day,1,plus 1,,,
-MADHUDIN,Technical,Oscillator (RSI-14),1,plus 1,54.3,,
-MADHUDIN,Financials,Forward P/E (lower is better),,n/a,,16.596602182539684,
-MADHUDIN,Financials,Trailing P/E (lower is better),-1,minus 1,35.78431372549021,16.596602182539684,-1.0
-MADHUDIN,Financials,Price / sales (lower is better),1,plus 1,14.583107325952893,28.349284696553884,-1.0
-MADHUDIN,Financials,Debt / equity (lower is better),0,zero,0.0,0.0,1.0
-MADHUDIN,Financials,Price / free cash flow (lower is better),,n/a,,,
-MADHUDIN,Financials,Revenue growth (higher is better),0,zero,4.6,4.83,-1.0
-MADHUDIN,Financials,EPS growth (higher is better),,n/a,,-60.23,
-MADHUDIN,Financials,Return on equity (higher is better),-1,minus 1,2.0,5.35,-1.0
-MADHUDIN,Financials,Dividend yield (higher is better),0,zero,0.0,0.0,0.0
-MADHUDIN,Sentiment,Analyst rating,,n/a,,,
-MADHUDIN,Sentiment,Institutional 13F trend,0,zero,,,
-MADHUDIN,Sentiment,Insider buys vs sells,,n/a,,,
-MADHUDIN,Earnings,Latest earnings vs estimate,,n/a,,,
-MADHUDIN,Sector,"Sector vs S&P 500, 3 months",0,zero,-4.32,,
 MANGALAM,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
 MANGALAM,Technical,Oscillator (RSI-14),0,zero,42.8,,
 MANGALAM,Financials,Forward P/E (lower is better),,n/a,,71.81558823529411,
@@ -40358,7 +40358,7 @@ EMAMIREAL,Financials,Trailing P/E (lower is better),,n/a,,,
 EMAMIREAL,Financials,Price / sales (lower is better),1,plus 1,3.787772237806389,5.21150269320355,1.0
 EMAMIREAL,Financials,Debt / equity (lower is better),,n/a,,,
 EMAMIREAL,Financials,Price / free cash flow (lower is better),,n/a,,,
-EMAMIREAL,Financials,Revenue growth (higher is better),-1,minus 1,14.33,-1.19,1.0
+EMAMIREAL,Financials,Revenue growth (higher is better),-1,minus 1,14.33,-1.19,0.0
 EMAMIREAL,Financials,EPS growth (higher is better),,n/a,,,
 EMAMIREAL,Financials,Return on equity (higher is better),,n/a,,,
 EMAMIREAL,Financials,Dividend yield (higher is better),0,zero,0.0,0.0,0.0
@@ -49042,13 +49042,13 @@ JJFINCOR,Sector,"Sector vs S&P 500, 3 months",0,zero,35.4,,
 KEMP,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
 KEMP,Technical,Oscillator (RSI-14),0,zero,40.7,,
 KEMP,Financials,Forward P/E (lower is better),,n/a,,,
-KEMP,Financials,Trailing P/E (lower is better),,n/a,,,
-KEMP,Financials,Price / sales (lower is better),1,plus 1,30.349515644405553,53.126304005965075,-1.0
+KEMP,Financials,Trailing P/E (lower is better),,n/a,167.1057046979866,,-1.0
+KEMP,Financials,Price / sales (lower is better),1,plus 1,27.866787286950213,74.04778273877564,-1.0
 KEMP,Financials,Debt / equity (lower is better),,n/a,,,
 KEMP,Financials,Price / free cash flow (lower is better),,n/a,,,
-KEMP,Financials,Revenue growth (higher is better),-1,minus 1,2.99,49.17,-1.0
+KEMP,Financials,Revenue growth (higher is better),-1,minus 1,19.26,21.87,1.0
 KEMP,Financials,EPS growth (higher is better),,n/a,,,
-KEMP,Financials,Return on equity (higher is better),1,plus 1,-0.74,-0.16,-1.0
+KEMP,Financials,Return on equity (higher is better),1,plus 1,-0.2,-0.16,-1.0
 KEMP,Financials,Dividend yield (higher is better),-1,minus 1,0.0,0.58,0.0
 KEMP,Sentiment,Analyst rating,,n/a,,,
 KEMP,Sentiment,Institutional 13F trend,0,zero,,,
@@ -64033,7 +64033,7 @@ PATELSAI,Earnings,Latest earnings vs estimate,-1,minus 1,,,
 PATELSAI,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,12.9,,
 PIIND,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
 PIIND,Technical,Oscillator (RSI-14),-1,minus 1,26.3,,
-PIIND,Financials,Forward P/E (lower is better),1,plus 1,16.146894,36.415091138012585,0.0
+PIIND,Financials,Forward P/E (lower is better),1,plus 1,15.819209,36.415091138012585,0.0
 PIIND,Financials,Trailing P/E (lower is better),1,plus 1,29.03058579574909,36.415091138012585,-1.0
 PIIND,Financials,Price / sales (lower is better),1,plus 1,4.016805545153664,7.488551076824261,-1.0
 PIIND,Financials,Debt / equity (lower is better),-1,minus 1,0.0261490390489989,0.015471789943454287,1.0
