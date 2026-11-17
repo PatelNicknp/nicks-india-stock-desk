@@ -1,6 +1,9 @@
 {
  "incomplete": {
   "statements": [
+   "LOWVOL",
+   "FRONTCORP",
+   "IDFSENSEXE",
    "TSIFDG",
    "BANKCASE",
    "SBIPSUBNK",
@@ -197,17 +200,14 @@
    "ESG",
    "ESENSEX",
    "EQUAL50ADD",
-   "EQUAL50",
-   "EQUAL200",
-   "ENEXT50",
-   "ENERGYAXIS"
+   "EQUAL50"
   ]
  },
  "needs_person": {},
  "providers": {
   "BSE results": {
-   "cooldown_until": "2026-11-17T06:33Z",
-   "fails": 10,
+   "cooldown_until": "2026-11-17T17:48Z",
+   "fails": 11,
    "last_error": "skipped after repeated failures in this run"
   },
   "BSE shareholding": {
@@ -999,6 +999,15 @@
    "ticker": "FMCGIETF",
    "tries": 1
   },
+  "statements:FRONTCORP": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-24",
+   "since": "2026-11-17",
+   "ticker": "FRONTCORP",
+   "tries": 1
+  },
   "statements:GOLDENTOBC": {
    "kind": "statements",
    "last_on": "2026-11-16",
@@ -1287,6 +1296,15 @@
    "ticker": "ICICIB22",
    "tries": 1
   },
+  "statements:IDFSENSEXE": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-24",
+   "since": "2026-11-17",
+   "ticker": "IDFSENSEXE",
+   "tries": 1
+  },
   "statements:IL&FSTRANS": {
    "kind": "statements",
    "last_on": "2026-11-16",
@@ -1501,6 +1519,15 @@
    "retry_after": "2026-11-23",
    "since": "2026-11-16",
    "ticker": "LICNMID100",
+   "tries": 1
+  },
+  "statements:LOWVOL": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-24",
+   "since": "2026-11-17",
+   "ticker": "LOWVOL",
    "tries": 1
   },
   "statements:LOWVOLIETF": {
