@@ -1,6 +1,21 @@
 {
  "incomplete": {
   "statements": [
+   "TSIFDG",
+   "BANKCASE",
+   "SBIPSUBNK",
+   "SBINIFTY50",
+   "SBIMID150",
+   "SBIEQLWT50",
+   "SBIBANKNIF",
+   "PHARMAIETF",
+   "JAYTEX",
+   "EBANK10",
+   "DATIWARE",
+   "SBIDEFETF",
+   "MSCIADD",
+   "LICNETFSEN",
+   "BIRLATOTAL",
    "ZMILGFIN",
    "VIKASPROP",
    "VALUEAXIS",
@@ -185,22 +200,7 @@
    "EQUAL50",
    "EQUAL200",
    "ENEXT50",
-   "ENERGYAXIS",
-   "ENERGY",
-   "ELMDIV",
-   "ECAPINSURE",
-   "DIVIDEND",
-   "DEFENCE",
-   "CPSEETF",
-   "CONTCHM",
-   "CONSUMIETF",
-   "CONSUMER",
-   "CONSUMAXIS",
-   "COMMOIETF",
-   "BSLSENETFG",
-   "BSLNIFTY",
-   "BSE500IETF",
-   "BHASKAGR"
+   "ENERGYAXIS"
   ]
  },
  "needs_person": {},
@@ -242,8 +242,8 @@
   },
   "Yahoo NS": {
    "cooldown_until": "",
-   "fails": 1,
-   "last_error": "skipped after repeated failures in this run"
+   "fails": 0,
+   "last_error": ""
   }
  },
  "stalls": {
@@ -612,6 +612,15 @@
    "ticker": "BANKBETF",
    "tries": 1
   },
+  "statements:BANKCASE": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-24",
+   "since": "2026-11-17",
+   "ticker": "BANKCASE",
+   "tries": 1
+  },
   "statements:BANKETF": {
    "kind": "statements",
    "last_on": "2026-11-16",
@@ -682,6 +691,15 @@
    "retry_after": "2026-11-23",
    "since": "2026-11-16",
    "ticker": "BHASKAGR",
+   "tries": 1
+  },
+  "statements:BIRLATOTAL": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-24",
+   "since": "2026-11-17",
+   "ticker": "BIRLATOTAL",
    "tries": 1
   },
   "statements:BSE500IETF": {
@@ -765,6 +783,15 @@
    "ticker": "CPSEETF",
    "tries": 1
   },
+  "statements:DATIWARE": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-24",
+   "since": "2026-11-17",
+   "ticker": "DATIWARE",
+   "tries": 1
+  },
   "statements:DEFENCE": {
    "kind": "statements",
    "last_on": "2026-11-16",
@@ -809,6 +836,15 @@
    "since": "2026-11-11",
    "ticker": "DUMMYINXGN",
    "tries": 5
+  },
+  "statements:EBANK10": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-24",
+   "since": "2026-11-17",
+   "ticker": "EBANK10",
+   "tries": 1
   },
   "statements:ECAPINSURE": {
    "kind": "statements",
@@ -1377,6 +1413,15 @@
    "ticker": "IVZSENSEX",
    "tries": 1
   },
+  "statements:JAYTEX": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-24",
+   "since": "2026-11-17",
+   "ticker": "JAYTEX",
+   "tries": 1
+  },
   "statements:JUNIORBEES": {
    "kind": "statements",
    "last_on": "2026-11-16",
@@ -1429,6 +1474,15 @@
    "retry_after": "2026-11-23",
    "since": "2026-11-16",
    "ticker": "LICNETFN50",
+   "tries": 1
+  },
+  "statements:LICNETFSEN": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-24",
+   "since": "2026-11-17",
+   "ticker": "LICNETFSEN",
    "tries": 1
   },
   "statements:LICNFNHGP": {
@@ -1800,6 +1854,15 @@
    "ticker": "MSCI360",
    "tries": 1
   },
+  "statements:MSCIADD": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-24",
+   "since": "2026-11-17",
+   "ticker": "MSCIADD",
+   "tries": 1
+  },
   "statements:MULTICAP": {
    "kind": "statements",
    "last_on": "2026-11-16",
@@ -2052,6 +2115,15 @@
    "ticker": "PHARMABEES",
    "tries": 1
   },
+  "statements:PHARMAIETF": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-24",
+   "since": "2026-11-17",
+   "ticker": "PHARMAIETF",
+   "tries": 1
+  },
   "statements:POWERIETF": {
    "kind": "statements",
    "last_on": "2026-11-15",
@@ -2178,6 +2250,42 @@
    "ticker": "SANCF",
    "tries": 1
   },
+  "statements:SBIBANKNIF": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-24",
+   "since": "2026-11-17",
+   "ticker": "SBIBANKNIF",
+   "tries": 1
+  },
+  "statements:SBIDEFETF": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-24",
+   "since": "2026-11-17",
+   "ticker": "SBIDEFETF",
+   "tries": 1
+  },
+  "statements:SBIEQLWT50": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-24",
+   "since": "2026-11-17",
+   "ticker": "SBIEQLWT50",
+   "tries": 1
+  },
+  "statements:SBIMID150": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-24",
+   "since": "2026-11-17",
+   "ticker": "SBIMID150",
+   "tries": 1
+  },
   "statements:SBIMIDMOM": {
    "kind": "statements",
    "last_on": "2026-11-16",
@@ -2185,6 +2293,24 @@
    "retry_after": "2026-11-23",
    "since": "2026-11-16",
    "ticker": "SBIMIDMOM",
+   "tries": 1
+  },
+  "statements:SBINIFTY50": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-24",
+   "since": "2026-11-17",
+   "ticker": "SBINIFTY50",
+   "tries": 1
+  },
+  "statements:SBIPSUBNK": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-24",
+   "since": "2026-11-17",
+   "ticker": "SBIPSUBNK",
    "tries": 1
   },
   "statements:SBISENSEX": {
@@ -2572,6 +2698,15 @@
    "retry_after": "2026-11-24",
    "since": "2026-11-17",
    "ticker": "TPINDIA",
+   "tries": 1
+  },
+  "statements:TSIFDG": {
+   "kind": "statements",
+   "last_on": "2026-11-17",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-24",
+   "since": "2026-11-17",
+   "ticker": "TSIFDG",
    "tries": 1
   },
   "statements:VAL30IETF": {

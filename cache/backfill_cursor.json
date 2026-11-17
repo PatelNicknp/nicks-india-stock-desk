@@ -8,7 +8,6 @@
   "DVL": "2026-10-27",
   "TEAM24": "2026-11-24",
   "KHAZANCHI": "2026-10-29",
-  "SUGALESL": "2026-11-16",
   "TRANOCE": "2026-11-04",
   "POWERIETF": "2026-11-22",
   "SANCF": "2026-11-18",
@@ -263,7 +262,22 @@
   "VALUE": "2026-11-24",
   "VALUEAXIS": "2026-11-24",
   "VIKASPROP": "2026-11-24",
-  "ZMILGFIN": "2026-11-24"
+  "ZMILGFIN": "2026-11-24",
+  "BIRLATOTAL": "2026-11-24",
+  "LICNETFSEN": "2026-11-24",
+  "MSCIADD": "2026-11-24",
+  "SBIDEFETF": "2026-11-24",
+  "DATIWARE": "2026-11-24",
+  "EBANK10": "2026-11-24",
+  "JAYTEX": "2026-11-24",
+  "PHARMAIETF": "2026-11-24",
+  "SBIBANKNIF": "2026-11-24",
+  "SBIEQLWT50": "2026-11-24",
+  "SBIMID150": "2026-11-24",
+  "SBINIFTY50": "2026-11-24",
+  "SBIPSUBNK": "2026-11-24",
+  "BANKCASE": "2026-11-24",
+  "TSIFDG": "2026-11-24"
  },
  "shareholding_retry_after": {
   "08AGG": "2026-10-27",
@@ -284,8 +298,8 @@
   "JAYKAYPP": "2026-11-12",
   "OLAPP": "2026-11-12"
  },
- "last_batch_at": "2026-11-17T00:51Z",
- "last_statements_ok": 116,
+ "last_batch_at": "2026-11-17T03:10Z",
+ "last_statements_ok": 44,
  "last_statements_fail": 0,
  "last_shareholding_ok": 183,
  "last_shareholding_fail": 0,
@@ -333,12 +347,6 @@
    "last_on": "2026-11-17",
    "retry_after": "2026-11-24",
    "note": "no statement source answered"
-  },
-  "SUGALESL": {
-   "count": 0,
-   "last_on": "2026-11-09",
-   "retry_after": "2026-11-16",
-   "note": "quote only, no results"
   },
   "TEAM24": {
    "count": 6,
@@ -1865,6 +1873,96 @@
    "note": "quote only, no results"
   },
   "ZMILGFIN": {
+   "count": 0,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-24",
+   "note": "quote only, no results"
+  },
+  "BIRLATOTAL": {
+   "count": 0,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-24",
+   "note": "quote only, no results"
+  },
+  "LICNETFSEN": {
+   "count": 0,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-24",
+   "note": "quote only, no results"
+  },
+  "MSCIADD": {
+   "count": 0,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-24",
+   "note": "quote only, no results"
+  },
+  "SBIDEFETF": {
+   "count": 0,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-24",
+   "note": "quote only, no results"
+  },
+  "DATIWARE": {
+   "count": 0,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-24",
+   "note": "quote only, no results"
+  },
+  "EBANK10": {
+   "count": 0,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-24",
+   "note": "quote only, no results"
+  },
+  "JAYTEX": {
+   "count": 0,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-24",
+   "note": "quote only, no results"
+  },
+  "PHARMAIETF": {
+   "count": 0,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-24",
+   "note": "quote only, no results"
+  },
+  "SBIBANKNIF": {
+   "count": 0,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-24",
+   "note": "quote only, no results"
+  },
+  "SBIEQLWT50": {
+   "count": 0,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-24",
+   "note": "quote only, no results"
+  },
+  "SBIMID150": {
+   "count": 0,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-24",
+   "note": "quote only, no results"
+  },
+  "SBINIFTY50": {
+   "count": 0,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-24",
+   "note": "quote only, no results"
+  },
+  "SBIPSUBNK": {
+   "count": 0,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-24",
+   "note": "quote only, no results"
+  },
+  "BANKCASE": {
+   "count": 0,
+   "last_on": "2026-11-17",
+   "retry_after": "2026-11-24",
+   "note": "quote only, no results"
+  },
+  "TSIFDG": {
    "count": 0,
    "last_on": "2026-11-17",
    "retry_after": "2026-11-24",
