@@ -1,3 +1,13 @@
 ticker,company,price,day_pct,score,score_prev,score_change,verdict,data_status,note,disclaimer
+BDL,Bharat Dynamics Ltd.,1013.4,-1.33,-1.0,2.0,-3.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+EXIDEIND,Exide Industries Ltd.,389.05,2.34,8.0,6.0,2.0,HOLD,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+IRCTC,Indian Railway Catering And Tourism Corporation Ltd.,444.35,-1.11,3.0,1.0,2.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+IGL,Indraprastha Gas Ltd.,149.14,0.64,5.0,7.0,-2.0,HOLD,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+OIL,Oil India Ltd.,435.5,0.46,-3.0,-1.0,-2.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 KIRANSY-B,KIRAN SYNTEX LTD.,13.5,-4.86,0.0,-2.0,2.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+MRF,MRF Ltd.,128845.0,0.0,5.0,4.0,1.0,HOLD,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+ALKEM,Alkem Laboratories Ltd.,5222.5,0.92,2.0,3.0,-1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+ESFL,Essen Speciality Films Limited,125.1,5.79,0.0,1.0,-1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+VOLTAS,Voltas Ltd.,1134.6,-1.24,2.0,3.0,-1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 JAYATMA,JAYATMA ENTERPRISES LIMITED,22.38,-4.97,-6.0,-5.0,-1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+MANAPPURAM,Manappuram Finance Ltd.,283.0,-4.59,-7.0,-8.0,1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
