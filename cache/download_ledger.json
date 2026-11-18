@@ -1,6 +1,9 @@
 {
  "incomplete": {
   "statements": [
+   "SANCF",
+   "NATPLY",
+   "BNKETFAXIS",
    "LOWVOL",
    "FRONTCORP",
    "IDFSENSEXE",
@@ -197,22 +200,19 @@
    "FINIETF",
    "EVINDIA",
    "EVIETF",
-   "ESG",
-   "ESENSEX",
-   "EQUAL50ADD",
-   "EQUAL50"
+   "ESG"
   ]
  },
  "needs_person": {},
  "providers": {
   "BSE results": {
-   "cooldown_until": "2026-11-17T17:48Z",
-   "fails": 11,
+   "cooldown_until": "2026-11-18T22:46Z",
+   "fails": 12,
    "last_error": "skipped after repeated failures in this run"
   },
   "BSE shareholding": {
-   "cooldown_until": "2026-11-18T13:45Z",
-   "fails": 26,
+   "cooldown_until": "2026-11-18T22:46Z",
+   "fails": 27,
    "last_error": "skipped after repeated failures in this run"
   },
   "NSE results": {
@@ -700,6 +700,15 @@
    "retry_after": "2026-11-24",
    "since": "2026-11-17",
    "ticker": "BIRLATOTAL",
+   "tries": 1
+  },
+  "statements:BNKETFAXIS": {
+   "kind": "statements",
+   "last_on": "2026-11-18",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-25",
+   "since": "2026-11-18",
+   "ticker": "BNKETFAXIS",
    "tries": 1
   },
   "statements:BSE500IETF": {
@@ -1899,6 +1908,15 @@
    "ticker": "MULTICAP",
    "tries": 1
   },
+  "statements:NATPLY": {
+   "kind": "statements",
+   "last_on": "2026-11-18",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-25",
+   "since": "2026-11-18",
+   "ticker": "NATPLY",
+   "tries": 1
+  },
   "statements:NETF": {
    "kind": "statements",
    "last_on": "2026-11-16",
@@ -2270,12 +2288,12 @@
   },
   "statements:SANCF": {
    "kind": "statements",
-   "last_on": "2026-11-11",
+   "last_on": "2026-11-18",
    "note": "quote only, no results",
-   "retry_after": "2026-11-18",
+   "retry_after": "2026-11-25",
    "since": "2026-11-11",
    "ticker": "SANCF",
-   "tries": 1
+   "tries": 2
   },
   "statements:SBIBANKNIF": {
    "kind": "statements",
