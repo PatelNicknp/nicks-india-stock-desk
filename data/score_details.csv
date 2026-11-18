@@ -37039,6 +37039,22 @@ KALPACOMME,Sentiment,Institutional 13F trend,0,zero,,,
 KALPACOMME,Sentiment,Insider buys vs sells,,n/a,,,
 KALPACOMME,Earnings,Latest earnings vs estimate,,n/a,,,
 KALPACOMME,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,-8.33,,
+KIRANSY-B,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
+KIRANSY-B,Technical,Oscillator (RSI-14),1,plus 1,45.8,,
+KIRANSY-B,Financials,Forward P/E (lower is better),,n/a,,,
+KIRANSY-B,Financials,Trailing P/E (lower is better),,n/a,,,
+KIRANSY-B,Financials,Price / sales (lower is better),1,plus 1,0.4988015440390183,4.722936366165769,1.0
+KIRANSY-B,Financials,Debt / equity (lower is better),-1,minus 1,0.16835655804370223,0.05333229890817021,1.0
+KIRANSY-B,Financials,Price / free cash flow (lower is better),,n/a,,,
+KIRANSY-B,Financials,Revenue growth (higher is better),,n/a,,,
+KIRANSY-B,Financials,EPS growth (higher is better),,n/a,,,
+KIRANSY-B,Financials,Return on equity (higher is better),1,plus 1,-9.46,-3.97,-1.0
+KIRANSY-B,Financials,Dividend yield (higher is better),0,zero,0.0,0.0,0.0
+KIRANSY-B,Sentiment,Analyst rating,,n/a,,,
+KIRANSY-B,Sentiment,Institutional 13F trend,0,zero,,,
+KIRANSY-B,Sentiment,Insider buys vs sells,,n/a,,,
+KIRANSY-B,Earnings,Latest earnings vs estimate,,n/a,,,
+KIRANSY-B,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,-26.85,,
 KOHINOOR,Technical,Trend vs 20-day and 50-day,0,zero,,,
 KOHINOOR,Technical,Oscillator (RSI-14),0,zero,46.4,,
 KOHINOOR,Financials,Forward P/E (lower is better),,n/a,,,
@@ -45464,7 +45480,7 @@ GOLDENCREST,Financials,Debt / equity (lower is better),0,zero,0.0,0.0,1.0
 GOLDENCREST,Financials,Price / free cash flow (lower is better),,n/a,,,
 GOLDENCREST,Financials,Revenue growth (higher is better),1,plus 1,28.02,9.42,1.0
 GOLDENCREST,Financials,EPS growth (higher is better),-1,minus 1,6.45,69.23,-1.0
-GOLDENCREST,Financials,Return on equity (higher is better),1,plus 1,2.2,0.93,-1.0
+GOLDENCREST,Financials,Return on equity (higher is better),1,plus 1,2.18,0.93,-1.0
 GOLDENCREST,Financials,Dividend yield (higher is better),0,zero,0.0,0.0,0.0
 GOLDENCREST,Sentiment,Analyst rating,,n/a,,,
 GOLDENCREST,Sentiment,Institutional 13F trend,0,zero,,,
@@ -54719,22 +54735,6 @@ KAYA,Sentiment,Institutional 13F trend,1,plus 1,,,
 KAYA,Sentiment,Insider buys vs sells,,n/a,,,
 KAYA,Earnings,Latest earnings vs estimate,-1,minus 1,,,
 KAYA,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,23.56,,
-KIRANSY-B,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
-KIRANSY-B,Technical,Oscillator (RSI-14),1,plus 1,45.8,,
-KIRANSY-B,Financials,Forward P/E (lower is better),,n/a,,,
-KIRANSY-B,Financials,Trailing P/E (lower is better),,n/a,,,
-KIRANSY-B,Financials,Price / sales (lower is better),1,plus 1,0.3773713289703029,4.722936366165769,1.0
-KIRANSY-B,Financials,Debt / equity (lower is better),-1,minus 1,0.10860884229946849,0.05333229890817021,1.0
-KIRANSY-B,Financials,Price / free cash flow (lower is better),,n/a,,,
-KIRANSY-B,Financials,Revenue growth (higher is better),,n/a,,,
-KIRANSY-B,Financials,EPS growth (higher is better),,n/a,,,
-KIRANSY-B,Financials,Return on equity (higher is better),-1,minus 1,-2.2,-3.97,-1.0
-KIRANSY-B,Financials,Dividend yield (higher is better),0,zero,0.0,0.0,0.0
-KIRANSY-B,Sentiment,Analyst rating,,n/a,,,
-KIRANSY-B,Sentiment,Institutional 13F trend,0,zero,,,
-KIRANSY-B,Sentiment,Insider buys vs sells,,n/a,,,
-KIRANSY-B,Earnings,Latest earnings vs estimate,,n/a,,,
-KIRANSY-B,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,-26.85,,
 MADHUCON,Technical,Trend vs 20-day and 50-day,1,plus 1,,,
 MADHUCON,Technical,Oscillator (RSI-14),1,plus 1,52.3,,
 MADHUCON,Financials,Forward P/E (lower is better),,n/a,,,
@@ -60227,12 +60227,12 @@ JAYIND,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
 JAYIND,Technical,Oscillator (RSI-14),0,zero,40.5,,
 JAYIND,Financials,Forward P/E (lower is better),,n/a,,101.14438502673798,
 JAYIND,Financials,Trailing P/E (lower is better),,n/a,,101.14438502673798,
-JAYIND,Financials,Price / sales (lower is better),0,zero,0.27065800177426325,0.2720511072575386,1.0
-JAYIND,Financials,Debt / equity (lower is better),-1,minus 1,2.2490799509307164,1.5694031363833874,-1.0
+JAYIND,Financials,Price / sales (lower is better),0,zero,0.2682845276431817,0.2720511072575386,1.0
+JAYIND,Financials,Debt / equity (lower is better),-1,minus 1,2.59362974861842,1.5694031363833874,-1.0
 JAYIND,Financials,Price / free cash flow (lower is better),,n/a,,1.8349275873062374,
 JAYIND,Financials,Revenue growth (higher is better),-1,minus 1,-10.42,-20.95,-1.0
 JAYIND,Financials,EPS growth (higher is better),,n/a,,,
-JAYIND,Financials,Return on equity (higher is better),1,plus 1,-14.95,-5.65,-1.0
+JAYIND,Financials,Return on equity (higher is better),1,plus 1,-18.9,-5.65,-1.0
 JAYIND,Financials,Dividend yield (higher is better),0,zero,0.0,0.0,0.0
 JAYIND,Sentiment,Analyst rating,,n/a,,,
 JAYIND,Sentiment,Institutional 13F trend,0,zero,,,
@@ -60643,12 +60643,12 @@ RAJABAH,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
 RAJABAH,Technical,Oscillator (RSI-14),0,zero,36.7,,
 RAJABAH,Financials,Forward P/E (lower is better),,n/a,,,
 RAJABAH,Financials,Trailing P/E (lower is better),,n/a,,,
-RAJABAH,Financials,Price / sales (lower is better),1,plus 1,3.9770074475287744,4.825886897102909,0.0
-RAJABAH,Financials,Debt / equity (lower is better),-1,minus 1,23.874651725299287,13.654603342530924,-1.0
+RAJABAH,Financials,Price / sales (lower is better),1,plus 1,3.887507398871073,4.825886897102909,0.0
+RAJABAH,Financials,Debt / equity (lower is better),-1,minus 1,30.41046760199041,13.654603342530924,-1.0
 RAJABAH,Financials,Price / free cash flow (lower is better),,n/a,,,
 RAJABAH,Financials,Revenue growth (higher is better),-1,minus 1,3.26,21.58,-1.0
 RAJABAH,Financials,EPS growth (higher is better),,n/a,,,
-RAJABAH,Financials,Return on equity (higher is better),-1,minus 1,0.96,-12.29,-1.0
+RAJABAH,Financials,Return on equity (higher is better),-1,minus 1,-2.13,-12.29,-1.0
 RAJABAH,Financials,Dividend yield (higher is better),0,zero,0.0,0.0,0.0
 RAJABAH,Sentiment,Analyst rating,,n/a,,,
 RAJABAH,Sentiment,Institutional 13F trend,0,zero,,,
@@ -66015,22 +66015,6 @@ INTRGLB,Sentiment,Institutional 13F trend,0,zero,,,
 INTRGLB,Sentiment,Insider buys vs sells,,n/a,,,
 INTRGLB,Earnings,Latest earnings vs estimate,,n/a,,,
 INTRGLB,Sector,"Sector vs S&P 500, 3 months",0,zero,-26.77,,
-JAYATMA,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
-JAYATMA,Technical,Oscillator (RSI-14),-1,minus 1,14.2,,
-JAYATMA,Financials,Forward P/E (lower is better),,n/a,,11.791696167068524,
-JAYATMA,Financials,Trailing P/E (lower is better),-1,minus 1,13.481927710843372,11.791696167068524,1.0
-JAYATMA,Financials,Price / sales (lower is better),-1,minus 1,20.859139125,8.84781088811915,-1.0
-JAYATMA,Financials,Debt / equity (lower is better),1,plus 1,0.016663885073113116,0.038194155411519604,1.0
-JAYATMA,Financials,Price / free cash flow (lower is better),,n/a,,63.01045386039266,
-JAYATMA,Financials,Revenue growth (higher is better),-1,minus 1,-24.17,7.5,-1.0
-JAYATMA,Financials,EPS growth (higher is better),-1,minus 1,-8.05,14.07,-1.0
-JAYATMA,Financials,Return on equity (higher is better),1,plus 1,6.4,6.06,-1.0
-JAYATMA,Financials,Dividend yield (higher is better),0,zero,0.0,0.0,0.0
-JAYATMA,Sentiment,Analyst rating,,n/a,,,
-JAYATMA,Sentiment,Institutional 13F trend,0,zero,,,
-JAYATMA,Sentiment,Insider buys vs sells,,n/a,,,
-JAYATMA,Earnings,Latest earnings vs estimate,,n/a,,,
-JAYATMA,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,-47.56,,
 KALYANIFRG,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
 KALYANIFRG,Technical,Oscillator (RSI-14),0,zero,45.1,,
 KALYANIFRG,Financials,Forward P/E (lower is better),,n/a,,35.1126106988425,
@@ -67711,6 +67695,22 @@ INDIACEM,Sentiment,Institutional 13F trend,0,zero,,,
 INDIACEM,Sentiment,Insider buys vs sells,,n/a,,,
 INDIACEM,Earnings,Latest earnings vs estimate,-1,minus 1,,,
 INDIACEM,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,-12.61,,
+JAYATMA,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
+JAYATMA,Technical,Oscillator (RSI-14),-1,minus 1,14.2,,
+JAYATMA,Financials,Forward P/E (lower is better),,n/a,,11.791696167068524,
+JAYATMA,Financials,Trailing P/E (lower is better),-1,minus 1,14.438709677419356,11.791696167068524,1.0
+JAYATMA,Financials,Price / sales (lower is better),-1,minus 1,41.291512915129154,8.84781088811915,-1.0
+JAYATMA,Financials,Debt / equity (lower is better),1,plus 1,0.018625817521696963,0.038194155411519604,1.0
+JAYATMA,Financials,Price / free cash flow (lower is better),,n/a,,63.01045386039266,
+JAYATMA,Financials,Revenue growth (higher is better),-1,minus 1,-24.17,7.5,-1.0
+JAYATMA,Financials,EPS growth (higher is better),-1,minus 1,-8.05,14.07,-1.0
+JAYATMA,Financials,Return on equity (higher is better),0,zero,5.77,6.06,-1.0
+JAYATMA,Financials,Dividend yield (higher is better),0,zero,0.0,0.0,0.0
+JAYATMA,Sentiment,Analyst rating,,n/a,,,
+JAYATMA,Sentiment,Institutional 13F trend,0,zero,,,
+JAYATMA,Sentiment,Insider buys vs sells,,n/a,,,
+JAYATMA,Earnings,Latest earnings vs estimate,,n/a,,,
+JAYATMA,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,-47.56,,
 OLAELEC,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
 OLAELEC,Technical,Oscillator (RSI-14),0,zero,41.9,,
 OLAELEC,Financials,Forward P/E (lower is better),,n/a,-13.699659,,1.0
