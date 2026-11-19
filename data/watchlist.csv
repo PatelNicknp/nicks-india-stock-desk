@@ -1,6 +1,6 @@
 ticker,company,price,day_pct,score,verdict,entry_low,entry_high,distance_to_entry_pct,timing,note_input,data_status,note,disclaimer
-ICICIBANK,ICICI Bank Ltd.,1601.3,0.16,1,AVOID,,,,Breakout,example,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-BHARTIARTL,Bharti Airtel Ltd.,2132.0,-0.29,6,HOLD,1982.46,2027.54,5.15,Uptrend,example,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-LT,Larsen & Toubro Ltd.,4159.0,0.08,7,HOLD,3869.58,3946.57,5.38,Extended,example,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-SBIN,State Bank of India,1135.0,2.38,-3,AVOID,,,,Extended,example,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-ASIANPAINT,Asian Paints Ltd.,2580.3,-1.7,3,AVOID,,,,Uptrend,example,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+ICICIBANK,ICICI Bank Ltd.,1608.9,0.47,1,AVOID,,,,Breakout,example,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+BHARTIARTL,Bharti Airtel Ltd.,2144.0,0.56,7,HOLD,1995.56,2040.16,5.09,Uptrend,example,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+LT,Larsen & Toubro Ltd.,4211.0,1.25,7,HOLD,3896.79,3975.32,5.93,Extended,example,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+SBIN,State Bank of India,1156.0,1.85,-3,AVOID,,,,Extended,example,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+ASIANPAINT,Asian Paints Ltd.,2595.0,0.57,4,HOLD,2421.17,2443.5,6.2,Uptrend,example,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
