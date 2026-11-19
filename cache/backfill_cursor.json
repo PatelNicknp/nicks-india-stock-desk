@@ -281,7 +281,8 @@
   "FRONTCORP": "2026-11-24",
   "LOWVOL": "2026-11-24",
   "BNKETFAXIS": "2026-11-25",
-  "NATPLY": "2026-11-25"
+  "NATPLY": "2026-11-25",
+  "ISIFHLSG": "2026-11-26"
  },
  "shareholding_retry_after": {
   "08AGG": "2026-10-27",
@@ -302,8 +303,8 @@
   "JAYKAYPP": "2026-11-12",
   "OLAPP": "2026-11-12"
  },
- "last_batch_at": "2026-11-19T09:41Z",
- "last_statements_ok": 0,
+ "last_batch_at": "2026-11-19T13:51Z",
+ "last_statements_ok": 9,
  "last_statements_fail": 0,
  "last_shareholding_ok": 185,
  "last_shareholding_fail": 0,
@@ -1994,6 +1995,12 @@
    "count": 0,
    "last_on": "2026-11-18",
    "retry_after": "2026-11-25",
+   "note": "quote only, no results"
+  },
+  "ISIFHLSG": {
+   "count": 0,
+   "last_on": "2026-11-19",
+   "retry_after": "2026-11-26",
    "note": "quote only, no results"
   }
  },

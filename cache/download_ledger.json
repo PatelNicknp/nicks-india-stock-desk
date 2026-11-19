@@ -1,6 +1,7 @@
 {
  "incomplete": {
   "statements": [
+   "ISIFHLSG",
    "SANCF",
    "NATPLY",
    "BNKETFAXIS",
@@ -199,15 +200,14 @@
    "FLEXIADD",
    "FINIETF",
    "EVINDIA",
-   "EVIETF",
-   "ESG"
+   "EVIETF"
   ]
  },
  "needs_person": {},
  "providers": {
   "BSE results": {
-   "cooldown_until": "2026-11-18T22:46Z",
-   "fails": 12,
+   "cooldown_until": "2026-11-19T19:37Z",
+   "fails": 13,
    "last_error": "skipped after repeated failures in this run"
   },
   "BSE shareholding": {
@@ -1375,6 +1375,15 @@
    "retry_after": "2026-11-23",
    "since": "2026-11-16",
    "ticker": "INTERNET",
+   "tries": 1
+  },
+  "statements:ISIFHLSG": {
+   "kind": "statements",
+   "last_on": "2026-11-19",
+   "note": "quote only, no results",
+   "retry_after": "2026-11-26",
+   "since": "2026-11-19",
+   "ticker": "ISIFHLSG",
    "tries": 1
   },
   "statements:ITADD": {
