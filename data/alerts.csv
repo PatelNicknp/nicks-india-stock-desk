@@ -1,2 +1,8 @@
 ticker,kind,text,score,score_prev,verdict,verdict_prev,price,data_status,note,disclaimer
+FINCABLES,verdict_change,FINCABLES changed from HOLD to AVOID.,3,5,AVOID,HOLD,1210.8,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+FINCABLES,score_jump,FINCABLES score moved from 5 to 3.,3,5,AVOID,HOLD,1210.8,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+FINCABLES,score_cross,FINCABLES crossed the hold line (4).,3,5,AVOID,HOLD,1210.8,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+ABB,score_jump,ABB score moved from -2 to 0.,0,-2,AVOID,AVOID,6951.0,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 SIMPLXMIL,verdict_change,SIMPLXMIL changed from Not scored yet to AVOID.,-2,-1,AVOID,Not scored yet,4121.0,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+SUNTV,score_jump,SUNTV score moved from -1 to -4.,-4,-1,AVOID,AVOID,695.6,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+BHARATFORG,score_jump,BHARATFORG score moved from -5 to -7.,-7,-5,AVOID,AVOID,1729.2,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
