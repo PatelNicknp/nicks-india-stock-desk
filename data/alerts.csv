@@ -1,8 +1,2 @@
 ticker,kind,text,score,score_prev,verdict,verdict_prev,price,data_status,note,disclaimer
-EXIDEIND,score_jump,EXIDEIND score moved from 6 to 8.,8,6,HOLD,HOLD,389.05,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-EXIDEIND,score_cross,EXIDEIND crossed the buy line (8).,8,6,HOLD,HOLD,389.05,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-IGL,score_jump,IGL score moved from 7 to 5.,5,7,HOLD,HOLD,149.14,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-IRCTC,score_jump,IRCTC score moved from 1 to 3.,3,1,AVOID,AVOID,444.35,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-KIRANSY-B,score_jump,KIRANSY-B score moved from -2 to 0.,0,-2,AVOID,AVOID,13.5,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-BDL,score_jump,BDL score moved from 2 to -1.,-1,2,AVOID,AVOID,1013.4,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-OIL,score_jump,OIL score moved from -1 to -3.,-3,-1,AVOID,AVOID,435.5,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+,info,No verdict changes or score crossings this run.,,,,,,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
