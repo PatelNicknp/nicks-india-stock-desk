@@ -1,9 +1,2 @@
 ticker,company,price,day_pct,score,score_prev,score_change,verdict,data_status,note,disclaimer
-SUNTV,Sun TV Network Ltd.,695.6,-0.11,-4.0,-1.0,-3.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-FINCABLES,Finolex Cables Ltd.,1210.8,2.09,3.0,5.0,-2.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-BHARATFORG,Bharat Forge Ltd.,1729.2,2.65,-7.0,-5.0,-2.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-ABB,ABB India Ltd.,6951.0,1.46,0.0,-2.0,2.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-MAXHEALTH,Max Healthcare Institute Ltd.,1040.65,1.74,1.0,2.0,-1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-GODREJIND,Godrej Industries Ltd.,1100.2,-0.12,2.0,1.0,1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-SIMPLXMIL,SIMPLEX MILLS COMPANY LTD.,4121.0,0.0,-2.0,-1.0,-1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-IDEA,Vodafone Idea Ltd.,12.11,0.08,-2.0,-3.0,1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+,,,,,,,,MISSING,No score changes versus the last run.,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
