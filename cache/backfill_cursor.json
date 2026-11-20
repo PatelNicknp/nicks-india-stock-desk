@@ -303,10 +303,10 @@
   "JAYKAYPP": "2026-11-12",
   "OLAPP": "2026-11-12"
  },
- "last_batch_at": "2026-11-20T10:53Z",
- "last_statements_ok": 0,
+ "last_batch_at": "2026-11-20T12:27Z",
+ "last_statements_ok": 3,
  "last_statements_fail": 0,
- "last_shareholding_ok": 185,
+ "last_shareholding_ok": 187,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
   "BIRET": "2026-11-20",
@@ -332,7 +332,7 @@
   "OLAPP": "2026-11-20",
   "SUVID-RE": "2026-11-17"
  },
- "last_shareholding_empty": 15,
+ "last_shareholding_empty": 13,
  "last_shareholding_skipped": 0,
  "statements_failures": {
   "BAGMANE": {
