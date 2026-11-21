@@ -211,8 +211,8 @@
    "last_error": "skipped after repeated failures in this run"
   },
   "BSE shareholding": {
-   "cooldown_until": "2026-11-21T13:28Z",
-   "fails": 35,
+   "cooldown_until": "2026-11-21T21:30Z",
+   "fails": 36,
    "last_error": "skipped after repeated failures in this run"
   },
   "NSE results": {
