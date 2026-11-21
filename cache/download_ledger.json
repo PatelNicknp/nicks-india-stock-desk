@@ -1,6 +1,7 @@
 {
  "incomplete": {
   "statements": [
+   "POWERIETF",
    "ISIFHLSG",
    "SANCF",
    "NATPLY",
@@ -199,8 +200,7 @@
    "FMCGADD",
    "FLEXIADD",
    "FINIETF",
-   "EVINDIA",
-   "EVIETF"
+   "EVINDIA"
   ]
  },
  "needs_person": {},
@@ -2180,12 +2180,12 @@
   },
   "statements:POWERIETF": {
    "kind": "statements",
-   "last_on": "2026-11-15",
+   "last_on": "2026-11-22",
    "note": "quote only, no results",
-   "retry_after": "2026-11-22",
+   "retry_after": "2026-11-29",
    "since": "2026-11-11",
    "ticker": "POWERIETF",
-   "tries": 5
+   "tries": 6
   },
   "statements:PSUBANK": {
    "kind": "statements",
