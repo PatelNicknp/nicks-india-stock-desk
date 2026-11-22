@@ -1,6 +1,8 @@
 {
  "incomplete": {
   "statements": [
+   "ARTEMISMED",
+   "AGL",
    "POWERIETF",
    "ISIFHLSG",
    "SANCF",
@@ -198,21 +200,19 @@
    "GROWWDEFNC",
    "FMCGIETF",
    "FMCGADD",
-   "FLEXIADD",
-   "FINIETF",
-   "EVINDIA"
+   "FLEXIADD"
   ]
  },
  "needs_person": {},
  "providers": {
   "BSE results": {
-   "cooldown_until": "2026-11-20T18:15Z",
-   "fails": 14,
+   "cooldown_until": "2026-11-23T02:59Z",
+   "fails": 15,
    "last_error": "skipped after repeated failures in this run"
   },
   "BSE shareholding": {
-   "cooldown_until": "2026-11-22T20:50Z",
-   "fails": 39,
+   "cooldown_until": "2026-11-23T02:59Z",
+   "fails": 40,
    "last_error": "skipped after repeated failures in this run"
   },
   "NSE results": {
@@ -479,12 +479,12 @@
   },
   "statements:AGL": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-23",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-11-30",
    "since": "2026-11-16",
    "ticker": "AGL",
-   "tries": 1
+   "tries": 2
   },
   "statements:AGVENTURES": {
    "kind": "statements",
@@ -533,12 +533,12 @@
   },
   "statements:ARTEMISMED": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-23",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-11-30",
    "since": "2026-11-16",
    "ticker": "ARTEMISMED",
-   "tries": 1
+   "tries": 2
   },
   "statements:AUTOIETF": {
    "kind": "statements",
