@@ -1,2 +1,11 @@
 ticker,company,price,day_pct,score,score_prev,score_change,verdict,data_status,note,disclaimer
-,,,,,,,,MISSING,No score changes versus the last run.,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+BHEL,Bharat Heavy Electricals Ltd.,433.65,-0.31,4.0,6.0,-2.0,HOLD,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+HINDZINC,Hindustan Zinc Ltd.,521.6,-1.4,3.0,5.0,-2.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+DMART,Avenue Supermarts Ltd.,3490.0,-0.29,-3.0,-1.0,-2.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+BHARATRAS,Bharat Rasayan Limited,916.4,-1.22,3.0,1.0,2.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+GPTHEALTH,GPT Healthcare Limited,133.98,1.16,3.0,1.0,2.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+AIAENG,AIA Engineering Ltd.,3433.5,3.17,-1.0,1.0,-2.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+BLUSPRING,Bluspring Enterprises Limited,157.47,-1.35,-3.0,-1.0,-2.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+FEDERALBNK,Federal Bank Ltd.,373.5,2.47,-1.0,-3.0,2.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+FREDUN,Fredun Pharmaceuticals Limited,1693.9,-0.83,6.0,5.0,1.0,HOLD,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+HALDYNGL,Haldyn Glass Limited,139.86,3.23,3.0,2.0,1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
