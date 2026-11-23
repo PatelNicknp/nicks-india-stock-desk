@@ -1,13 +1,13 @@
 trade_id,ticker,company,signal_date,signal_total,status,entry_date,entry_price,shares,cost,stop,target,last_date,last_close,days_held,exit_date,exit_price,exit_reason,exit_words,pnl,pnl_pct,market_value,note
-2026-11-04-INDGN,INDGN,Indegene Ltd.,2026-11-04,3.0,OPEN,2026-11-05,623.25,160.4493,100000.03,576.04,743.28,2026-11-20,657.65,11.0,,,,,5519.46,5.52,105519.48,Bought at the open on 2026-11-05.
-2026-11-04-LT,LT,Larsen & Toubro Ltd.,2026-11-04,3.0,OPEN,2026-11-05,4010.0,24.9377,100000.18,3687.91,4758.6,2026-11-20,4209.1,11.0,,,,,4965.1,4.97,104965.27,Bought at the open on 2026-11-05.
+2026-11-04-INDGN,INDGN,Indegene Ltd.,2026-11-04,3.0,OPEN,2026-11-05,623.25,160.4493,100000.03,576.04,743.28,2026-11-23,651.8,12.0,,,,,4580.83,4.58,104580.85,Bought at the open on 2026-11-05.
+2026-11-04-LT,LT,Larsen & Toubro Ltd.,2026-11-04,3.0,OPEN,2026-11-05,4010.0,24.9377,100000.18,3687.91,4758.6,2026-11-23,4099.9,12.0,,,,,2241.9,2.24,102242.08,Bought at the open on 2026-11-05.
 2026-11-04-MARKOLINES,MARKOLINES,Markolines Pavement Technologies Limited,2026-11-04,3.0,CLOSED,2026-11-05,179.72,556.4211,100000.0,167.11,215.63,2026-11-06,164.28,2.0,2026-11-06,167.11,STOP,"Hit the stop, sold at the stop price.",-7016.47,-7.02,0.0,Bought at the open on 2026-11-05.
-2026-11-04-PETRONET,PETRONET,Petronet LNG Ltd.,2026-11-04,3.0,OPEN,2026-11-05,319.95,312.5488,99999.99,284.95,373.2,2026-11-20,329.15,11.0,,,,,2875.45,2.88,102875.44,Bought at the open on 2026-11-05.
-2026-11-04-ABBOTINDIA,ABBOTINDIA,Abbott India Ltd.,2026-11-04,2.0,OPEN,2026-11-05,27210.0,3.6751,99999.47,24961.2,32544.0,2026-11-20,26525.0,11.0,,,,,-2517.44,-2.52,97482.03,Bought at the open on 2026-11-05.
-2026-11-04-LALPATHLAB,LALPATHLAB,Dr. Lal Path Labs Ltd.,2026-11-04,2.0,OPEN,2026-11-05,2049.0,48.8043,100000.01,1849.49,2435.28,2026-11-20,2006.0,11.0,,,,,-2098.58,-2.1,97901.43,Bought at the open on 2026-11-05.
-2026-11-04-TITAN,TITAN,Titan Company Ltd.,2026-11-04,2.0,OPEN,2026-11-05,4800.0,20.8333,99999.84,4298.27,5705.28,2026-11-20,4620.0,11.0,,,,,-3749.99,-3.75,96249.85,Bought at the open on 2026-11-05.
-2026-11-04-TFCILTD,TFCILTD,Tourism Finance Corporation of India Limited,2026-11-04,2.0,OPEN,2026-11-05,162.0,617.284,100000.01,150.56,194.27,2026-11-20,171.85,11.0,,,,,6080.25,6.08,106080.26,Bought at the open on 2026-11-05.
-2026-11-04-TIPSMUSIC,TIPSMUSIC,Tips Music Ltd.,2026-11-04,2.0,OPEN,2026-11-05,804.0,124.3781,99999.99,738.33,952.68,2026-11-20,808.05,11.0,,,,,503.73,0.5,100503.72,Bought at the open on 2026-11-05.
+2026-11-04-PETRONET,PETRONET,Petronet LNG Ltd.,2026-11-04,3.0,OPEN,2026-11-05,319.95,312.5488,99999.99,284.95,373.2,2026-11-23,326.05,12.0,,,,,1906.55,1.91,101906.54,Bought at the open on 2026-11-05.
+2026-11-04-ABBOTINDIA,ABBOTINDIA,Abbott India Ltd.,2026-11-04,2.0,OPEN,2026-11-05,27210.0,3.6751,99999.47,24961.2,32544.0,2026-11-23,26125.0,12.0,,,,,-3987.48,-3.99,96011.99,Bought at the open on 2026-11-05.
+2026-11-04-LALPATHLAB,LALPATHLAB,Dr. Lal Path Labs Ltd.,2026-11-04,2.0,OPEN,2026-11-05,2049.0,48.8043,100000.01,1849.49,2435.28,2026-11-23,2040.5,12.0,,,,,-414.84,-0.41,99585.17,Bought at the open on 2026-11-05.
+2026-11-04-TITAN,TITAN,Titan Company Ltd.,2026-11-04,2.0,OPEN,2026-11-05,4800.0,20.8333,99999.84,4298.27,5705.28,2026-11-23,4680.0,12.0,,,,,-2500.0,-2.5,97499.84,Bought at the open on 2026-11-05.
+2026-11-04-TFCILTD,TFCILTD,Tourism Finance Corporation of India Limited,2026-11-04,2.0,OPEN,2026-11-05,162.0,617.284,100000.01,150.56,194.27,2026-11-23,173.51,12.0,,,,,7104.94,7.1,107104.95,Bought at the open on 2026-11-05.
+2026-11-04-TIPSMUSIC,TIPSMUSIC,Tips Music Ltd.,2026-11-04,2.0,OPEN,2026-11-05,804.0,124.3781,99999.99,738.33,952.68,2026-11-23,805.2,12.0,,,,,149.25,0.15,100149.25,Bought at the open on 2026-11-05.
 2026-11-04-HAL,HAL,Hindustan Aeronautics Ltd.,2026-11-04,2.0,CLOSED,2026-11-05,5100.0,19.6078,99999.78,4723.56,6094.92,2026-11-18,4675.0,9.0,2026-11-18,4723.56,STOP,"Hit the stop, sold at the stop price.",-7381.16,-7.38,0.0,Bought at the open on 2026-11-05.
 2026-11-04-SOUTHBANK,SOUTHBANK,South Indian Bank Ltd.,2026-11-04,2.0,SKIPPED,,,,,52.61,67.88,,,,,,,,,,,No free slot (max 10 open).
 2026-11-05-ICICIBANK,ICICIBANK,ICICI Bank Ltd.,2026-11-05,4.0,SKIPPED,,,,,1395.0,1800.0,,,,,,,,,,,No free slot (max 10 open).
@@ -47,7 +47,7 @@ trade_id,ticker,company,signal_date,signal_total,status,entry_date,entry_price,s
 2026-11-17-SEJALLTD,SEJALLTD,Sejal Glass Limited,2026-11-17,3.0,SKIPPED,,,,,909.96,1174.14,,,,,,,,,,,Not enough fake cash.
 2026-11-17-WELSPUNLIV,WELSPUNLIV,Welspun Living Ltd.,2026-11-17,2.0,SKIPPED,,,,,247.38,319.2,,,,,,,,,,,Not enough fake cash.
 2026-11-17-UYFINCORP,UYFINCORP,U. Y. Fincorp Limited,2026-11-17,2.0,SKIPPED,,,,,30.25,38.38,,,,,,,,,,,Not enough fake cash.
-2026-11-18-ULTRACEMCO,ULTRACEMCO,UltraTech Cement Ltd.,2026-11-18,2.0,OPEN,2026-11-19,12400.0,8.0645,99999.8,12062.0,14952.0,2026-11-20,12939.0,2.0,,,,,4346.77,4.35,104346.57,Bought at the open on 2026-11-19.
+2026-11-18-ULTRACEMCO,ULTRACEMCO,UltraTech Cement Ltd.,2026-11-18,2.0,OPEN,2026-11-19,12400.0,8.0645,99999.8,12062.0,14952.0,2026-11-23,12650.0,3.0,,,,,2016.13,2.02,102015.93,Bought at the open on 2026-11-19.
 2026-11-18-COFORGE,COFORGE,Coforge Ltd.,2026-11-18,2.0,SKIPPED,,,,,1977.1,2488.56,,,,,,,,,,,Not enough fake cash.
 2026-11-18-WELSPUNLIV,WELSPUNLIV,Welspun Living Ltd.,2026-11-18,2.0,SKIPPED,,,,,253.39,321.0,,,,,,,,,,,Not enough fake cash.
 2026-11-18-ICIL,ICIL,Indo Count Industries Ltd.,2026-11-18,2.0,SKIPPED,,,,,547.73,697.2,,,,,,,,,,,Not enough fake cash.
@@ -60,3 +60,8 @@ trade_id,ticker,company,signal_date,signal_total,status,entry_date,entry_price,s
 2026-11-20-SAGILITY,SAGILITY,Sagility Ltd.,2026-11-20,4.0,SKIPPED,,,,,42.47,54.8,,,,,,,,,,,Not enough fake cash.
 2026-11-20-PERSISTENT,PERSISTENT,Persistent Systems Ltd.,2026-11-20,3.0,SKIPPED,,,,,5803.2,7488.0,,,,,,,,,,,Not enough fake cash.
 2026-11-20-SEJALLTD,SEJALLTD,Sejal Glass Limited,2026-11-20,2.0,SKIPPED,,,,,909.96,1174.14,,,,,,,,,,,Not enough fake cash.
+2026-11-23-PERSISTENT,PERSISTENT,Persistent Systems Ltd.,2026-11-23,3.0,SKIPPED,,,,,5803.2,7539.0,,,,,,,,,,,Not enough fake cash.
+2026-11-23-CHALET,CHALET,Chalet Hotels Ltd.,2026-11-23,3.0,SKIPPED,,,,,784.41,1043.1,,,,,,,,,,,Not enough fake cash.
+2026-11-23-LALPATHLAB,LALPATHLAB,Dr. Lal Path Labs Ltd.,2026-11-23,3.0,SKIPPED,,,,,1940.0,2478.0,,,,,,,,,,,Already held.
+2026-11-23-COFORGE,COFORGE,Coforge Ltd.,2026-11-23,3.0,SKIPPED,,,,,2025.35,2613.36,,,,,,,,,,,Not enough fake cash.
+2026-11-23-ANTHEM,ANTHEM,Anthem Biosciences Ltd.,2026-11-23,2.0,SKIPPED,,,,,907.55,1167.6,,,,,,,,,,,Not enough fake cash.

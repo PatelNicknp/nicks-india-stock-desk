@@ -263,30 +263,30 @@
  "unavailable": {
   "prices:BAGMANE": {
    "kind": "prices",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-23",
    "note": "Stooq and Yahoo had no daily bars. The saved file was not changed for this name.",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-11-30",
    "since": "2026-11-09",
    "ticker": "BAGMANE",
-   "tries": 2
+   "tries": 3
   },
   "prices:DUMMYHEG": {
    "kind": "prices",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-23",
    "note": "Stooq and Yahoo had no daily bars. The saved file was not changed for this name.",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-11-30",
    "since": "2026-11-09",
    "ticker": "DUMMYHEG",
-   "tries": 2
+   "tries": 3
   },
   "prices:DUMMYINXGN": {
    "kind": "prices",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-23",
    "note": "Stooq and Yahoo had no daily bars. The saved file was not changed for this name.",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-11-30",
    "since": "2026-11-09",
    "ticker": "DUMMYINXGN",
-   "tries": 2
+   "tries": 3
   },
   "prices:SUVID-RE": {
    "kind": "prices",

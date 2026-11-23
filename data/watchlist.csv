@@ -1,6 +1,6 @@
 ticker,company,price,day_pct,score,verdict,entry_low,entry_high,distance_to_entry_pct,timing,note_input,data_status,note,disclaimer
-ICICIBANK,ICICI Bank Ltd.,1640.0,1.93,1,AVOID,,,,Breakout,example,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-BHARTIARTL,Bharti Airtel Ltd.,2161.7,0.83,6,HOLD,2008.41,2053.49,5.27,Breakout,example,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-LT,Larsen & Toubro Ltd.,4209.1,-0.05,7,HOLD,3924.23,4003.87,5.13,Extended,example,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-SBIN,State Bank of India,1165.1,0.79,-3,AVOID,,,,Extended,example,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-ASIANPAINT,Asian Paints Ltd.,2608.3,0.51,4,HOLD,2423.32,2459.68,6.04,Uptrend,example,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+ICICIBANK,ICICI Bank Ltd.,1585.5,-3.32,2,AVOID,,,,Uptrend,example,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+BHARTIARTL,Bharti Airtel Ltd.,2128.5,-1.54,6,HOLD,2018.71,2065.32,3.06,Uptrend,example,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+LT,Larsen & Toubro Ltd.,4099.9,-2.59,7,HOLD,3943.37,4026.51,1.82,Uptrend,example,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+SBIN,State Bank of India,1132.65,-2.79,-2,AVOID,,,,Extended,example,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+ASIANPAINT,Asian Paints Ltd.,2580.4,-1.07,3,AVOID,,,,Uptrend,example,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
