@@ -1,6 +1,7 @@
 {
  "incomplete": {
   "statements": [
+   "DISAQ",
    "AARNAV",
    "TCC",
    "SINGERIND",
@@ -199,20 +200,19 @@
    "HARCR",
    "GROWWRAIL",
    "GROWWPOWER",
-   "GROWWHOSPI",
-   "GROWWDEFNC"
+   "GROWWHOSPI"
   ]
  },
  "needs_person": {},
  "providers": {
   "BSE results": {
-   "cooldown_until": "2026-11-23T10:06Z",
-   "fails": 16,
+   "cooldown_until": "2026-11-23T16:44Z",
+   "fails": 17,
    "last_error": "skipped after repeated failures in this run"
   },
   "BSE shareholding": {
-   "cooldown_until": "2026-11-23T10:06Z",
-   "fails": 41,
+   "cooldown_until": "2026-11-23T16:44Z",
+   "fails": 42,
    "last_error": "skipped after repeated failures in this run"
   },
   "NSE results": {
@@ -812,12 +812,12 @@
   },
   "statements:DISAQ": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-23",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-11-30",
    "since": "2026-11-16",
    "ticker": "DISAQ",
-   "tries": 1
+   "tries": 2
   },
   "statements:DIVIDEND": {
    "kind": "statements",
