@@ -206,13 +206,13 @@
  "needs_person": {},
  "providers": {
   "BSE results": {
-   "cooldown_until": "2026-11-23T16:44Z",
-   "fails": 17,
+   "cooldown_until": "2026-11-24T03:47Z",
+   "fails": 18,
    "last_error": "skipped after repeated failures in this run"
   },
   "BSE shareholding": {
-   "cooldown_until": "2026-11-23T16:44Z",
-   "fails": 42,
+   "cooldown_until": "2026-11-24T03:47Z",
+   "fails": 43,
    "last_error": "skipped after repeated failures in this run"
   },
   "NSE results": {
@@ -237,13 +237,13 @@
   },
   "Yahoo BO": {
    "cooldown_until": "",
-   "fails": 0,
-   "last_error": ""
+   "fails": 1,
+   "last_error": "skipped after repeated failures in this run"
   },
   "Yahoo NS": {
    "cooldown_until": "",
-   "fails": 0,
-   "last_error": ""
+   "fails": 1,
+   "last_error": "skipped after repeated failures in this run"
   }
  },
  "stalls": {
@@ -551,12 +551,12 @@
   },
   "statements:BAGMANE": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-24",
    "note": "no statement source answered",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-08",
    "since": "2026-11-11",
    "ticker": "BAGMANE",
-   "tries": 5
+   "tries": 6
   },
   "statements:BANK10ADD": {
    "kind": "statements",
@@ -830,21 +830,21 @@
   },
   "statements:DUMMYHEG": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-24",
    "note": "no statement source answered",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-08",
    "since": "2026-11-11",
    "ticker": "DUMMYHEG",
-   "tries": 5
+   "tries": 6
   },
   "statements:DUMMYINXGN": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-24",
    "note": "no statement source answered",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-08",
    "since": "2026-11-11",
    "ticker": "DUMMYINXGN",
-   "tries": 5
+   "tries": 6
   },
   "statements:EBANK10": {
    "kind": "statements",
@@ -1026,6 +1026,15 @@
    "ticker": "GOLDENTOBC",
    "tries": 2
   },
+  "statements:GRADIENTE": {
+   "kind": "statements",
+   "last_on": "2026-11-24",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-25",
+   "since": "2026-11-24",
+   "ticker": "GRADIENTE",
+   "tries": 1
+  },
   "statements:GROWWDEFNC": {
    "kind": "statements",
    "last_on": "2026-11-16",
@@ -1064,11 +1073,20 @@
   },
   "statements:GUJRAFFIA": {
    "kind": "statements",
-   "last_on": "2026-11-16",
-   "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-24",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-25",
    "since": "2026-11-16",
    "ticker": "GUJRAFFIA",
+   "tries": 2
+  },
+  "statements:HAMPTON": {
+   "kind": "statements",
+   "last_on": "2026-11-24",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-25",
+   "since": "2026-11-24",
+   "ticker": "HAMPTON",
    "tries": 1
   },
   "statements:HARCR": {
@@ -1078,6 +1096,24 @@
    "retry_after": "2026-11-23",
    "since": "2026-11-16",
    "ticker": "HARCR",
+   "tries": 1
+  },
+  "statements:HBESD": {
+   "kind": "statements",
+   "last_on": "2026-11-24",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-25",
+   "since": "2026-11-24",
+   "ticker": "HBESD",
+   "tries": 1
+  },
+  "statements:HBPOR": {
+   "kind": "statements",
+   "last_on": "2026-11-24",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-25",
+   "since": "2026-11-24",
+   "ticker": "HBPOR",
    "tries": 1
   },
   "statements:HDFCBSE500": {
@@ -1233,6 +1269,24 @@
    "ticker": "HDFCVALUE",
    "tries": 1
   },
+  "statements:HDFIRE": {
+   "kind": "statements",
+   "last_on": "2026-11-24",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-25",
+   "since": "2026-11-24",
+   "ticker": "HDFIRE",
+   "tries": 1
+  },
+  "statements:HDIL": {
+   "kind": "statements",
+   "last_on": "2026-11-24",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-25",
+   "since": "2026-11-24",
+   "ticker": "HDIL",
+   "tries": 1
+  },
   "statements:HEALTHADD": {
    "kind": "statements",
    "last_on": "2026-11-16",
@@ -1287,6 +1341,33 @@
    "ticker": "HFTSEINDIA",
    "tries": 1
   },
+  "statements:HINDADH": {
+   "kind": "statements",
+   "last_on": "2026-11-24",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-25",
+   "since": "2026-11-24",
+   "ticker": "HINDADH",
+   "tries": 1
+  },
+  "statements:HINDALUMI": {
+   "kind": "statements",
+   "last_on": "2026-11-24",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-25",
+   "since": "2026-11-24",
+   "ticker": "HINDALUMI",
+   "tries": 1
+  },
+  "statements:HINDCON": {
+   "kind": "statements",
+   "last_on": "2026-11-24",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-25",
+   "since": "2026-11-24",
+   "ticker": "HINDCON",
+   "tries": 1
+  },
   "statements:HNGSNGBEES": {
    "kind": "statements",
    "last_on": "2026-11-16",
@@ -1294,6 +1375,15 @@
    "retry_after": "2026-11-23",
    "since": "2026-11-16",
    "ticker": "HNGSNGBEES",
+   "tries": 1
+  },
+  "statements:HRYNSHP": {
+   "kind": "statements",
+   "last_on": "2026-11-24",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-25",
+   "since": "2026-11-24",
+   "ticker": "HRYNSHP",
    "tries": 1
   },
   "statements:ICICIB22": {
@@ -1314,14 +1404,32 @@
    "ticker": "IDFSENSEXE",
    "tries": 1
   },
+  "statements:IGLSPIRITS": {
+   "kind": "statements",
+   "last_on": "2026-11-24",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-25",
+   "since": "2026-11-24",
+   "ticker": "IGLSPIRITS",
+   "tries": 1
+  },
+  "statements:IIRM": {
+   "kind": "statements",
+   "last_on": "2026-11-24",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-25",
+   "since": "2026-11-24",
+   "ticker": "IIRM",
+   "tries": 1
+  },
   "statements:IL&FSTRANS": {
    "kind": "statements",
-   "last_on": "2026-11-16",
-   "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-24",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-25",
    "since": "2026-11-16",
    "ticker": "IL&FSTRANS",
-   "tries": 1
+   "tries": 2
   },
   "statements:INFRA": {
    "kind": "statements",
@@ -1348,6 +1456,15 @@
    "retry_after": "2026-11-23",
    "since": "2026-11-16",
    "ticker": "INFRAIETF",
+   "tries": 1
+  },
+  "statements:INNOVISION": {
+   "kind": "statements",
+   "last_on": "2026-11-24",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-25",
+   "since": "2026-11-24",
+   "ticker": "INNOVISION",
    "tries": 1
   },
   "statements:INSURADD": {
@@ -2675,12 +2792,12 @@
   },
   "statements:TEAM24": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-24",
    "note": "no statement source answered",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-08",
    "since": "2026-11-11",
    "ticker": "TEAM24",
-   "tries": 5
+   "tries": 6
   },
   "statements:TECH": {
    "kind": "statements",

@@ -1,12 +1,12 @@
 {
  "statements_retry_after": {
-  "BAGMANE": "2026-11-24",
-  "DUMMYHEG": "2026-11-24",
+  "BAGMANE": "2026-12-08",
+  "DUMMYHEG": "2026-12-08",
   "DUMMYINGL1": "2026-11-05",
   "DUMMYINGL2": "2026-11-05",
-  "DUMMYINXGN": "2026-11-24",
+  "DUMMYINXGN": "2026-12-08",
   "DVL": "2026-10-27",
-  "TEAM24": "2026-11-24",
+  "TEAM24": "2026-12-08",
   "KHAZANCHI": "2026-10-29",
   "TRANOCE": "2026-11-04",
   "POWERIETF": "2026-11-29",
@@ -20,8 +20,8 @@
   "DISAQ": "2026-11-30",
   "ELCIDIN": "2026-11-30",
   "GOLDENTOBC": "2026-11-30",
-  "GUJRAFFIA": "2026-11-23",
-  "IL&FSTRANS": "2026-11-23",
+  "GUJRAFFIA": "2026-11-25",
+  "IL&FSTRANS": "2026-11-25",
   "LAKPRE": "2026-11-23",
   "ORTEL": "2026-11-23",
   "ZODIAC": "2026-11-23",
@@ -282,7 +282,20 @@
   "LOWVOL": "2026-11-24",
   "BNKETFAXIS": "2026-11-25",
   "NATPLY": "2026-11-25",
-  "ISIFHLSG": "2026-11-26"
+  "ISIFHLSG": "2026-11-26",
+  "GRADIENTE": "2026-11-25",
+  "HAMPTON": "2026-11-25",
+  "HBESD": "2026-11-25",
+  "HBPOR": "2026-11-25",
+  "HDFIRE": "2026-11-25",
+  "HDIL": "2026-11-25",
+  "HINDADH": "2026-11-25",
+  "HINDALUMI": "2026-11-25",
+  "HINDCON": "2026-11-25",
+  "HRYNSHP": "2026-11-25",
+  "IGLSPIRITS": "2026-11-25",
+  "IIRM": "2026-11-25",
+  "INNOVISION": "2026-11-25"
  },
  "shareholding_retry_after": {
   "08AGG": "2026-10-27",
@@ -303,60 +316,60 @@
   "JAYKAYPP": "2026-11-12",
   "OLAPP": "2026-11-12"
  },
- "last_batch_at": "2026-11-23T15:16Z",
- "last_statements_ok": 45,
- "last_statements_fail": 0,
+ "last_batch_at": "2026-11-23T22:05Z",
+ "last_statements_ok": 21,
+ "last_statements_fail": 19,
  "last_shareholding_ok": 186,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
-  "BIRET": "2026-11-23",
-  "EMBASSY": "2026-11-23",
-  "BAGMANE": "2026-11-23",
-  "DUMMYHEG": "2026-11-23",
+  "BIRET": "2026-11-24",
+  "EMBASSY": "2026-11-24",
+  "BAGMANE": "2026-11-24",
+  "DUMMYHEG": "2026-11-24",
   "DUMMYINGL1": "2026-11-04",
   "DUMMYINGL2": "2026-11-04",
-  "DUMMYINXGN": "2026-11-23",
+  "DUMMYINXGN": "2026-11-24",
   "OLAELEC-RE": "2026-10-27",
-  "APLABPP": "2026-11-23",
-  "ATLPP": "2026-11-23",
-  "GSAILPP": "2026-11-23",
-  "JAYKAYPP": "2026-11-23",
+  "APLABPP": "2026-11-24",
+  "ATLPP": "2026-11-24",
+  "GSAILPP": "2026-11-24",
+  "JAYKAYPP": "2026-11-24",
   "QDLCCPS": "2026-11-17",
-  "SURAJINDPP": "2026-11-23",
-  "VERTEXPP": "2026-11-23",
+  "SURAJINDPP": "2026-11-24",
+  "VERTEXPP": "2026-11-24",
   "ICICIPRULI": "2026-10-27",
   "ACESEPP": "2026-11-20",
   "SHIVAM-RE1": "2026-11-16",
-  "ANIRITPP": "2026-11-23",
-  "CENTEXTPP": "2026-11-23",
-  "OLAPP": "2026-11-23",
+  "ANIRITPP": "2026-11-24",
+  "CENTEXTPP": "2026-11-24",
+  "OLAPP": "2026-11-24",
   "SUVID-RE": "2026-11-17"
  },
  "last_shareholding_empty": 14,
  "last_shareholding_skipped": 0,
  "statements_failures": {
   "BAGMANE": {
-   "count": 6,
-   "last_on": "2026-11-17",
-   "retry_after": "2026-11-24",
+   "count": 7,
+   "last_on": "2026-11-24",
+   "retry_after": "2026-12-08",
    "note": "no statement source answered"
   },
   "DUMMYHEG": {
-   "count": 6,
-   "last_on": "2026-11-17",
-   "retry_after": "2026-11-24",
+   "count": 7,
+   "last_on": "2026-11-24",
+   "retry_after": "2026-12-08",
    "note": "no statement source answered"
   },
   "DUMMYINXGN": {
-   "count": 6,
-   "last_on": "2026-11-17",
-   "retry_after": "2026-11-24",
+   "count": 7,
+   "last_on": "2026-11-24",
+   "retry_after": "2026-12-08",
    "note": "no statement source answered"
   },
   "TEAM24": {
-   "count": 6,
-   "last_on": "2026-11-17",
-   "retry_after": "2026-11-24",
+   "count": 7,
+   "last_on": "2026-11-24",
+   "retry_after": "2026-12-08",
    "note": "no statement source answered"
   },
   "POWERIETF": {
@@ -426,16 +439,16 @@
    "note": "quote only, no results"
   },
   "GUJRAFFIA": {
-   "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
-   "note": "quote only, no results"
+   "count": 1,
+   "last_on": "2026-11-24",
+   "retry_after": "2026-11-25",
+   "note": "no statement source answered"
   },
   "IL&FSTRANS": {
-   "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
-   "note": "quote only, no results"
+   "count": 1,
+   "last_on": "2026-11-24",
+   "retry_after": "2026-11-25",
+   "note": "no statement source answered"
   },
   "LAKPRE": {
    "count": 0,
@@ -2002,6 +2015,84 @@
    "last_on": "2026-11-19",
    "retry_after": "2026-11-26",
    "note": "quote only, no results"
+  },
+  "GRADIENTE": {
+   "count": 1,
+   "last_on": "2026-11-24",
+   "retry_after": "2026-11-25",
+   "note": "no statement source answered"
+  },
+  "HAMPTON": {
+   "count": 1,
+   "last_on": "2026-11-24",
+   "retry_after": "2026-11-25",
+   "note": "no statement source answered"
+  },
+  "HBESD": {
+   "count": 1,
+   "last_on": "2026-11-24",
+   "retry_after": "2026-11-25",
+   "note": "no statement source answered"
+  },
+  "HBPOR": {
+   "count": 1,
+   "last_on": "2026-11-24",
+   "retry_after": "2026-11-25",
+   "note": "no statement source answered"
+  },
+  "HDFIRE": {
+   "count": 1,
+   "last_on": "2026-11-24",
+   "retry_after": "2026-11-25",
+   "note": "no statement source answered"
+  },
+  "HDIL": {
+   "count": 1,
+   "last_on": "2026-11-24",
+   "retry_after": "2026-11-25",
+   "note": "no statement source answered"
+  },
+  "HINDADH": {
+   "count": 1,
+   "last_on": "2026-11-24",
+   "retry_after": "2026-11-25",
+   "note": "no statement source answered"
+  },
+  "HINDALUMI": {
+   "count": 1,
+   "last_on": "2026-11-24",
+   "retry_after": "2026-11-25",
+   "note": "no statement source answered"
+  },
+  "HINDCON": {
+   "count": 1,
+   "last_on": "2026-11-24",
+   "retry_after": "2026-11-25",
+   "note": "no statement source answered"
+  },
+  "HRYNSHP": {
+   "count": 1,
+   "last_on": "2026-11-24",
+   "retry_after": "2026-11-25",
+   "note": "no statement source answered"
+  },
+  "IGLSPIRITS": {
+   "count": 1,
+   "last_on": "2026-11-24",
+   "retry_after": "2026-11-25",
+   "note": "no statement source answered"
+  },
+  "IIRM": {
+   "count": 1,
+   "last_on": "2026-11-24",
+   "retry_after": "2026-11-25",
+   "note": "no statement source answered"
+  },
+  "INNOVISION": {
+   "count": 1,
+   "last_on": "2026-11-24",
+   "retry_after": "2026-11-25",
+   "note": "no statement source answered"
   }
  },
  "shareholding_failures": {
