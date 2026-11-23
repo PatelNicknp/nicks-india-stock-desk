@@ -206,13 +206,13 @@
  "needs_person": {},
  "providers": {
   "BSE results": {
-   "cooldown_until": "2026-11-23T02:59Z",
-   "fails": 15,
+   "cooldown_until": "2026-11-23T10:06Z",
+   "fails": 16,
    "last_error": "skipped after repeated failures in this run"
   },
   "BSE shareholding": {
-   "cooldown_until": "2026-11-23T02:59Z",
-   "fails": 40,
+   "cooldown_until": "2026-11-23T10:06Z",
+   "fails": 41,
    "last_error": "skipped after repeated failures in this run"
   },
   "NSE results": {
