@@ -1,6 +1,8 @@
 {
  "incomplete": {
   "statements": [
+   "TCC",
+   "SINGERIND",
    "ARTEMISMED",
    "AGL",
    "POWERIETF",
@@ -198,9 +200,7 @@
    "GROWWPOWER",
    "GROWWHOSPI",
    "GROWWDEFNC",
-   "FMCGIETF",
-   "FMCGADD",
-   "FLEXIADD"
+   "FMCGIETF"
   ]
  },
  "needs_person": {},
@@ -2558,12 +2558,12 @@
   },
   "statements:SINGERIND": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-23",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-11-30",
    "since": "2026-11-16",
    "ticker": "SINGERIND",
-   "tries": 1
+   "tries": 2
   },
   "statements:SMALL250": {
    "kind": "statements",
@@ -2666,12 +2666,12 @@
   },
   "statements:TCC": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-23",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-11-30",
    "since": "2026-11-16",
    "ticker": "TCC",
-   "tries": 1
+   "tries": 2
   },
   "statements:TEAM24": {
    "kind": "statements",
