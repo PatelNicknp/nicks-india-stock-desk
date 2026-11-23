@@ -1,6 +1,8 @@
 {
  "incomplete": {
   "statements": [
+   "GOLDENTOBC",
+   "ELCIDIN",
    "DISAQ",
    "AARNAV",
    "TCC",
@@ -198,9 +200,7 @@
    "HDFCGROWTH",
    "HDFCBSE500",
    "HARCR",
-   "GROWWRAIL",
-   "GROWWPOWER",
-   "GROWWHOSPI"
+   "GROWWRAIL"
   ]
  },
  "needs_person": {},
@@ -866,12 +866,12 @@
   },
   "statements:ELCIDIN": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-23",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-11-30",
    "since": "2026-11-16",
    "ticker": "ELCIDIN",
-   "tries": 1
+   "tries": 2
   },
   "statements:ELMDIV": {
    "kind": "statements",
@@ -1019,12 +1019,12 @@
   },
   "statements:GOLDENTOBC": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-23",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-11-30",
    "since": "2026-11-16",
    "ticker": "GOLDENTOBC",
-   "tries": 1
+   "tries": 2
   },
   "statements:GROWWDEFNC": {
    "kind": "statements",
