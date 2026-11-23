@@ -1,6 +1,7 @@
 {
  "incomplete": {
   "statements": [
+   "AARNAV",
    "TCC",
    "SINGERIND",
    "ARTEMISMED",
@@ -199,8 +200,7 @@
    "GROWWRAIL",
    "GROWWPOWER",
    "GROWWHOSPI",
-   "GROWWDEFNC",
-   "FMCGIETF"
+   "GROWWDEFNC"
   ]
  },
  "needs_person": {},
@@ -425,12 +425,12 @@
   },
   "statements:AARNAV": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-23",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-11-30",
    "since": "2026-11-16",
    "ticker": "AARNAV",
-   "tries": 1
+   "tries": 2
   },
   "statements:ABSL10BANK": {
    "kind": "statements",
