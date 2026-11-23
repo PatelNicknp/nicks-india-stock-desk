@@ -1,6 +1,7 @@
 {
  "incomplete": {
   "statements": [
+   "LAKPRE",
    "GOLDENTOBC",
    "ELCIDIN",
    "DISAQ",
@@ -199,8 +200,7 @@
    "HDFCLOWVOL",
    "HDFCGROWTH",
    "HDFCBSE500",
-   "HARCR",
-   "GROWWRAIL"
+   "HARCR"
   ]
  },
  "needs_person": {},
@@ -242,8 +242,8 @@
   },
   "Yahoo NS": {
    "cooldown_until": "",
-   "fails": 1,
-   "last_error": "skipped after repeated failures in this run"
+   "fails": 0,
+   "last_error": ""
   }
  },
  "stalls": {
@@ -1604,12 +1604,12 @@
   },
   "statements:LAKPRE": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-24",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-01",
    "since": "2026-11-16",
    "ticker": "LAKPRE",
-   "tries": 1
+   "tries": 2
   },
   "statements:LARGEMID50": {
    "kind": "statements",

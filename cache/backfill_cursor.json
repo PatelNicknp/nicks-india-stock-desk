@@ -22,7 +22,7 @@
   "GOLDENTOBC": "2026-11-30",
   "GUJRAFFIA": "2026-11-25",
   "IL&FSTRANS": "2026-11-25",
-  "LAKPRE": "2026-11-23",
+  "LAKPRE": "2026-12-01",
   "ORTEL": "2026-11-23",
   "ZODIAC": "2026-11-23",
   "SHIVAM-RE1": "2026-11-23",
@@ -316,9 +316,9 @@
   "JAYKAYPP": "2026-11-12",
   "OLAPP": "2026-11-12"
  },
- "last_batch_at": "2026-11-23T22:05Z",
- "last_statements_ok": 21,
- "last_statements_fail": 19,
+ "last_batch_at": "2026-11-23T22:33Z",
+ "last_statements_ok": 43,
+ "last_statements_fail": 0,
  "last_shareholding_ok": 186,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
@@ -452,8 +452,8 @@
   },
   "LAKPRE": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-24",
+   "retry_after": "2026-12-01",
    "note": "quote only, no results"
   },
   "ORTEL": {
