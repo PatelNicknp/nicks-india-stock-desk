@@ -1,2 +1,10 @@
 ticker,company,price,day_pct,score,score_prev,score_change,verdict,data_status,note,disclaimer
-,,,,,,,,MISSING,No score changes versus the last run.,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+ESTER,Ester Industries Limited,85.47,-1.45,2.0,-3.0,5.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+EIHAHOTELS,EIH Associated Hotels Limited,292.7,-0.14,6.0,2.0,4.0,HOLD,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+RAUNAQ,RAUNAQ INTERNATIONAL LIMITED,38.0,-0.63,-1.0,2.0,-3.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+FOODSIN,Foods & Inns Limited,41.43,-2.15,1.0,4.0,-3.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+AIRLTD,AVISHKAR INFRA REALTY LIMITED,561.55,-1.0,-5.0,-2.0,-3.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+SAENTER,SOUTH ASIAN ENTERPRISES LTD.,49.4,-3.67,0.0,2.0,-2.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+GOKUL,Gokul Refoils and Solvent Limited,35.07,-0.37,-1.0,1.0,-2.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+ECOSMOBLTY,Ecos (India) Mobility & Hospitality Limited,117.21,0.6,6.0,5.0,1.0,HOLD,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+ECORECO,Eco Recycling Limited,393.6,-1.71,0.0,1.0,-1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
