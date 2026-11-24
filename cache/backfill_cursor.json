@@ -203,7 +203,7 @@
   "OILIETF": "2026-11-23",
   "OIVL": "2026-11-23",
   "ORIENTTR": "2026-11-23",
-  "RAJVIR": "2026-11-23",
+  "RAJVIR": "2026-12-01",
   "11QPR": "2026-11-23",
   "ABSLMSCIN": "2026-11-23",
   "KLIFESTYL": "2026-11-23",
@@ -316,8 +316,8 @@
   "JAYKAYPP": "2026-11-12",
   "OLAPP": "2026-11-12"
  },
- "last_batch_at": "2026-11-24T05:57Z",
- "last_statements_ok": 38,
+ "last_batch_at": "2026-11-24T06:25Z",
+ "last_statements_ok": 49,
  "last_statements_fail": 0,
  "last_shareholding_ok": 186,
  "last_shareholding_fail": 0,
@@ -1538,8 +1538,8 @@
   },
   "RAJVIR": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-24",
+   "retry_after": "2026-12-01",
    "note": "quote only, no results"
   },
   "11QPR": {

@@ -1987,7 +1987,6 @@ PAGEIND,PAGE INDUSTRIES LTD,Consumer Cyclical,Apparel Manufacturing,41.960033,,2
 PAISALO,PAISALO DIGITAL LIMITED,Financial Services,Credit Services,20.131578,,1.0,100.0,100.0,,Yahoo NS,2026-10-26,,
 PALASHSECU,PALASH SECURITIES LTD,Consumer Defensive,Packaged Foods,,,,,,,Yahoo NS,2026-10-26,,
 PALCO,Palco Metals Limited,Basic Materials,Aluminum,,,,,,,Yahoo BO,2026-10-26,"Palco Metals Limited, through its subsidiary, Palco Recycle Industries Limited, engages in the manufacture and sale of aluminum wire and deoxident in India.",
-PALREDTEC,PALRED TECHNOLOGIES LTD,Technology,Consumer Electronics,,,,,,,Yahoo NS,2026-11-16,"Palred Technologies Limited, together with its subsidiaries, engages in the e-commerce business in India.",INR
 PANACEABIO,PANACEA BIOTEC LTD,Healthcare,Biotechnology,,,,,,,Yahoo NS,2026-10-26,,
 PANACHE,PANACHE DIGILIFE LIMITED,Technology,Communication Equipment,,,,,,,Yahoo NS,2026-11-16,"Panache Digilife Limited designs, manufactures, distributes, sells, and services ICT and IoT devices in India.",INR
 PANAENERG,PANASONIC ENERGY INDIA COMPANY,Industrials,Electrical Equipment & Parts,,,,,,,Yahoo BO,2026-10-26,Panasonic Energy India Co. Ltd. manufactures and supplies dry cell batteries and lighting products in India and internationally.,
@@ -1998,7 +1997,6 @@ PANELEC,PAN ELECTRONICS INDIA LTD.,Technology,Electronic Components,,,,,,,Yahoo 
 PANIDPR,PANTHER INDUSTRIAL PRODUCTS LT,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-11-13,Panther Industrial Products Limited engages in trading activities in India.,INR
 PANJON,PANJON LTD.,Consumer Defensive,Packaged Foods,,,,,,,Yahoo BO,2026-10-26,Panjon Limited engages in the manufacture and trade of consumer and pharmaceutical products in India.,
 PANORAMA,PANORAMA STUDIOS INTL. L,Communication Services,Entertainment,,,,,,,Yahoo NS,2026-10-26,,
-PANSARI,PANSARI DEVELOPERS LTD,Real Estate,Real Estate - Development,,,,,,,Yahoo NS,2026-11-16,Pansari Developers Limited operates as a construction and real estate development company in India.,INR
 PANTH,PANTH INFINITY LIMITED,Consumer Cyclical,Luxury Goods,,,,,,,Yahoo BO,2026-10-26,"Panth Infinity Limited engages in the trading of precious metals, stones, and jewellery in India.",
 PAOS,PAOS INDUSTRIES LIMITED,Consumer Defensive,Household & Personal Products,,,,,,,Yahoo BO,2026-10-27,"PAOS Industries Limited engages in the manufacturing, trading, and marketing of laundry, and toilet soaps; and detergent powders.",
 PAR,PAR DRUGS AND CHEM LTD,Healthcare,Drug Manufacturers - Specialty & Generic,,,,,,,Yahoo NS,2026-11-16,"Par Drugs and Chemicals Limited develops, manufactures, and sells active pharmaceutical ingredients (APIs) and fine chemicals in India.",INR
@@ -2006,32 +2004,25 @@ PARACABLES,PARAMOUNT COMM LTD,Technology,Communication Equipment,,,,,,,Yahoo NS,
 PARADEEP,PARADEEP PHOSPHATES LTD,Basic Materials,Agricultural Inputs,13.247059,2.25,4.0,153.25,154.0,,Yahoo NS,2026-11-16,"Paradeep Phosphates Limited manufactures, trades, distributes, and sells urea and complex fertilizers in India.",INR
 PARAGMILK,PARAG MILK FOODS LTD.,Consumer Defensive,Packaged Foods,15.276191,1.0,2.0,283.5,283.5,,Yahoo NS,2026-10-26,,
 PARAS,PARAS DEF AND SPCE TECH L,Industrials,Aerospace & Defense,78.07229,,1.0,960.0,960.0,,Yahoo NS,2026-11-16,"Paras Defence and Space Technologies Limited designs, develops, manufactures, and tests defense and space engineering products and solutions in India and internationally.",INR
-PARASHLTH,PARAS HEALTHCARE LIMITED,Healthcare,Medical Care Facilities,46.957287,1.0,1.0,900.0,900.0,,Yahoo NS,2026-11-16,Paras Healthcare Limited provides tertiary and quaternary healthcare services.,INR
 PARASPETRO,PARAS PETROFILS LTD.,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo NS,2026-10-26,,
-PARIN,PARIN ENTERPRISES LIMITED,Consumer Cyclical,"Furnishings, Fixtures & Appliances",,,,,,,Yahoo NS,2026-11-16,"Parin Enterprises Limited engages in the manufacture, supply, and trade of furniture and lifestyle products in India.",INR
 PARKHOSPS,PARK MEDI WORLD LIMITED,Healthcare,Medical Care Facilities,20.377357,,2.0,362.5,362.5,,Yahoo NS,2026-10-26,,
 PARKHOTELS,PARKHOTELS,Consumer Cyclical,Lodging,15.672936,,2.0,153.5,153.5,,Yahoo NS,2026-10-26,,
 PARLEIND,PARLE INDUSTRIES LIMITED,Real Estate,Real Estate Services,,,,,,,Yahoo BO,2026-10-26,Parle Industries Limited engages in the infrastructure and real estate businesses.,
 PARMSILK,PARMESHWARI SILK MILLS LIMITED,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo BO,2026-10-26,Parmeshwari Silk Mills Limited manufactures and sells woven fabrics in India.,
-PARNAXLAB,PARNAX LAB LTD.,Healthcare,Drug Manufacturers - Specialty & Generic,,,,,,,Yahoo NS,2026-11-16,Parnax Lab Limited engages in the manufacture and export of pharmaceutical formulations in India and internationally.,INR
 PARSHVA,Parshva Enterprises Limited,Consumer Cyclical,Luxury Goods,,,,,,,Yahoo BO,2026-10-26,"Parshva Enterprises Limited engages in the sales and trade of gold and diamond jewelry, and cut and polished diamonds in India.",
 PARSHWANA,PARSHWANATH CORPORATION LTD.,Real Estate,Real Estate - Development,,,,,,,Yahoo BO,2026-10-29,Parshwanath Corporation Limited engages in the construction and development of housing projects in India.,
-PARSVNATH,PARSVNATH DEVELOPER LTD,Real Estate,Real Estate - Development,,,,,,,Yahoo NS,2026-11-16,"Parsvnath Developers Limited, together with its subsidiaries, engages in the real estate development business in India.",INR
 PASHUPATI,PASHUPATI COTSPIN LIMITED,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo NS,2026-10-26,,
 PASUFIN,PASUPATI FINCAP LTD.,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,"Pasupati Fincap Limited, manufactures and sells textiles and fibers products in India and internationally.",
 PASUPTAC,PASUPATI ACRYLON LIMITED,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo NS,2026-11-16,"Pasupati Acrylon Limited manufactures and sells acrylic fibers, and cast polypropylene (CPP) films in India and internationally.",INR
 PASUSPG,PASUPATI SPG.& WVG.MILLS LTD.,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo BO,2026-10-26,Pasupati Spinning & Weaving Mills Limited operates as a textile company in India.,
 PATIDAR,PATIDAR BUILDCON LIMITED,Real Estate,Real Estate - Development,,,,,,,Yahoo BO,2026-10-26,Patidar Buildcon Limited engages in the real estate business in India.,
-PATINTLOG,PATEL INT. LOG. LTD,Industrials,Integrated Freight & Logistics,,,,,,,Yahoo NS,2026-11-16,Patel Integrated Logistics Limited provides logistics services in India.,INR
 PATSPINLTD,PATSPIN INDIA LTD.,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo BO,2026-10-26,Patspin India Limited manufactures and sells cotton yarns in India.,
-PAVNAIND,PAVNA INDUSTRIES LIMITED,Consumer Cyclical,Auto Parts,,,,,,,Yahoo NS,2026-11-16,"Pavna Industries Limited, together with its subsidiaries, manufactures and sells automotive components for reputed original equipment manufacturers in India and internationally.",INR
 PAYTM,ONE 97 COMMUNICATIONS LTD,Technology,Software - Infrastructure,48.521313,1.54545,22.0,1980.5454,1985.0,1793008800.0,Yahoo NS,2026-11-16,"One97 Communications Limited engages in the provision of payment, commerce and cloud, and financial services to consumers and merchants in India, the United Arab Emirates, Saudi Arabia, and Singapore.",INR
 PBMPOLY,P B M POLYTEX LTD.,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo NS,2026-10-26,,
 PCBL,PCBL CHEMICAL LIMITED,Basic Materials,Specialty Chemicals,19.038977,2.54545,11.0,348.72726,352.0,,Yahoo NS,2026-11-16,"PCBL Chemical Limited, together with subsidiaries, produces, sells, and exports carbon black in India and internationally.",INR
 PCJEWELLER,PC JEWELLER LTD,Consumer Cyclical,Luxury Goods,0.8785366,,,,,,Yahoo NS,2026-10-26,,
 PDMJEPAPER,PUDUMJEE PAPER PRO. LTD,Basic Materials,Paper & Paper Products,,,,,,,Yahoo NS,2026-11-16,Pudumjee Paper Products Limited manufactures and markets specialty paper products in India.,INR
 PDSL,PDS LIMITED,Industrials,Specialty Business Services,36.292034,1.0,1.0,480.0,480.0,,Yahoo NS,2026-11-16,"PDS Limited, together its subsidiaries, designs, develops, sources, manufactures, markets, and distributes various readymade garments and other consumer products worldwide.",INR
-PEARLPOLY,PEARL POLYMERS LTD,Consumer Cyclical,Packaging & Containers,,,,,,,Yahoo NS,2026-11-16,"Pearl Polymers Limited engages in the manufacture and trading of PET bottles, jars, and containers to consumers and industries in India.",INR
 PEIL,PREMIER ENERGY AND INFRASTRUCT,Industrials,Engineering & Construction,,,,,,,Yahoo BO,2026-10-26,"Premier Energy and Infrastructure Limited operates in construction, housing development, and energy businesses in India.",
 PENINLAND,PENINSULA LAND LIMITED,Real Estate,Real Estate - Development,,,,,,,Yahoo NS,2026-10-26,,
 PERMAGN,PERMANENT MAGNETS LTD.,Industrials,Electrical Equipment & Parts,,,,,,,Yahoo NS,2026-11-16,"Permanent Magnets Limited engages in the manufacture and sale of cast alloy permanent magnets, parts, and accessories of electricity and electric vehicle worldwide.",INR
@@ -2054,19 +2045,15 @@ PHYTO,PHYTO CHEM (INDIA) LTD.,Basic Materials,Agricultural Inputs,,,,,,,Yahoo BO
 PICTUREHS,PICTUREHOUSE MEDIA LTD.,Communication Services,Entertainment,,,,,,,Yahoo BO,2026-10-26,"Picturehouse Media Limited, together with its subsidiaries, engages in movie production and financing, and related activities in India.",
 PIDILITIND,PIDILITE INDUSTRIES LTD,Basic Materials,Specialty Chemicals,48.332348,2.09524,21.0,1658.5714,1630.0,1793181600.0,Yahoo NS,2026-11-16,"Pidilite Industries Limited, together with its subsidiaries, engages in the consumer and industrial specialty chemicals business in India and internationally.",INR
 PIGL,POWER INSTRUMENT (G) LTD,Industrials,Engineering & Construction,,,,,,,Yahoo NS,2026-10-26,,
-PILANIINVS,PILANI INV & IND COR LTD,Financial Services,Asset Management,,,,,,,Yahoo NS,2026-11-16,"Pilani Investment and Industries Corporation Limited, a non-banking financial company, engages in the investment and financing activities in India.",INR
 PILITA,PIL ITALICA LIFESTYLE LTD,Consumer Cyclical,"Furnishings, Fixtures & Appliances",,,,,,,Yahoo NS,2026-10-26,,
 PINELABS,PINE LABS LIMITED,Technology,Software - Infrastructure,35.04963,1.27273,11.0,220.18182,220.0,,Yahoo NS,2026-10-26,,
 PIONAGR,PIONEER AGRO EXTRACTS LTD.,Consumer Defensive,Farm Products,,,,,,,Yahoo BO,2026-10-28,Pioneer Agro Extracts Limited manufactures and sells hydrogenated vegetable oils and refined oils in India.,
-PIONEEREMB,PIONEER EMBROIDERIES LTD,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo NS,2026-11-16,"Pioneer Embroideries Limited, together with its subsidiaries, engages in the manufacture of special polyester filament yarn, embroidery, and lace products in India.",INR
-PIONRINV,PIONEER INVESTCORP LTD.,Financial Services,Capital Markets,,,,,,,Yahoo NS,2026-11-16,Pioneer Investcorp Limited provides investment banking and advisory services in India and internationally.,INR
 PIPAN,PIPAN OILS LIMITED,Industrials,Conglomerates,,,,,,,Yahoo BO,2026-10-26,"Pipan Oils Limited, an oil and gas company, engages in the exploration, development, and production of oil and natural gas resources in India.",
 PIRAMALFIN,PIRAMAL FINANCE LIMITED,Financial Services,Credit Services,12.627016,1.7,10.0,2315.5,2502.5,,Yahoo NS,2026-10-26,"Piramal Finance Limited, a housing finance company, provides financing solutions to corporate and private customers in India.",
 PITTIENG,PITTI ENGINEERING LIMITED,Industrials,Metal Fabrication,18.937944,,2.0,1293.0,1293.0,,Yahoo NS,2026-11-16,Pitti Engineering Limited manufactures and sells iron and steel engineering products in India and internationally.,INR
 PKTEA,THE P K TEA PROD CO LTD,Consumer Defensive,Farm Products,,,,,,,Yahoo NS,2026-11-16,The Peria Karamalai Tea and Produce Company Limited produces and distributes tea in India.,INR
 PLASTIBLEN,PLASTIBLENDS INDIA LTD,Basic Materials,Specialty Chemicals,,,,,,,Yahoo NS,2026-10-26,,
 PLATIND,PLATINUM INDUSTRIES LTD,Basic Materials,Specialty Chemicals,,,,,,,Yahoo NS,2026-11-16,"Platinum Industries Limited engages in the manufacture and sale of poly vinyl chloride (PVC) stabilizers, chlorinated polyvinyl chloride (CPVC), lubricants, stearates, and speciality chemicals in India and internationally.",INR
-PLAZACABLE,PLAZA WIRES LIMITED,Industrials,Electrical Equipment & Parts,,,,,,,Yahoo NS,2026-11-16,Plaza Wires Limited manufactures and sells electrical wires and allied products in India.,INR
 PML,PAUL MERCHANTS LTD.,Financial Services,Capital Markets,,,,,,,Yahoo NS,2026-10-26,,
 PMTELELIN,P.M.TELELINNKS LTD.,Basic Materials,Steel,,,,,,,Yahoo BO,2026-10-26,P.M. Telelinnks Limited engages in trading of iron and steel products in India.,
 PNBHOUSING,PNB HOUSING FIN LTD.,Financial Services,Mortgage Finance,10.632184,1.38462,13.0,1331.5385,1325.0,,Yahoo NS,2026-11-16,PNB Housing Finance Limited operates as a housing finance company in India.,INR
@@ -2077,7 +2064,6 @@ PNGSREVA,PNGS REVA DIAMOND JEWEL L,Consumer Cyclical,Luxury Goods,,,,,,,Yahoo NS
 PNTKYOR,PENTOKEY ORGANY (INDIA) LTD.,Basic Materials,Chemicals,,,,,,,Yahoo BO,2026-10-26,Pentokey Organy (India) Limited engages in trading of pharmaceutical products in India.,
 POCL,PONDY OXIDES & CHEM LTD,Basic Materials,Specialty Chemicals,13.32258,,1.0,781.0,781.0,,Yahoo NS,2026-10-26,,
 PODDARMENT,PODDAR PIGMENTS LIMITED,Basic Materials,Specialty Chemicals,,,,,,,Yahoo NS,2026-11-16,Poddar Pigments Limited manufactures and sells color and additive masterbatches for dope dyeing of man-made fibers and various plastic applications in India and internationally.,INR
-POEL,P O C L ENTERPRISES LTD.,Basic Materials,Chemicals,,,,,,,Yahoo NS,2026-11-16,"POCL Enterprises Limited, together with its subsidiaries, engages in the manufacturing and trading of various metals, chemicals, and its oxides in India and internationally.",INR
 POKARNA,POKARNA LIMITED,Industrials,Building Products & Equipment,,,,,,,Yahoo NS,2026-10-26,,
 POLICYBZR,PB FINTECH LIMITED,Financial Services,Insurance Brokers,38.889595,2.04348,23.0,1454.2174,1390.0,1793354400.0,Yahoo NS,2026-11-16,PB Fintech Limited operates an online marketplace for insurance and lending products in India and the United Arab Emirates.,INR
 POLYMED,POLY MEDICURE LIMITED,Healthcare,Medical Instruments & Supplies,35.95218,2.4,5.0,1836.0,1907.0,,Yahoo NS,2026-11-16,Poly Medicure Limited engages in the manufacture and sale of medical devices in India and internationally.,INR
@@ -2093,21 +2079,14 @@ POWERICA,POWERICA LIMITED,Industrials,Specialty Industrial Machinery,19.605158,1
 POWERINDIA,HITACHI ENERGY INDIA LTD,Industrials,Electrical Equipment & Parts,62.828922,1.61905,21.0,36841.43,35800.0,,Yahoo NS,2026-11-16,"Hitachi Energy India Limited offers products, projects, and services for electricity transmission and related activities in India and internationally.",INR
 POWERMECH,POWER MECH PROJECTS LTD.,Industrials,Engineering & Construction,13.379501,1.66667,3.0,3229.0,2950.0,,Yahoo NS,2026-11-16,"Power Mech Projects Limited, together with its subsidiaries, provides services in power and infrastructure sectors in India and internationally.",INR
 PPAP,PPAP AUTOMOTIVE LIMITED,Consumer Cyclical,Auto Parts,13.891115,,,,,,Yahoo NS,2026-10-26,,
-PPL,PRAKASH PIPES LIMITED,Industrials,Building Products & Equipment,,,,,,,Yahoo NS,2026-11-16,"Prakash Pipes Limited engages in the manufacture and sale of PVC pipes, fittings, and flexible packaging solutions in India and internationally.",INR
-PRABHA,PRABHA ENERGY LIMITED,Energy,Oil & Gas E&P,,,,,,,Yahoo NS,2026-11-16,"Prabha Energy Limited engages in oil and gas exploration, production, and trading in India.",INR
 PRABHHANS,PRABHHANS INDUSTRIES LIMITED,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo BO,2026-10-26,Prabhhans Industries Limited engages in the trading of paper products.,
-PRAENG,PRAJAY ENG. SYN. LTD.,Real Estate,Real Estate - Development,,,,,,,Yahoo NS,2026-11-16,"Prajay Engineers Syndicate Limited, together with its subsidiaries, engages in the development and construction of real estate in India.",INR
 PRAJIND,PRAJ INDUSTRIES LTD,Industrials,Engineering & Construction,25.691454,2.2,5.0,320.8,317.0,,Yahoo NS,2026-11-16,Praj Industries Limited operates in the field of bio-based technologies and engineering in India and internationally.,INR
-PRAKASHSTL,PRAKASH STEELAGE LTD,Basic Materials,Steel,,,,,,,Yahoo NS,2026-11-16,Prakash Steelage Limited manufactures and trades in stainless steel welded pipes and tubes in India.,INR
 PRATIK,PRATIK PANELS LTD.,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo BO,2026-10-26,Pratik Panels Limited engages in the trading of textile and other industrial inouts in India.,
-PRAVEG,PRAVEG LTD.,Communication Services,Advertising Agencies,,,,,,,Yahoo NS,2026-11-16,Praveg Limited provides advertising and hospitality services and organizes and manages events and exhibitions in India.,INR
 PRAXIS,PRAXIS HOME RETAIL LTD,Consumer Cyclical,Specialty Retail,,,,,,,Yahoo NS,2026-10-26,,
 PRECAM,PRECISION CAMSHAFTS LTD.,Consumer Cyclical,Auto Parts,,,,,,,Yahoo NS,2026-10-26,,
-PRECOT,PRECOT LIMITED,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo NS,2026-11-16,Precot Limited manufactures and sells yarn and technical textile products in India and internationally.,INR
 PRECWIRE,PRECISION WIRES INDIA LTD,Industrials,Electrical Equipment & Parts,26.103897,,1.0,492.0,492.0,,Yahoo NS,2026-10-26,,
 PREMCAP,PREMIER CAPITAL SERVICES LTD.,Consumer Defensive,Packaged Foods,,,,,,,Yahoo BO,2026-10-26,"Premier Capital Services Limited operates as a manufacturer, trader, and financier of dairy products in India.",
 PREMCAPM,PREMIUM CAPITAL MARKET & INVES,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,Premium Capital Market and Investment Limited engages in share trading and other related work business in India.,
-PREMCO,PREMCO GLOBAL LTD.,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo NS,2026-11-16,"Premco Global Limited, together with its subsidiaries, manufactures and sells elastic and non-elastic woven and knitted narrow fabrics, tapes, and webbings in India and internationally.",INR
 PREMIER,PREMIER LIMITED,Industrials,Specialty Industrial Machinery,,,,,,,Yahoo NS,2026-10-26,,
 PREMIERENE,PREMIER ENERGIES LIMITED,Technology,Solar,18.511646,2.11765,17.0,1050.8823,1050.0,,Yahoo NS,2026-11-16,"Premier Energies Limited, together with its subsidiaries, manufactures, sells, and trades in solar cells and modules in India and internationally.",INR
 PREMIERPOL,PREMIER POLYFILM LTD,Basic Materials,Specialty Chemicals,,,,,,,Yahoo NS,2026-10-26,,
@@ -2119,14 +2098,12 @@ PRIMO,PRIMO CHEMICALS LIMITED,Basic Materials,Chemicals,,,,,,,Yahoo NS,2026-10-2
 PRINCEPIPE,PRINCE PIPES FITTINGS LTD,Industrials,Building Products & Equipment,16.38072,1.57143,14.0,329.64285,330.5,,Yahoo NS,2026-10-26,,
 PRISMX,PRISMX GLOBAL VENTURES L,Financial Services,Capital Markets,,,,,,,Yahoo NS,2026-10-26,,
 PRITI,PRITI INTERNATIONAL LTD,Consumer Cyclical,"Furnishings, Fixtures & Appliances",,,,,,,Yahoo NS,2026-10-26,,
-PRITIKAUTO,PRITIKA AUTO INDUS LTD,Industrials,Specialty Industrial Machinery,,,,,,,Yahoo NS,2026-11-16,Pritika Auto Industries Limited manufactures and sells tractor and automobile components in India.,INR
 PRIVISCL,PRIVI SPECIALITY CHE LTD,Basic Materials,Specialty Chemicals,23.306261,1.0,3.0,4365.0,4400.0,,Yahoo NS,2026-10-26,,
 PROCLB,PRO CLB GLOBAL LIMITED,Consumer Cyclical,Travel Services,,,,,,,Yahoo BO,2026-10-26,PRO CLB Global Limited does not have significant operations.,
 PROFINC,PRO FIN CAPITAL SERVICES LTD.,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,Pro Fin Capital Services Ltd. provides financial services in India.,
 PROGREXV,PROGREX VENTURES LIMITED,Financial Services,Shell Companies,,,,,,,Yahoo BO,2026-10-26,Progrex Ventures Limited does not have significant operations.,
 PROMACT,Promact Plastics Limited,Industrials,Conglomerates,,,,,,,Yahoo BO,2026-10-26,"Promact Plastics Limited engages in the rental of godowns, and commission and brokerage business in India.",
 PROSTARM,PROSTARM INFO SYSTEMS LTD,Industrials,Electrical Equipment & Parts,,,,,,,Yahoo NS,2026-10-26,,
-PROZONER,PROZONE REALTY LIMITED,Real Estate,Real Estate - Diversified,,,,,,,Yahoo NS,2026-11-16,"Prozone Realty Limited engages in the design, development, ownership, and operation of shopping malls and commercial and residential properties in India.",INR
 PRSMJOHNSN,PRISM JOHNSON LIMITED,Basic Materials,Building Materials,38.861225,,2.0,131.0,131.0,,Yahoo NS,2026-10-26,,
 PRUDENT,PRUDENT CORP ADV SER LTD,Financial Services,Asset Management,36.270565,,6.0,3252.5,3255.0,,Yahoo NS,2026-11-16,"Prudent Corporate Advisory Services Limited, together with its subsidiaries, provides various solutions for financial services distribution to individuals, corporates, high net worth individuals, and ultra-high net worth individuals in India and internationally.",INR
 PRUDMOULI,PRUDENTIAL SUGAR CORPORAT,Consumer Defensive,Confectioners,,,,,,,Yahoo NS,2026-10-26,,
@@ -2134,7 +2111,6 @@ PSITINFRA,PS IT INFRASTRUCTURE & SERVICE,Financial Services,Capital Markets,,,,,
 PSPPROJECT,PSP PROJECTS LIMITED,Industrials,Engineering & Construction,16.160109,3.375,8.0,867.625,853.0,,Yahoo NS,2026-11-16,"PSP Projects Limited, a construction company, provides construction and allied services for industrial, institutional, commercial, residential, hospitality, hospital, and landmark government projects in India.",INR
 PTC,PTC INDIA LIMITED,Utilities,Utilities - Independent Power Producers,10.128788,,,,,,Yahoo NS,2026-10-26,,
 PTCIL,PTC INDUSTRIES LIMITED,Industrials,Metal Fabrication,71.824,1.0,3.0,26395.0,25770.0,,Yahoo NS,2026-10-26,,
-PTL,PTL ENTERPRISES LTD,Real Estate,Real Estate Services,6.77226,,,,,,Yahoo NS,2026-11-16,PTL Enterprises Limited engages in the leasing of plant to Apollo Tyres Limited.,INR
 PULSRIN,PULSAR INTERNATIONAL LTD.,Financial Services,Asset Management,,,,,,,Yahoo BO,2026-10-26,Pulsar International Limited engages in the trade of consumer products in India.,
 PUNJABCHEM,PUNJAB CHEM & CROP PROT L,Basic Materials,Chemicals,,,,,,,Yahoo NS,2026-10-26,,
 PUNJCOMMU,PUNJAB COMMUNICATIONS LTD.,Technology,Communication Equipment,,,,,,,Yahoo BO,2026-10-26,Punjab Communications Limited engages in the manufacturing and sale of telecommunication and IT equipment and solutions in India.,
@@ -2143,11 +2119,9 @@ PURPLE,PURPLE AGROTECH INDUSTRIES LIM,Communication Services,Entertainment,,,,,,
 PURSHOTTAM,PURSHOTTAM INVESTOFIN LTD,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,"Purshottam Investofin Limited, a non-banking financial company, engaged in the business of financing and dealing in securities market in India.",
 PURVA,PURAVANKARA LIMITED,Real Estate,Real Estate - Development,13.201439,,,,,,Yahoo NS,2026-10-26,,
 PVRINOX,PVR INOX LIMITED,Communication Services,Entertainment,23.865072,1.27778,18.0,1688.3334,1660.0,1793181600.0,Yahoo NS,2026-11-16,"PVR INOX Limited, a theatrical exhibition company, engages in the exhibition, distribution, and production of movies in India and Sri Lanka.",INR
-PVSL,POPULAR VEHICLES N SER L,Consumer Cyclical,Auto & Truck Dealerships,,,,,,,Yahoo NS,2026-11-16,Popular Vehicles and Services Limited engages in the automotive dealership business in India.,INR
 PVVINFRA,PVV Infra Limited,Basic Materials,Steel,,,,,,,Yahoo BO,2026-10-26,PVV Infra Limited engages in the steel trading and infrastructure development business.,
 PWASML,Prakash Woollen & Synthetic Mi,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo BO,2026-10-26,Prakash Woollen & Synthetic Mills Limited manufactures and sells mink blankets and bed covers in India.,
 PWL,PHYSICSWALLAH LIMITED,Consumer Defensive,Education & Training Services,57.46258,2.11111,9.0,145.44444,145.0,,Yahoo NS,2026-10-26,,
-PYRAMID,PYRAMID TECHNOPLAST LTD,Consumer Cyclical,Packaging & Containers,,,,,,,Yahoo NS,2026-11-16,"Pyramid Technoplast Limited, an industrial packaging company, engages in the manufacture and marketing of polymer-based molded products for chemical, agrochemical, specialty chemical, and pharmaceutical companies for their packaging applications in India.",INR
 QDLCCPS,Quint Digital Limited,,,,,,,,,Yahoo BO,2026-10-26,,
 QMSMEDI,QMS MEDICAL ALLIED S LTD,Healthcare,Medical Instruments & Supplies,,,,,,,Yahoo NS,2026-10-26,,
 QPOWER,QUALITY POWER ELEC EQUP L,Industrials,Electrical Equipment & Parts,32.036854,1.0,1.0,1550.0,1550.0,,Yahoo NS,2026-10-26,,
@@ -2158,10 +2132,7 @@ QUICKHEAL,QUICK HEAL TECH LTD,Technology,Software - Application,,,,,,,Yahoo NS,2
 QUINT,QUINT DIGITAL LTD.,Communication Services,Entertainment,,,,,,,Yahoo NS,2026-10-26,,
 QUINTEGRA,QUINTEGRA SOLUTIONS LTD.,Technology,Information Technology Services,,,,,,,Yahoo NS,2026-10-26,,
 RAAMA,RAAMA FINANCE LIMITED,Financial Services,Credit Services,,,,,,,Yahoo BO,2026-10-26,Raama Finance Limited operates as a non-banking financial company in India.,
-RACE,RACE ECO CHAIN LIMITED,Industrials,Waste Management,,,,,,,Yahoo NS,2026-11-16,"Race Eco Chain Limited, together with its subsidiaries, engages in waste management activities in India.",INR
 RACLGEAR,RACL GEARTECH LIMITED,Consumer Cyclical,Auto Parts,,,,,,,Yahoo NS,2026-10-26,,
-RADAAN,RADAAN MEDIAWORKS (I) LTD,Communication Services,Entertainment,,,,,,,Yahoo NS,2026-11-16,Radaan Mediaworks India Limited operates in the media and entertainment industry in India.,INR
-RADHIKAJWE,RADHIKA JEWELTECH LIMITED,Consumer Cyclical,Luxury Goods,,,,,,,Yahoo NS,2026-11-16,Radhika Jeweltech Limited engages in the manufacture and retail of jewelry in India.,INR
 RADIANTCMS,RADIANT CASH MGMT SER LTD,Industrials,Specialty Business Services,,,,,,,Yahoo NS,2026-10-26,,
 RADICO,RADICO KHAITAN LTD,Consumer Defensive,Beverages - Wineries & Distilleries,55.481926,1.65,20.0,4935.05,4944.5,1793095200.0,Yahoo NS,2026-11-16,"Radico Khaitan Limited engages in the manufacture and trading of Indian made foreign liquor (IMFL), country liquor, and other alcoholic products in India, Ghana, Nigeria, Sudan, the United Arab Emirates, and internationally.",INR
 RADIOCITY,MUSIC BROADCAST LIMITED,Communication Services,Broadcasting,0.44370368,,,,,,Yahoo NS,2026-11-16,Music Broadcast Limited engages in the operating of FM radio stations under the Radio City brand name in India.,INR
@@ -2173,22 +2144,16 @@ RAINBOW,RAINBOW CHILDRENS MED LTD,Healthcare,Medical Care Facilities,29.685253,,
 RAJESHEXPO,RAJESH EXPORTS LTD,Consumer Cyclical,Luxury Goods,1.0162001,,,,,,Yahoo NS,2026-10-26,,
 RAJKOTINV,Rajkot Investment Trust Limite,Financial Services,Credit Services,,,,,,,Yahoo BO,2026-10-26,Rajkot Investment Trust Limited operates as a non-banking finance company in India.,
 RAJKSYN,RAJKAMAL SYNTHETICS LTD.,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo BO,2026-10-26,Rajkamal Synthetics Limited engages in the textile processing business in India.,
-RAJMET,RAJNANDINI METAL LIMITED,Basic Materials,Copper,,,,,,,Yahoo NS,2026-11-16,Rajnandini Metal Limited manufactures and trades copper continuous casting rods and wires in India.,INR
 RAJNISH,Rajnish Wellness Limited,Consumer Defensive,Household & Personal Products,,,,,,,Yahoo BO,2026-10-26,Rajnish Wellness Limited manufactures and sells various ayurvedic medicinal products for personal sexual wellness in India.,
 RAJOOENG,RAJOO ENGINEERS LIMITED,Industrials,Specialty Industrial Machinery,,,,,,,Yahoo NS,2026-11-16,Rajoo Engineers Limited engages in the manufacture and sale of plastic processing machineries and post extrusion equipment in India and internationally.,INR
-RAJPALAYAM,RAJAPALAYAM MILLS LTD.,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo NS,2026-11-16,Rajapalayam Mills Limited engages in the manufacturing and sale of cotton yarn and fabrics in India.,INR
 RAJRATAN,RAJRATAN GLOBAL WIRE LTD,Basic Materials,Steel,18.345009,1.6,5.0,556.0,600.0,,Yahoo NS,2026-11-16,"Rajratan Global Wire Limited engages in manufacturing and sale of tyre bead wires in India, Thailand, the United States, and internationally.",INR
 RAJRILTD,RAJ RAYON INDUSTRIES LTD,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo NS,2026-11-16,"Raj Rayon Industries Limited engages in the manufacture and trade of polyester chips, and polyester and processed yarns in India.",INR
 RAJSEC,RAJASTHAN SECURITIES LIMITED,Utilities,Utilities - Regulated Gas,,,,,,,Yahoo BO,2026-10-26,Rajasthan Securities Limited engages in investment and securities trading business in India.,
 RAJSPTR,RAJASTHAN PETRO SYNTHETICS LTD,Industrials,Integrated Freight & Logistics,,,,,,,Yahoo BO,2026-11-03,Rajasthan Petro Synthetics Limited engages in clearing and forwarding agency and transportation business in India.,
-RAJSREESUG,RAJSHREE SUGAR & CHEMICAL,Consumer Defensive,Confectioners,,,,,,,Yahoo NS,2026-11-16,"Rajshree Sugars & Chemicals Limited engages in the sugar, distillery, power, and biotechnology businesses in India.",INR
 RAJTUBE,RAJASTHAN TUBE MANUFACTURING C,Basic Materials,Steel,,,,,,,Yahoo BO,2026-10-26,"Rajasthan Tube Manufacturing Company Limited manufactures, trades in, and sells steel tubes and pipes in India.",
 RAJTV,RAJ TV NETWORK LTD,Communication Services,Broadcasting,,,,,,,Yahoo NS,2026-10-26,,
 RAJVI,RAJVI LOGITRADE LIMITED,Industrials,Integrated Freight & Logistics,,,,,,,Yahoo BO,2026-10-26,Rajvi Logitrade Limited provides transportation and logistics services.,
 RALLIS,RALLIS INDIA LTD,Basic Materials,Agricultural Inputs,14.28744,2.57143,15.0,240.73334,232.0,,Yahoo NS,2026-11-16,Rallis India Limited manufactures and markets agri input products in India and internationally.,INR
-RAMANEWS,SHREE RAMA NEWSPRINT LTD,Consumer Defensive,Beverages - Non-Alcoholic,,,,,,,Yahoo NS,2026-11-16,Shree Rama Newsprint Limited produces and sells packaged water bottles in India.,INR
-RAMAPHO,RAMA PHOSPHATES LIMITED,Basic Materials,Agricultural Inputs,,,,,,,Yahoo NS,2026-11-16,"Rama Phosphates Limited manufactures and sales phosphatic fertilizers, chemicals, soya, and micronutrients in India.",INR
-RAMASTEEL,RAMA STEEL TUBES LIMITED,Basic Materials,Steel,0.37522602,,,,,,Yahoo NS,2026-11-16,Rama Steel Tubes Limited manufactures and sells steel pipes and tubes in India.,INR
 RAMBHAJO,ADVIT JEWELS LIMITED,Consumer Cyclical,Luxury Goods,,,,,,,Yahoo NS,2026-11-16,"Advit Jewels Limited designs, manufactures, and sells traditional and contemporary handcrafted fine jewelry.",INR
 RAMCOCEM,THE RAMCO CEMENTS LIMITED,Basic Materials,Building Materials,32.363655,2.67742,31.0,931.4194,920.0,1793872800.0,Yahoo NS,2026-11-16,"The Ramco Cements Limited, together with its subsidiaries, manufactures and sells cement and cement-related products in India and internationally.",INR
 RAMCOIND,RAMCO INDUSTRIES LIMITED,Industrials,Building Products & Equipment,24.22743,,,,,,Yahoo NS,2026-10-26,,
@@ -2196,7 +2161,6 @@ RAMCOSYS,RAMCO SYSTEMS LTD.,Technology,Software - Application,25.215311,1.0,1.0,
 RAMKY,RAMKY INFRA LTD,Industrials,Engineering & Construction,,,,,,,Yahoo NS,2026-10-26,,
 RAMRAT,RAM RATNA WIRES LIMITED,Industrials,Electrical Equipment & Parts,,,,,,,Yahoo NS,2026-10-26,,
 RAMSONS,RAMSONS PROJECTS LTD.,Financial Services,Credit Services,,,,,,,Yahoo BO,2026-10-26,Ramsons Projects Limited engages in the real estate business in India.,
-RANASUG,RANA SUGARS LTD.,Consumer Defensive,Confectioners,,,,,,,Yahoo NS,2026-11-16,"Rana Sugars Limited engages in the manufacture of sugar, ethanol, and co-generation of power in India.",INR
 RANDER,RANDER CORPORATION LTD.,Real Estate,Real Estate - Development,,,,,,,Yahoo BO,2026-10-26,Rander Corporation Limited engages in the financing and securities trading businesses in India.,
 RANEHOLDIN,RANE HOLDINGS LIMITED,Consumer Cyclical,Auto Parts,,,,,,,Yahoo NS,2026-10-26,,
 RAP,RAP CORP LIMITED,Real Estate,Real Estate - Diversified,,,,,,,Yahoo BO,2026-10-26,"RAP Corp Limited engages in ownership, development, management, and leasing of real estate assets in India.",
@@ -2227,19 +2191,15 @@ REGANTO,REGANTO ENTERPRISES LIMITED,Industrials,Security & Protection Services,,
 REGENCERAM,REGENCY CERAMICS LTD.,Industrials,Building Products & Equipment,,,,,,,Yahoo NS,2026-10-26,,
 REGENTRP,Regent Enterprises Limited,Consumer Defensive,Packaged Foods,,,,,,,Yahoo BO,2026-10-26,"Regent Enterprises Limited engages in the trading, packaging, and sale of edible oils primarily in India.",
 REGIS,REGIS INDUSTRIES LIMITED,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,Regis Industries Ltd does not have significant operations.,
-RELCHEMQ,RELIANCE CHEMOTEX IND LTD,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo NS,2026-11-16,Reliance Chemotex Industries Limited engages in the manufacture and sale of synthetic and blended yarns in India.,INR
 RELIABLE,RELIABLE DATA SERVICE LTD,Technology,Information Technology Services,,,,,,,Yahoo NS,2026-10-26,,
 RELIANCE,RELIANCE INDUSTRIES LTD,Energy,Oil & Gas Refining & Marketing,18.17173,1.23077,26.0,1615.0,1601.5,1793354400.0,Yahoo NS,2026-11-16,"Reliance Industries Limited engages in hydrocarbon exploration and production, petroleum refining and marketing, petrochemicals, advanced materials and composites, renewable, financial services, retail, and digital services worldwide.",INR
 RELIGARE,RELIGARE ENTER. LTD.,Financial Services,Insurance - Life,,,,,,,Yahoo NS,2026-10-26,,
 RELTD,RAVINDRA ENERGY LIMITED,Technology,Solar,,,,,,,Yahoo NS,2026-11-16,Ravindra Energy Limited sells solar pumps and setting up of solar generation power plants in India.,INR
-REMSONSIND,REMSONS INDUSTRIES LTD,Consumer Cyclical,Auto Parts,,,,,,,Yahoo NS,2026-11-16,"Remsons Industries Limited, together with its subsidiaries, manufactures and sells automotive components parts and related products in India and internationally.",INR
 RENUKA,SHREE RENUKA SUGARS LTD,Consumer Defensive,Confectioners,-4.316279,,,,,,Yahoo NS,2026-11-16,"Shree Renuka Sugars Limited manufactures, refines, and trades in sugar in India and internationally.",INR
 REPCOHOME,REPCO HOME FINANCE LTD,Financial Services,Mortgage Finance,3.8510103,,7.0,465.2857,450.0,,Yahoo NS,2026-10-26,,
-REPL,RUDRABHISHEK ENTERP LTD,Industrials,Consulting Services,,,,,,,Yahoo NS,2026-11-16,Rudrabhishek Enterprises Limited operates as an urban development and infrastructure consultant in India.,INR
 REPRO,REPRO INDIA LIMITED,Industrials,Specialty Business Services,,,,,,,Yahoo NS,2026-11-16,Repro India Limited provides printing solutions in India and internationally.,INR
 RESPONIND,RESPONSIVE INDUSTRIES LTD,Basic Materials,Specialty Chemicals,,,,,,,Yahoo NS,2026-10-26,,
 RESTILE,RESTILE CERAMICS LTD.,Industrials,Building Products & Equipment,,,,,,,Yahoo BO,2026-10-26,"Restile Ceramics Limited manufactures, sells, and trades in unpolished smooth tiles and industrial vitrified tiles in India and internationally.",
-RETAIL,JHS SVENDGAARD RETAIL V L,Consumer Defensive,Grocery Stores,,,,,,,Yahoo NS,2026-11-16,JHS Svendgaard Retail Ventures Limited operates a chain of retail outlets in India.,INR
 REVAMEDIA,REVATI MEDIA LIMITED,Communication Services,Entertainment,,,,,,,Yahoo BO,2026-11-11,Revati Media Limited manufactures and supplies almond oils and a range of inorganic chemicals.,
 REXNORD,REXNORD ELECTRONICS & CONTROLS,Industrials,Specialty Industrial Machinery,24.493298,,,,,,Yahoo BO,2026-10-26,Rexnord Electronics and Controls Limited manufactures and sells instrument cooling fans and motors for industrial purposes in India.,
 RFLL,RITA FINANCE AND LEASING LIMIT,Financial Services,Credit Services,,,,,,,Yahoo BO,2026-10-26,Rita Finance and Leasing Limited operates as a non-banking financial company in India.,
@@ -2247,9 +2207,7 @@ RFSL,Richfield Financial Services L,Financial Services,Credit Services,,,,,,,Yah
 RGL,RENAISSANCE GLOBAL LTD,Consumer Cyclical,Luxury Goods,,,,,,,Yahoo NS,2026-10-26,,
 RGRL,Retro Green Revolution Limited,Industrials,Farm & Heavy Construction Machinery,,,,,,,Yahoo BO,2026-10-26,Retro Green Revolution Limited engages in the retail trading of agricultural produce in India.,
 RHETAN,RHETAN TMT LIMITED,Basic Materials,Steel,,,,,,,Yahoo NS,2026-11-16,Rhetan TMT Limited engages in the manufacture and sale of thermo-mechanically treated (TMT) bars in India.,INR
-RHFL,RELIANCE HOME FINANCE LTD,Financial Services,Mortgage Finance,,,,,,,Yahoo NS,2026-11-16,Reliance Home Finance Limited engages in the housing finance business in India.,INR
 RHIM,RHI MAGNESITA INDIA LTD,Industrials,Metal Fabrication,19.740845,,2.0,522.5,522.5,,Yahoo NS,2026-10-26,,
-RHL,ROBUST HOTELS LIMITED,Consumer Cyclical,Lodging,,,,,,,Yahoo NS,2026-11-16,Robust Hotels Limited engages in the hotel business in India.,INR
 RIBATEX,RIBA TEXTILES LTD.,Consumer Cyclical,Textile Manufacturing,10.587248,,,,,,Yahoo BO,2026-10-26,"Riba Textiles Limited manufactures and sells terry towels, bathmats, and other textile products in North America, Europe, Asia, Oceania, and India.",
 RICHUNV,RICH UNIVERSE NETWORK LTD.,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,Rich Universe Network Limited engages in the provision of financial services to corporates in India.,
 RIDDHI,RIDDHI SIDDHI GLUCO BIOLS LTD.,Basic Materials,Agricultural Inputs,,,,,,,Yahoo BO,2026-10-26,Riddhi Siddhi Gluco Biols Limited trades in agriculture and metal commodities in India.,
@@ -2260,24 +2218,18 @@ RISAINTL,RISA INTERNATIONAL LTD.,Consumer Cyclical,Textile Manufacturing,,,,,,,Y
 RISHDIGA,RISHABH DIGHA STEEL & ALLIED P,Basic Materials,Steel,,,,,,,Yahoo BO,2026-10-26,Rishabh Digha Steel And Allied Products Limited manufactures and sells steel products in India.,
 RISHILASE,RISHI LASER LTD.,Industrials,Metal Fabrication,,,,,,,Yahoo BO,2026-10-26,Rishi Laser Limited manufactures and sells fabrication of sheet metal components and machines in India.,
 RISHITECH,RISHI TECHTEX LTD.,Consumer Cyclical,Packaging & Containers,8.982684,,,,,,Yahoo BO,2026-10-26,Rishi Techtex Limited manufactures and sells plastic woven sacks and shade nets in India and internationally.,
-RITCO,RITCO LOGISTICS LIMITED,Industrials,Integrated Freight & Logistics,,,,,,,Yahoo NS,2026-11-16,Ritco Logistics Limited provides logistics services in India.,INR
 RITES,RITES LIMITED,Industrials,Engineering & Construction,18.229767,1.33333,2.0,259.5,259.5,,Yahoo NS,2026-11-16,"RITES Limited, together with its subsidiaries, operates as an engineering consultancy company in the field of railways, highways, airports, ports, ropeways, urban transport, and inland waterways.",INR
 RITESHIN,RITESH INTERNATIONAL LTD.,Basic Materials,Chemicals,,,,,,,Yahoo BO,2026-10-26,Ritesh International Limited engages in the manufacture and sale of stearic acids and other non-edible oils for rubber and PVC industries in India.,
 RJSHAH,R.J.SHAH & CO.LTD.,Industrials,Engineering & Construction,,,,,,,Yahoo BO,2026-10-26,R. J. Shah & Company Limited engages in construction of small and medium size hydroelectric project with EPC contract or civil work with hydro mechanical works in India.,
 RKDAGRRTL,RKD AGRI AND RETAIL LIMITED,Industrials,Conglomerates,,,,,,,Yahoo BO,2026-10-26,"RKD Agri & Retail Limited engages in the retail and wholesale trade of printing and stationery, and bags products in India.",
-RKDL,RAVI KUMAR DIST. LTD.,Consumer Defensive,Beverages - Wineries & Distilleries,,,,,,,Yahoo NS,2026-11-16,"Ravi Kumar Distilleries Limited manufactures, sells, and trades Indian made foreign liquors in India.",INR
-RKEC,RKEC PROJECTS LIMITED,Industrials,Engineering & Construction,,,,,,,Yahoo NS,2026-11-16,"RKEC Projects Limited, a construction company, engages in the civil and defense construction business in India.",INR
 RKFORGE,RAMKRISHNA FORGINGS LTD,Industrials,Metal Fabrication,29.525793,,4.0,634.0,653.0,,Yahoo NS,2026-10-26,,
 RKSWAMY,R K SWAMY LIMITED,Communication Services,Advertising Agencies,,,,,,,Yahoo NS,2026-10-26,,
-RMC,RMC SWITCHGEARS LIMITED,Industrials,Electrical Equipment & Parts,,,,,,,Yahoo NS,2026-11-16,RMC Switchgears Limited engages in the switchgear engineering business in India.,INR
 RMDRIP,R M DRIP & SPRINK SYS LTD,Industrials,Farm & Heavy Construction Machinery,,,,,,,Yahoo NS,2026-10-26,,
 RML,RANE (MADRAS) LIMITED,Consumer Cyclical,Auto Parts,,,,,,,Yahoo NS,2026-10-26,,
-RNBDENIMS,R&B DENIMS LIMITED,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo NS,2026-11-16,"R & B Denims Limited, together with its subsidiary, manufactures and sells denim textile products in India.",INR
 RNITAI,RNIT AI SOLUTIONS LIMITED,Consumer Cyclical,"Furnishings, Fixtures & Appliances",,,,,,,Yahoo BO,2026-10-26,"RNIT Al Solutions Limited, a tech company, focuses on providing enterprise-level solutions in India and internationally.",
 ROHLTD,ROYAL ORCHID HOTELS LTD,Consumer Cyclical,Lodging,47.850796,,,,,,Yahoo NS,2026-10-26,,
 ROJL,RO Jewels Limited,Consumer Cyclical,Luxury Goods,,,,,,,Yahoo BO,2026-10-26,RO Jewels Limited is involved in wholesaling and trading of gold and silver chains in India.,
 ROLEXRINGS,ROLEX RINGS LIMITED,Industrials,Metal Fabrication,20.956863,1.0,3.0,225.0,241.0,,Yahoo NS,2026-11-16,"Rolex Rings Limited manufactures and sell of customized forged and machined bearing rings, and automotive components in India and internationally.",INR
-ROLLT,ROLLATAINERS LIMITED,Real Estate,Real Estate Services,,,,,,,Yahoo NS,2026-11-16,"Rollatainers Limited, a packaging company, provides packaging solutions in India.",INR
 ROML,RAJ OIL MILLS LIMITED,Consumer Defensive,Packaged Foods,,,,,,,Yahoo NS,2026-11-16,Raj Consumer Care Limited manufactures and sells edible oil and cakes in India.,INR
 ROOPAIND,ROOPA INDUSTRIES LTD.,Basic Materials,Chemicals,,,,,,,Yahoo BO,2026-10-26,"Roopa Industries Limited manufactures, markets, and sells bulk drugs, intermediaries, and fine chemicals in India and internationally.",
 ROSEMER,ROSE MERC.LTD.,Consumer Cyclical,Luxury Goods,,,,,,,Yahoo BO,2026-10-26,Rose Merc Limited does not have significant operations.,
@@ -3600,7 +3552,6 @@ PGFOILQ,PG FOILS LTD.,Consumer Cyclical,Packaging & Containers,7.4459567,,,,,,Ya
 OSWALEA,OSWAL LEASING LTD.,Financial Services,Credit Services,,,,,,,Yahoo BO,2026-11-16,Oswal Leasing Limited operates as a non-banking financial company in India.,INR
 SKILVEN,SKYLINE VENTURES INDIA LIMITED,Financial Services,Shell Companies,,,,,,,Yahoo BO,2026-11-16,Skyline Ventures India Limited does not have significant operations.,INR
 SML,Soni Medicare Limited,Healthcare,Medical Care Facilities,,,,,,,Yahoo BO,2026-11-16,Soni Medicare Limited provides superspecialty and general hospital services in India.,INR
-RAJVIR,RAJVIR INDUSTRIES LIMITED,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo NS,2026-11-16,"Rajvir Industries Limited primarily manufactures, processes, and sells yarns in India.",INR
 SELMC,SEL MANUFACTURING CO LTD,Consumer Cyclical,Textile Manufacturing,,,,,,,NSE results,2026-11-16,SEL Manufacturing Company Limited operates as a textile company primarily in India.,INR
 SKIL,SKIL INFRASTRUCTURE LTD.,Industrials,Engineering & Construction,,,,,,,Yahoo NS,2026-11-16,"SKIL Infrastructure Limited, together with its subsidiaries, engages in the infrastructure development business in India.",INR
 UNIVAFOODS,UNIVA FOODS LIMITED,Financial Services,Shell Companies,,,,,,,NSE results,2026-11-16,Univa Foods Limited does not have significant operations.,INR
@@ -4656,3 +4607,52 @@ ORTEL,ORTEL COMMUNICATIONS LTD,Communication Services,Entertainment,0.18169014,,
 OSIAHYPER,OSIA HYPER RETAIL LIMITED,Consumer Cyclical,Department Stores,,,,,,,Yahoo NS,2026-11-24,Osia Hyper Retail Limited operates a supermarket chain under the Osia Hypermart name in India.,INR
 PACIFICI,PACIFIC INDUSTRIES LTD.,Basic Materials,Building Materials,,,,,,,Yahoo NS,2026-11-24,"Pacific Industries Limited, together with its subsidiaries, engages in the manufacture and trading of granite tiles and slabs, and quartz slabs in India.",INR
 PAKKA,PAKKA LIMITED,Basic Materials,Paper & Paper Products,,,,,,,NSE results,2026-11-24,Pakka Limited engages in the manufacture and dealing of paper and moulded products in India and internationally.,INR
+PALREDTEC,PALRED TECHNOLOGIES LTD,Technology,Consumer Electronics,,,,,,,NSE results,2026-11-24,"Palred Technologies Limited, together with its subsidiaries, engages in the e-commerce business in India.",INR
+PANSARI,PANSARI DEVELOPERS LTD,Real Estate,Real Estate - Development,,,,,,,NSE results,2026-11-24,Pansari Developers Limited operates as a construction and real estate development company in India.,INR
+PARASHLTH,PARAS HEALTHCARE LIMITED,Healthcare,Medical Care Facilities,41.597992,1.0,1.0,900.0,900.0,,Yahoo NS,2026-11-24,Paras Healthcare Limited provides tertiary and quaternary healthcare services.,INR
+PARIN,PARIN ENTERPRISES LIMITED,Consumer Cyclical,"Furnishings, Fixtures & Appliances",,,,,,,Yahoo NS,2026-11-24,"Parin Enterprises Limited engages in the manufacture, supply, and trade of furniture and lifestyle products in India.",INR
+PARNAXLAB,PARNAX LAB LTD.,Healthcare,Drug Manufacturers - Specialty & Generic,,,,,,,Yahoo NS,2026-11-24,Parnax Lab Limited engages in the manufacture and export of pharmaceutical formulations in India and internationally.,INR
+PARSVNATH,PARSVNATH DEVELOPER LTD,Real Estate,Real Estate - Development,,,,,,,Yahoo NS,2026-11-24,"Parsvnath Developers Limited, together with its subsidiaries, engages in the real estate development business in India.",INR
+PATINTLOG,PATEL INT. LOG. LTD,Industrials,Integrated Freight & Logistics,,,,,,,NSE results,2026-11-24,Patel Integrated Logistics Limited provides logistics services in India.,INR
+PAVNAIND,PAVNA INDUSTRIES LIMITED,Consumer Cyclical,Auto Parts,,,,,,,NSE results,2026-11-24,"Pavna Industries Limited, together with its subsidiaries, manufactures and sells automotive components for reputed original equipment manufacturers in India and internationally.",INR
+PEARLPOLY,PEARL POLYMERS LTD,Consumer Cyclical,Packaging & Containers,,,,,,,NSE results,2026-11-24,"Pearl Polymers Limited engages in the manufacture and trading of PET bottles, jars, and containers to consumers and industries in India.",INR
+PILANIINVS,PILANI INV & IND COR LTD,Financial Services,Asset Management,,,,,,,NSE results,2026-11-24,"Pilani Investment and Industries Corporation Limited, a non-banking financial company, engages in the investment and financing activities in India.",INR
+PIONEEREMB,PIONEER EMBROIDERIES LTD,Consumer Cyclical,Textile Manufacturing,,,,,,,NSE results,2026-11-24,"Pioneer Embroideries Limited, together with its subsidiaries, engages in the manufacture of special polyester filament yarn, embroidery, and lace products in India.",INR
+PIONRINV,PIONEER INVESTCORP LTD.,Financial Services,Capital Markets,,,,,,,Yahoo NS,2026-11-24,Pioneer Investcorp Limited provides investment banking and advisory services in India and internationally.,INR
+PLAZACABLE,PLAZA WIRES LIMITED,Industrials,Electrical Equipment & Parts,,,,,,,NSE results,2026-11-24,Plaza Wires Limited manufactures and sells electrical wires and allied products in India.,INR
+POEL,P O C L ENTERPRISES LTD.,Basic Materials,Chemicals,,,,,,,Yahoo NS,2026-11-24,"POCL Enterprises Limited, together with its subsidiaries, engages in the manufacturing and trading of various metals, chemicals, and its oxides in India and internationally.",INR
+PPL,PRAKASH PIPES LIMITED,Industrials,Building Products & Equipment,,,,,,,NSE results,2026-11-24,"Prakash Pipes Limited engages in the manufacture and sale of PVC pipes, fittings, and flexible packaging solutions in India and internationally.",INR
+PRABHA,PRABHA ENERGY LIMITED,Energy,Oil & Gas E&P,,,,,,,NSE results,2026-11-24,"Prabha Energy Limited engages in oil and gas exploration, production, and trading in India.",INR
+PRAENG,PRAJAY ENG. SYN. LTD.,Real Estate,Real Estate - Development,,,,,,,NSE results,2026-11-24,"Prajay Engineers Syndicate Limited, together with its subsidiaries, engages in the development and construction of real estate in India.",INR
+PRAKASHSTL,PRAKASH STEELAGE LTD,Basic Materials,Steel,,,,,,,NSE results,2026-11-24,Prakash Steelage Limited manufactures and trades in stainless steel welded pipes and tubes in India.,INR
+PRAVEG,PRAVEG LTD.,Communication Services,Advertising Agencies,,,,,,,Yahoo NS,2026-11-24,Praveg Limited provides advertising and hospitality services and organizes and manages events and exhibitions in India.,INR
+PRECOT,PRECOT LIMITED,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo NS,2026-11-24,Precot Limited manufactures and sells yarn and technical textile products in India and internationally.,INR
+PREMCO,PREMCO GLOBAL LTD.,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo NS,2026-11-24,"Premco Global Limited, together with its subsidiaries, manufactures and sells elastic and non-elastic woven and knitted narrow fabrics, tapes, and webbings in India and internationally.",INR
+PRITIKAUTO,PRITIKA AUTO INDUS LTD,Industrials,Specialty Industrial Machinery,,,,,,,NSE results,2026-11-24,Pritika Auto Industries Limited manufactures and sells tractor and automobile components in India.,INR
+PROZONER,PROZONE REALTY LIMITED,Real Estate,Real Estate - Diversified,,,,,,,NSE results,2026-11-24,"Prozone Realty Limited engages in the design, development, ownership, and operation of shopping malls and commercial and residential properties in India.",INR
+PTL,PTL ENTERPRISES LTD,Real Estate,Real Estate Services,6.775685,,,,,,NSE results,2026-11-24,PTL Enterprises Limited engages in the leasing of plant to Apollo Tyres Limited.,INR
+PVSL,POPULAR VEHICLES N SER L,Consumer Cyclical,Auto & Truck Dealerships,,,,,,,NSE results,2026-11-24,Popular Vehicles and Services Limited engages in the automotive dealership business in India.,INR
+PYRAMID,PYRAMID TECHNOPLAST LTD,Consumer Cyclical,Packaging & Containers,,,,,,,NSE results,2026-11-24,"Pyramid Technoplast Limited, an industrial packaging company, engages in the manufacture and marketing of polymer-based molded products for chemical, agrochemical, specialty chemical, and pharmaceutical companies for their packaging applications in India.",INR
+RACE,RACE ECO CHAIN LIMITED,Industrials,Waste Management,,,,,,,NSE results,2026-11-24,"Race Eco Chain Limited, together with its subsidiaries, engages in waste management activities in India.",INR
+RADAAN,RADAAN MEDIAWORKS (I) LTD,Communication Services,Entertainment,,,,,,,NSE results,2026-11-24,Radaan Mediaworks India Limited operates in the media and entertainment industry in India.,INR
+RADHIKAJWE,RADHIKA JEWELTECH LIMITED,Consumer Cyclical,Luxury Goods,,,,,,,NSE results,2026-11-24,Radhika Jeweltech Limited engages in the manufacture and retail of jewelry in India.,INR
+RAJMET,RAJNANDINI METAL LIMITED,Basic Materials,Copper,,,,,,,Yahoo NS,2026-11-24,Rajnandini Metal Limited manufactures and trades copper continuous casting rods and wires in India.,INR
+RAJPALAYAM,RAJAPALAYAM MILLS LTD.,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo NS,2026-11-24,Rajapalayam Mills Limited engages in the manufacturing and sale of cotton yarn and fabrics in India.,INR
+RAJSREESUG,RAJSHREE SUGAR & CHEMICAL,Consumer Defensive,Confectioners,,,,,,,NSE results,2026-11-24,"Rajshree Sugars & Chemicals Limited engages in the sugar, distillery, power, and biotechnology businesses in India.",INR
+RAJVIR,RAJVIR INDUSTRIES LIMITED,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo NS,2026-11-24,"Rajvir Industries Limited primarily manufactures, processes, and sells yarns in India.",INR
+RAMANEWS,SHREE RAMA NEWSPRINT LTD,Consumer Defensive,Beverages - Non-Alcoholic,,,,,,,NSE results,2026-11-24,Shree Rama Newsprint Limited produces and sells packaged water bottles in India.,INR
+RAMAPHO,RAMA PHOSPHATES LIMITED,Basic Materials,Agricultural Inputs,,,,,,,NSE results,2026-11-24,"Rama Phosphates Limited manufactures and sales phosphatic fertilizers, chemicals, soya, and micronutrients in India.",INR
+RAMASTEEL,RAMA STEEL TUBES LIMITED,Basic Materials,Steel,0.36166364,,,,,,NSE results,2026-11-24,Rama Steel Tubes Limited manufactures and sells steel pipes and tubes in India.,INR
+RANASUG,RANA SUGARS LTD.,Consumer Defensive,Confectioners,,,,,,,NSE results,2026-11-24,"Rana Sugars Limited engages in the manufacture of sugar, ethanol, and co-generation of power in India.",INR
+RELCHEMQ,RELIANCE CHEMOTEX IND LTD,Consumer Cyclical,Textile Manufacturing,,,,,,,NSE results,2026-11-24,Reliance Chemotex Industries Limited engages in the manufacture and sale of synthetic and blended yarns in India.,INR
+REMSONSIND,REMSONS INDUSTRIES LTD,Consumer Cyclical,Auto Parts,,,,,,,NSE results,2026-11-24,"Remsons Industries Limited, together with its subsidiaries, manufactures and sells automotive components parts and related products in India and internationally.",INR
+REPL,RUDRABHISHEK ENTERP LTD,Industrials,Consulting Services,,,,,,,NSE results,2026-11-24,Rudrabhishek Enterprises Limited operates as an urban development and infrastructure consultant in India.,INR
+RETAIL,JHS SVENDGAARD RETAIL V L,Consumer Defensive,Grocery Stores,,,,,,,NSE results,2026-11-24,JHS Svendgaard Retail Ventures Limited operates a chain of retail outlets in India.,INR
+RHFL,RELIANCE HOME FINANCE LTD,Financial Services,Mortgage Finance,,,,,,,Yahoo NS,2026-11-24,Reliance Home Finance Limited engages in the housing finance business in India.,INR
+RHL,ROBUST HOTELS LIMITED,Consumer Cyclical,Lodging,,,,,,,NSE results,2026-11-24,Robust Hotels Limited engages in the hotel business in India.,INR
+RITCO,RITCO LOGISTICS LIMITED,Industrials,Integrated Freight & Logistics,,,,,,,NSE results,2026-11-24,Ritco Logistics Limited provides logistics services in India.,INR
+RKDL,RAVI KUMAR DIST. LTD.,Consumer Defensive,Beverages - Wineries & Distilleries,,,,,,,NSE results,2026-11-24,"Ravi Kumar Distilleries Limited manufactures, sells, and trades Indian made foreign liquors in India.",INR
+RKEC,RKEC PROJECTS LIMITED,Industrials,Engineering & Construction,,,,,,,Yahoo NS,2026-11-24,"RKEC Projects Limited, a construction company, engages in the civil and defense construction business in India.",INR
+RMC,RMC SWITCHGEARS LIMITED,Industrials,Electrical Equipment & Parts,,,,,,,Yahoo NS,2026-11-24,RMC Switchgears Limited engages in the switchgear engineering business in India.,INR
+RNBDENIMS,R&B DENIMS LIMITED,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo NS,2026-11-24,"R & B Denims Limited, together with its subsidiary, manufactures and sells denim textile products in India.",INR
+ROLLT,ROLLATAINERS LIMITED,Real Estate,Real Estate Services,,,,,,,Yahoo NS,2026-11-24,"Rollatainers Limited, a packaging company, provides packaging solutions in India.",INR

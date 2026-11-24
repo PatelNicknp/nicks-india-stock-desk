@@ -1,6 +1,7 @@
 {
  "incomplete": {
   "statements": [
+   "RAJVIR",
    "ORTEL",
    "LAKPRE",
    "GOLDENTOBC",
@@ -91,7 +92,6 @@
    "KLIFESTYL",
    "ABSLMSCIN",
    "11QPR",
-   "RAJVIR",
    "ORIENTTR",
    "OIVL",
    "OILIETF",
@@ -2378,12 +2378,12 @@
   },
   "statements:RAJVIR": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-24",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-01",
    "since": "2026-11-16",
    "ticker": "RAJVIR",
-   "tries": 1
+   "tries": 2
   },
   "statements:RALEGRA": {
    "kind": "statements",
