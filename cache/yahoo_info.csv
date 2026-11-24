@@ -1085,7 +1085,6 @@ GOYALASS,GOYAL ASSOCIATES LTD.,Financial Services,Credit Services,,,,,,,Yahoo BO
 GPIL,GODAWARI POW & ISP LTD,Basic Materials,Steel,8.548445,,1.0,290.0,290.0,,NSE results,2026-11-16,,INR
 GPPL,GUJARAT PIPAVAV PORT LTD,Industrials,Marine Shipping,13.532736,,8.0,178.5,182.0,,NSE results,2026-11-16,,INR
 GPTINFRA,GPT INFRAPROJECTS LTD,Industrials,Engineering & Construction,,,,,,,NSE results,2026-11-16,,INR
-GRADIENTE,GRADIENTE INFOTAINMENT L,Communication Services,Entertainment,,,,,,,Yahoo NS,2026-11-16,Gradiente Infotainment Limited provides pre-production and post-production services.,INR
 GRANDMA,GRANDMA TRADING & AGENCIES LTD,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo BO,2026-10-26,,
 GRANDOAK,GRAND OAK CANYONS DIST L,Financial Services,Mortgage Finance,,,,,,,Yahoo NS,2026-10-26,,
 GRANULES,GRANULES INDIA LIMITED,Healthcare,Drug Manufacturers - Specialty & Generic,20.289022,,8.0,907.25,927.0,,NSE results,2026-11-16,,INR
@@ -1131,7 +1130,6 @@ GUJENERGY,GUJARAT ENERGY LIMITED,Utilities,Utilities - Regulated Gas,7.938243,2.
 GUJHOTE,GUJARAT HOTELS LTD.,Consumer Cyclical,Lodging,,,,,,,Yahoo BO,2026-10-26,,
 GUJINJEC,GUJARAT INJECT (KERALA) LTD.,Healthcare,Biotechnology,,,,,,,Yahoo BO,2026-10-26,,
 GUJINV,GUJARAT INVESTA LTD.,Financial Services,Credit Services,,,,,,,Yahoo BO,2026-10-26,,
-GUJRAFFIA,GUJARAT RAFFIA INDUST LTD,,,,,,,,,Yahoo NS,2026-11-16,"Gujarat Raffia Industries Limited manufactures and sells HDPE tarpaulin, PP bags, and allied products in India.",INR
 GUJTHEM,GUJARAT THEMIS BIOSYN LTD,Healthcare,Drug Manufacturers - Specialty & Generic,,,,,,,Yahoo NS,2026-10-25,,
 GUJWIND,Gujarat Winding Systems Limite,Consumer Cyclical,Packaging & Containers,,,,,,,Yahoo BO,2026-10-26,,
 GULFOILLUB,GULF OIL LUB. IND. LTD.,Basic Materials,Specialty Chemicals,9.937811,,5.0,1625.2,1585.0,,Yahoo NS,2026-10-25,,
@@ -1145,7 +1143,6 @@ GYANDEV,GYAN DEVELOPERS & BUILDERS LTD,Real Estate,Real Estate Services,,,,,,,Ya
 GYFTR,GYFTR LIMITED,Industrials,Specialty Business Services,,,,,,,Yahoo NS,2026-10-25,,
 HAL,HINDUSTAN AERONAUTICS LTD,Industrials,Aerospace & Defense,28.6532,1.7037,27.0,5582.407,5733.0,1794477600.0,Yahoo NS,2026-11-12,"Hindustan Aeronautics Limited engages in the design, development, manufacture, repair, overhaul, upgrade, and servicing of aircraft, helicopters, aero-engines, avionics, accessories, and aerospace structures in India and internationally.",INR
 HALDER,HALDER VENTURE LIMITED,Consumer Defensive,Farm Products,,,,,,,Yahoo NS,2026-10-26,,
-HAMPTON,HAMPTON SKY REALTY LTD.,Financial Services,Capital Markets,,,,,,,Yahoo NS,2026-11-16,"Hampton Sky Realty Limited engages in the real estate business, including the development of commercial, industrial, housing, retail, hospitality, and medical projects.",INR
 HANSUGAR,SHREE HANUMAN SUGAR & INDUSTRI,Consumer Defensive,Confectioners,,,,,,,Yahoo BO,2026-10-26,,
 HAPPSTMNDS,HAPPIEST MINDS TECHNO LTD,Technology,Information Technology Services,14.81132,1.83333,6.0,411.0,385.5,1793613600.0,Yahoo NS,2026-11-16,"Happiest Minds Technologies Limited, together with its subsidiaries, provides information technology (IT) solutions and services in India, the Americas, Australia, Europe, Asia, the Middle East, and Africa.",INR
 HAPPYFORGE,HAPPY FORGINGS LIMITED,Industrials,Metal Fabrication,34.877277,,7.0,2047.4286,2000.0,,NSE results,2026-11-16,,INR
@@ -1161,11 +1158,9 @@ HATSUN,HATSUN AGRO PRODUCT LTD.,Consumer Defensive,Packaged Foods,35.242958,3.5,
 HAWAENG,Hawa Engineers ltd.,Industrials,Metal Fabrication,,,,,,,Yahoo BO,2026-10-26,,
 HAWKINCOOK,HAWKINS COOKERS LTD,Consumer Cyclical,"Furnishings, Fixtures & Appliances",,,,,,,Yahoo NS,2026-10-26,,
 HAZOOR,HAZOOR MULTI PROJECTS LTD,Real Estate,Real Estate - Development,,,,,,,Yahoo NS,2026-10-25,,
-HBESD,H B ESTATE DEVELOPERS L,Consumer Cyclical,Lodging,,,,,,,Yahoo NS,2026-11-16,HB Estate Developers Limited owns and manages hotels and real estate properties in India.,INR
 HBGHOTELS,HBG HOTELS LIMITED,Consumer Cyclical,Lodging,,,,,,,Yahoo BO,2026-10-26,,
 HBLEAS,HB LEASING & FINANCE CO.LTD.,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,,
 HBLENGINE,HBL ENGINEERING LTD,Industrials,Electrical Equipment & Parts,,,,,,,NSE results,2026-11-16,,INR
-HBPOR,HB PORTFOLIO LTD.,Financial Services,Capital Markets,,,,,,,Yahoo NS,2026-11-16,HB Portfolio Limited invests and deals in securities and commodities in India.,INR
 HBSL,HB STOCKHOLDINGS LIMITED,Financial Services,Capital Markets,,,,,,,Yahoo NS,2026-10-26,,
 HCC,HINDUSTAN CONSTRUCTION CO,Industrials,Engineering & Construction,25.558823,,,,,,Yahoo NS,2026-10-25,,
 HCG,HEALTHCARE GLOB. ENT. LTD,Healthcare,Medical Care Facilities,35.983635,,9.0,816.0,800.0,,NSE results,2026-11-16,,INR
@@ -1175,8 +1170,6 @@ HCLTECH,HCL TECHNOLOGIES LTD,Technology,Information Technology Services,17.58896
 HDBFS,HDB FINANCIAL SERVICES L,Financial Services,Credit Services,10.986276,2.25,16.0,737.875,725.0,,Yahoo NS,2026-10-26,HDB Financial Services Limited operates as a non-banking financial company that provides lending and business process outsourcing services in India.,
 HDFCAMC,HDFC AMC LIMITED,Financial Services,Asset Management,26.04617,1.37037,27.0,2973.111,3000.0,1792058400.0,Yahoo NS,2026-10-26,HDFC Asset Management Company Limited is a publicly owned investment manager.,
 HDFCLIFE,HDFC LIFE INS CO LTD,Financial Services,Insurance - Life,43.92599,1.24242,33.0,718.6667,705.0,1792058400.0,Yahoo NS,2026-10-26,HDFC Life Insurance Company Limited engages in the provision of individual and group insurance solutions in India.,
-HDFIRE,HD FIRE PROTECT LIMITED,Industrials,Specialty Industrial Machinery,,,,,,,Yahoo NS,2026-11-16,HD Fire Protect Limited manufactures and supplies fire protection equipment and systems in India.,INR
-HDIL,HOUSING DEV & INFRA LTD,Real Estate,Real Estate - Diversified,0.28490564,,,,,,Yahoo NS,2026-11-16,"Housing Development and Infrastructure Limited engages in the real estate construction, development, and other related activities in India.",INR
 HEADSUP,HEADS UP VENTURES LIMITED,Consumer Cyclical,Apparel Retail,,,,,,,Yahoo NS,2026-10-26,,
 HEALTHX,HEALTH X PLATFORM LIMITED,Healthcare,Pharmaceutical Retailers,,,,,,,Yahoo NS,2026-10-26,,
 HECPROJECT,HEC INFRA PROJECTS LTD,Industrials,Engineering & Construction,,,,,,,Yahoo NS,2026-10-26,,
@@ -1200,12 +1193,9 @@ HILLTONE,Hilltone Software and Gases Lt,Basic Materials,Specialty Chemicals,,,,,
 HILTON,HILTON METAL FORGING LTD,Industrials,Metal Fabrication,,,,,,,Yahoo NS,2026-10-26,,
 HIMATSEIDE,HIMATSINGKA SEIDE LTD,Consumer Cyclical,Textile Manufacturing,2.0412846,,2.0,182.0,182.0,,Yahoo NS,2026-10-25,,
 HIMTEK,HIM TEKNOFORGE LIMITED,Consumer Cyclical,Auto Parts,,,,,,,Yahoo BO,2026-10-26,"Him Teknoforge Limited engages in the manufacture, marketing, distribution, and sale of automotive, non-automotive, and engineering components in India and internationally.",
-HINDADH,HINDUSTAN ADHESIVES LTD.,Basic Materials,Specialty Chemicals,,,,,,,Yahoo NS,2026-11-16,"Hindustan Adhesives Limited, a specialty adhesive coating company, manufactures and sells self-adhesive tapes in India and internationally.",INR
 HINDALCO,HINDALCO  INDUSTRIES  LTD,Basic Materials,Aluminum,8.419976,2.1,30.0,1152.0333,1150.5,1793959200.0,Yahoo NS,2026-11-06,"Hindalco Industries Limited, together with its subsidiaries, manufactures and distributes aluminum and copper products in India and internationally.",
-HINDALUMI,HIND ALUMINIUM INDS. LTD.,Basic Materials,Aluminum,,,,,,,Yahoo NS,2026-11-16,Hind Aluminium Industries Limited manufactures and sells aluminium wire rods and alloy conductors in India.,INR
 HINDBIO,HINDUSTAN BIO SCIENCES LTD.,Healthcare,Drug Manufacturers - Specialty & Generic,,,,,,,Yahoo BO,2026-10-26,Hindustan Bio Sciences Limited manufactures and sells pharmaceutical products in India.,
 HINDCOMPOS,HINDUSTAN COMPOSITES LTD.,Consumer Cyclical,Auto Parts,,,,,,,Yahoo NS,2026-10-25,,
-HINDCON,HINDCON CHEMICALS LIMITED,Basic Materials,Specialty Chemicals,,,,,,,Yahoo NS,2026-11-16,Hindcon Chemicals Limited manufactures and sells sodium silicates and construction chemicals in India and internationally.,INR
 HINDCOPPER,HINDUSTAN COPPER LTD,Basic Materials,Copper,19.663536,,2.0,540.0,540.0,,Yahoo NS,2026-11-16,"Hindustan Copper Limited engages in the exploration, exploitation, mining, and processing of copper ore metal-in-concentrates in India.",INR
 HINDMILL,HINDOOSTAN MILLS LTD.,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo BO,2026-10-26,Hindoostan Mills Limited engages in engineering business in India and internationally.,
 HINDOILEXP,HINDUSTAN OIL EXPLORATION,Energy,Oil & Gas E&P,,,,,,,Yahoo NS,2026-10-25,,
@@ -1231,7 +1221,6 @@ HONASA,HONASA CONSUMER LIMITED,Consumer Defensive,Household & Personal Products,
 HONAUT,HONEYWELL AUTOMATION IND,Industrials,Electrical Equipment & Parts,36.912697,2.75,4.0,39235.0,39100.0,1793095200.0,Yahoo NS,2026-11-16,Honeywell Automation India Limited manufactures and sells industrial process control and automation systems in India and internationally.,INR
 HONDAPOWER,HONDA I POWER PRODUCT LTD,Industrials,Specialty Industrial Machinery,,,,,,,Yahoo NS,2026-10-26,,
 HPL,HPL ELECTRIC & POWER LTD,Industrials,Electrical Equipment & Parts,12.042329,,1.0,380.0,380.0,,NSE results,2026-11-16,,INR
-HRYNSHP,HARIYANA SHIP BREAKERS L,Industrials,Waste Management,,,,,,,Yahoo NS,2026-11-16,"Hariyana Ship Breakers Limited, together with its subsidiary, engages in the ship breaking business in India and internationally.",INR
 HSCL,HIMADRI SPECIALITY CHEM L,Basic Materials,Specialty Chemicals,23.768116,,1.0,720.0,720.0,,NSE results,2026-11-16,,INR
 HTMEDIA,HT MEDIA LIMITED,Communication Services,Publishing,2.0704608,,,,,,Yahoo NS,2026-10-26,,
 HUBTOWN,HUBTOWN LIMITED,Real Estate,Real Estate - Development,9.469594,,,,,,Yahoo NS,2026-10-25,,
@@ -1262,11 +1251,9 @@ IGCIL,IGC Industries Limited,Consumer Defensive,Food Distribution,,,,,,,Yahoo BO
 IGCL,INDOGULF CROPSCIENCES LTD,Basic Materials,Agricultural Inputs,,,,,,,Yahoo NS,2026-11-16,"Indogulf Cropsciences Limited manufactures and sells crop protection products, plant nutrients, and biological products to retail and institutional customers in India and internationally.",INR
 IGIL,INTL GEMOLOGICAL INST LTD,Basic Materials,Other Precious Metals & Mining,20.364157,1.5,4.0,504.0,516.0,,NSE results,2026-11-16,,INR
 IGLFXPL-B,INDO GULF INDUSTRIES LTD.,Basic Materials,Specialty Chemicals,,,,,,,Yahoo BO,2026-11-03,Indo Gulf Industries Limited is engaged in the manufacturing of industrial and defence explosives and provides technical services related to blasting and mining applications.,
-IGLSPIRITS,IGL SPIRITS LIMITED,Consumer Defensive,Beverages - Wineries & Distilleries,,,,,,,Yahoo NS,2026-11-16,IGL Spirits Limited engages in the production and sales of spirits.,INR
 IGPL,I G PETROCHEMICALS LTD,Basic Materials,Chemicals,13.316274,,1.0,570.0,570.0,,NSE results,2026-11-16,,INR
 IIFL,IIFL FINANCE LIMITED,Financial Services,Credit Services,6.7453027,1.5,6.0,754.1667,765.0,1792058400.0,Yahoo NS,2026-10-25,,
 IIFLCAPS,IIFL CAPITAL SERVICES LTD,Financial Services,Capital Markets,,,,,,,NSE results,2026-11-16,,INR
-IIRM,IIRM HOLDINGS INDIA LTD,Financial Services,Insurance Brokers,,,,,,,Yahoo NS,2026-11-16,IIRM Holdings India Limited engages in the provision of professional and consultancy services in India and internationally.,INR
 IISL,ISHAAN INFRASTRUCTURE AND SHEL,Industrials,Engineering & Construction,,,,,,,Yahoo BO,2026-10-26,Ishaan Infrastructures and Shelters Limited engages in the real estate business in India.,
 IITL,INDUSTRIAL INV TRUST LTD,Financial Services,Credit Services,,,,,,,Yahoo NS,2026-10-25,,
 IITLPROJ,IITL PROJECTS LIMITED,Real Estate,Real Estate - Development,,,,,,,Yahoo BO,2026-10-26,IITL Projects Limited engages in the real estate development and related activities in India.,
@@ -1274,7 +1261,6 @@ IKIO,IKIO TECHNOLOGIES LIMITED,Technology,Electronic Components,,,,,,,NSE result
 IKOMA,IKOMA TECHNOLOGIES LIMITED,Technology,Information Technology Services,,,,,,,Yahoo BO,2026-10-26,Ikoma Technologies Limited was formerly known as Vuenow Infratech Limited and changed its name to Ikoma Technologies Limited in October 2025.,
 IKS,INVENTURUS KNOWLEDGE SO L,Healthcare,Health Information Services,23.342949,1.55556,9.0,2023.3334,2075.0,,NSE results,2026-11-16,,INR
 IL&FSENGG,IL&FS ENG AND CONS CO LTD,Industrials,Engineering & Construction,,,,,,,Yahoo NS,2026-10-26,,
-IL&FSTRANS,IL&FS TRANS NET LTD,Industrials,Infrastructure Operations,,,,,,,Yahoo NS,2026-11-16,"IL&FS Transportation Networks Limited develops, operates, manages, and maintains transportation infrastructure projects in India and internationally.",INR
 IMAGICAA,IMAGICAAWORLD ENT LTD,Communication Services,Entertainment,23.558823,,1.0,63.0,63.0,,Yahoo NS,2026-10-25,,
 IMEC,IMEC SERVICES LIMITED,Industrials,Consulting Services,,,,,,,Yahoo BO,2026-10-26,IMEC Services Limited provides management and consultancy services in India.,
 IMFA,INDIAN METALS & FERRO,Basic Materials,Other Industrial Metals & Mining,8.45923,,2.0,1756.0,1756.0,,NSE results,2026-11-16,,INR
@@ -1331,7 +1317,6 @@ INGERRAND,INGERSOLL-RAND INDIA LTD,Industrials,Specialty Industrial Machinery,31
 INLANPR,INLAND PRINTERS LTD.,Industrials,Specialty Business Services,,,,,,,Yahoo BO,2026-10-26,Inland Printers Limited engages in the e-commerce activity related to printing business in India.,
 INNOVACAP,INNOVA CAPTAB LIMITED,Healthcare,Drug Manufacturers - Specialty & Generic,21.770674,,2.0,1116.0,1116.0,,NSE results,2026-11-16,,INR
 INNOVANA,INNOVANA THINKLABS LTD,Technology,Software - Application,,,,,,,Yahoo NS,2026-10-26,,
-INNOVISION,INNOVISION LIMITED,Industrials,Staffing & Employment Services,,,,,,,Yahoo NS,2026-11-16,"Innovision Limited provides manpower services, toll plaza management, and skill development training in India.",INR
 INNOVTEC,INNOVATIVE TECH PACK LTD.,Consumer Cyclical,Packaging & Containers,,,,,,,Yahoo BO,2026-10-26,"Innovative Tech Pack Limited engages in the manufacture and resale of plastic bottles, jars, containers, and pre-forms and caps in India.",
 INOVSYNTH,INNOVASSYNTH TECHNOLOGIES (IND,Basic Materials,Specialty Chemicals,,,,,,,Yahoo BO,2026-10-26,Innovassynth Technologies (India) Limited operates as an investment company in India.,
 INOXGREEN,INOX GREEN ENERGY SER LTD,Utilities,Utilities - Renewable,,,,,,,NSE results,2026-11-16,,INR
@@ -2739,7 +2724,6 @@ TRITURBINE,TRIVENI TURBINE LIMITED,Industrials,Specialty Industrial Machinery,28
 TRIVENI,TRIVENI ENGG. & INDS. LTD,Consumer Defensive,Confectioners,12.026231,1.0,3.0,343.33334,317.0,,Yahoo NS,2026-11-16,"Triveni Engineering & Industries Limited engages in the sugar and allied businesses, and engineering businesses in India and internationally.",INR
 TRIVENIENT,TRIVENI ENTERPRISES LTD,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo BO,2026-10-26,Triveni Enterprises Limited trades in textiles in India.,
 TRIVENIGQ,TRIVENI GLASS LTD.,Industrials,Building Products & Equipment,,,,,,,Yahoo BO,2026-10-26,Triveni Glass Limited operates in the real estate sector in India.,
-TRIVENIPT,TRIVENI POWER TRANS LTD,Industrials,Specialty Industrial Machinery,39.217392,,1.0,550.0,550.0,,Yahoo NS,2026-11-16,"Triveni Power Transmission Limited provides engineered gear systems and lifecycle solutions for OEMs, EPCs, and industrial operators worldwide.",
 TRL,Taylormade Renewables Limited,Technology,Solar,,,,,,,Yahoo BO,2026-10-26,Taylormade Renewables Limited provides renewable energy and environmental solutions in India.,
 TRU,TRUCAP FINANCE LIMITED,Financial Services,Credit Services,,,,,,,Yahoo NS,2026-11-16,"TruCap Finance Limited, a non-banking finance company, provides loans in India.",INR
 TRUALT,TRUALT BIOENERGY LIMITED,Energy,Oil & Gas Refining & Marketing,,,,,,,Yahoo NS,2026-11-16,TruAlt Bioenergy Limited produces and sells ethanol and other products derived from distillery processes and compressed biogas in India.,INR
@@ -2762,12 +2746,10 @@ TVTODAY,TV TODAY NETWORK LTD,Communication Services,Broadcasting,4.9535356,,,,,,
 TVVISION,TV VISION LIMITED,Communication Services,Broadcasting,,,,,,,Yahoo NS,2026-10-26,,
 UBL,UNITED BREWERIES LTD,Consumer Defensive,Beverages - Brewers,44.92215,3.10526,19.0,1388.1578,1325.0,1793095200.0,Yahoo NS,2026-11-16,"United Breweries Limited engages in manufacture, purchase, and sale of beer and non-alcoholic beverages in India and internationally.",INR
 UCAL,UCAL LIMITED,Consumer Cyclical,Auto Parts,,,,,,,Yahoo NS,2026-11-16,UCAL Limited engages in the manufacturing of fuel management systems for the automotive sector in India.,INR
-UDAYJEW,UDAY JEWELLERY INDS. LTD.,Consumer Cyclical,Luxury Goods,,,,,,,Yahoo NS,2026-11-16,Uday Jewellery Industries Limited engages in the manufacturing and sales of fashion jewellery in India and internationally.,INR
 UDS,UPDATER SERVICES LIMITED,Industrials,Specialty Business Services,11.308087,,3.0,245.0,250.0,,Yahoo NS,2026-11-16,Updater Services Limited operates an integrated business services platform in India and internationally.,INR
 UEL,UJAAS ENERGY LIMITED,Technology,Solar,,,,,,,Yahoo NS,2026-10-26,,
 UFBL,UNITED FOODBRANDS LIMITED,Consumer Cyclical,Restaurants,51.2353,,2.0,965.0,965.0,,Yahoo NS,2026-10-26,,
 UFO,UFO MOVIEZ INDIA LTD.,Communication Services,Entertainment,1.9565219,,,,,,Yahoo NS,2026-10-26,,
-UGARSUGAR,THE UGAR SUGAR WORKS LTD,Consumer Defensive,Confectioners,,,,,,,Yahoo NS,2026-11-16,"The Ugar Sugar Works Limited manufactures and sells sugar, and industrial and potable alcohol in India.",INR
 UHZAVERI,U. H. ZAVERI LIMITED,Consumer Cyclical,Luxury Goods,,,,,,,Yahoo BO,2026-10-26,"U.H. Zaveri Limited engages in the wholesale, retail, and trading of gold and silver jewellery, and related articles in India.",
 ULTRACEMCO,ULTRATECH CEMENT LIMITED,Basic Materials,Building Materials,26.752499,1.45946,37.0,13622.297,13880.0,1792404000.0,Yahoo NS,2026-10-26,"UltraTech Cement Limited, together with its subsidiaries, engages in the manufacturing, marketing, and distribution of building materials in India and internationally.",
 UMAEXPORTS,UMA EXPORTS LIMITED,Consumer Defensive,Farm Products,,,,,,,Yahoo NS,2026-10-26,,
@@ -2777,7 +2759,6 @@ UMIYA-MRO,UMIYA BUILDCON LIMITED,Technology,Communication Equipment,,,,,,,Yahoo 
 UNIABEXAL,UNI ABEX ALLOY PRODUCTS LTD.,Basic Materials,Steel,,,,,,,Yahoo BO,2026-10-26,"Uni Abex Alloy Products Limited manufacturers and exports centrifugal and static castings in heat, corrosion, and wear resistant stainless-steel alloys in India, Europe, the United States, and internationally.",
 UNICHEMLAB,UNICHEM LABORATORIES LTD,Healthcare,Drug Manufacturers - Specialty & Generic,,,,,,,Yahoo NS,2026-11-16,"Unichem Laboratories Limited, a pharmaceutical company, manufactures and sells pharmaceutical products in Asia, Europe, Africa, CIS, the United States, and internationally.",INR
 UNICK,Unick Fix-A- Form and Printers,Industrials,Specialty Business Services,,,,,,,Yahoo BO,2026-10-26,Unick Fix-A-Form and Printers Limited engages in manufacturing and selling of paper based printed materials and labels in India.,
-UNIDT,UNITED DRILLING TOOLS LTD,Energy,Oil & Gas Equipment & Services,,,,,,,Yahoo NS,2026-11-16,"United Drilling Tools Limited, together with its subsidiary, manufactures and sells OD connectors and casing pipes, wireline winches, gas lift equipment, and downhole tools under the UDT brand in India and internationally.",INR
 UNIECOM,UNICOMMERCE ESOLUTIONS L,Technology,Software - Application,27.301586,,1.0,130.0,130.0,,Yahoo NS,2026-11-16,Unicommerce eSolutions Limited provides a suite of software-as-a-service products in India and internationally.,INR
 UNIENTER,UNIPHOS ENTERPRISES LTD,Basic Materials,Chemicals,,,,,,,Yahoo NS,2026-10-26,,
 UNIINFO,UNIINFO TELECOM SERVI LTD,Communication Services,Telecom Services,,,,,,,Yahoo NS,2026-10-26,,
@@ -2788,23 +2769,18 @@ UNITDSPR,UNITED SPIRITS LIMITED,Consumer Defensive,Beverages - Wineries & Distil
 UNITECH,UNITECH LTD,Real Estate,Real Estate - Diversified,,,,,,,Yahoo NS,2026-10-26,,
 UNITEDPOLY,UNITED POLYFAB GUJ. LTD.,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo NS,2026-11-16,"United Polyfab Gujarat Limited manufactures, trades in, and sells woven fabrics and processed yarn products in India.",INR
 UNITEDTE,UNITED TEXTILES LTD.,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo BO,2026-10-26,United Textiles Limited manufactures and sells cotton yarn in India.,
-UNITEDTEA,UNITED NILGIRI TEA LTD,Consumer Defensive,Farm Products,,,,,,,Yahoo NS,2026-11-16,"The United Nilgiri Tea Estates Company Limited engages in growing, manufacturing, and selling teas in India and internationally.",INR
-UNIVASTU,UNIVASTU INDIA LIMITED,Industrials,Engineering & Construction,,,,,,,Yahoo NS,2026-11-16,Univastu India Limited provides works contract services in India.,INR
 UNIVCABLES,UNIVERSAL CABLES LTD,Industrials,Electrical Equipment & Parts,80.2288,,,,,,Yahoo NS,2026-11-16,"Universal Cables Limited engages in the manufacture and sale of electrical and other cables, wires, conductors, accessories for cables and conductors, capacitors and capacitor banks, harmonic filters, and static VAR generators under the UNISTAR brand in India and internationally.",INR
-UNIVPHOTO,UNIVERSUS IMAGINGS LTD,Healthcare,Medical Devices,,,,,,,Yahoo NS,2026-11-16,"Universus Photo Imagings Limited manufactures, trades, and sells photographic and other imaging products in India.",INR
 UNIVSTAR,UNIVERSAL STARCH-CHEM ALLIED L,Basic Materials,Agricultural Inputs,,,,,,,Yahoo BO,2026-10-26,Universal Starch-Chem Allied Limited manufactures starch for various industries in India.,
 UNJHAFOR,UNJHA FORMULATIONS LTD.,Healthcare,Drug Manufacturers - Specialty & Generic,,,,,,,Yahoo BO,2026-10-26,Unjha Formulations Limited manufactures and sells ayurvedic products in India.,
 UNOMINDA,UNO MINDA LIMITED,Consumer Cyclical,Auto Parts,42.790535,2.16667,18.0,1402.3334,1411.0,1793872800.0,Yahoo NS,2026-11-16,"Uno Minda Limited, together with its subsidiaries, manufactures and supplies auto components and systems in India and internationally.",INR
 UNQTYMI,UNION QUALITY PLASTICS LTD.,Basic Materials,Specialty Chemicals,,,,,,,Yahoo BO,2026-11-03,Union Quality Plastics Limited engages in the manufacture and sale of polyethylene fabric-based products in India.,
 UNRYLMA,UNIROYAL MARINE EXPORTS LTD.,Consumer Defensive,Farm Products,,,,,,,Yahoo BO,2026-10-26,"Uniroyal Marine Exports Limited engages in manufacturing, processing, curing, canning, freezing, purchasing, selling, exporting, and dealing in marine products in India.",
 UNTTEMI,UNITED LEASING & INDUSTRIES LT,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo BO,2026-11-11,United Leasing & Industries Limited engages in the textile embroidery business in India.,INR
-UPHOT,U P HOTELS LTD.,Consumer Cyclical,Lodging,,,,,,,Yahoo NS,2026-11-16,U.P. Hotels Limited owns and operates hotels in India.,INR
 UPL,UPL LIMITED,Basic Materials,Agricultural Inputs,12.22557,1.76471,17.0,653.7647,658.0,1793613600.0,Yahoo NS,2026-11-16,"UPL Limited, together with its subsidiaries, manufactures and sells pesticides, insecticides, and micronutrients in India, Brazil, the United States, the United Kingdom, and internationally.",INR
 UPROTECH,Unipro Technologies Limited,Technology,Information Technology Services,,,,,,,Yahoo BO,2026-10-26,"Unipro Technologies Limited, a software development company, provides managed information technology (IT) services.",
 UPSURGE,UPSURGE INVESTMENT & FINANCE L,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,Upsurge Investment & Finance Limited operates as a non-banking finance company that provides financial services in India.,
 URAVIDEF,URAVI DEFENCE &TECH LTD,Consumer Cyclical,Auto Parts,,,,,,,Yahoo NS,2026-10-26,,
 URBANCO,URBAN COMPANY LIMITED,Technology,Software - Application,-56.17153,3.0,9.0,157.88889,155.0,,Yahoo NS,2026-10-26,,
-URJA,URJA GLOBAL LIMITED,Technology,Solar,,,,,,,Yahoo NS,2026-11-16,"Urja Global Limited, together with its subsidiaries, engages in the design, consultancy, integration, supply, installation, commissioning, and maintenance of off-grid and grid-connected solar power plants and decentralized solar applications in India.",INR
 URSUGAR,UR SUGAR INDUSTRIES LIMITED,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,UR Sugar Industries Limited engages in the manufacturing and sale of sugar in India.,
 USHAKIRA,USHAKIRAN FINANCE LTD.,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,"Ushakiran Finance Limited, a non-banking finance company, engages in the investments and financing business in India.",
 USK,UDAYSHIVAKUMAR INFRA LTD,Industrials,Engineering & Construction,,,,,,,Yahoo NS,2026-10-26,,
@@ -2820,7 +2796,6 @@ VADILALIND,VADILAL INDUSTRIES LTD,Consumer Defensive,Packaged Foods,,,,,,,Yahoo 
 VADILENT,VADILAL ENTERPRISES LTD.,Consumer Defensive,Food Distribution,,,,,,,Yahoo NS,2026-11-16,"Vadilal Enterprises Limited engages in the marketing and distribution of ice creams, dairy products, frozen desserts, and processed food products under the Vadilal brand in India.",INR
 VAIBHAVGBL,VAIBHAV GLOBAL LIMITED,Consumer Cyclical,Luxury Goods,3.4400826,,,,,,Yahoo NS,2026-11-16,"Vaibhav Global Limited, together with its subsidiaries, manufactures and sells fashion jewelry and lifestyle products in India, the United States of America, Canada, the United Kingdom, Germany, the rest of Europe, and internationally.",INR
 VAICC,VAISHNO CEMENT CO.LTD.,Basic Materials,Building Materials,,,,,,,Yahoo BO,2026-10-26,Vaishno Cement Company Limited manufactures and sells Portland slag cement based on vertical shaft kiln (VSK) technology in India.,
-VAISHALI,VAISHALI PHARMA LIMITED,Healthcare,Drug Manufacturers - Specialty & Generic,,,,,,,Yahoo NS,2026-11-16,Vaishali Pharma Limited engages in the pharmaceutical business in India and internationally.,INR
 VAKRANGEE,VAKRANGEE LIMITED,Technology,Information Technology Services,,,,,,,Yahoo NS,2026-11-16,"Vakrangee Limited, a technology company, provides e-commerce, white label ATM, financial, and logistics services in India.",INR
 VALIANTLAB,VALIANT LABORATORIES LTD,Healthcare,Drug Manufacturers - Specialty & Generic,,,,,,,Yahoo NS,2026-11-16,Valiant Laboratories Limited operates as an active pharmaceutical ingredient/bulk drug manufacturing company in India and internationally.,INR
 VALLABHSQ,VALLABH STEELS LTD.,Basic Materials,Steel,,,,,,,Yahoo BO,2026-10-26,Vallabh Steels Limited engages in the manufacturing and sale of basic iron and steel products in India.,
@@ -2828,35 +2803,27 @@ VAMA,VAMA INDUSTRIES LTD.,Technology,Information Technology Services,,,,,,,Yahoo
 VAMSHIRU,VAMSHI RUBBER LTD.,Consumer Cyclical,Auto Parts,,,,,,,Yahoo BO,2026-10-26,Vamshi Rubber Limited engages in the manufacture and sale of tire retreading materials in India.,
 VANICOM,Vani Commercials Limited,Financial Services,Credit Services,,,,,,,Yahoo BO,2026-10-26,"Vani Commercials Limited, a non-banking finance company, provides financial services in India.",
 VARDHACRLC,VARDHAMAN ACRYLICS LTD,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo NS,2026-11-16,Vardhman Acrylics Limited manufactures and supplies acrylic fibers and tows in India.,INR
-VARDMNPOLY,VARDHMAN POLYTEX LTD.,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo NS,2026-11-16,Vardhman Polytex Limited manufactures and sells yarns and garments in India.,INR
 VARIMAN,VARIMAN GLOBAL ENTERPRISES LIM,Technology,Software - Application,,,,,,,Yahoo BO,2026-10-26,Variman Global Enterprises Limited provides information technology (IT) solutions in India.,
 VARROC,VARROC ENGINEERING LTD.,Consumer Cyclical,Auto Parts,20.763596,2.33333,6.0,870.1667,881.0,,Yahoo NS,2026-10-26,,
 VASCONEQ,VASCON ENGINEERS LTD,Industrials,Engineering & Construction,,,,,,,Yahoo NS,2026-10-26,,
 VASINFRA,VAS INFRASTRUCTURE LTD.,Real Estate,Real Estate - Development,,,,,,,Yahoo BO,2026-10-26,VAS Infrastructure Limited engages in the development of real estate properties in India.,
-VASUPRADA,SHRI VASUPRADA PLANTATI L,Consumer Defensive,Farm Products,,,,,,,Yahoo NS,2026-11-16,"Shri Vasuprada Plantations Limited, together with its subsidiaries, manufactures and cultivates tea, coffee, and rubber products in India and internationally.",INR
 VASWANI,VASWANI IND LTD,Basic Materials,Steel,,,,,,,Yahoo NS,2026-10-26,,
 VBIND,V B INDUSTRIES LIMITED,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,V. B. Industries Limited engages in the finance and investment business in India.,
 VBL,VARUN BEVERAGES LIMITED,Consumer Defensive,Beverages - Non-Alcoholic,36.98586,1.25926,27.0,519.9978,515.0,1793354400.0,Yahoo NS,2026-11-16,"Varun Beverages Limited, together with its subsidiaries, manufactures, bottles, sells, and distributes beverages under the PepsiCo brands in India, Sri Lanka, Nepal, Zambia, Morocco, Zimbabwe, the Democratic Republic of Congo, Mozambique, South Africa, Lesotho, Eswatini, Namibia, and Botswana.",INR
-VCL,VAXTEX COTFAB LIMITED,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo NS,2026-11-16,Vaxtex Cotfab Limited manufactures and sells textile products in India.,INR
-VEDAVAAG,VEDAVAAG SYSTEMS LTD.,Technology,Information Technology Services,,,,,,,Yahoo NS,2026-11-16,"Vedavaag Systems Limited, together with its subsidiaries, provides information technology (IT) sales and services in India.",INR
 VEDL,VEDANTA LIMITED,Basic Materials,Other Industrial Metals & Mining,6.887046,1.83333,9.0,305.0,310.0,1793181600.0,Yahoo NS,2026-11-16,"Vedanta Limited, a diversified natural resources company, explores, extracts, and processes minerals, and oil and gas in India, Europe, China, the United States, Mexico, and internationally.",INR
-VEEDOL,VEEDOL CORPORATION LTD,Basic Materials,Specialty Chemicals,,,,,,,Yahoo NS,2026-11-16,"Veedol Corporation Limited, together with its subsidiaries, engages in the manufacturing and marketing of lubricants under the Veedol brand in India.",INR
 VEGA,VEGA JEWELLERS LIMITED,Consumer Cyclical,Luxury Goods,,,,,,,Yahoo BO,2026-10-26,Vega Jewellers Limited engages in the business of design and retail of fine jewellery.,
 VEL,Vaxfab Enterprises Limited,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo BO,2026-10-26,Vaxfab Enterprises Limited is involved in the trading of textile products and clothing in India and United Arab Emirates.,
 VELHO,VELAN HOTELS LTD.,Consumer Cyclical,Lodging,,,,,,,Yahoo BO,2026-10-26,Velan Hotels Limited provides hospitality services in India.,
-VELJAN,VELJAN DENISON LTD.,Industrials,Specialty Industrial Machinery,,,,,,,Yahoo NS,2026-11-16,"Veljan Denison Limited manufactures and sells hydraulic pumps, motors, valves, and custom-built power packs in India and internationally.",INR
 VELLORA,VELLORA IMPACT LIMITED,Basic Materials,Chemicals,,,,,,,Yahoo BO,2026-10-26,Vellora Impact Limited supplies agricultural commodities and provides information technology solutions in India.,
 VENMAX,VENMAX DRUGS AND PHARMACEUTICA,Healthcare,Drug Manufacturers - Specialty & Generic,,,,,,,Yahoo BO,2026-10-26,"Venmax Drugs and Pharmaceuticals Limited engages in the business of pharmaceutical products, drug intermediaries, and API's in India.",
 VENTIVE,VENTIVE HOSPITALITY LTD,Consumer Cyclical,Lodging,21.7979,1.33333,9.0,707.2222,700.0,,Yahoo NS,2026-11-16,Ventive Hospitality Limited engages in the hotel and resorts operations in India and internationally.,INR
 VENTURA,VENTURA TEXTILES LTD.,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo BO,2026-10-26,Superbev Limited engages in trading of cotton yarn in India.,
 VENUSPIPES,VENUS PIPES & TUBES LTD,Basic Materials,Steel,20.11424,,6.0,2178.6667,2000.0,,Yahoo NS,2026-10-26,,
 VENUSREM,VENUS REMEDIES LIMITED,Healthcare,Drug Manufacturers - Specialty & Generic,,,,,,,Yahoo NS,2026-11-16,"Venus Remedies Limited engages in the pharmaceutical business in India, Latin America, Europe, the Middle East, Africa, Asia, and internationally.",INR
-VERANDA,VERANDA LEARNING SOL LTD,Consumer Defensive,Education & Training Services,,,,,,,Yahoo NS,2026-11-16,Veranda Learning Solutions Limited operates as an education company in India.,INR
 VERTEX,VERTEX SECURITIES LTD.,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,"Vertex Securities Limited, together with its subsidiaries, provides brokerage services for equity, equity derivatives, currency derivatives, and commodities in India.",
 VERTEXPP,Vertex Securities Ltd.,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-26,"Vertex Securities Limited, together with its subsidiaries, provides brokerage services for equity, equity derivatives, currency derivatives, and commodities in India.",
 VERTOZ,VERTOZ LIMITED,Technology,Software - Infrastructure,,,,,,,Yahoo NS,2026-10-26,,
 VESUVIUS,VESUVIUS INDIA LTD,Industrials,Specialty Industrial Machinery,18.774359,,,,,,Yahoo NS,2026-11-16,Vesuvius India Limited manufactures and sells refractory products and services in India.,INR
-VETO,VETO SWITCHGEAR CABLE LTD,Industrials,Electrical Equipment & Parts,7.8122497,,,,,,Yahoo NS,2026-11-16,"Veto Switchgears and Cables Limited, together with its subsidiaries, engages in the manufacture and sale of wires and cables, and electrical accessories in India and internationally.",INR
 VGCL,VIBRANT GLOBAL CAPITAL L,Financial Services,Capital Markets,,,,,,,Yahoo NS,2026-10-26,,
 VGIL,Veer Global Infraconstruction,Real Estate,Real Estate - Development,,,,,,,Yahoo BO,2026-10-26,"Veer Global Infraconstruction Limited engages in the location identification, acquisition, project planning, designing, and development of real estate properties in India.",
 VGL,VARVEE GLOBAL LIMITED,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo NS,2026-11-16,Varvee Global Limited engages in the manufacture and sale of fabrics in India and internationally.,INR
@@ -2867,10 +2834,8 @@ VIDHIING,VIDHI SPCLTY F INGRDNTS L,Basic Materials,Specialty Chemicals,,,,,,,Yah
 VIDYAWIRES,VIDYA WIRES LIMITED,Industrials,Electrical Equipment & Parts,,,,,,,Yahoo NS,2026-11-16,Vidya Wires Limited manufactures and sells winding and conductivity products in India.,INR
 VIJAYA,VIJAYA DIAGNOSTIC CEN LTD,Healthcare,Diagnostics & Research,49.982277,1.33333,10.0,1624.1,1632.0,,Yahoo NS,2026-11-16,Vijaya Diagnostic Centre Limited provides diagnostic services for patients in India.,INR
 VIJIFIN,VIJI FINANCE LIMITED,Financial Services,Credit Services,,,,,,,Yahoo NS,2026-10-26,,
-VIJSOLX,VIJAY SOLVEX LTD.,Consumer Defensive,Packaged Foods,,,,,,,Yahoo NS,2026-11-16,Vijay Solvex Limited manufactures and sells edible oils and vanaspati ghee in India and internationally.,INR
 VIKALPS,VIKALP SECURITIES LTD.,Financial Services,Capital Markets,,,,,,,Yahoo BO,2026-10-28,Vikalp Securities Limited engages in investment and trading in shares and securities in India.,
 VIKASECO,VIKAS ECOTECH LIMITED,Basic Materials,Specialty Chemicals,,,,,,,Yahoo NS,2026-10-26,,
-VIKASLIFE,VIKAS LIFECARE LIMITED,Consumer Defensive,Farm Products,,,,,,,Yahoo NS,2026-11-16,"Vikas Lifecare Limited engages in manufacturing and trading of polymers, chemicals, iron and steel, and plastic products in India and Ghana.",INR
 VIKASWSP,VIKAS WSP LTD.,Basic Materials,Specialty Chemicals,,,,,,,Yahoo BO,2026-10-26,Vikas WSP Limited does not have significant operations.,
 VIKRAMTH,VIKRAM THERMO (INDIA) LTD.,Healthcare,Drug Manufacturers - Specialty & Generic,,,,,,,Yahoo BO,2026-10-26,"Vikram Thermo (India) Limited engages in the manufacture, marketing, and export of pharmaceutical excipients and chemicals in India and internationally.",
 VIKRAN,VIKRAN ENGINEERING LTD,Industrials,Engineering & Construction,,,,,,,Yahoo NS,2026-10-26,,
@@ -2881,33 +2846,26 @@ VINAYAKPOL,VINAYAK POLYCON INTERNATIONAL,Consumer Cyclical,Packaging & Container
 VINCOFE,VINTAGE COFFEE N BVRGS L,Consumer Defensive,Beverages - Non-Alcoholic,,,,,,,Yahoo NS,2026-11-16,"Vintage Coffee and Beverages Limited, through its subsidiaries, primarily engages in the manufacture, export, and sale of coffee and beverage products in India and internationally.",INR
 VINDHYATEL,VINDHYA TELELINKS LTD,Industrials,Engineering & Construction,,,,,,,Yahoo NS,2026-11-16,Vindhya Telelinks Limited engages in the manufacture and sale of cables in India.,INR
 VINEETLAB,VINEET LABORATORIES LTD,Basic Materials,Chemicals,,,,,,,Yahoo NS,2026-11-16,"Vineet Laboratories Limited engages in the research, development, manufacture, and sale of active pharmaceutical ingredients (API), intermediates, and fine chemicals primarily in India.",INR
-VINNY,VINNY OVERSEAS LIMITED,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo NS,2026-11-16,Vinny Overseas Limited engages in the manufacture and processing of textile fabrics in India.,INR
 VINRKLB,REKVINA LABORATORIES LTD.,Healthcare,Drug Manufacturers - Specialty & Generic,,,,,,,Yahoo BO,2026-10-26,Rekvina Laboratories Limited engages in manufacturing and marketing pharmaceutical products and related activities in India.,
 VINTAGES,VINTAGE SECURITIES LTD.,Financial Services,Credit Services,,,,,,,Yahoo BO,2026-11-06,"Vintage Securities Limited, a financial services company, engages in financial and investment-related activities.",
 VINYLINDIA,VINYL CHEMICALS (I) LTD.,Basic Materials,Specialty Chemicals,,,,,,,Yahoo NS,2026-11-16,Vinyl Chemicals (India) Limited engages in the trading of chemicals in India.,INR
-VIPCLOTHNG,VIP CLOTHING LIMITED,Consumer Cyclical,Apparel Manufacturing,,,,,,,Yahoo NS,2026-11-16,"VIP Clothing Limited engages in the manufacture, trading, marketing, and distribution of garments in India.",INR
 VIPIND,VIP INDUSTRIES LTD,Consumer Cyclical,Footwear & Accessories,106.85187,3.75,7.0,300.2857,310.0,,Yahoo NS,2026-10-26,,
 VIPPYSP,VIPPY SPINPRO LTD.,Consumer Cyclical,Textile Manufacturing,26.100777,,,,,,Yahoo BO,2026-10-26,Vippy Spinpro Limited manufactures and sells cotton yarns in India.,
 VIPULLTD,VIPUL LIMITED,Real Estate,Real Estate - Diversified,,,,,,,Yahoo NS,2026-10-26,,
 VIRAT,VIRAT INDUSTRIES LTD.,Consumer Cyclical,Apparel Manufacturing,,,,,,,Yahoo NS,2026-11-16,"Brahm Virat Industries Corporation Limited manufactures and sells dress and sports socks for men, ladies, and children in India.",INR
 VIRGOGLOB,Virgo Global Limited,Technology,Computer Hardware,,,,,,,Yahoo BO,2026-10-26,"Virgo Global Limited manufactures, trades in, and deals and maintains computer hardware and software.",
-VIRINCHI,VIRINCHI LIMITED,Technology,Software - Application,,,,,,,Yahoo NS,2026-11-16,Virinchi Limited provides information technology (IT) products and services worldwide.,INR
 VIRTUALG,VIRTUAL GLOBAL EDU LTD,Consumer Defensive,Education & Training Services,,,,,,,Yahoo NS,2026-10-26,,
 VIRYA,VIRYA RESOURCES LIMITED,Industrials,Specialty Business Services,,,,,,,Yahoo BO,2026-10-29,Virya Resources Limited operates as a coal agency company in India.,
 VISACHROME,VISA CHROME LIMITED,Basic Materials,Steel,,,,,,,Yahoo NS,2026-10-26,,
-VISAKAIND,VISAKA INDUSTRIES LTD,Industrials,Building Products & Equipment,,,,,,,Yahoo NS,2026-11-16,"Visaka Industries Limited manufactures and sells manufacture of cement fibre sheets, fibre cement boards and panels, solar panels, and synthetic yarn in India and internationally.",INR
-VISHAL,VISHAL FABRICS LTD.,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo NS,2026-11-16,"Vishal Fabrics Limited engages in the dyeing, printing, and processing of denims and various fabrics in India and internationally.",INR
 VISHNU,VISHNU CHEMICALS LIMITED,Basic Materials,Specialty Chemicals,15.766475,,1.0,650.0,650.0,,Yahoo NS,2026-11-16,Vishnu Chemicals Limited engages in the manufacture and sale of chromium chemicals in India and internationally.,INR
 VISHWARAJ,VISHWARAJ SUGAR IND LTD,Consumer Defensive,Confectioners,,,,,,,Yahoo NS,2026-10-26,,
 VISIONCINE,VISION CINEMAS LTD.,Communication Services,Entertainment,,,,,,,Yahoo BO,2026-10-26,"Vision Cinemas Limited, together with its subsidiaries, identifies, designs, builds, and operates multiplexes in India.",
 VISIONCO,VISION CORPORATION LTD.,Communication Services,Entertainment,,,,,,,Yahoo BO,2026-10-26,Vision Corporation Limited engages in the movies and entertainment business in India.,
 VISTAPH,VISTA PHARMACEUTICALS LTD.,Healthcare,Drug Manufacturers - Specialty & Generic,,,,,,,Yahoo BO,2026-10-26,"Vista Pharmaceuticals Limited manufactures and sells pharmaceutical, medical, and veterinary preparations in India and internationally.",
 VISTARAMAR,Vistar Amar Limited,Consumer Defensive,Packaged Foods,,,,,,,Yahoo BO,2026-10-26,Vistar Amar Limited engages in manufacturing and sale of fishmeal in India.,
-VITAL,VITAL CHEMTECH LIMITED,Basic Materials,Specialty Chemicals,,,,,,,Yahoo NS,2026-11-16,Vital Chemtech Limited engages in the manufacture and supply of phosphorus base chemicals in India and internationally.,INR
 VIVANTA,Vivanta Industries Limited,Industrials,Consulting Services,,,,,,,Yahoo BO,2026-10-26,"Vivanta Industries Limited, together with its subsidiaries, engages in the project management consultancy, turnkey project, and technology supply and consultancy business in India.",
 VIVIDHA,VISAGAR POLYTEX LTD,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo NS,2026-10-26,,
 VIVIDIND,VIVID GLOBAL INDUSTRIES LTD.,Basic Materials,Specialty Chemicals,4.316703,,,,,,Yahoo BO,2026-10-26,Vivid Global Industries Limited engages in the production and sale of dye intermediates and dyes in India.,
-VIVIMEDLAB,VIVIMED LABS LIMITED,Healthcare,Drug Manufacturers - Specialty & Generic,,,,,,,Yahoo NS,2026-11-16,"Vivimed Labs Limited, together with its subsidiaries, manufactures and sells active pharmaceutical ingredients (APIs), finished dosage formulations, specialty chemicals, and retail branded formulations in India.",INR
 VIVOBIOT,VIVO BIO TECH LTD.,Healthcare,Biotechnology,,,,,,,Yahoo NS,2026-10-26,,
 VIYASH,VIYASH SCIENTIFIC LIMITED,Healthcare,Drug Manufacturers - Specialty & Generic,17.369003,1.0,4.0,326.0,327.0,,Yahoo NS,2026-10-26,,
 VJTFEDU,VJTF EDUSERVICES LTD.,Financial Services,Asset Management,,,,,,,Yahoo BO,2026-10-26,"VJTF Eduservices Limited, a non-banking financial company, engages in investment and financial activities in India.",
@@ -4656,3 +4614,45 @@ TPLPLASTEH,TPL PLASTECH LIMITED,Consumer Cyclical,Packaging & Containers,,,,,,,N
 TRANSCOR,TRANSCORP INTERNATIONAL L,Financial Services,Capital Markets,,,,,,,Yahoo NS,2026-11-24,Transcorp International Limited engages in the foreign exchange and remittance business in India.,INR
 TRANSPEK,TRANSPEK INDUSTRY LTD,Basic Materials,Chemicals,,,,,,,Yahoo NS,2026-11-24,Transpek Industry Limited manufactures and sells chemical products in India.,INR
 TRIGYN,TRIGYN TECHNOLOGIES LTD,Technology,Information Technology Services,3.1159577,,,,,,NSE results,2026-11-24,Trigyn Technologies Limited provides communications and information technology staffing support services in India and internationally.,INR
+GRADIENTE,GRADIENTE INFOTAINMENT L,Communication Services,Entertainment,,,,,,,Yahoo NS,2026-11-25,Gradiente Infotainment Limited provides pre-production and post-production services.,INR
+GUJRAFFIA,GUJARAT RAFFIA INDUST LTD,,,,,,,,,Yahoo NS,2026-11-25,"Gujarat Raffia Industries Limited manufactures and sells HDPE tarpaulin, PP bags, and allied products in India.",INR
+HAMPTON,HAMPTON SKY REALTY LTD.,Financial Services,Capital Markets,,,,,,,Yahoo NS,2026-11-25,"Hampton Sky Realty Limited engages in the real estate business, including the development of commercial, industrial, housing, retail, hospitality, and medical projects.",INR
+HBESD,H B ESTATE DEVELOPERS L,Consumer Cyclical,Lodging,,,,,,,Yahoo NS,2026-11-25,HB Estate Developers Limited owns and manages hotels and real estate properties in India.,INR
+HBPOR,HB PORTFOLIO LTD.,Financial Services,Capital Markets,,,,,,,Yahoo NS,2026-11-25,HB Portfolio Limited invests and deals in securities and commodities in India.,INR
+HDFIRE,HD FIRE PROTECT LIMITED,Industrials,Specialty Industrial Machinery,,,,,,,Yahoo NS,2026-11-25,HD Fire Protect Limited manufactures and supplies fire protection equipment and systems in India.,INR
+HDIL,HOUSING DEV & INFRA LTD,Real Estate,Real Estate - Diversified,0.2792453,,,,,,Yahoo NS,2026-11-25,"Housing Development and Infrastructure Limited engages in the real estate construction, development, and other related activities in India.",INR
+HINDADH,HINDUSTAN ADHESIVES LTD.,Basic Materials,Specialty Chemicals,,,,,,,Yahoo NS,2026-11-25,"Hindustan Adhesives Limited, a specialty adhesive coating company, manufactures and sells self-adhesive tapes in India and internationally.",INR
+HINDALUMI,HIND ALUMINIUM INDS. LTD.,Basic Materials,Aluminum,,,,,,,Yahoo NS,2026-11-25,Hind Aluminium Industries Limited manufactures and sells aluminium wire rods and alloy conductors in India.,INR
+HINDCON,HINDCON CHEMICALS LIMITED,Basic Materials,Specialty Chemicals,,,,,,,Yahoo NS,2026-11-25,Hindcon Chemicals Limited manufactures and sells sodium silicates and construction chemicals in India and internationally.,INR
+HRYNSHP,HARIYANA SHIP BREAKERS L,Industrials,Waste Management,,,,,,,Yahoo NS,2026-11-25,"Hariyana Ship Breakers Limited, together with its subsidiary, engages in the ship breaking business in India and internationally.",INR
+IGLSPIRITS,IGL SPIRITS LIMITED,Consumer Defensive,Beverages - Wineries & Distilleries,,,,,,,Yahoo NS,2026-11-25,IGL Spirits Limited engages in the production and sales of spirits.,INR
+IIRM,IIRM HOLDINGS INDIA LTD,Financial Services,Insurance Brokers,,,,,,,Yahoo NS,2026-11-25,IIRM Holdings India Limited engages in the provision of professional and consultancy services in India and internationally.,INR
+IL&FSTRANS,IL&FS TRANS NET LTD,Industrials,Infrastructure Operations,,,,,,,Yahoo NS,2026-11-25,"IL&FS Transportation Networks Limited develops, operates, manages, and maintains transportation infrastructure projects in India and internationally.",INR
+INNOVISION,INNOVISION LIMITED,Industrials,Staffing & Employment Services,,,,,,,Yahoo NS,2026-11-25,"Innovision Limited provides manpower services, toll plaza management, and skill development training in India.",INR
+TRIVENIPT,TRIVENI POWER TRANS LTD,Industrials,Specialty Industrial Machinery,39.57826,,1.0,550.0,550.0,,Yahoo NS,2026-11-25,"Triveni Power Transmission Limited provides engineered gear systems and lifecycle solutions for OEMs, EPCs, and industrial operators worldwide.",INR
+UDAYJEW,UDAY JEWELLERY INDS. LTD.,Consumer Cyclical,Luxury Goods,,,,,,,Yahoo NS,2026-11-25,Uday Jewellery Industries Limited engages in the manufacturing and sales of fashion jewellery in India and internationally.,INR
+UGARSUGAR,THE UGAR SUGAR WORKS LTD,Consumer Defensive,Confectioners,,,,,,,NSE results,2026-11-25,"The Ugar Sugar Works Limited manufactures and sells sugar, and industrial and potable alcohol in India.",INR
+UNIDT,UNITED DRILLING TOOLS LTD,Energy,Oil & Gas Equipment & Services,,,,,,,NSE results,2026-11-25,"United Drilling Tools Limited, together with its subsidiary, manufactures and sells OD connectors and casing pipes, wireline winches, gas lift equipment, and downhole tools under the UDT brand in India and internationally.",INR
+UNITEDTEA,UNITED NILGIRI TEA LTD,Consumer Defensive,Farm Products,,,,,,,NSE results,2026-11-25,"The United Nilgiri Tea Estates Company Limited engages in growing, manufacturing, and selling teas in India and internationally.",INR
+UNIVASTU,UNIVASTU INDIA LIMITED,Industrials,Engineering & Construction,,,,,,,Yahoo NS,2026-11-25,Univastu India Limited provides works contract services in India.,INR
+UNIVPHOTO,UNIVERSUS IMAGINGS LTD,Healthcare,Medical Devices,,,,,,,NSE results,2026-11-25,"Universus Photo Imagings Limited manufactures, trades, and sells photographic and other imaging products in India.",INR
+UPHOT,U P HOTELS LTD.,Consumer Cyclical,Lodging,,,,,,,Yahoo NS,2026-11-25,U.P. Hotels Limited owns and operates hotels in India.,INR
+URJA,URJA GLOBAL LIMITED,Technology,Solar,,,,,,,NSE results,2026-11-25,"Urja Global Limited, together with its subsidiaries, engages in the design, consultancy, integration, supply, installation, commissioning, and maintenance of off-grid and grid-connected solar power plants and decentralized solar applications in India.",INR
+VAISHALI,VAISHALI PHARMA LIMITED,Healthcare,Drug Manufacturers - Specialty & Generic,,,,,,,Yahoo NS,2026-11-25,Vaishali Pharma Limited engages in the pharmaceutical business in India and internationally.,INR
+VARDMNPOLY,VARDHMAN POLYTEX LTD.,Consumer Cyclical,Textile Manufacturing,,,,,,,NSE results,2026-11-25,Vardhman Polytex Limited manufactures and sells yarns and garments in India.,INR
+VASUPRADA,SHRI VASUPRADA PLANTATI L,Consumer Defensive,Farm Products,,,,,,,Yahoo NS,2026-11-25,"Shri Vasuprada Plantations Limited, together with its subsidiaries, manufactures and cultivates tea, coffee, and rubber products in India and internationally.",INR
+VCL,VAXTEX COTFAB LIMITED,Consumer Cyclical,Textile Manufacturing,,,,,,,NSE results,2026-11-25,Vaxtex Cotfab Limited manufactures and sells textile products in India.,INR
+VEDAVAAG,VEDAVAAG SYSTEMS LTD.,Technology,Information Technology Services,,,,,,,Yahoo NS,2026-11-25,"Vedavaag Systems Limited, together with its subsidiaries, provides information technology (IT) sales and services in India.",INR
+VEEDOL,VEEDOL CORPORATION LTD,Basic Materials,Specialty Chemicals,,,,,,,NSE results,2026-11-25,"Veedol Corporation Limited, together with its subsidiaries, engages in the manufacturing and marketing of lubricants under the Veedol brand in India.",INR
+VELJAN,VELJAN DENISON LTD.,Industrials,Specialty Industrial Machinery,,,,,,,Yahoo NS,2026-11-25,"Veljan Denison Limited manufactures and sells hydraulic pumps, motors, valves, and custom-built power packs in India and internationally.",INR
+VERANDA,VERANDA LEARNING SOL LTD,Consumer Defensive,Education & Training Services,,,,,,,NSE results,2026-11-25,Veranda Learning Solutions Limited operates as an education company in India.,INR
+VETO,VETO SWITCHGEAR CABLE LTD,Industrials,Electrical Equipment & Parts,7.6410995,,,,,,NSE results,2026-11-25,"Veto Switchgears and Cables Limited, together with its subsidiaries, engages in the manufacture and sale of wires and cables, and electrical accessories in India and internationally.",INR
+VIJSOLX,VIJAY SOLVEX LTD.,Consumer Defensive,Packaged Foods,,,,,,,Yahoo NS,2026-11-25,Vijay Solvex Limited manufactures and sells edible oils and vanaspati ghee in India and internationally.,INR
+VIKASLIFE,VIKAS LIFECARE LIMITED,Consumer Defensive,Farm Products,,,,,,,Yahoo NS,2026-11-25,"Vikas Lifecare Limited engages in manufacturing and trading of polymers, chemicals, iron and steel, and plastic products in India and Ghana.",INR
+VINNY,VINNY OVERSEAS LIMITED,Consumer Cyclical,Textile Manufacturing,,,,,,,NSE results,2026-11-25,Vinny Overseas Limited engages in the manufacture and processing of textile fabrics in India.,INR
+VIPCLOTHNG,VIP CLOTHING LIMITED,Consumer Cyclical,Apparel Manufacturing,,,,,,,NSE results,2026-11-25,"VIP Clothing Limited engages in the manufacture, trading, marketing, and distribution of garments in India.",INR
+VIRINCHI,VIRINCHI LIMITED,Technology,Software - Application,,,,,,,NSE results,2026-11-25,Virinchi Limited provides information technology (IT) products and services worldwide.,INR
+VISAKAIND,VISAKA INDUSTRIES LTD,Industrials,Building Products & Equipment,,,,,,,NSE results,2026-11-25,"Visaka Industries Limited manufactures and sells manufacture of cement fibre sheets, fibre cement boards and panels, solar panels, and synthetic yarn in India and internationally.",INR
+VISHAL,VISHAL FABRICS LTD.,Consumer Cyclical,Textile Manufacturing,,,,,,,Yahoo NS,2026-11-25,"Vishal Fabrics Limited engages in the dyeing, printing, and processing of denims and various fabrics in India and internationally.",INR
+VITAL,VITAL CHEMTECH LIMITED,Basic Materials,Specialty Chemicals,,,,,,,Yahoo NS,2026-11-25,Vital Chemtech Limited engages in the manufacture and supply of phosphorus base chemicals in India and internationally.,INR
+VIVIMEDLAB,VIVIMED LABS LIMITED,Healthcare,Drug Manufacturers - Specialty & Generic,,,,,,,Yahoo NS,2026-11-25,"Vivimed Labs Limited, together with its subsidiaries, manufactures and sells active pharmaceutical ingredients (APIs), finished dosage formulations, specialty chemicals, and retail branded formulations in India.",INR

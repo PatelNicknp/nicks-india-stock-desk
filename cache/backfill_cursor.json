@@ -20,8 +20,8 @@
   "DISAQ": "2026-11-30",
   "ELCIDIN": "2026-11-30",
   "GOLDENTOBC": "2026-11-30",
-  "GUJRAFFIA": "2026-11-25",
-  "IL&FSTRANS": "2026-11-25",
+  "GUJRAFFIA": "2026-12-02",
+  "IL&FSTRANS": "2026-12-02",
   "LAKPRE": "2026-12-01",
   "ORTEL": "2026-12-01",
   "ZODIAC": "2026-11-23",
@@ -282,20 +282,7 @@
   "LOWVOL": "2026-11-24",
   "BNKETFAXIS": "2026-11-25",
   "NATPLY": "2026-11-25",
-  "ISIFHLSG": "2026-11-26",
-  "GRADIENTE": "2026-11-25",
-  "HAMPTON": "2026-11-25",
-  "HBESD": "2026-11-25",
-  "HBPOR": "2026-11-25",
-  "HDFIRE": "2026-11-25",
-  "HDIL": "2026-11-25",
-  "HINDADH": "2026-11-25",
-  "HINDALUMI": "2026-11-25",
-  "HINDCON": "2026-11-25",
-  "HRYNSHP": "2026-11-25",
-  "IGLSPIRITS": "2026-11-25",
-  "IIRM": "2026-11-25",
-  "INNOVISION": "2026-11-25"
+  "ISIFHLSG": "2026-11-26"
  },
  "shareholding_retry_after": {
   "08AGG": "2026-10-27",
@@ -316,33 +303,33 @@
   "JAYKAYPP": "2026-11-12",
   "OLAPP": "2026-11-12"
  },
- "last_batch_at": "2026-11-24T17:46Z",
- "last_statements_ok": 26,
+ "last_batch_at": "2026-11-24T23:25Z",
+ "last_statements_ok": 42,
  "last_statements_fail": 0,
  "last_shareholding_ok": 186,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
-  "BIRET": "2026-11-24",
-  "EMBASSY": "2026-11-24",
-  "BAGMANE": "2026-11-24",
-  "DUMMYHEG": "2026-11-24",
+  "BIRET": "2026-11-25",
+  "EMBASSY": "2026-11-25",
+  "BAGMANE": "2026-11-25",
+  "DUMMYHEG": "2026-11-25",
   "DUMMYINGL1": "2026-11-04",
   "DUMMYINGL2": "2026-11-04",
-  "DUMMYINXGN": "2026-11-24",
+  "DUMMYINXGN": "2026-11-25",
   "OLAELEC-RE": "2026-10-27",
-  "APLABPP": "2026-11-24",
-  "ATLPP": "2026-11-24",
-  "GSAILPP": "2026-11-24",
-  "JAYKAYPP": "2026-11-24",
+  "APLABPP": "2026-11-25",
+  "ATLPP": "2026-11-25",
+  "GSAILPP": "2026-11-25",
+  "JAYKAYPP": "2026-11-25",
   "QDLCCPS": "2026-11-17",
-  "SURAJINDPP": "2026-11-24",
-  "VERTEXPP": "2026-11-24",
+  "SURAJINDPP": "2026-11-25",
+  "VERTEXPP": "2026-11-25",
   "ICICIPRULI": "2026-10-27",
   "ACESEPP": "2026-11-20",
   "SHIVAM-RE1": "2026-11-16",
-  "ANIRITPP": "2026-11-24",
-  "CENTEXTPP": "2026-11-24",
-  "OLAPP": "2026-11-24",
+  "ANIRITPP": "2026-11-25",
+  "CENTEXTPP": "2026-11-25",
+  "OLAPP": "2026-11-25",
   "SUVID-RE": "2026-11-17"
  },
  "last_shareholding_empty": 14,
@@ -439,16 +426,16 @@
    "note": "quote only, no results"
   },
   "GUJRAFFIA": {
-   "count": 1,
-   "last_on": "2026-11-24",
-   "retry_after": "2026-11-25",
-   "note": "no statement source answered"
+   "count": 0,
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
+   "note": "quote only, no results"
   },
   "IL&FSTRANS": {
-   "count": 1,
-   "last_on": "2026-11-24",
-   "retry_after": "2026-11-25",
-   "note": "no statement source answered"
+   "count": 0,
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
+   "note": "quote only, no results"
   },
   "LAKPRE": {
    "count": 0,
@@ -2015,84 +2002,6 @@
    "last_on": "2026-11-19",
    "retry_after": "2026-11-26",
    "note": "quote only, no results"
-  },
-  "GRADIENTE": {
-   "count": 1,
-   "last_on": "2026-11-24",
-   "retry_after": "2026-11-25",
-   "note": "no statement source answered"
-  },
-  "HAMPTON": {
-   "count": 1,
-   "last_on": "2026-11-24",
-   "retry_after": "2026-11-25",
-   "note": "no statement source answered"
-  },
-  "HBESD": {
-   "count": 1,
-   "last_on": "2026-11-24",
-   "retry_after": "2026-11-25",
-   "note": "no statement source answered"
-  },
-  "HBPOR": {
-   "count": 1,
-   "last_on": "2026-11-24",
-   "retry_after": "2026-11-25",
-   "note": "no statement source answered"
-  },
-  "HDFIRE": {
-   "count": 1,
-   "last_on": "2026-11-24",
-   "retry_after": "2026-11-25",
-   "note": "no statement source answered"
-  },
-  "HDIL": {
-   "count": 1,
-   "last_on": "2026-11-24",
-   "retry_after": "2026-11-25",
-   "note": "no statement source answered"
-  },
-  "HINDADH": {
-   "count": 1,
-   "last_on": "2026-11-24",
-   "retry_after": "2026-11-25",
-   "note": "no statement source answered"
-  },
-  "HINDALUMI": {
-   "count": 1,
-   "last_on": "2026-11-24",
-   "retry_after": "2026-11-25",
-   "note": "no statement source answered"
-  },
-  "HINDCON": {
-   "count": 1,
-   "last_on": "2026-11-24",
-   "retry_after": "2026-11-25",
-   "note": "no statement source answered"
-  },
-  "HRYNSHP": {
-   "count": 1,
-   "last_on": "2026-11-24",
-   "retry_after": "2026-11-25",
-   "note": "no statement source answered"
-  },
-  "IGLSPIRITS": {
-   "count": 1,
-   "last_on": "2026-11-24",
-   "retry_after": "2026-11-25",
-   "note": "no statement source answered"
-  },
-  "IIRM": {
-   "count": 1,
-   "last_on": "2026-11-24",
-   "retry_after": "2026-11-25",
-   "note": "no statement source answered"
-  },
-  "INNOVISION": {
-   "count": 1,
-   "last_on": "2026-11-24",
-   "retry_after": "2026-11-25",
-   "note": "no statement source answered"
   }
  },
  "shareholding_failures": {

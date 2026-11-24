@@ -1,6 +1,8 @@
 {
  "incomplete": {
   "statements": [
+   "IL&FSTRANS",
+   "GUJRAFFIA",
    "RAJVIR",
    "ORTEL",
    "LAKPRE",
@@ -198,21 +200,19 @@
    "HDFCNEXT50",
    "HDFCMOMENT",
    "HDFCMID150",
-   "HDFCLOWVOL",
-   "HDFCGROWTH",
-   "HDFCBSE500"
+   "HDFCLOWVOL"
   ]
  },
  "needs_person": {},
  "providers": {
   "BSE results": {
-   "cooldown_until": "2026-11-24T18:58Z",
-   "fails": 20,
+   "cooldown_until": "2026-11-25T05:07Z",
+   "fails": 21,
    "last_error": "skipped after repeated failures in this run"
   },
   "BSE shareholding": {
-   "cooldown_until": "2026-11-24T18:58Z",
-   "fails": 45,
+   "cooldown_until": "2026-11-25T05:07Z",
+   "fails": 46,
    "last_error": "skipped after repeated failures in this run"
   },
   "NSE results": {
@@ -1026,15 +1026,6 @@
    "ticker": "GOLDENTOBC",
    "tries": 2
   },
-  "statements:GRADIENTE": {
-   "kind": "statements",
-   "last_on": "2026-11-24",
-   "note": "no statement source answered",
-   "retry_after": "2026-11-25",
-   "since": "2026-11-24",
-   "ticker": "GRADIENTE",
-   "tries": 1
-  },
   "statements:GROWWDEFNC": {
    "kind": "statements",
    "last_on": "2026-11-16",
@@ -1073,21 +1064,12 @@
   },
   "statements:GUJRAFFIA": {
    "kind": "statements",
-   "last_on": "2026-11-24",
-   "note": "no statement source answered",
-   "retry_after": "2026-11-25",
+   "last_on": "2026-11-25",
+   "note": "quote only, no results",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "GUJRAFFIA",
-   "tries": 2
-  },
-  "statements:HAMPTON": {
-   "kind": "statements",
-   "last_on": "2026-11-24",
-   "note": "no statement source answered",
-   "retry_after": "2026-11-25",
-   "since": "2026-11-24",
-   "ticker": "HAMPTON",
-   "tries": 1
+   "tries": 3
   },
   "statements:HARCR": {
    "kind": "statements",
@@ -1096,24 +1078,6 @@
    "retry_after": "2026-11-23",
    "since": "2026-11-16",
    "ticker": "HARCR",
-   "tries": 1
-  },
-  "statements:HBESD": {
-   "kind": "statements",
-   "last_on": "2026-11-24",
-   "note": "no statement source answered",
-   "retry_after": "2026-11-25",
-   "since": "2026-11-24",
-   "ticker": "HBESD",
-   "tries": 1
-  },
-  "statements:HBPOR": {
-   "kind": "statements",
-   "last_on": "2026-11-24",
-   "note": "no statement source answered",
-   "retry_after": "2026-11-25",
-   "since": "2026-11-24",
-   "ticker": "HBPOR",
    "tries": 1
   },
   "statements:HDFCBSE500": {
@@ -1269,24 +1233,6 @@
    "ticker": "HDFCVALUE",
    "tries": 1
   },
-  "statements:HDFIRE": {
-   "kind": "statements",
-   "last_on": "2026-11-24",
-   "note": "no statement source answered",
-   "retry_after": "2026-11-25",
-   "since": "2026-11-24",
-   "ticker": "HDFIRE",
-   "tries": 1
-  },
-  "statements:HDIL": {
-   "kind": "statements",
-   "last_on": "2026-11-24",
-   "note": "no statement source answered",
-   "retry_after": "2026-11-25",
-   "since": "2026-11-24",
-   "ticker": "HDIL",
-   "tries": 1
-  },
   "statements:HEALTHADD": {
    "kind": "statements",
    "last_on": "2026-11-16",
@@ -1341,33 +1287,6 @@
    "ticker": "HFTSEINDIA",
    "tries": 1
   },
-  "statements:HINDADH": {
-   "kind": "statements",
-   "last_on": "2026-11-24",
-   "note": "no statement source answered",
-   "retry_after": "2026-11-25",
-   "since": "2026-11-24",
-   "ticker": "HINDADH",
-   "tries": 1
-  },
-  "statements:HINDALUMI": {
-   "kind": "statements",
-   "last_on": "2026-11-24",
-   "note": "no statement source answered",
-   "retry_after": "2026-11-25",
-   "since": "2026-11-24",
-   "ticker": "HINDALUMI",
-   "tries": 1
-  },
-  "statements:HINDCON": {
-   "kind": "statements",
-   "last_on": "2026-11-24",
-   "note": "no statement source answered",
-   "retry_after": "2026-11-25",
-   "since": "2026-11-24",
-   "ticker": "HINDCON",
-   "tries": 1
-  },
   "statements:HNGSNGBEES": {
    "kind": "statements",
    "last_on": "2026-11-16",
@@ -1375,15 +1294,6 @@
    "retry_after": "2026-11-23",
    "since": "2026-11-16",
    "ticker": "HNGSNGBEES",
-   "tries": 1
-  },
-  "statements:HRYNSHP": {
-   "kind": "statements",
-   "last_on": "2026-11-24",
-   "note": "no statement source answered",
-   "retry_after": "2026-11-25",
-   "since": "2026-11-24",
-   "ticker": "HRYNSHP",
    "tries": 1
   },
   "statements:ICICIB22": {
@@ -1404,32 +1314,14 @@
    "ticker": "IDFSENSEXE",
    "tries": 1
   },
-  "statements:IGLSPIRITS": {
-   "kind": "statements",
-   "last_on": "2026-11-24",
-   "note": "no statement source answered",
-   "retry_after": "2026-11-25",
-   "since": "2026-11-24",
-   "ticker": "IGLSPIRITS",
-   "tries": 1
-  },
-  "statements:IIRM": {
-   "kind": "statements",
-   "last_on": "2026-11-24",
-   "note": "no statement source answered",
-   "retry_after": "2026-11-25",
-   "since": "2026-11-24",
-   "ticker": "IIRM",
-   "tries": 1
-  },
   "statements:IL&FSTRANS": {
    "kind": "statements",
-   "last_on": "2026-11-24",
-   "note": "no statement source answered",
-   "retry_after": "2026-11-25",
+   "last_on": "2026-11-25",
+   "note": "quote only, no results",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "IL&FSTRANS",
-   "tries": 2
+   "tries": 3
   },
   "statements:INFRA": {
    "kind": "statements",
@@ -1456,15 +1348,6 @@
    "retry_after": "2026-11-23",
    "since": "2026-11-16",
    "ticker": "INFRAIETF",
-   "tries": 1
-  },
-  "statements:INNOVISION": {
-   "kind": "statements",
-   "last_on": "2026-11-24",
-   "note": "no statement source answered",
-   "retry_after": "2026-11-25",
-   "since": "2026-11-24",
-   "ticker": "INNOVISION",
    "tries": 1
   },
   "statements:INSURADD": {
