@@ -1,5 +1,5 @@
 date,participant,index_fut_long,index_fut_short,index_fut_net,source
-2026-11-20,Client,155681.0,114419.0,41262.0,NSE fao_participant_oi
-2026-11-20,DII,52405.0,35254.0,17151.0,NSE fao_participant_oi
-2026-11-20,FII,75864.0,146318.0,-70454.0,NSE fao_participant_oi
-2026-11-20,Pro,53026.0,40985.0,12041.0,NSE fao_participant_oi
+2026-11-23,Client,163812.0,69646.0,94166.0,NSE fao_participant_oi
+2026-11-23,DII,52934.0,33166.0,19768.0,NSE fao_participant_oi
+2026-11-23,FII,30649.0,121598.0,-90949.0,NSE fao_participant_oi
+2026-11-23,Pro,17521.0,40506.0,-22985.0,NSE fao_participant_oi
