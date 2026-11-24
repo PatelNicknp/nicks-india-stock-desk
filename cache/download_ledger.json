@@ -1,6 +1,7 @@
 {
  "incomplete": {
   "statements": [
+   "ORTEL",
    "LAKPRE",
    "GOLDENTOBC",
    "ELCIDIN",
@@ -199,20 +200,19 @@
    "HDFCMID150",
    "HDFCLOWVOL",
    "HDFCGROWTH",
-   "HDFCBSE500",
-   "HARCR"
+   "HDFCBSE500"
   ]
  },
  "needs_person": {},
  "providers": {
   "BSE results": {
-   "cooldown_until": "2026-11-24T03:47Z",
-   "fails": 18,
+   "cooldown_until": "2026-11-24T11:39Z",
+   "fails": 19,
    "last_error": "skipped after repeated failures in this run"
   },
   "BSE shareholding": {
-   "cooldown_until": "2026-11-24T03:47Z",
-   "fails": 43,
+   "cooldown_until": "2026-11-24T11:39Z",
+   "fails": 44,
    "last_error": "skipped after repeated failures in this run"
   },
   "NSE results": {
@@ -2270,12 +2270,12 @@
   },
   "statements:ORTEL": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-24",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-01",
    "since": "2026-11-16",
    "ticker": "ORTEL",
-   "tries": 1
+   "tries": 2
   },
   "statements:PHARMABEES": {
    "kind": "statements",
