@@ -47,30 +47,30 @@
   "ALPHAETF": "2026-12-02",
   "ALPL30IETF": "2026-12-02",
   "AMBARPIL": "2026-12-02",
-  "AUTOIETF": "2026-11-23",
-  "BANK10ADD": "2026-11-23",
-  "BANK10BETF": "2026-11-23",
-  "BANKADD": "2026-11-23",
-  "BANKBEES": "2026-11-23",
-  "BANKBETA": "2026-11-23",
-  "BANKBETF": "2026-11-23",
-  "BANKETF": "2026-11-23",
-  "BANKIETF": "2026-11-23",
-  "BANKNIFTY1": "2026-11-23",
-  "BANKPSU": "2026-11-23",
-  "BARODARY": "2026-11-23",
-  "BBNPNBETF": "2026-11-23",
-  "BFSI": "2026-11-23",
-  "BHASKAGR": "2026-11-23",
-  "BSE500IETF": "2026-11-23",
-  "BSLNIFTY": "2026-11-23",
-  "BSLSENETFG": "2026-11-23",
-  "COMMOIETF": "2026-11-23",
+  "AUTOIETF": "2026-12-02",
+  "BANK10ADD": "2026-12-02",
+  "BANK10BETF": "2026-12-02",
+  "BANKADD": "2026-12-02",
+  "BANKBEES": "2026-12-02",
+  "BANKBETA": "2026-12-02",
+  "BANKBETF": "2026-12-02",
+  "BANKETF": "2026-12-02",
+  "BANKIETF": "2026-12-02",
+  "BANKNIFTY1": "2026-12-02",
+  "BANKPSU": "2026-12-02",
+  "BARODARY": "2026-12-02",
+  "BBNPNBETF": "2026-12-02",
+  "BFSI": "2026-12-02",
+  "BHASKAGR": "2026-12-02",
+  "BSE500IETF": "2026-12-02",
+  "BSLNIFTY": "2026-12-02",
+  "BSLSENETFG": "2026-12-02",
+  "COMMOIETF": "2026-12-02",
   "CONSUMAXIS": "2026-11-23",
-  "CONSUMER": "2026-11-23",
-  "CONSUMIETF": "2026-11-23",
-  "CONTCHM": "2026-11-23",
-  "CPSEETF": "2026-11-23",
+  "CONSUMER": "2026-12-02",
+  "CONSUMIETF": "2026-12-02",
+  "CONTCHM": "2026-12-02",
+  "CPSEETF": "2026-12-02",
   "DEFENCE": "2026-11-23",
   "DIVIDEND": "2026-11-23",
   "ECAPINSURE": "2026-11-23",
@@ -303,8 +303,8 @@
   "JAYKAYPP": "2026-11-12",
   "OLAPP": "2026-11-12"
  },
- "last_batch_at": "2026-11-25T01:28Z",
- "last_statements_ok": 92,
+ "last_batch_at": "2026-11-25T01:54Z",
+ "last_statements_ok": 99,
  "last_statements_fail": 0,
  "last_shareholding_ok": 186,
  "last_shareholding_fail": 0,
@@ -589,116 +589,116 @@
   },
   "AUTOIETF": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "BANK10ADD": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "BANK10BETF": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "BANKADD": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "BANKBEES": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "BANKBETA": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "BANKBETF": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "BANKETF": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "BANKIETF": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "BANKNIFTY1": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "BANKPSU": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "BARODARY": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "BBNPNBETF": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "BFSI": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "BHASKAGR": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "BSE500IETF": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "BSLNIFTY": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "BSLSENETFG": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "COMMOIETF": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "CONSUMAXIS": {
@@ -709,26 +709,26 @@
   },
   "CONSUMER": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "CONSUMIETF": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "CONTCHM": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "CPSEETF": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "DEFENCE": {

@@ -1,6 +1,29 @@
 {
  "incomplete": {
   "statements": [
+   "CPSEETF",
+   "CONTCHM",
+   "CONSUMIETF",
+   "CONSUMER",
+   "COMMOIETF",
+   "BSLSENETFG",
+   "BSLNIFTY",
+   "BSE500IETF",
+   "BHASKAGR",
+   "BFSI",
+   "BBNPNBETF",
+   "BARODARY",
+   "BANKPSU",
+   "BANKNIFTY1",
+   "BANKIETF",
+   "BANKETF",
+   "BANKBETF",
+   "BANKBETA",
+   "BANKBEES",
+   "BANKADD",
+   "BANK10BETF",
+   "BANK10ADD",
+   "AUTOIETF",
    "AMBARPIL",
    "ALPL30IETF",
    "ALPHAETF",
@@ -177,30 +200,7 @@
    "METAL",
    "MASPTOP50",
    "MARIS",
-   "MANUFGBEES",
-   "MAKEINDIA",
-   "MAHKTECH",
-   "MAFANG",
-   "LOWVOLIETF",
-   "LICNMID100",
-   "LICNFNHGP",
-   "LICNETFN50",
-   "LARGEMID50",
-   "KIMIABL",
-   "JUNIORBEES",
-   "IVZSENSEX",
-   "ITIETF",
-   "ITETF",
-   "ITBETA",
-   "ITBEES",
-   "ITAXIS",
-   "ITADD",
-   "INTERNET",
-   "INSUREIETF",
-   "INSURADD",
-   "INFRAIETF",
-   "INFRABEES",
-   "INFRA"
+   "MANUFGBEES"
   ]
  },
  "needs_person": {},
@@ -542,12 +542,12 @@
   },
   "statements:AUTOIETF": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "AUTOIETF",
-   "tries": 1
+   "tries": 2
   },
   "statements:BAGMANE": {
    "kind": "statements",
@@ -560,57 +560,57 @@
   },
   "statements:BANK10ADD": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "BANK10ADD",
-   "tries": 1
+   "tries": 2
   },
   "statements:BANK10BETF": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "BANK10BETF",
-   "tries": 1
+   "tries": 2
   },
   "statements:BANKADD": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "BANKADD",
-   "tries": 1
+   "tries": 2
   },
   "statements:BANKBEES": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "BANKBEES",
-   "tries": 1
+   "tries": 2
   },
   "statements:BANKBETA": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "BANKBETA",
-   "tries": 1
+   "tries": 2
   },
   "statements:BANKBETF": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "BANKBETF",
-   "tries": 1
+   "tries": 2
   },
   "statements:BANKCASE": {
    "kind": "statements",
@@ -623,75 +623,75 @@
   },
   "statements:BANKETF": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "BANKETF",
-   "tries": 1
+   "tries": 2
   },
   "statements:BANKIETF": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "BANKIETF",
-   "tries": 1
+   "tries": 2
   },
   "statements:BANKNIFTY1": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "BANKNIFTY1",
-   "tries": 1
+   "tries": 2
   },
   "statements:BANKPSU": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "BANKPSU",
-   "tries": 1
+   "tries": 2
   },
   "statements:BARODARY": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "BARODARY",
-   "tries": 1
+   "tries": 2
   },
   "statements:BBNPNBETF": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "BBNPNBETF",
-   "tries": 1
+   "tries": 2
   },
   "statements:BFSI": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "BFSI",
-   "tries": 1
+   "tries": 2
   },
   "statements:BHASKAGR": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "BHASKAGR",
-   "tries": 1
+   "tries": 2
   },
   "statements:BIRLATOTAL": {
    "kind": "statements",
@@ -713,39 +713,39 @@
   },
   "statements:BSE500IETF": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "BSE500IETF",
-   "tries": 1
+   "tries": 2
   },
   "statements:BSLNIFTY": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "BSLNIFTY",
-   "tries": 1
+   "tries": 2
   },
   "statements:BSLSENETFG": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "BSLSENETFG",
-   "tries": 1
+   "tries": 2
   },
   "statements:COMMOIETF": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "COMMOIETF",
-   "tries": 1
+   "tries": 2
   },
   "statements:CONSUMAXIS": {
    "kind": "statements",
@@ -758,39 +758,39 @@
   },
   "statements:CONSUMER": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "CONSUMER",
-   "tries": 1
+   "tries": 2
   },
   "statements:CONSUMIETF": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "CONSUMIETF",
-   "tries": 1
+   "tries": 2
   },
   "statements:CONTCHM": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "CONTCHM",
-   "tries": 1
+   "tries": 2
   },
   "statements:CPSEETF": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "CPSEETF",
-   "tries": 1
+   "tries": 2
   },
   "statements:DATIWARE": {
    "kind": "statements",
