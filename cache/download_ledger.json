@@ -1,6 +1,49 @@
 {
  "incomplete": {
   "statements": [
+   "SBIDEFETF",
+   "SBIBANKNIF",
+   "PHARMAIETF",
+   "MSCIADD",
+   "LICNETFSEN",
+   "IDFSENSEXE",
+   "EBANK10",
+   "BIRLATOTAL",
+   "BANKCASE",
+   "STDSFAC",
+   "SNXT50BETA",
+   "SNXT50BEES",
+   "SNXT30BEES",
+   "SML100CASE",
+   "SMALLIETF",
+   "SMALLCAP",
+   "SMALLADD",
+   "SMALL250",
+   "SILVERO",
+   "SICAPIT",
+   "SHARIABEES",
+   "SETFSN50",
+   "SETFBSE100",
+   "SENSEXIETF",
+   "SENSEXETF",
+   "SENSEXBETA",
+   "SENSEXBEES",
+   "SENSEXAXIS",
+   "SENSEXADD",
+   "SENSEX1",
+   "SELECTIPO",
+   "SEL",
+   "SCOOBEEDAY",
+   "SCBL",
+   "SBIVALETF",
+   "SBISMLETF",
+   "SBISENSEX",
+   "SBIMIDMOM",
+   "LICNFNHGP",
+   "INSURADD",
+   "EQUAL50",
+   "ELMDIV",
+   "11QPR",
    "RAMGOPOLY",
    "RALEGRA",
    "QUAL30IETF",
@@ -157,62 +200,19 @@
    "BANKNIFTY1",
    "BANKIETF",
    "BANKETF",
-   "BANKBETF",
-   "BANKBETA",
-   "BANKBEES",
-   "BANKADD",
-   "BANK10BETF",
-   "BANK10ADD",
-   "AUTOIETF",
-   "AMBARPIL",
-   "ALPL30IETF",
-   "ALPHAETF",
-   "ALPHA",
-   "AGVENTURES",
-   "ABSLPSE",
-   "ABSLNN50ET",
-   "ABSLMSCIN",
-   "ABSLBANETF",
-   "ABSL10BANK",
-   "11QPD",
-   "11MPR",
-   "11MPD",
-   "11GPG",
-   "11DPR",
-   "11DPD",
-   "11AQD",
-   "11AMD",
-   "11AGG",
-   "08MPD",
-   "08GPG",
-   "08AGG",
-   "JKSHAH",
-   "ZODIAC",
-   "IL&FSTRANS",
-   "GUJRAFFIA",
-   "RAJVIR",
-   "ORTEL",
-   "LAKPRE",
-   "GOLDENTOBC",
-   "ELCIDIN",
-   "DISAQ",
-   "AARNAV",
-   "TCC",
-   "SINGERIND",
-   "ARTEMISMED",
-   "AGL"
+   "BANKBETF"
   ]
  },
  "needs_person": {},
  "providers": {
   "BSE results": {
-   "cooldown_until": "2026-11-25T11:30Z",
-   "fails": 22,
+   "cooldown_until": "2026-11-26T01:43Z",
+   "fails": 23,
    "last_error": "skipped after repeated failures in this run"
   },
   "BSE shareholding": {
-   "cooldown_until": "2026-11-25T11:30Z",
-   "fails": 47,
+   "cooldown_until": "2026-11-26T01:43Z",
+   "fails": 48,
    "last_error": "skipped after repeated failures in this run"
   },
   "NSE results": {
@@ -416,11 +416,20 @@
   },
   "statements:11QPR": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "11QPR",
+   "tries": 2
+  },
+  "statements:AANJAAY": {
+   "kind": "statements",
+   "last_on": "2026-11-26",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-27",
+   "since": "2026-11-26",
+   "ticker": "AANJAAY",
    "tries": 1
   },
   "statements:AARNAV": {
@@ -614,12 +623,12 @@
   },
   "statements:BANKCASE": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-03",
    "since": "2026-11-17",
    "ticker": "BANKCASE",
-   "tries": 1
+   "tries": 2
   },
   "statements:BANKETF": {
    "kind": "statements",
@@ -695,12 +704,12 @@
   },
   "statements:BIRLATOTAL": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-03",
    "since": "2026-11-17",
    "ticker": "BIRLATOTAL",
-   "tries": 1
+   "tries": 2
   },
   "statements:BNKETFAXIS": {
    "kind": "statements",
@@ -848,12 +857,12 @@
   },
   "statements:EBANK10": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-03",
    "since": "2026-11-17",
    "ticker": "EBANK10",
-   "tries": 1
+   "tries": 2
   },
   "statements:ECAPINSURE": {
    "kind": "statements",
@@ -875,12 +884,12 @@
   },
   "statements:ELMDIV": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "ELMDIV",
-   "tries": 1
+   "tries": 2
   },
   "statements:ENERGY": {
    "kind": "statements",
@@ -920,12 +929,12 @@
   },
   "statements:EQUAL50": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "EQUAL50",
-   "tries": 1
+   "tries": 2
   },
   "statements:EQUAL50ADD": {
    "kind": "statements",
@@ -1307,12 +1316,12 @@
   },
   "statements:IDFSENSEXE": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-03",
    "since": "2026-11-17",
    "ticker": "IDFSENSEXE",
-   "tries": 1
+   "tries": 2
   },
   "statements:IL&FSTRANS": {
    "kind": "statements",
@@ -1352,12 +1361,12 @@
   },
   "statements:INSURADD": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "INSURADD",
-   "tries": 1
+   "tries": 2
   },
   "statements:INSUREIETF": {
    "kind": "statements",
@@ -1523,21 +1532,21 @@
   },
   "statements:LICNETFSEN": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-03",
    "since": "2026-11-17",
    "ticker": "LICNETFSEN",
-   "tries": 1
+   "tries": 2
   },
   "statements:LICNFNHGP": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "LICNFNHGP",
-   "tries": 1
+   "tries": 2
   },
   "statements:LICNMID100": {
    "kind": "statements",
@@ -1910,12 +1919,12 @@
   },
   "statements:MSCIADD": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-03",
    "since": "2026-11-17",
    "ticker": "MSCIADD",
-   "tries": 1
+   "tries": 2
   },
   "statements:MULTICAP": {
    "kind": "statements",
@@ -2180,12 +2189,12 @@
   },
   "statements:PHARMAIETF": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-03",
    "since": "2026-11-17",
    "ticker": "PHARMAIETF",
-   "tries": 1
+   "tries": 2
   },
   "statements:POWERIETF": {
    "kind": "statements",
@@ -2315,21 +2324,21 @@
   },
   "statements:SBIBANKNIF": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-03",
    "since": "2026-11-17",
    "ticker": "SBIBANKNIF",
-   "tries": 1
+   "tries": 2
   },
   "statements:SBIDEFETF": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-03",
    "since": "2026-11-17",
    "ticker": "SBIDEFETF",
-   "tries": 1
+   "tries": 2
   },
   "statements:SBIEQLWT50": {
    "kind": "statements",
@@ -2351,12 +2360,12 @@
   },
   "statements:SBIMIDMOM": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "SBIMIDMOM",
-   "tries": 1
+   "tries": 2
   },
   "statements:SBINIFTY50": {
    "kind": "statements",
@@ -2378,48 +2387,48 @@
   },
   "statements:SBISENSEX": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "SBISENSEX",
-   "tries": 1
+   "tries": 2
   },
   "statements:SBISMLETF": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "SBISMLETF",
-   "tries": 1
+   "tries": 2
   },
   "statements:SBIVALETF": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "SBIVALETF",
-   "tries": 1
+   "tries": 2
   },
   "statements:SCBL": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "SCBL",
-   "tries": 1
+   "tries": 2
   },
   "statements:SCOOBEEDAY": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "SCOOBEEDAY",
-   "tries": 1
+   "tries": 2
   },
   "statements:SECLEDBETA": {
    "kind": "statements",
@@ -2432,111 +2441,111 @@
   },
   "statements:SEL": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "SEL",
-   "tries": 1
+   "tries": 2
   },
   "statements:SELECTIPO": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "SELECTIPO",
-   "tries": 1
+   "tries": 2
   },
   "statements:SENSEX1": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "SENSEX1",
-   "tries": 1
+   "tries": 2
   },
   "statements:SENSEXADD": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "SENSEXADD",
-   "tries": 1
+   "tries": 2
   },
   "statements:SENSEXAXIS": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "SENSEXAXIS",
-   "tries": 1
+   "tries": 2
   },
   "statements:SENSEXBEES": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "SENSEXBEES",
-   "tries": 1
+   "tries": 2
   },
   "statements:SENSEXBETA": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "SENSEXBETA",
-   "tries": 1
+   "tries": 2
   },
   "statements:SENSEXETF": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "SENSEXETF",
-   "tries": 1
+   "tries": 2
   },
   "statements:SENSEXIETF": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "SENSEXIETF",
-   "tries": 1
+   "tries": 2
   },
   "statements:SETFBSE100": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "SETFBSE100",
-   "tries": 1
+   "tries": 2
   },
   "statements:SETFSN50": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "SETFSN50",
-   "tries": 1
+   "tries": 2
   },
   "statements:SHARIABEES": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "SHARIABEES",
-   "tries": 1
+   "tries": 2
   },
   "statements:SHIVAM-RE1": {
    "kind": "statements",
@@ -2549,21 +2558,21 @@
   },
   "statements:SICAPIT": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "SICAPIT",
-   "tries": 1
+   "tries": 2
   },
   "statements:SILVERO": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "SILVERO",
-   "tries": 1
+   "tries": 2
   },
   "statements:SINGERIND": {
    "kind": "statements",
@@ -2576,84 +2585,84 @@
   },
   "statements:SMALL250": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "SMALL250",
-   "tries": 1
+   "tries": 2
   },
   "statements:SMALLADD": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "SMALLADD",
-   "tries": 1
+   "tries": 2
   },
   "statements:SMALLCAP": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "SMALLCAP",
-   "tries": 1
+   "tries": 2
   },
   "statements:SMALLIETF": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "SMALLIETF",
-   "tries": 1
+   "tries": 2
   },
   "statements:SML100CASE": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "SML100CASE",
-   "tries": 1
+   "tries": 2
   },
   "statements:SNXT30BEES": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "SNXT30BEES",
-   "tries": 1
+   "tries": 2
   },
   "statements:SNXT50BEES": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "SNXT50BEES",
-   "tries": 1
+   "tries": 2
   },
   "statements:SNXT50BETA": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "SNXT50BETA",
-   "tries": 1
+   "tries": 2
   },
   "statements:STDSFAC": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "STDSFAC",
-   "tries": 1
+   "tries": 2
   },
   "statements:SUVID-RE": {
    "kind": "statements",
