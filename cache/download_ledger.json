@@ -249,7 +249,7 @@
  "stalls": {
   "prices": {
    "cooldown_until": "",
-   "runs": 0
+   "runs": 1
   },
   "shareholding": {
    "cooldown_until": "",
