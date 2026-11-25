@@ -1,5 +1,5 @@
 date,participant,index_fut_long,index_fut_short,index_fut_net,source,data_status,note,disclaimer
-2026-11-23,Client,163812.0,69646.0,94166.0,NSE fao_participant_oi,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-2026-11-23,DII,52934.0,33166.0,19768.0,NSE fao_participant_oi,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-2026-11-23,FII,30649.0,121598.0,-90949.0,NSE fao_participant_oi,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
-2026-11-23,Pro,17521.0,40506.0,-22985.0,NSE fao_participant_oi,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+2026-11-25,Client,146754.0,76915.0,69839.0,NSE fao_participant_oi,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+2026-11-25,DII,54959.0,39905.0,15054.0,NSE fao_participant_oi,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+2026-11-25,FII,38700.0,123930.0,-85230.0,NSE fao_participant_oi,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+2026-11-25,Pro,29834.0,29497.0,337.0,NSE fao_participant_oi,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
