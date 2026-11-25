@@ -1,6 +1,26 @@
 {
  "incomplete": {
   "statements": [
+   "GROWWRAIL",
+   "GROWWPOWER",
+   "GROWWHOSPI",
+   "GROWWDEFNC",
+   "FMCGIETF",
+   "FMCGADD",
+   "FLEXIADD",
+   "FINIETF",
+   "EVINDIA",
+   "EVIETF",
+   "ESG",
+   "ESENSEX",
+   "EQUAL50ADD",
+   "EQUAL200",
+   "ENEXT50",
+   "ENERGYAXIS",
+   "ENERGY",
+   "ECAPINSURE",
+   "DIVIDEND",
+   "DEFENCE",
    "CPSEETF",
    "CONTCHM",
    "CONSUMIETF",
@@ -180,39 +200,19 @@
    "MOMENTUM",
    "MOM50",
    "MOM30IETF",
-   "MOM100",
-   "MOLOWVOL",
-   "MOHEALTH",
-   "MODMA",
-   "MODEFENCE",
-   "MOCAPITAL",
-   "MIDSMALL",
-   "MIDSELIETF",
-   "MIDQ50ADD",
-   "MIDCAPIETF",
-   "MIDCAPETF",
-   "MIDCAPBETA",
-   "MIDCAPADD",
-   "MIDBANKADD",
-   "MID150CASE",
-   "MID150BEES",
-   "METALIETF",
-   "METAL",
-   "MASPTOP50",
-   "MARIS",
-   "MANUFGBEES"
+   "MOM100"
   ]
  },
  "needs_person": {},
  "providers": {
   "BSE results": {
-   "cooldown_until": "2026-11-25T05:07Z",
-   "fails": 21,
+   "cooldown_until": "2026-11-25T11:30Z",
+   "fails": 22,
    "last_error": "skipped after repeated failures in this run"
   },
   "BSE shareholding": {
-   "cooldown_until": "2026-11-25T05:07Z",
-   "fails": 46,
+   "cooldown_until": "2026-11-25T11:30Z",
+   "fails": 47,
    "last_error": "skipped after repeated failures in this run"
   },
   "NSE results": {
@@ -803,12 +803,12 @@
   },
   "statements:DEFENCE": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "DEFENCE",
-   "tries": 1
+   "tries": 2
   },
   "statements:DISAQ": {
    "kind": "statements",
@@ -821,12 +821,12 @@
   },
   "statements:DIVIDEND": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "DIVIDEND",
-   "tries": 1
+   "tries": 2
   },
   "statements:DUMMYHEG": {
    "kind": "statements",
@@ -857,12 +857,12 @@
   },
   "statements:ECAPINSURE": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "ECAPINSURE",
-   "tries": 1
+   "tries": 2
   },
   "statements:ELCIDIN": {
    "kind": "statements",
@@ -884,39 +884,39 @@
   },
   "statements:ENERGY": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "ENERGY",
-   "tries": 1
+   "tries": 2
   },
   "statements:ENERGYAXIS": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "ENERGYAXIS",
-   "tries": 1
+   "tries": 2
   },
   "statements:ENEXT50": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "ENEXT50",
-   "tries": 1
+   "tries": 2
   },
   "statements:EQUAL200": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "EQUAL200",
-   "tries": 1
+   "tries": 2
   },
   "statements:EQUAL50": {
    "kind": "statements",
@@ -929,84 +929,84 @@
   },
   "statements:EQUAL50ADD": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "EQUAL50ADD",
-   "tries": 1
+   "tries": 2
   },
   "statements:ESENSEX": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "ESENSEX",
-   "tries": 1
+   "tries": 2
   },
   "statements:ESG": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "ESG",
-   "tries": 1
+   "tries": 2
   },
   "statements:EVIETF": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "EVIETF",
-   "tries": 1
+   "tries": 2
   },
   "statements:EVINDIA": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "EVINDIA",
-   "tries": 1
+   "tries": 2
   },
   "statements:FINIETF": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "FINIETF",
-   "tries": 1
+   "tries": 2
   },
   "statements:FLEXIADD": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "FLEXIADD",
-   "tries": 1
+   "tries": 2
   },
   "statements:FMCGADD": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "FMCGADD",
-   "tries": 1
+   "tries": 2
   },
   "statements:FMCGIETF": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "FMCGIETF",
-   "tries": 1
+   "tries": 2
   },
   "statements:FRONTCORP": {
    "kind": "statements",
@@ -1028,39 +1028,39 @@
   },
   "statements:GROWWDEFNC": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "GROWWDEFNC",
-   "tries": 1
+   "tries": 2
   },
   "statements:GROWWHOSPI": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "GROWWHOSPI",
-   "tries": 1
+   "tries": 2
   },
   "statements:GROWWPOWER": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "GROWWPOWER",
-   "tries": 1
+   "tries": 2
   },
   "statements:GROWWRAIL": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "GROWWRAIL",
-   "tries": 1
+   "tries": 2
   },
   "statements:GUJRAFFIA": {
    "kind": "statements",

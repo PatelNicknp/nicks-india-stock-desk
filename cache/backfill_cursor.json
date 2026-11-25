@@ -71,28 +71,28 @@
   "CONSUMIETF": "2026-12-02",
   "CONTCHM": "2026-12-02",
   "CPSEETF": "2026-12-02",
-  "DEFENCE": "2026-11-23",
-  "DIVIDEND": "2026-11-23",
-  "ECAPINSURE": "2026-11-23",
+  "DEFENCE": "2026-12-02",
+  "DIVIDEND": "2026-12-02",
+  "ECAPINSURE": "2026-12-02",
   "ELMDIV": "2026-11-23",
-  "ENERGY": "2026-11-23",
-  "ENERGYAXIS": "2026-11-23",
-  "ENEXT50": "2026-11-23",
-  "EQUAL200": "2026-11-23",
+  "ENERGY": "2026-12-02",
+  "ENERGYAXIS": "2026-12-02",
+  "ENEXT50": "2026-12-02",
+  "EQUAL200": "2026-12-02",
   "EQUAL50": "2026-11-23",
-  "EQUAL50ADD": "2026-11-23",
-  "ESENSEX": "2026-11-23",
-  "ESG": "2026-11-23",
-  "EVIETF": "2026-11-23",
-  "EVINDIA": "2026-11-23",
-  "FINIETF": "2026-11-23",
-  "FLEXIADD": "2026-11-23",
-  "FMCGADD": "2026-11-23",
-  "FMCGIETF": "2026-11-23",
-  "GROWWDEFNC": "2026-11-23",
-  "GROWWHOSPI": "2026-11-23",
-  "GROWWPOWER": "2026-11-23",
-  "GROWWRAIL": "2026-11-23",
+  "EQUAL50ADD": "2026-12-02",
+  "ESENSEX": "2026-12-02",
+  "ESG": "2026-12-02",
+  "EVIETF": "2026-12-02",
+  "EVINDIA": "2026-12-02",
+  "FINIETF": "2026-12-02",
+  "FLEXIADD": "2026-12-02",
+  "FMCGADD": "2026-12-02",
+  "FMCGIETF": "2026-12-02",
+  "GROWWDEFNC": "2026-12-02",
+  "GROWWHOSPI": "2026-12-02",
+  "GROWWPOWER": "2026-12-02",
+  "GROWWRAIL": "2026-12-02",
   "HARCR": "2026-11-23",
   "HDFCBSE500": "2026-11-23",
   "HDFCGROWTH": "2026-11-23",
@@ -303,8 +303,8 @@
   "JAYKAYPP": "2026-11-12",
   "OLAPP": "2026-11-12"
  },
- "last_batch_at": "2026-11-25T01:54Z",
- "last_statements_ok": 99,
+ "last_batch_at": "2026-11-25T05:48Z",
+ "last_statements_ok": 95,
  "last_statements_fail": 0,
  "last_shareholding_ok": 186,
  "last_shareholding_fail": 0,
@@ -733,20 +733,20 @@
   },
   "DEFENCE": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "DIVIDEND": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "ECAPINSURE": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "ELMDIV": {
@@ -757,26 +757,26 @@
   },
   "ENERGY": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "ENERGYAXIS": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "ENEXT50": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "EQUAL200": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "EQUAL50": {
@@ -787,80 +787,80 @@
   },
   "EQUAL50ADD": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "ESENSEX": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "ESG": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "EVIETF": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "EVINDIA": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "FINIETF": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "FLEXIADD": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "FMCGADD": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "FMCGIETF": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "GROWWDEFNC": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "GROWWHOSPI": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "GROWWPOWER": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "GROWWRAIL": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "HARCR": {
