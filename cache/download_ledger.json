@@ -1,6 +1,30 @@
 {
  "incomplete": {
   "statements": [
+   "AMBARPIL",
+   "ALPL30IETF",
+   "ALPHAETF",
+   "ALPHA",
+   "AGVENTURES",
+   "ABSLPSE",
+   "ABSLNN50ET",
+   "ABSLMSCIN",
+   "ABSLBANETF",
+   "ABSL10BANK",
+   "11QPD",
+   "11MPR",
+   "11MPD",
+   "11GPG",
+   "11DPR",
+   "11DPD",
+   "11AQD",
+   "11AMD",
+   "11AGG",
+   "08MPD",
+   "08GPG",
+   "08AGG",
+   "JKSHAH",
+   "ZODIAC",
    "IL&FSTRANS",
    "GUJRAFFIA",
    "RAJVIR",
@@ -92,7 +116,6 @@
    "PSUBANK",
    "PHARMABEES",
    "KLIFESTYL",
-   "ABSLMSCIN",
    "11QPR",
    "ORIENTTR",
    "OIVL",
@@ -177,30 +200,7 @@
    "INSURADD",
    "INFRAIETF",
    "INFRABEES",
-   "INFRA",
-   "ICICIB22",
-   "HNGSNGBEES",
-   "HFTSEINDIA",
-   "HEALTHY",
-   "HEALTHIETF",
-   "HEALTHCARE",
-   "HEALTHAXIS",
-   "HEALTHADD",
-   "HDFCVALUE",
-   "HDFCSML250",
-   "HDFCSENSEX",
-   "HDFCQUAL",
-   "HDFCPVTBAN",
-   "HDFCPSUBK",
-   "HDFCNIMEG",
-   "HDFCNIFTY",
-   "HDFCNIFIT",
-   "HDFCNIFBAN",
-   "HDFCNIF100",
-   "HDFCNEXT50",
-   "HDFCMOMENT",
-   "HDFCMID150",
-   "HDFCLOWVOL"
+   "INFRA"
   ]
  },
  "needs_person": {},
@@ -237,8 +237,8 @@
   },
   "Yahoo BO": {
    "cooldown_until": "",
-   "fails": 1,
-   "last_error": "skipped after repeated failures in this run"
+   "fails": 0,
+   "last_error": ""
   },
   "Yahoo NS": {
    "cooldown_until": "",
@@ -308,111 +308,111 @@
   },
   "statements:08AGG": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "08AGG",
-   "tries": 1
+   "tries": 2
   },
   "statements:08GPG": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "08GPG",
-   "tries": 1
+   "tries": 2
   },
   "statements:08MPD": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "08MPD",
-   "tries": 1
+   "tries": 2
   },
   "statements:11AGG": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "11AGG",
-   "tries": 1
+   "tries": 2
   },
   "statements:11AMD": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "11AMD",
-   "tries": 1
+   "tries": 2
   },
   "statements:11AQD": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "11AQD",
-   "tries": 1
+   "tries": 2
   },
   "statements:11DPD": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "11DPD",
-   "tries": 1
+   "tries": 2
   },
   "statements:11DPR": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "11DPR",
-   "tries": 1
+   "tries": 2
   },
   "statements:11GPG": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "11GPG",
-   "tries": 1
+   "tries": 2
   },
   "statements:11MPD": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "11MPD",
-   "tries": 1
+   "tries": 2
   },
   "statements:11MPR": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "11MPR",
-   "tries": 1
+   "tries": 2
   },
   "statements:11QPD": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "11QPD",
-   "tries": 1
+   "tries": 2
   },
   "statements:11QPR": {
    "kind": "statements",
@@ -434,48 +434,48 @@
   },
   "statements:ABSL10BANK": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "ABSL10BANK",
-   "tries": 1
+   "tries": 2
   },
   "statements:ABSLBANETF": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "ABSLBANETF",
-   "tries": 1
+   "tries": 2
   },
   "statements:ABSLMSCIN": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "ABSLMSCIN",
-   "tries": 1
+   "tries": 2
   },
   "statements:ABSLNN50ET": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "ABSLNN50ET",
-   "tries": 1
+   "tries": 2
   },
   "statements:ABSLPSE": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "ABSLPSE",
-   "tries": 1
+   "tries": 2
   },
   "statements:AGL": {
    "kind": "statements",
@@ -488,48 +488,48 @@
   },
   "statements:AGVENTURES": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "AGVENTURES",
-   "tries": 1
+   "tries": 2
   },
   "statements:ALPHA": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "ALPHA",
-   "tries": 1
+   "tries": 2
   },
   "statements:ALPHAETF": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "ALPHAETF",
-   "tries": 1
+   "tries": 2
   },
   "statements:ALPL30IETF": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "ALPL30IETF",
-   "tries": 1
+   "tries": 2
   },
   "statements:AMBARPIL": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "AMBARPIL",
-   "tries": 1
+   "tries": 2
   },
   "statements:ARTEMISMED": {
    "kind": "statements",
@@ -1456,6 +1456,15 @@
    "retry_after": "2026-11-24",
    "since": "2026-11-17",
    "ticker": "JAYTEX",
+   "tries": 1
+  },
+  "statements:JKSHAH": {
+   "kind": "statements",
+   "last_on": "2026-11-25",
+   "note": "quote only, no results",
+   "retry_after": "2026-12-02",
+   "since": "2026-11-25",
+   "ticker": "JKSHAH",
    "tries": 1
   },
   "statements:JUNIORBEES": {
@@ -2646,15 +2655,6 @@
    "ticker": "STDSFAC",
    "tries": 1
   },
-  "statements:STURDY": {
-   "kind": "statements",
-   "last_on": "2026-11-17",
-   "note": "no statement source answered",
-   "retry_after": "2026-11-18",
-   "since": "2026-11-17",
-   "ticker": "STURDY",
-   "tries": 1
-  },
   "statements:SUVID-RE": {
    "kind": "statements",
    "last_on": "2026-11-15",
@@ -2801,12 +2801,12 @@
   },
   "statements:ZODIAC": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-25",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-02",
    "since": "2026-11-16",
    "ticker": "ZODIAC",
-   "tries": 1
+   "tries": 2
   }
  }
 }

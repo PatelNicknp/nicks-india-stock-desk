@@ -24,29 +24,29 @@
   "IL&FSTRANS": "2026-12-02",
   "LAKPRE": "2026-12-01",
   "ORTEL": "2026-12-01",
-  "ZODIAC": "2026-11-23",
+  "ZODIAC": "2026-12-02",
   "SHIVAM-RE1": "2026-11-23",
-  "08AGG": "2026-11-23",
-  "08GPG": "2026-11-23",
-  "08MPD": "2026-11-23",
-  "11AGG": "2026-11-23",
-  "11AMD": "2026-11-23",
-  "11AQD": "2026-11-23",
-  "11DPD": "2026-11-23",
-  "11DPR": "2026-11-23",
-  "11GPG": "2026-11-23",
-  "11MPD": "2026-11-23",
-  "11MPR": "2026-11-23",
-  "11QPD": "2026-11-23",
-  "ABSL10BANK": "2026-11-23",
-  "ABSLBANETF": "2026-11-23",
-  "ABSLNN50ET": "2026-11-23",
-  "ABSLPSE": "2026-11-23",
-  "AGVENTURES": "2026-11-23",
-  "ALPHA": "2026-11-23",
-  "ALPHAETF": "2026-11-23",
-  "ALPL30IETF": "2026-11-23",
-  "AMBARPIL": "2026-11-23",
+  "08AGG": "2026-12-02",
+  "08GPG": "2026-12-02",
+  "08MPD": "2026-12-02",
+  "11AGG": "2026-12-02",
+  "11AMD": "2026-12-02",
+  "11AQD": "2026-12-02",
+  "11DPD": "2026-12-02",
+  "11DPR": "2026-12-02",
+  "11GPG": "2026-12-02",
+  "11MPD": "2026-12-02",
+  "11MPR": "2026-12-02",
+  "11QPD": "2026-12-02",
+  "ABSL10BANK": "2026-12-02",
+  "ABSLBANETF": "2026-12-02",
+  "ABSLNN50ET": "2026-12-02",
+  "ABSLPSE": "2026-12-02",
+  "AGVENTURES": "2026-12-02",
+  "ALPHA": "2026-12-02",
+  "ALPHAETF": "2026-12-02",
+  "ALPL30IETF": "2026-12-02",
+  "AMBARPIL": "2026-12-02",
   "AUTOIETF": "2026-11-23",
   "BANK10ADD": "2026-11-23",
   "BANK10BETF": "2026-11-23",
@@ -205,7 +205,7 @@
   "ORIENTTR": "2026-11-23",
   "RAJVIR": "2026-12-01",
   "11QPR": "2026-11-23",
-  "ABSLMSCIN": "2026-11-23",
+  "ABSLMSCIN": "2026-12-02",
   "KLIFESTYL": "2026-11-23",
   "PHARMABEES": "2026-11-23",
   "PSUBANK": "2026-11-23",
@@ -249,7 +249,6 @@
   "SNXT50BEES": "2026-11-23",
   "SNXT50BETA": "2026-11-23",
   "STDSFAC": "2026-11-23",
-  "STURDY": "2026-11-18",
   "TECH": "2026-11-24",
   "TELECANOR": "2026-11-24",
   "TOP100CASE": "2026-11-24",
@@ -282,7 +281,8 @@
   "LOWVOL": "2026-11-24",
   "BNKETFAXIS": "2026-11-25",
   "NATPLY": "2026-11-25",
-  "ISIFHLSG": "2026-11-26"
+  "ISIFHLSG": "2026-11-26",
+  "JKSHAH": "2026-12-02"
  },
  "shareholding_retry_after": {
   "08AGG": "2026-10-27",
@@ -303,8 +303,8 @@
   "JAYKAYPP": "2026-11-12",
   "OLAPP": "2026-11-12"
  },
- "last_batch_at": "2026-11-24T23:25Z",
- "last_statements_ok": 42,
+ "last_batch_at": "2026-11-25T01:28Z",
+ "last_statements_ok": 92,
  "last_statements_fail": 0,
  "last_shareholding_ok": 186,
  "last_shareholding_fail": 0,
@@ -451,8 +451,8 @@
   },
   "ZODIAC": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "SHIVAM-RE1": {
@@ -463,128 +463,128 @@
   },
   "08AGG": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "08GPG": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "08MPD": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "11AGG": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "11AMD": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "11AQD": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "11DPD": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "11DPR": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "11GPG": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "11MPD": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "11MPR": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "11QPD": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "ABSL10BANK": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "ABSLBANETF": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "ABSLNN50ET": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "ABSLPSE": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "AGVENTURES": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "ALPHA": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "ALPHAETF": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "ALPL30IETF": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "AMBARPIL": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "AUTOIETF": {
@@ -1537,8 +1537,8 @@
   },
   "ABSLMSCIN": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   },
   "KLIFESTYL": {
@@ -1799,12 +1799,6 @@
    "retry_after": "2026-11-23",
    "note": "quote only, no results"
   },
-  "STURDY": {
-   "count": 1,
-   "last_on": "2026-11-17",
-   "retry_after": "2026-11-18",
-   "note": "no statement source answered"
-  },
   "TECH": {
    "count": 0,
    "last_on": "2026-11-17",
@@ -2001,6 +1995,12 @@
    "count": 0,
    "last_on": "2026-11-19",
    "retry_after": "2026-11-26",
+   "note": "quote only, no results"
+  },
+  "JKSHAH": {
+   "count": 0,
+   "last_on": "2026-11-25",
+   "retry_after": "2026-12-02",
    "note": "quote only, no results"
   }
  },
