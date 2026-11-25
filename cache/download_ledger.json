@@ -1,6 +1,26 @@
 {
  "incomplete": {
   "statements": [
+   "SANCF",
+   "NATPLY",
+   "BNKETFAXIS",
+   "ZMILGFIN",
+   "VIKASPROP",
+   "VALUEAXIS",
+   "VALUE",
+   "VAL30IETF",
+   "TSIFDG",
+   "TPINDIA",
+   "TOP20",
+   "TOP15IETF",
+   "TOP10ADD",
+   "TOP100CASE",
+   "TELECANOR",
+   "TECH",
+   "SBIPSUBNK",
+   "SBINIFTY50",
+   "SBIMID150",
+   "SBIEQLWT50",
    "SBIDEFETF",
    "SBIBANKNIF",
    "PHARMAIETF",
@@ -180,27 +200,7 @@
    "EQUAL200",
    "ENEXT50",
    "ENERGYAXIS",
-   "ENERGY",
-   "ECAPINSURE",
-   "DIVIDEND",
-   "DEFENCE",
-   "CPSEETF",
-   "CONTCHM",
-   "CONSUMIETF",
-   "CONSUMER",
-   "COMMOIETF",
-   "BSLSENETFG",
-   "BSLNIFTY",
-   "BSE500IETF",
-   "BHASKAGR",
-   "BFSI",
-   "BBNPNBETF",
-   "BARODARY",
-   "BANKPSU",
-   "BANKNIFTY1",
-   "BANKIETF",
-   "BANKETF",
-   "BANKBETF"
+   "ENERGY"
   ]
  },
  "needs_person": {},
@@ -713,12 +713,12 @@
   },
   "statements:BNKETFAXIS": {
    "kind": "statements",
-   "last_on": "2026-11-18",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-25",
+   "retry_after": "2026-12-03",
    "since": "2026-11-18",
    "ticker": "BNKETFAXIS",
-   "tries": 1
+   "tries": 2
   },
   "statements:BSE500IETF": {
    "kind": "statements",
@@ -1937,12 +1937,12 @@
   },
   "statements:NATPLY": {
    "kind": "statements",
-   "last_on": "2026-11-18",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-25",
+   "retry_after": "2026-12-03",
    "since": "2026-11-18",
    "ticker": "NATPLY",
-   "tries": 1
+   "tries": 2
   },
   "statements:NETF": {
    "kind": "statements",
@@ -2315,12 +2315,12 @@
   },
   "statements:SANCF": {
    "kind": "statements",
-   "last_on": "2026-11-18",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-25",
+   "retry_after": "2026-12-03",
    "since": "2026-11-11",
    "ticker": "SANCF",
-   "tries": 2
+   "tries": 3
   },
   "statements:SBIBANKNIF": {
    "kind": "statements",
@@ -2342,21 +2342,21 @@
   },
   "statements:SBIEQLWT50": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-03",
    "since": "2026-11-17",
    "ticker": "SBIEQLWT50",
-   "tries": 1
+   "tries": 2
   },
   "statements:SBIMID150": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-03",
    "since": "2026-11-17",
    "ticker": "SBIMID150",
-   "tries": 1
+   "tries": 2
   },
   "statements:SBIMIDMOM": {
    "kind": "statements",
@@ -2369,21 +2369,21 @@
   },
   "statements:SBINIFTY50": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-03",
    "since": "2026-11-17",
    "ticker": "SBINIFTY50",
-   "tries": 1
+   "tries": 2
   },
   "statements:SBIPSUBNK": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-03",
    "since": "2026-11-17",
    "ticker": "SBIPSUBNK",
-   "tries": 1
+   "tries": 2
   },
   "statements:SBISENSEX": {
    "kind": "statements",
@@ -2693,120 +2693,120 @@
   },
   "statements:TECH": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-03",
    "since": "2026-11-17",
    "ticker": "TECH",
-   "tries": 1
+   "tries": 2
   },
   "statements:TELECANOR": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-03",
    "since": "2026-11-17",
    "ticker": "TELECANOR",
-   "tries": 1
+   "tries": 2
   },
   "statements:TOP100CASE": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-03",
    "since": "2026-11-17",
    "ticker": "TOP100CASE",
-   "tries": 1
+   "tries": 2
   },
   "statements:TOP10ADD": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-03",
    "since": "2026-11-17",
    "ticker": "TOP10ADD",
-   "tries": 1
+   "tries": 2
   },
   "statements:TOP15IETF": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-03",
    "since": "2026-11-17",
    "ticker": "TOP15IETF",
-   "tries": 1
+   "tries": 2
   },
   "statements:TOP20": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-03",
    "since": "2026-11-17",
    "ticker": "TOP20",
-   "tries": 1
+   "tries": 2
   },
   "statements:TPINDIA": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-03",
    "since": "2026-11-17",
    "ticker": "TPINDIA",
-   "tries": 1
+   "tries": 2
   },
   "statements:TSIFDG": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-03",
    "since": "2026-11-17",
    "ticker": "TSIFDG",
-   "tries": 1
+   "tries": 2
   },
   "statements:VAL30IETF": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-03",
    "since": "2026-11-17",
    "ticker": "VAL30IETF",
-   "tries": 1
+   "tries": 2
   },
   "statements:VALUE": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-03",
    "since": "2026-11-17",
    "ticker": "VALUE",
-   "tries": 1
+   "tries": 2
   },
   "statements:VALUEAXIS": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-03",
    "since": "2026-11-17",
    "ticker": "VALUEAXIS",
-   "tries": 1
+   "tries": 2
   },
   "statements:VIKASPROP": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-03",
    "since": "2026-11-17",
    "ticker": "VIKASPROP",
-   "tries": 1
+   "tries": 2
   },
   "statements:ZMILGFIN": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-03",
    "since": "2026-11-17",
    "ticker": "ZMILGFIN",
-   "tries": 1
+   "tries": 2
   },
   "statements:ZODIAC": {
    "kind": "statements",

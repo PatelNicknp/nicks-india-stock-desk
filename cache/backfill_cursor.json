@@ -10,7 +10,7 @@
   "KHAZANCHI": "2026-10-29",
   "TRANOCE": "2026-11-04",
   "POWERIETF": "2026-11-29",
-  "SANCF": "2026-11-25",
+  "SANCF": "2026-12-03",
   "SUVID-RE": "2026-11-22",
   "AGL": "2026-11-30",
   "ARTEMISMED": "2026-11-30",
@@ -249,18 +249,18 @@
   "SNXT50BEES": "2026-12-03",
   "SNXT50BETA": "2026-12-03",
   "STDSFAC": "2026-12-03",
-  "TECH": "2026-11-24",
-  "TELECANOR": "2026-11-24",
-  "TOP100CASE": "2026-11-24",
-  "TOP10ADD": "2026-11-24",
-  "TOP15IETF": "2026-11-24",
-  "TOP20": "2026-11-24",
-  "TPINDIA": "2026-11-24",
-  "VAL30IETF": "2026-11-24",
-  "VALUE": "2026-11-24",
-  "VALUEAXIS": "2026-11-24",
-  "VIKASPROP": "2026-11-24",
-  "ZMILGFIN": "2026-11-24",
+  "TECH": "2026-12-03",
+  "TELECANOR": "2026-12-03",
+  "TOP100CASE": "2026-12-03",
+  "TOP10ADD": "2026-12-03",
+  "TOP15IETF": "2026-12-03",
+  "TOP20": "2026-12-03",
+  "TPINDIA": "2026-12-03",
+  "VAL30IETF": "2026-12-03",
+  "VALUE": "2026-12-03",
+  "VALUEAXIS": "2026-12-03",
+  "VIKASPROP": "2026-12-03",
+  "ZMILGFIN": "2026-12-03",
   "BIRLATOTAL": "2026-12-03",
   "LICNETFSEN": "2026-12-03",
   "MSCIADD": "2026-12-03",
@@ -270,17 +270,17 @@
   "JAYTEX": "2026-11-24",
   "PHARMAIETF": "2026-12-03",
   "SBIBANKNIF": "2026-12-03",
-  "SBIEQLWT50": "2026-11-24",
-  "SBIMID150": "2026-11-24",
-  "SBINIFTY50": "2026-11-24",
-  "SBIPSUBNK": "2026-11-24",
+  "SBIEQLWT50": "2026-12-03",
+  "SBIMID150": "2026-12-03",
+  "SBINIFTY50": "2026-12-03",
+  "SBIPSUBNK": "2026-12-03",
   "BANKCASE": "2026-12-03",
-  "TSIFDG": "2026-11-24",
+  "TSIFDG": "2026-12-03",
   "IDFSENSEXE": "2026-12-03",
   "FRONTCORP": "2026-11-24",
   "LOWVOL": "2026-11-24",
-  "BNKETFAXIS": "2026-11-25",
-  "NATPLY": "2026-11-25",
+  "BNKETFAXIS": "2026-12-03",
+  "NATPLY": "2026-12-03",
   "ISIFHLSG": "2026-11-26",
   "JKSHAH": "2026-12-02",
   "AANJAAY": "2026-11-27"
@@ -304,9 +304,9 @@
   "JAYKAYPP": "2026-11-12",
   "OLAPP": "2026-11-12"
  },
- "last_batch_at": "2026-11-25T20:01Z",
- "last_statements_ok": 143,
- "last_statements_fail": 1,
+ "last_batch_at": "2026-11-25T20:29Z",
+ "last_statements_ok": 108,
+ "last_statements_fail": 0,
  "last_shareholding_ok": 186,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
@@ -368,8 +368,8 @@
   },
   "SANCF": {
    "count": 0,
-   "last_on": "2026-11-18",
-   "retry_after": "2026-11-25",
+   "last_on": "2026-11-26",
+   "retry_after": "2026-12-03",
    "note": "quote only, no results"
   },
   "SUVID-RE": {
@@ -1802,74 +1802,74 @@
   },
   "TECH": {
    "count": 0,
-   "last_on": "2026-11-17",
-   "retry_after": "2026-11-24",
+   "last_on": "2026-11-26",
+   "retry_after": "2026-12-03",
    "note": "quote only, no results"
   },
   "TELECANOR": {
    "count": 0,
-   "last_on": "2026-11-17",
-   "retry_after": "2026-11-24",
+   "last_on": "2026-11-26",
+   "retry_after": "2026-12-03",
    "note": "quote only, no results"
   },
   "TOP100CASE": {
    "count": 0,
-   "last_on": "2026-11-17",
-   "retry_after": "2026-11-24",
+   "last_on": "2026-11-26",
+   "retry_after": "2026-12-03",
    "note": "quote only, no results"
   },
   "TOP10ADD": {
    "count": 0,
-   "last_on": "2026-11-17",
-   "retry_after": "2026-11-24",
+   "last_on": "2026-11-26",
+   "retry_after": "2026-12-03",
    "note": "quote only, no results"
   },
   "TOP15IETF": {
    "count": 0,
-   "last_on": "2026-11-17",
-   "retry_after": "2026-11-24",
+   "last_on": "2026-11-26",
+   "retry_after": "2026-12-03",
    "note": "quote only, no results"
   },
   "TOP20": {
    "count": 0,
-   "last_on": "2026-11-17",
-   "retry_after": "2026-11-24",
+   "last_on": "2026-11-26",
+   "retry_after": "2026-12-03",
    "note": "quote only, no results"
   },
   "TPINDIA": {
    "count": 0,
-   "last_on": "2026-11-17",
-   "retry_after": "2026-11-24",
+   "last_on": "2026-11-26",
+   "retry_after": "2026-12-03",
    "note": "quote only, no results"
   },
   "VAL30IETF": {
    "count": 0,
-   "last_on": "2026-11-17",
-   "retry_after": "2026-11-24",
+   "last_on": "2026-11-26",
+   "retry_after": "2026-12-03",
    "note": "quote only, no results"
   },
   "VALUE": {
    "count": 0,
-   "last_on": "2026-11-17",
-   "retry_after": "2026-11-24",
+   "last_on": "2026-11-26",
+   "retry_after": "2026-12-03",
    "note": "quote only, no results"
   },
   "VALUEAXIS": {
    "count": 0,
-   "last_on": "2026-11-17",
-   "retry_after": "2026-11-24",
+   "last_on": "2026-11-26",
+   "retry_after": "2026-12-03",
    "note": "quote only, no results"
   },
   "VIKASPROP": {
    "count": 0,
-   "last_on": "2026-11-17",
-   "retry_after": "2026-11-24",
+   "last_on": "2026-11-26",
+   "retry_after": "2026-12-03",
    "note": "quote only, no results"
   },
   "ZMILGFIN": {
    "count": 0,
-   "last_on": "2026-11-17",
-   "retry_after": "2026-11-24",
+   "last_on": "2026-11-26",
+   "retry_after": "2026-12-03",
    "note": "quote only, no results"
   },
   "BIRLATOTAL": {
@@ -1928,26 +1928,26 @@
   },
   "SBIEQLWT50": {
    "count": 0,
-   "last_on": "2026-11-17",
-   "retry_after": "2026-11-24",
+   "last_on": "2026-11-26",
+   "retry_after": "2026-12-03",
    "note": "quote only, no results"
   },
   "SBIMID150": {
    "count": 0,
-   "last_on": "2026-11-17",
-   "retry_after": "2026-11-24",
+   "last_on": "2026-11-26",
+   "retry_after": "2026-12-03",
    "note": "quote only, no results"
   },
   "SBINIFTY50": {
    "count": 0,
-   "last_on": "2026-11-17",
-   "retry_after": "2026-11-24",
+   "last_on": "2026-11-26",
+   "retry_after": "2026-12-03",
    "note": "quote only, no results"
   },
   "SBIPSUBNK": {
    "count": 0,
-   "last_on": "2026-11-17",
-   "retry_after": "2026-11-24",
+   "last_on": "2026-11-26",
+   "retry_after": "2026-12-03",
    "note": "quote only, no results"
   },
   "BANKCASE": {
@@ -1958,8 +1958,8 @@
   },
   "TSIFDG": {
    "count": 0,
-   "last_on": "2026-11-17",
-   "retry_after": "2026-11-24",
+   "last_on": "2026-11-26",
+   "retry_after": "2026-12-03",
    "note": "quote only, no results"
   },
   "IDFSENSEXE": {
@@ -1982,14 +1982,14 @@
   },
   "BNKETFAXIS": {
    "count": 0,
-   "last_on": "2026-11-18",
-   "retry_after": "2026-11-25",
+   "last_on": "2026-11-26",
+   "retry_after": "2026-12-03",
    "note": "quote only, no results"
   },
   "NATPLY": {
    "count": 0,
-   "last_on": "2026-11-18",
-   "retry_after": "2026-11-25",
+   "last_on": "2026-11-26",
+   "retry_after": "2026-12-03",
    "note": "quote only, no results"
   },
   "ISIFHLSG": {
