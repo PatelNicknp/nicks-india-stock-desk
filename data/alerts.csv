@@ -1,2 +1,3 @@
 ticker,kind,text,score,score_prev,verdict,verdict_prev,price,data_status,note,disclaimer
-,info,No verdict changes or score crossings this run.,,,,,,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+FUTSOL,score_jump,FUTSOL score moved from 3 to 1.,1,3,AVOID,AVOID,40.85,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+WIREFABR,score_jump,WIREFABR score moved from -6 to -4.,-4,-6,AVOID,AVOID,129.0,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
