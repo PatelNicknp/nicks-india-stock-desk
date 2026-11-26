@@ -13359,22 +13359,6 @@ CYBERMEDIA,Sentiment,Institutional 13F trend,0,zero,,,
 CYBERMEDIA,Sentiment,Insider buys vs sells,,n/a,,,
 CYBERMEDIA,Earnings,Latest earnings vs estimate,,n/a,,,
 CYBERMEDIA,Sector,"Sector vs S&P 500, 3 months",0,zero,-1.13,,
-FUTSOL,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
-FUTSOL,Technical,Oscillator (RSI-14),0,zero,38.1,,
-FUTSOL,Financials,Forward P/E (lower is better),,n/a,,57.173202614379086,
-FUTSOL,Financials,Trailing P/E (lower is better),1,plus 1,15.961395694135117,57.173202614379086,1.0
-FUTSOL,Financials,Price / sales (lower is better),,n/a,4.681610614641186,,-1.0
-FUTSOL,Financials,Debt / equity (lower is better),1,plus 1,0.0,0.010784878896662561,1.0
-FUTSOL,Financials,Price / free cash flow (lower is better),,n/a,20.263939035585842,,-1.0
-FUTSOL,Financials,Revenue growth (higher is better),,n/a,,-54.06,
-FUTSOL,Financials,EPS growth (higher is better),,n/a,,-75.75,
-FUTSOL,Financials,Return on equity (higher is better),1,plus 1,16.66,8.9,1.0
-FUTSOL,Financials,Dividend yield (higher is better),0,zero,0.0,0.0,0.0
-FUTSOL,Sentiment,Analyst rating,,n/a,,,
-FUTSOL,Sentiment,Institutional 13F trend,0,zero,,,
-FUTSOL,Sentiment,Insider buys vs sells,,n/a,,,
-FUTSOL,Earnings,Latest earnings vs estimate,,n/a,,,
-FUTSOL,Sector,"Sector vs S&P 500, 3 months",1,plus 1,-15.33,,
 GAJANANSEC,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
 GAJANANSEC,Technical,Oscillator (RSI-14),0,zero,44.2,,
 GAJANANSEC,Financials,Forward P/E (lower is better),,n/a,,59.1835398625304,
@@ -15585,14 +15569,14 @@ VENUSREM,Earnings,Latest earnings vs estimate,-1,minus 1,,,
 VENUSREM,Sector,"Sector vs S&P 500, 3 months",1,plus 1,-8.9,,
 ZENIFIB,Technical,Trend vs 20-day and 50-day,1,plus 1,,,
 ZENIFIB,Technical,Oscillator (RSI-14),1,plus 1,52.1,,
-ZENIFIB,Financials,Forward P/E (lower is better),1,plus 1,3.7088606,16.16745788146537,1.0
-ZENIFIB,Financials,Trailing P/E (lower is better),1,plus 1,6.359743040685225,16.16745788146537,1.0
-ZENIFIB,Financials,Price / sales (lower is better),1,plus 1,0.5121570520083569,0.6576723152706796,1.0
+ZENIFIB,Financials,Forward P/E (lower is better),1,plus 1,3.7594938,16.16745788146537,1.0
+ZENIFIB,Financials,Trailing P/E (lower is better),1,plus 1,5.7335907335907335,16.16745788146537,1.0
+ZENIFIB,Financials,Price / sales (lower is better),1,plus 1,0.4273450700988279,0.6576723152706796,1.0
 ZENIFIB,Financials,Debt / equity (lower is better),1,plus 1,0.0,0.002904785499467894,1.0
 ZENIFIB,Financials,Price / free cash flow (lower is better),,n/a,,,
 ZENIFIB,Financials,Revenue growth (higher is better),-1,minus 1,-23.23,10.0,-1.0
 ZENIFIB,Financials,EPS growth (higher is better),-1,minus 1,62.14,-8.39,1.0
-ZENIFIB,Financials,Return on equity (higher is better),1,plus 1,6.24,3.61,-1.0
+ZENIFIB,Financials,Return on equity (higher is better),1,plus 1,6.75,3.61,-1.0
 ZENIFIB,Financials,Dividend yield (higher is better),-1,minus 1,1.68,1.85,1.0
 ZENIFIB,Sentiment,Analyst rating,,n/a,,,
 ZENIFIB,Sentiment,Institutional 13F trend,0,zero,,,
@@ -26767,6 +26751,22 @@ FRANKLININD,Sentiment,Institutional 13F trend,,n/a,,,
 FRANKLININD,Sentiment,Insider buys vs sells,,n/a,,,
 FRANKLININD,Earnings,Latest earnings vs estimate,,n/a,,,
 FRANKLININD,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,-20.76,,
+FUTSOL,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
+FUTSOL,Technical,Oscillator (RSI-14),0,zero,38.1,,
+FUTSOL,Financials,Forward P/E (lower is better),,n/a,,57.173202614379086,
+FUTSOL,Financials,Trailing P/E (lower is better),1,plus 1,13.894557823129253,57.173202614379086,1.0
+FUTSOL,Financials,Price / sales (lower is better),,n/a,4.491478856449987,,0.0
+FUTSOL,Financials,Debt / equity (lower is better),-1,minus 1,0.08297532030111307,0.010784878896662561,1.0
+FUTSOL,Financials,Price / free cash flow (lower is better),,n/a,20.246086974730268,,-1.0
+FUTSOL,Financials,Revenue growth (higher is better),,n/a,,-54.06,
+FUTSOL,Financials,EPS growth (higher is better),,n/a,,-75.75,
+FUTSOL,Financials,Return on equity (higher is better),1,plus 1,16.78,8.9,1.0
+FUTSOL,Financials,Dividend yield (higher is better),0,zero,0.0,0.0,0.0
+FUTSOL,Sentiment,Analyst rating,,n/a,,,
+FUTSOL,Sentiment,Institutional 13F trend,0,zero,,,
+FUTSOL,Sentiment,Insider buys vs sells,,n/a,,,
+FUTSOL,Earnings,Latest earnings vs estimate,,n/a,,,
+FUTSOL,Sector,"Sector vs S&P 500, 3 months",1,plus 1,-15.33,,
 GRADIENTE,Technical,Trend vs 20-day and 50-day,0,zero,,,
 GRADIENTE,Technical,Oscillator (RSI-14),0,zero,52.9,,
 GRADIENTE,Financials,Forward P/E (lower is better),,n/a,,,
@@ -36740,11 +36740,11 @@ ANIRIT,Technical,Oscillator (RSI-14),1,plus 1,56.5,,
 ANIRIT,Financials,Forward P/E (lower is better),,n/a,,,
 ANIRIT,Financials,Trailing P/E (lower is better),,n/a,,,
 ANIRIT,Financials,Price / sales (lower is better),,n/a,,,
-ANIRIT,Financials,Debt / equity (lower is better),-1,minus 1,0.44325612249042196,,-1.0
+ANIRIT,Financials,Debt / equity (lower is better),-1,minus 1,0.5252817265957871,,-1.0
 ANIRIT,Financials,Price / free cash flow (lower is better),,n/a,,,
 ANIRIT,Financials,Revenue growth (higher is better),,n/a,,-31.01,
 ANIRIT,Financials,EPS growth (higher is better),,n/a,,,
-ANIRIT,Financials,Return on equity (higher is better),-1,minus 1,-27.84,,-1.0
+ANIRIT,Financials,Return on equity (higher is better),-1,minus 1,-39.71,,-1.0
 ANIRIT,Financials,Dividend yield (higher is better),0,zero,0.0,0.0,0.0
 ANIRIT,Sentiment,Analyst rating,,n/a,,,
 ANIRIT,Sentiment,Institutional 13F trend,0,zero,,,
@@ -62063,6 +62063,22 @@ TGVSL,Sentiment,Institutional 13F trend,0,zero,,,
 TGVSL,Sentiment,Insider buys vs sells,,n/a,,,
 TGVSL,Earnings,Latest earnings vs estimate,,n/a,,,
 TGVSL,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,9.57,,
+WIREFABR,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
+WIREFABR,Technical,Oscillator (RSI-14),-1,minus 1,27.7,,
+WIREFABR,Financials,Forward P/E (lower is better),,n/a,,36.62637289771606,
+WIREFABR,Financials,Trailing P/E (lower is better),-1,minus 1,106.61157024793388,36.62637289771606,-1.0
+WIREFABR,Financials,Price / sales (lower is better),1,plus 1,0.33362097196612817,0.48917223584666614,1.0
+WIREFABR,Financials,Debt / equity (lower is better),1,plus 1,1.666915511573258,1.917397770419173,-1.0
+WIREFABR,Financials,Price / free cash flow (lower is better),,n/a,1.37736733988031,,1.0
+WIREFABR,Financials,Revenue growth (higher is better),1,plus 1,5.86,0.25,-1.0
+WIREFABR,Financials,EPS growth (higher is better),-1,minus 1,-82.52,5.98,-1.0
+WIREFABR,Financials,Return on equity (higher is better),-1,minus 1,0.73,2.95,-1.0
+WIREFABR,Financials,Dividend yield (higher is better),0,zero,0.09,0.09,1.0
+WIREFABR,Sentiment,Analyst rating,,n/a,,,
+WIREFABR,Sentiment,Institutional 13F trend,0,zero,,,
+WIREFABR,Sentiment,Insider buys vs sells,,n/a,,,
+WIREFABR,Earnings,Latest earnings vs estimate,-1,minus 1,,,
+WIREFABR,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,-20.39,,
 AAREYDRUGS,Technical,Trend vs 20-day and 50-day,1,plus 1,,,
 AAREYDRUGS,Technical,Oscillator (RSI-14),1,plus 1,52.8,,
 AAREYDRUGS,Financials,Forward P/E (lower is better),,n/a,,32.01634797992027,
@@ -66211,12 +66227,12 @@ SALORAINTL,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
 SALORAINTL,Technical,Oscillator (RSI-14),0,zero,44.7,,
 SALORAINTL,Financials,Forward P/E (lower is better),,n/a,,,
 SALORAINTL,Financials,Trailing P/E (lower is better),,n/a,,,
-SALORAINTL,Financials,Price / sales (lower is better),-1,minus 1,0.5527639466488146,0.3678054620815339,1.0
-SALORAINTL,Financials,Debt / equity (lower is better),-1,minus 1,0.36958627640924474,0.3310161247308587,-1.0
-SALORAINTL,Financials,Price / free cash flow (lower is better),,n/a,4.292103309648075,,1.0
+SALORAINTL,Financials,Price / sales (lower is better),-1,minus 1,0.3915737360823562,0.3678054620815339,1.0
+SALORAINTL,Financials,Debt / equity (lower is better),-1,minus 1,0.3715783203335825,0.3310161247308587,-1.0
+SALORAINTL,Financials,Price / free cash flow (lower is better),,n/a,4.30128675931166,,1.0
 SALORAINTL,Financials,Revenue growth (higher is better),-1,minus 1,-59.53,15.98,-1.0
 SALORAINTL,Financials,EPS growth (higher is better),,n/a,,,
-SALORAINTL,Financials,Return on equity (higher is better),1,plus 1,-10.02,-7.15,-1.0
+SALORAINTL,Financials,Return on equity (higher is better),1,plus 1,-8.68,-7.15,-1.0
 SALORAINTL,Financials,Dividend yield (higher is better),0,zero,0.0,0.0,0.0
 SALORAINTL,Sentiment,Analyst rating,,n/a,,,
 SALORAINTL,Sentiment,Institutional 13F trend,0,zero,,,
@@ -67119,22 +67135,6 @@ SUPER,Sentiment,Institutional 13F trend,0,zero,,,
 SUPER,Sentiment,Insider buys vs sells,,n/a,,,
 SUPER,Earnings,Latest earnings vs estimate,-1,minus 1,,,
 SUPER,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,-34.82,,
-WIREFABR,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
-WIREFABR,Technical,Oscillator (RSI-14),-1,minus 1,27.7,,
-WIREFABR,Financials,Forward P/E (lower is better),,n/a,,36.62637289771606,
-WIREFABR,Financials,Trailing P/E (lower is better),-1,minus 1,131.6326530612245,36.62637289771606,-1.0
-WIREFABR,Financials,Price / sales (lower is better),1,plus 1,0.34209931921940817,0.48917223584666614,1.0
-WIREFABR,Financials,Debt / equity (lower is better),-1,minus 1,2.0813746431715976,1.917397770419173,-1.0
-WIREFABR,Financials,Price / free cash flow (lower is better),,n/a,1.3942675526395774,,1.0
-WIREFABR,Financials,Revenue growth (higher is better),1,plus 1,5.86,0.25,-1.0
-WIREFABR,Financials,EPS growth (higher is better),-1,minus 1,-82.52,5.98,-1.0
-WIREFABR,Financials,Return on equity (higher is better),-1,minus 1,0.6,2.95,-1.0
-WIREFABR,Financials,Dividend yield (higher is better),0,zero,0.09,0.09,1.0
-WIREFABR,Sentiment,Analyst rating,,n/a,,,
-WIREFABR,Sentiment,Institutional 13F trend,0,zero,,,
-WIREFABR,Sentiment,Insider buys vs sells,,n/a,,,
-WIREFABR,Earnings,Latest earnings vs estimate,-1,minus 1,,,
-WIREFABR,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,-20.39,,
 AAATECH,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
 AAATECH,Technical,Oscillator (RSI-14),0,zero,44.2,,
 AAATECH,Financials,Forward P/E (lower is better),,n/a,,36.27231230448384,
