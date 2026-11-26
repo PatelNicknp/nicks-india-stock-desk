@@ -288,6 +288,15 @@
    "ticker": "DUMMYINXGN",
    "tries": 3
   },
+  "prices:PRAXIS-RE3": {
+   "kind": "prices",
+   "last_on": "2026-11-26",
+   "note": "Stooq and Yahoo had no daily bars. The saved file was not changed for this name.",
+   "retry_after": "2026-12-03",
+   "since": "2026-11-26",
+   "ticker": "PRAXIS-RE3",
+   "tries": 1
+  },
   "prices:SUVID-RE": {
    "kind": "prices",
    "last_on": "2026-11-12",
