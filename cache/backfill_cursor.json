@@ -283,8 +283,10 @@
   "NATPLY": "2026-12-03",
   "ISIFHLSG": "2026-11-26",
   "JKSHAH": "2026-12-02",
-  "AANJAAY": "2026-11-27",
-  "PRAXIS-RE3": "2026-11-27"
+  "AANJAAY": "2026-11-28",
+  "PRAXIS-RE3": "2026-11-28",
+  "SHUKRAMED": "2026-11-28",
+  "NOBPOL": "2026-11-28"
  },
  "shareholding_retry_after": {
   "08AGG": "2026-10-27",
@@ -305,36 +307,36 @@
   "JAYKAYPP": "2026-11-12",
   "OLAPP": "2026-11-12"
  },
- "last_batch_at": "2026-11-26T12:40Z",
+ "last_batch_at": "2026-11-26T19:23Z",
  "last_statements_ok": 0,
- "last_statements_fail": 0,
+ "last_statements_fail": 4,
  "last_shareholding_ok": 187,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
-  "BIRET": "2026-11-26",
-  "EMBASSY": "2026-11-26",
-  "BAGMANE": "2026-11-26",
-  "DUMMYHEG": "2026-11-26",
+  "BIRET": "2026-11-27",
+  "EMBASSY": "2026-11-27",
+  "BAGMANE": "2026-11-27",
+  "DUMMYHEG": "2026-11-27",
   "DUMMYINGL1": "2026-11-04",
   "DUMMYINGL2": "2026-11-04",
-  "DUMMYINXGN": "2026-11-26",
+  "DUMMYINXGN": "2026-11-27",
   "OLAELEC-RE": "2026-10-27",
-  "APLABPP": "2026-11-26",
-  "ATLPP": "2026-11-26",
-  "GSAILPP": "2026-11-26",
+  "APLABPP": "2026-11-27",
+  "ATLPP": "2026-11-27",
+  "GSAILPP": "2026-11-27",
   "JAYKAYPP": "2026-11-26",
   "QDLCCPS": "2026-11-26",
-  "SURAJINDPP": "2026-11-26",
-  "VERTEXPP": "2026-11-26",
+  "SURAJINDPP": "2026-11-27",
+  "VERTEXPP": "2026-11-27",
   "ICICIPRULI": "2026-10-27",
   "ACESEPP": "2026-11-20",
   "SHIVAM-RE1": "2026-11-16",
   "ANIRITPP": "2026-11-25",
   "CENTEXTPP": "2026-11-26",
-  "OLAPP": "2026-11-26",
+  "OLAPP": "2026-11-27",
   "SUVID-RE": "2026-11-17",
-  "CRYSTALCP": "2026-11-26",
-  "PRAXIS-RE3": "2026-11-26"
+  "CRYSTALCP": "2026-11-27",
+  "PRAXIS-RE3": "2026-11-27"
  },
  "last_shareholding_empty": 13,
  "last_shareholding_skipped": 0,
@@ -2008,15 +2010,27 @@
    "note": "quote only, no results"
   },
   "AANJAAY": {
-   "count": 1,
-   "last_on": "2026-11-26",
-   "retry_after": "2026-11-27",
+   "count": 2,
+   "last_on": "2026-11-27",
+   "retry_after": "2026-11-28",
    "note": "no statement source answered"
   },
   "PRAXIS-RE3": {
+   "count": 2,
+   "last_on": "2026-11-27",
+   "retry_after": "2026-11-28",
+   "note": "no statement source answered"
+  },
+  "SHUKRAMED": {
    "count": 1,
-   "last_on": "2026-11-26",
-   "retry_after": "2026-11-27",
+   "last_on": "2026-11-27",
+   "retry_after": "2026-11-28",
+   "note": "no statement source answered"
+  },
+  "NOBPOL": {
+   "count": 1,
+   "last_on": "2026-11-27",
+   "retry_after": "2026-11-28",
    "note": "no statement source answered"
   }
  },

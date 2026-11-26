@@ -206,13 +206,13 @@
  "needs_person": {},
  "providers": {
   "BSE results": {
-   "cooldown_until": "2026-11-26T17:38Z",
-   "fails": 24,
+   "cooldown_until": "2026-11-27T01:09Z",
+   "fails": 25,
    "last_error": "skipped after repeated failures in this run"
   },
   "BSE shareholding": {
-   "cooldown_until": "2026-11-26T14:57Z",
-   "fails": 50,
+   "cooldown_until": "2026-11-27T01:09Z",
+   "fails": 51,
    "last_error": "skipped after repeated failures in this run"
   },
   "NSE results": {
@@ -237,13 +237,13 @@
   },
   "Yahoo BO": {
    "cooldown_until": "",
-   "fails": 0,
-   "last_error": ""
+   "fails": 1,
+   "last_error": "skipped after repeated failures in this run"
   },
   "Yahoo NS": {
    "cooldown_until": "",
-   "fails": 0,
-   "last_error": ""
+   "fails": 1,
+   "last_error": "skipped after repeated failures in this run"
   }
  },
  "stalls": {
@@ -257,7 +257,7 @@
   },
   "statements": {
    "cooldown_until": "",
-   "runs": 0
+   "runs": 1
   }
  },
  "unavailable": {
@@ -434,12 +434,12 @@
   },
   "statements:AANJAAY": {
    "kind": "statements",
-   "last_on": "2026-11-26",
+   "last_on": "2026-11-27",
    "note": "no statement source answered",
-   "retry_after": "2026-11-27",
+   "retry_after": "2026-11-28",
    "since": "2026-11-26",
    "ticker": "AANJAAY",
-   "tries": 1
+   "tries": 2
   },
   "statements:AARNAV": {
    "kind": "statements",
@@ -2124,6 +2124,15 @@
    "ticker": "NIFTYQLITY",
    "tries": 2
   },
+  "statements:NOBPOL": {
+   "kind": "statements",
+   "last_on": "2026-11-27",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-28",
+   "since": "2026-11-27",
+   "ticker": "NOBPOL",
+   "tries": 1
+  },
   "statements:NORRIS": {
    "kind": "statements",
    "last_on": "2026-11-25",
@@ -2216,12 +2225,12 @@
   },
   "statements:PRAXIS-RE3": {
    "kind": "statements",
-   "last_on": "2026-11-26",
+   "last_on": "2026-11-27",
    "note": "no statement source answered",
-   "retry_after": "2026-11-27",
+   "retry_after": "2026-11-28",
    "since": "2026-11-26",
    "ticker": "PRAXIS-RE3",
-   "tries": 1
+   "tries": 2
   },
   "statements:PSUBANK": {
    "kind": "statements",
@@ -2572,6 +2581,15 @@
    "retry_after": "2026-11-23",
    "since": "2026-11-16",
    "ticker": "SHIVAM-RE1",
+   "tries": 1
+  },
+  "statements:SHUKRAMED": {
+   "kind": "statements",
+   "last_on": "2026-11-27",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-28",
+   "since": "2026-11-27",
+   "ticker": "SHUKRAMED",
    "tries": 1
   },
   "statements:SICAPIT": {
