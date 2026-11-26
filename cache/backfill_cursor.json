@@ -66,7 +66,7 @@
   "BSLNIFTY": "2026-12-02",
   "BSLSENETFG": "2026-12-02",
   "COMMOIETF": "2026-12-02",
-  "CONSUMAXIS": "2026-11-23",
+  "CONSUMAXIS": "2026-12-03",
   "CONSUMER": "2026-12-02",
   "CONSUMIETF": "2026-12-02",
   "CONTCHM": "2026-12-02",
@@ -225,7 +225,7 @@
   "SBIVALETF": "2026-12-03",
   "SCBL": "2026-12-03",
   "SCOOBEEDAY": "2026-12-03",
-  "SECLEDBETA": "2026-11-23",
+  "SECLEDBETA": "2026-12-03",
   "SEL": "2026-12-03",
   "SELECTIPO": "2026-12-03",
   "SENSEX1": "2026-12-03",
@@ -265,7 +265,7 @@
   "LICNETFSEN": "2026-12-03",
   "MSCIADD": "2026-12-03",
   "SBIDEFETF": "2026-12-03",
-  "DATIWARE": "2026-11-24",
+  "DATIWARE": "2026-12-03",
   "EBANK10": "2026-12-03",
   "JAYTEX": "2026-11-24",
   "PHARMAIETF": "2026-12-03",
@@ -277,13 +277,14 @@
   "BANKCASE": "2026-12-03",
   "TSIFDG": "2026-12-03",
   "IDFSENSEXE": "2026-12-03",
-  "FRONTCORP": "2026-11-24",
+  "FRONTCORP": "2026-12-03",
   "LOWVOL": "2026-11-24",
   "BNKETFAXIS": "2026-12-03",
   "NATPLY": "2026-12-03",
   "ISIFHLSG": "2026-11-26",
   "JKSHAH": "2026-12-02",
-  "AANJAAY": "2026-11-27"
+  "AANJAAY": "2026-11-27",
+  "PRAXIS-RE3": "2026-11-27"
  },
  "shareholding_retry_after": {
   "08AGG": "2026-10-27",
@@ -304,10 +305,10 @@
   "JAYKAYPP": "2026-11-12",
   "OLAPP": "2026-11-12"
  },
- "last_batch_at": "2026-11-26T09:10Z",
- "last_statements_ok": 0,
- "last_statements_fail": 0,
- "last_shareholding_ok": 186,
+ "last_batch_at": "2026-11-26T11:52Z",
+ "last_statements_ok": 22,
+ "last_statements_fail": 1,
+ "last_shareholding_ok": 187,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
   "BIRET": "2026-11-26",
@@ -331,9 +332,11 @@
   "ANIRITPP": "2026-11-25",
   "CENTEXTPP": "2026-11-26",
   "OLAPP": "2026-11-26",
-  "SUVID-RE": "2026-11-17"
+  "SUVID-RE": "2026-11-17",
+  "CRYSTALCP": "2026-11-26",
+  "PRAXIS-RE3": "2026-11-26"
  },
- "last_shareholding_empty": 14,
+ "last_shareholding_empty": 13,
  "last_shareholding_skipped": 0,
  "statements_failures": {
   "BAGMANE": {
@@ -704,8 +707,8 @@
   },
   "CONSUMAXIS": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-26",
+   "retry_after": "2026-12-03",
    "note": "quote only, no results"
   },
   "CONSUMER": {
@@ -1658,8 +1661,8 @@
   },
   "SECLEDBETA": {
    "count": 0,
-   "last_on": "2026-11-16",
-   "retry_after": "2026-11-23",
+   "last_on": "2026-11-26",
+   "retry_after": "2026-12-03",
    "note": "quote only, no results"
   },
   "SEL": {
@@ -1898,8 +1901,8 @@
   },
   "DATIWARE": {
    "count": 0,
-   "last_on": "2026-11-17",
-   "retry_after": "2026-11-24",
+   "last_on": "2026-11-26",
+   "retry_after": "2026-12-03",
    "note": "quote only, no results"
   },
   "EBANK10": {
@@ -1970,8 +1973,8 @@
   },
   "FRONTCORP": {
    "count": 0,
-   "last_on": "2026-11-17",
-   "retry_after": "2026-11-24",
+   "last_on": "2026-11-26",
+   "retry_after": "2026-12-03",
    "note": "quote only, no results"
   },
   "LOWVOL": {
@@ -2005,6 +2008,12 @@
    "note": "quote only, no results"
   },
   "AANJAAY": {
+   "count": 1,
+   "last_on": "2026-11-26",
+   "retry_after": "2026-11-27",
+   "note": "no statement source answered"
+  },
+  "PRAXIS-RE3": {
    "count": 1,
    "last_on": "2026-11-26",
    "retry_after": "2026-11-27",

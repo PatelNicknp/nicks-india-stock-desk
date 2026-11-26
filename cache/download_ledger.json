@@ -1,6 +1,10 @@
 {
  "incomplete": {
   "statements": [
+   "FRONTCORP",
+   "DATIWARE",
+   "SECLEDBETA",
+   "CONSUMAXIS",
    "SANCF",
    "NATPLY",
    "BNKETFAXIS",
@@ -196,18 +200,14 @@
    "EVIETF",
    "ESG",
    "ESENSEX",
-   "EQUAL50ADD",
-   "EQUAL200",
-   "ENEXT50",
-   "ENERGYAXIS",
-   "ENERGY"
+   "EQUAL50ADD"
   ]
  },
  "needs_person": {},
  "providers": {
   "BSE results": {
-   "cooldown_until": "2026-11-26T01:43Z",
-   "fails": 23,
+   "cooldown_until": "2026-11-26T17:38Z",
+   "fails": 24,
    "last_error": "skipped after repeated failures in this run"
   },
   "BSE shareholding": {
@@ -767,12 +767,12 @@
   },
   "statements:CONSUMAXIS": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "CONSUMAXIS",
-   "tries": 1
+   "tries": 2
   },
   "statements:CONSUMER": {
    "kind": "statements",
@@ -812,12 +812,12 @@
   },
   "statements:DATIWARE": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-03",
    "since": "2026-11-17",
    "ticker": "DATIWARE",
-   "tries": 1
+   "tries": 2
   },
   "statements:DEFENCE": {
    "kind": "statements",
@@ -1028,12 +1028,12 @@
   },
   "statements:FRONTCORP": {
    "kind": "statements",
-   "last_on": "2026-11-17",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-24",
+   "retry_after": "2026-12-03",
    "since": "2026-11-17",
    "ticker": "FRONTCORP",
-   "tries": 1
+   "tries": 2
   },
   "statements:GOLDENTOBC": {
    "kind": "statements",
@@ -2214,6 +2214,15 @@
    "ticker": "POWERIETF",
    "tries": 6
   },
+  "statements:PRAXIS-RE3": {
+   "kind": "statements",
+   "last_on": "2026-11-26",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-27",
+   "since": "2026-11-26",
+   "ticker": "PRAXIS-RE3",
+   "tries": 1
+  },
   "statements:PSUBANK": {
    "kind": "statements",
    "last_on": "2026-11-25",
@@ -2441,12 +2450,12 @@
   },
   "statements:SECLEDBETA": {
    "kind": "statements",
-   "last_on": "2026-11-16",
+   "last_on": "2026-11-26",
    "note": "quote only, no results",
-   "retry_after": "2026-11-23",
+   "retry_after": "2026-12-03",
    "since": "2026-11-16",
    "ticker": "SECLEDBETA",
-   "tries": 1
+   "tries": 2
   },
   "statements:SEL": {
    "kind": "statements",
