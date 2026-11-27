@@ -1,2 +1,2 @@
 ticker,company,price,day_pct,score,score_prev,score_change,verdict,data_status,note,disclaimer
-ALPINETEX,Alpine Texworld Limited,39.32,-0.63,0.0,1.0,-1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+ALPINETEX,Alpine Texworld Limited,39.32,-0.63,1.0,0.0,1.0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
