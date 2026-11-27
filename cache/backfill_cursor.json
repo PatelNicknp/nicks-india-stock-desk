@@ -309,10 +309,10 @@
   "JAYKAYPP": "2026-11-12",
   "OLAPP": "2026-11-12"
  },
- "last_batch_at": "2026-11-27T20:18Z",
- "last_statements_ok": 1,
- "last_statements_fail": 4,
- "last_shareholding_ok": 183,
+ "last_batch_at": "2026-11-27T21:56Z",
+ "last_statements_ok": 0,
+ "last_statements_fail": 0,
+ "last_shareholding_ok": 184,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
   "BIRET": "2026-11-28",
@@ -338,11 +338,10 @@
   "OLAPP": "2026-11-28",
   "SUVID-RE": "2026-11-17",
   "PRAXIS-RE3": "2026-11-28",
-  "MAHACOAL": "2026-11-28",
   "FRATELLIPP": "2026-11-28",
   "INDRAYANIPP": "2026-11-28"
  },
- "last_shareholding_empty": 17,
+ "last_shareholding_empty": 16,
  "last_shareholding_skipped": 0,
  "statements_failures": {
   "BAGMANE": {
