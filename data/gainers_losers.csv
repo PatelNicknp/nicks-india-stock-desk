@@ -1,7 +1,7 @@
 side,ticker,company,sector,price,day_pct,score,verdict,data_status,note,disclaimer
-gainer,RAJKSYN,RAJKAMAL SYNTHETICS LTD.,Consumer Discretionary,22.14,20.0,2,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 gainer,GOYALALUM,Goyal Aluminiums Limited,Materials,6.9,20.0,1,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 gainer,SOLARWORLD,Solarworld Energy Solutions Limited,Information Technology,121.56,20.0,2,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+gainer,RAJKSYN,RAJKAMAL SYNTHETICS LTD.,Consumer Discretionary,22.14,20.0,2,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 gainer,WAAREERTL,Waaree Renewable Technologies Ltd.,Industrials,825.7,20.0,0,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 gainer,MIDEASTP,MID EAST PORTFOLIO MANAGEMENT,Financials,32.55,19.98,4,HOLD,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
 gainer,KESARPE,KESAR PETROPRODUCTS LTD.,Materials,17.85,19.96,-3,AVOID,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."

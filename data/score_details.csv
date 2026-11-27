@@ -5475,12 +5475,12 @@ PATIDAR,Technical,Trend vs 20-day and 50-day,1,plus 1,,,
 PATIDAR,Technical,Oscillator (RSI-14),1,plus 1,64.9,,
 PATIDAR,Financials,Forward P/E (lower is better),,n/a,,,
 PATIDAR,Financials,Trailing P/E (lower is better),,n/a,,,
-PATIDAR,Financials,Price / sales (lower is better),1,plus 1,11.012574454003971,11.78977009801248,-1.0
-PATIDAR,Financials,Debt / equity (lower is better),1,plus 1,0.286879879927829,0.40196702085755875,1.0
-PATIDAR,Financials,Price / free cash flow (lower is better),1,plus 1,7.106555626734999,21.904556801970347,1.0
+PATIDAR,Financials,Price / sales (lower is better),1,plus 1,9.773361465852304,11.78977009801248,-1.0
+PATIDAR,Financials,Debt / equity (lower is better),1,plus 1,0.35290109034267914,0.40196702085755875,1.0
+PATIDAR,Financials,Price / free cash flow (lower is better),1,plus 1,7.51732820841341,21.904556801970347,1.0
 PATIDAR,Financials,Revenue growth (higher is better),-1,minus 1,-70.5,162.95,-1.0
 PATIDAR,Financials,EPS growth (higher is better),,n/a,,,
-PATIDAR,Financials,Return on equity (higher is better),1,plus 1,-3.48,-2.27,-1.0
+PATIDAR,Financials,Return on equity (higher is better),1,plus 1,-5.55,-2.27,-1.0
 PATIDAR,Financials,Dividend yield (higher is better),0,zero,0.0,0.0,0.0
 PATIDAR,Sentiment,Analyst rating,,n/a,,,
 PATIDAR,Sentiment,Institutional 13F trend,0,zero,,,
@@ -43730,13 +43730,13 @@ RSWM,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,-24.26,,
 SANBLUE,Technical,Trend vs 20-day and 50-day,1,plus 1,,,
 SANBLUE,Technical,Oscillator (RSI-14),0,zero,73.9,,
 SANBLUE,Financials,Forward P/E (lower is better),,n/a,,68.48652768090108,
-SANBLUE,Financials,Trailing P/E (lower is better),-1,minus 1,123.27906976744184,68.48652768090108,-1.0
-SANBLUE,Financials,Price / sales (lower is better),1,plus 1,6.1471764140801906,12.962908927783337,-1.0
+SANBLUE,Financials,Trailing P/E (lower is better),-1,minus 1,147.25,68.48652768090108,-1.0
+SANBLUE,Financials,Price / sales (lower is better),1,plus 1,4.501834022693687,12.962908927783337,-1.0
 SANBLUE,Financials,Debt / equity (lower is better),,n/a,,,
 SANBLUE,Financials,Price / free cash flow (lower is better),,n/a,,,
 SANBLUE,Financials,Revenue growth (higher is better),-1,minus 1,90.34,-21.78,1.0
 SANBLUE,Financials,EPS growth (higher is better),1,plus 1,-42.42,-16.82,-1.0
-SANBLUE,Financials,Return on equity (higher is better),-1,minus 1,0.62,0.92,-1.0
+SANBLUE,Financials,Return on equity (higher is better),-1,minus 1,0.41,0.92,-1.0
 SANBLUE,Financials,Dividend yield (higher is better),0,zero,0.0,0.0,0.0
 SANBLUE,Sentiment,Analyst rating,,n/a,,,
 SANBLUE,Sentiment,Institutional 13F trend,0,zero,,,
@@ -56335,22 +56335,6 @@ MANGLMCEM,Sentiment,Institutional 13F trend,0,zero,,,
 MANGLMCEM,Sentiment,Insider buys vs sells,,n/a,,,
 MANGLMCEM,Earnings,Latest earnings vs estimate,-1,minus 1,,,
 MANGLMCEM,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,-12.4,,
-MERCURYLAB,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
-MERCURYLAB,Technical,Oscillator (RSI-14),0,zero,45.1,,
-MERCURYLAB,Financials,Forward P/E (lower is better),,n/a,,22.315163261111024,
-MERCURYLAB,Financials,Trailing P/E (lower is better),1,plus 1,21.194868838281927,22.315163261111024,1.0
-MERCURYLAB,Financials,Price / sales (lower is better),1,plus 1,1.1969071999403507,1.319799222556511,1.0
-MERCURYLAB,Financials,Debt / equity (lower is better),-1,minus 1,0.14509113825533865,0.11295281994314112,1.0
-MERCURYLAB,Financials,Price / free cash flow (lower is better),-1,minus 1,82.15247152693775,60.60981223645946,-1.0
-MERCURYLAB,Financials,Revenue growth (higher is better),-1,minus 1,1.11,-0.15,-1.0
-MERCURYLAB,Financials,EPS growth (higher is better),-1,minus 1,53.68,-21.51,1.0
-MERCURYLAB,Financials,Return on equity (higher is better),-1,minus 1,7.17,9.74,-1.0
-MERCURYLAB,Financials,Dividend yield (higher is better),1,plus 1,0.48,0.42,1.0
-MERCURYLAB,Sentiment,Analyst rating,,n/a,,,
-MERCURYLAB,Sentiment,Institutional 13F trend,0,zero,,,
-MERCURYLAB,Sentiment,Insider buys vs sells,,n/a,,,
-MERCURYLAB,Earnings,Latest earnings vs estimate,-1,minus 1,,,
-MERCURYLAB,Sector,"Sector vs S&P 500, 3 months",1,plus 1,-14.35,,
 PITTIENG,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
 PITTIENG,Technical,Oscillator (RSI-14),0,zero,43.3,,
 PITTIENG,Financials,Forward P/E (lower is better),1,plus 1,18.937944,33.35373363368531,1.0
@@ -64964,11 +64948,11 @@ ANIRITPP,Technical,Oscillator (RSI-14),-1,minus 1,23.1,,
 ANIRITPP,Financials,Forward P/E (lower is better),,n/a,,,
 ANIRITPP,Financials,Trailing P/E (lower is better),,n/a,,,
 ANIRITPP,Financials,Price / sales (lower is better),,n/a,,,
-ANIRITPP,Financials,Debt / equity (lower is better),-1,minus 1,0.44325612249042196,,-1.0
+ANIRITPP,Financials,Debt / equity (lower is better),-1,minus 1,0.5252817265957871,,-1.0
 ANIRITPP,Financials,Price / free cash flow (lower is better),,n/a,,,
 ANIRITPP,Financials,Revenue growth (higher is better),,n/a,,-31.01,
 ANIRITPP,Financials,EPS growth (higher is better),,n/a,,,
-ANIRITPP,Financials,Return on equity (higher is better),-1,minus 1,-27.84,,-1.0
+ANIRITPP,Financials,Return on equity (higher is better),-1,minus 1,-39.71,,-1.0
 ANIRITPP,Financials,Dividend yield (higher is better),0,zero,0.0,0.0,0.0
 ANIRITPP,Sentiment,Analyst rating,,n/a,,,
 ANIRITPP,Sentiment,Institutional 13F trend,,n/a,,,
@@ -65295,6 +65279,22 @@ LUXIND,Sentiment,Institutional 13F trend,0,zero,,,
 LUXIND,Sentiment,Insider buys vs sells,,n/a,,,
 LUXIND,Earnings,Latest earnings vs estimate,-1,minus 1,,,
 LUXIND,Sector,"Sector vs S&P 500, 3 months",-1,minus 1,-13.95,,
+MERCURYLAB,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
+MERCURYLAB,Technical,Oscillator (RSI-14),0,zero,45.1,,
+MERCURYLAB,Financials,Forward P/E (lower is better),,n/a,,22.315163261111024,
+MERCURYLAB,Financials,Trailing P/E (lower is better),-1,minus 1,27.630590003757984,22.315163261111024,1.0
+MERCURYLAB,Financials,Price / sales (lower is better),1,plus 1,1.1961038168766818,1.319799222556511,1.0
+MERCURYLAB,Financials,Debt / equity (lower is better),-1,minus 1,0.13453411149124572,0.11295281994314112,1.0
+MERCURYLAB,Financials,Price / free cash flow (lower is better),-1,minus 1,82.09732948729878,60.60981223645946,-1.0
+MERCURYLAB,Financials,Revenue growth (higher is better),-1,minus 1,1.11,-0.15,-1.0
+MERCURYLAB,Financials,EPS growth (higher is better),-1,minus 1,53.68,-21.51,1.0
+MERCURYLAB,Financials,Return on equity (higher is better),-1,minus 1,5.45,9.74,-1.0
+MERCURYLAB,Financials,Dividend yield (higher is better),1,plus 1,0.48,0.42,1.0
+MERCURYLAB,Sentiment,Analyst rating,,n/a,,,
+MERCURYLAB,Sentiment,Institutional 13F trend,0,zero,,,
+MERCURYLAB,Sentiment,Insider buys vs sells,,n/a,,,
+MERCURYLAB,Earnings,Latest earnings vs estimate,-1,minus 1,,,
+MERCURYLAB,Sector,"Sector vs S&P 500, 3 months",1,plus 1,-14.35,,
 NATFIT,Technical,Trend vs 20-day and 50-day,-1,minus 1,,,
 NATFIT,Technical,Oscillator (RSI-14),1,plus 1,45.3,,
 NATFIT,Financials,Forward P/E (lower is better),1,plus 1,17.278599,18.54958543447086,1.0
