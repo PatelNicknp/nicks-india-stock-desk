@@ -206,13 +206,13 @@
  "needs_person": {},
  "providers": {
   "BSE results": {
-   "cooldown_until": "2026-11-27T18:51Z",
-   "fails": 26,
+   "cooldown_until": "2026-11-28T02:03Z",
+   "fails": 27,
    "last_error": "skipped after repeated failures in this run"
   },
   "BSE shareholding": {
-   "cooldown_until": "2026-11-27T17:01Z",
-   "fails": 53,
+   "cooldown_until": "2026-11-28T02:03Z",
+   "fails": 54,
    "last_error": "skipped after repeated failures in this run"
   },
   "NSE results": {
@@ -242,7 +242,7 @@
   },
   "Yahoo NS": {
    "cooldown_until": "",
-   "fails": 1,
+   "fails": 2,
    "last_error": "skipped after repeated failures in this run"
   }
  },
@@ -434,12 +434,12 @@
   },
   "statements:AANJAAY": {
    "kind": "statements",
-   "last_on": "2026-11-27",
+   "last_on": "2026-11-28",
    "note": "no statement source answered",
-   "retry_after": "2026-11-28",
+   "retry_after": "2026-11-29",
    "since": "2026-11-26",
    "ticker": "AANJAAY",
-   "tries": 2
+   "tries": 3
   },
   "statements:AARNAV": {
    "kind": "statements",
@@ -1028,12 +1028,12 @@
   },
   "statements:FRATELLIPP": {
    "kind": "statements",
-   "last_on": "2026-11-27",
+   "last_on": "2026-11-28",
    "note": "no statement source answered",
-   "retry_after": "2026-11-28",
+   "retry_after": "2026-11-29",
    "since": "2026-11-27",
    "ticker": "FRATELLIPP",
-   "tries": 1
+   "tries": 2
   },
   "statements:FRONTCORP": {
    "kind": "statements",
@@ -1352,12 +1352,12 @@
   },
   "statements:INDRAYANIPP": {
    "kind": "statements",
-   "last_on": "2026-11-27",
+   "last_on": "2026-11-28",
    "note": "no statement source answered",
-   "retry_after": "2026-11-28",
+   "retry_after": "2026-11-29",
    "since": "2026-11-27",
    "ticker": "INDRAYANIPP",
-   "tries": 1
+   "tries": 2
   },
   "statements:INFRA": {
    "kind": "statements",
@@ -2142,15 +2142,6 @@
    "ticker": "NIFTYQLITY",
    "tries": 2
   },
-  "statements:NOBPOL": {
-   "kind": "statements",
-   "last_on": "2026-11-27",
-   "note": "no statement source answered",
-   "retry_after": "2026-11-28",
-   "since": "2026-11-27",
-   "ticker": "NOBPOL",
-   "tries": 1
-  },
   "statements:NORRIS": {
    "kind": "statements",
    "last_on": "2026-11-25",
@@ -2603,12 +2594,12 @@
   },
   "statements:SHUKRAMED": {
    "kind": "statements",
-   "last_on": "2026-11-27",
+   "last_on": "2026-11-28",
    "note": "no statement source answered",
-   "retry_after": "2026-11-28",
+   "retry_after": "2026-11-29",
    "since": "2026-11-27",
    "ticker": "SHUKRAMED",
-   "tries": 1
+   "tries": 2
   },
   "statements:SICAPIT": {
    "kind": "statements",
