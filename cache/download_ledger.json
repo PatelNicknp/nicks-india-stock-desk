@@ -1,6 +1,7 @@
 {
  "incomplete": {
   "statements": [
+   "THAKKERS",
    "FRONTCORP",
    "DATIWARE",
    "SECLEDBETA",
@@ -199,15 +200,14 @@
    "EVINDIA",
    "EVIETF",
    "ESG",
-   "ESENSEX",
-   "EQUAL50ADD"
+   "ESENSEX"
   ]
  },
  "needs_person": {},
  "providers": {
   "BSE results": {
-   "cooldown_until": "2026-11-27T01:09Z",
-   "fails": 25,
+   "cooldown_until": "2026-11-27T18:51Z",
+   "fails": 26,
    "last_error": "skipped after repeated failures in this run"
   },
   "BSE shareholding": {
@@ -222,8 +222,8 @@
   },
   "NSE shareholding": {
    "cooldown_until": "",
-   "fails": 1,
-   "last_error": "skipped after repeated failures in this run"
+   "fails": 0,
+   "last_error": ""
   },
   "Screener About": {
    "cooldown_until": "",
@@ -237,8 +237,8 @@
   },
   "Yahoo BO": {
    "cooldown_until": "",
-   "fails": 1,
-   "last_error": "skipped after repeated failures in this run"
+   "fails": 0,
+   "last_error": ""
   },
   "Yahoo NS": {
    "cooldown_until": "",
@@ -257,7 +257,7 @@
   },
   "statements": {
    "cooldown_until": "",
-   "runs": 1
+   "runs": 0
   }
  },
  "unavailable": {
@@ -1026,6 +1026,15 @@
    "ticker": "FMCGIETF",
    "tries": 2
   },
+  "statements:FRATELLIPP": {
+   "kind": "statements",
+   "last_on": "2026-11-27",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-28",
+   "since": "2026-11-27",
+   "ticker": "FRATELLIPP",
+   "tries": 1
+  },
   "statements:FRONTCORP": {
    "kind": "statements",
    "last_on": "2026-11-26",
@@ -1340,6 +1349,15 @@
    "since": "2026-11-16",
    "ticker": "IL&FSTRANS",
    "tries": 3
+  },
+  "statements:INDRAYANIPP": {
+   "kind": "statements",
+   "last_on": "2026-11-27",
+   "note": "no statement source answered",
+   "retry_after": "2026-11-28",
+   "since": "2026-11-27",
+   "ticker": "INDRAYANIPP",
+   "tries": 1
   },
   "statements:INFRA": {
    "kind": "statements",
@@ -2744,6 +2762,15 @@
    "since": "2026-11-17",
    "ticker": "TELECANOR",
    "tries": 2
+  },
+  "statements:THAKKERS": {
+   "kind": "statements",
+   "last_on": "2026-11-27",
+   "note": "quote only, no results",
+   "retry_after": "2026-12-04",
+   "since": "2026-11-27",
+   "ticker": "THAKKERS",
+   "tries": 1
   },
   "statements:TOP100CASE": {
    "kind": "statements",

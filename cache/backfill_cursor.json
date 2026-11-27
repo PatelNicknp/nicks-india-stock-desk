@@ -286,7 +286,10 @@
   "AANJAAY": "2026-11-28",
   "PRAXIS-RE3": "2026-11-28",
   "SHUKRAMED": "2026-11-28",
-  "NOBPOL": "2026-11-28"
+  "NOBPOL": "2026-11-28",
+  "FRATELLIPP": "2026-11-28",
+  "INDRAYANIPP": "2026-11-28",
+  "THAKKERS": "2026-12-04"
  },
  "shareholding_retry_after": {
   "08AGG": "2026-10-27",
@@ -307,10 +310,10 @@
   "JAYKAYPP": "2026-11-12",
   "OLAPP": "2026-11-12"
  },
- "last_batch_at": "2026-11-27T11:14Z",
- "last_statements_ok": 0,
- "last_statements_fail": 0,
- "last_shareholding_ok": 188,
+ "last_batch_at": "2026-11-27T13:05Z",
+ "last_statements_ok": 12,
+ "last_statements_fail": 2,
+ "last_shareholding_ok": 183,
  "last_shareholding_fail": 0,
  "shareholding_empty_on": {
   "BIRET": "2026-11-27",
@@ -324,20 +327,23 @@
   "APLABPP": "2026-11-27",
   "ATLPP": "2026-11-27",
   "GSAILPP": "2026-11-27",
-  "JAYKAYPP": "2026-11-26",
+  "JAYKAYPP": "2026-11-27",
   "QDLCCPS": "2026-11-26",
   "SURAJINDPP": "2026-11-27",
   "VERTEXPP": "2026-11-27",
   "ICICIPRULI": "2026-10-27",
   "ACESEPP": "2026-11-20",
   "SHIVAM-RE1": "2026-11-16",
-  "ANIRITPP": "2026-11-25",
-  "CENTEXTPP": "2026-11-26",
+  "ANIRITPP": "2026-11-27",
+  "CENTEXTPP": "2026-11-27",
   "OLAPP": "2026-11-27",
   "SUVID-RE": "2026-11-17",
-  "PRAXIS-RE3": "2026-11-27"
+  "PRAXIS-RE3": "2026-11-27",
+  "MAHACOAL": "2026-11-27",
+  "FRATELLIPP": "2026-11-27",
+  "INDRAYANIPP": "2026-11-27"
  },
- "last_shareholding_empty": 12,
+ "last_shareholding_empty": 17,
  "last_shareholding_skipped": 0,
  "statements_failures": {
   "BAGMANE": {
@@ -2031,6 +2037,24 @@
    "last_on": "2026-11-27",
    "retry_after": "2026-11-28",
    "note": "no statement source answered"
+  },
+  "FRATELLIPP": {
+   "count": 1,
+   "last_on": "2026-11-27",
+   "retry_after": "2026-11-28",
+   "note": "no statement source answered"
+  },
+  "INDRAYANIPP": {
+   "count": 1,
+   "last_on": "2026-11-27",
+   "retry_after": "2026-11-28",
+   "note": "no statement source answered"
+  },
+  "THAKKERS": {
+   "count": 0,
+   "last_on": "2026-11-27",
+   "retry_after": "2026-12-04",
+   "note": "quote only, no results"
   }
  },
  "shareholding_failures": {
