@@ -211,8 +211,8 @@
    "last_error": "skipped after repeated failures in this run"
   },
   "BSE shareholding": {
-   "cooldown_until": "2026-11-27T01:09Z",
-   "fails": 51,
+   "cooldown_until": "2026-11-27T08:18Z",
+   "fails": 52,
    "last_error": "skipped after repeated failures in this run"
   },
   "NSE results": {
@@ -222,8 +222,8 @@
   },
   "NSE shareholding": {
    "cooldown_until": "",
-   "fails": 0,
-   "last_error": ""
+   "fails": 1,
+   "last_error": "skipped after repeated failures in this run"
   },
   "Screener About": {
    "cooldown_until": "",
