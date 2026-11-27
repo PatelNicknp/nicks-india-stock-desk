@@ -1,2 +1,2 @@
 ticker,kind,text,score,score_prev,verdict,verdict_prev,price,data_status,note,disclaimer
-MERCURYLAB,score_jump,MERCURYLAB score moved from -3 to -5.,-5,-3,AVOID,AVOID,735.25,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
+,info,No verdict changes or score crossings this run.,,,,,,OK,,"Research only. Not a recommendation to buy or sell. This desk never places trades. Stocks only, no option contracts."
