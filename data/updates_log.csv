@@ -1,47 +1,47 @@
 source,status,latest,note,checked_pt
-Universe (Nifty 50),OK,50,"offline mode, used cache",2026-11-28 18:13 IST · 2026-11-28 04:43 PT
-Universe (Nifty Next 50),OK,50,"offline mode, used cache",2026-11-28 18:13 IST · 2026-11-28 04:43 PT
-Universe (Nifty Midcap 150),OK,150,"offline mode, used cache",2026-11-28 18:13 IST · 2026-11-28 04:43 PT
-Universe (Smallcap 250),OK,251,"offline mode, used cache",2026-11-28 18:13 IST · 2026-11-28 04:43 PT
-Universe (Microcap 250),OK,251,"offline mode, used cache",2026-11-28 18:13 IST · 2026-11-28 04:43 PT
-Universe (Total Market),OK,752,"offline mode, used cache",2026-11-28 18:13 IST · 2026-11-28 04:43 PT
-Universe (NSE equity list),OK,2636,reused cache,2026-11-28 18:13 IST · 2026-11-28 04:43 PT
-Universe (Other NSE),OK,1888,NSE shares that are not in the index lists above,2026-11-28 18:13 IST · 2026-11-28 04:43 PT
-Universe (SME),OK,,switch is off,2026-11-28 18:13 IST · 2026-11-28 04:43 PT
-Universe (BSE only),OK,1698,reused cache,2026-11-28 18:13 IST · 2026-11-28 04:43 PT
-Prices (NSE bhavcopy),OK,2026-11-27,"offline mode, used cache",2026-11-28 18:13 IST · 2026-11-28 04:43 PT
-Fundamentals (Yahoo statements),OK,2026-11-25,"offline mode, used cache",2026-11-28 18:13 IST · 2026-11-28 04:43 PT
-Analyst and profile (Yahoo Finance),OK,2026-11-25,"offline mode, used cache",2026-11-28 18:13 IST · 2026-11-28 04:43 PT
-Earnings dates (Yahoo Finance),OK,2026-11-25,reused cache,2026-11-28 18:13 IST · 2026-11-28 04:43 PT
-Shareholding (NSE),OK,2026-10-25,"offline mode, used cache",2026-11-28 18:13 IST · 2026-11-28 04:43 PT
-Insiders (NSE PIT),CACHED,,saved file has no PIT counts,2026-11-28 18:13 IST · 2026-11-28 04:43 PT
-Statement currency,OK,,2 names had non-INR statements and were converted to rupees using cached INR=X rates,2026-11-28 18:14 IST · 2026-11-28 04:44 PT
-News headlines (RSS),OK,2026-11-27,"offline mode, used cache",2026-11-28 18:15 IST · 2026-11-28 04:45 PT
-Option walls (NSE),OK,,"offline mode, used cache",2026-11-28 18:15 IST · 2026-11-28 04:45 PT
-Put/call (NSE open interest),OK,,reused cache,2026-11-28 18:15 IST · 2026-11-28 04:45 PT
-FII and DII cash (NSE),OK,,"offline mode, used cache",2026-11-28 18:15 IST · 2026-11-28 04:45 PT
-FII derivatives (NSE participant OI),OK,,reused cache,2026-11-28 18:15 IST · 2026-11-28 04:45 PT
-Macro (World Bank and FRED),OK,,"offline mode, used cache",2026-11-28 18:15 IST · 2026-11-28 04:45 PT
-Backtest,OK,,reused the last test (it rebuilds on the after-close run),2026-11-28 18:15 IST · 2026-11-28 04:45 PT
-Price candles,OK,2026-11-25,"Light rebuild. Prices did not change, so the saved candle files were kept.",2026-11-28 18:15 IST · 2026-11-28 04:45 PT
-Relative strength,OK,,Reused the last after-close rank. Only the 3:00 AM PT run recalculates it.,2026-11-28 18:15 IST · 2026-11-28 04:45 PT
-EPS Rating,OK,2026-11-25,"4057 stocks rated 1 to 99 on EPS growth (last 2 quarters vs a year ago, blended with 3-year yearly EPS growth) versus every India stock with data. A stock with no usable EPS history is left blank.",2026-11-28 18:15 IST · 2026-11-28 04:45 PT
-Market cap (saved share counts),OK,2026-11-25,"4371 names have a saved share count in cache/market_cap.csv. Market cap = shares x close, in Rs crore. 0 asked from Yahoo this run, 0 found.",2026-11-28 18:16 IST · 2026-11-28 04:46 PT
-Pattern scanners,OK,2026-11-25,"VCP 75, CANSLIM 0, box 212, flag 177, Qullamaggie 88, Marios 68, Episodic Pivot 190, leaders 1, 52-week 1556. No new downloads.",2026-11-28 18:16 IST · 2026-11-28 04:46 PT
-Buy setups,OK,2026-11-25,"44 chart setups, 12 with a BUY or Not scored yet label. The market check passes when the Nifty 50 or SENSEX is in an uptrend. This desk never places trades.",2026-11-28 18:16 IST · 2026-11-28 04:46 PT
-Sector rotation,OK,2026-11-25,"12 sectors, 1 weekly Leading. Skipped (no price or not enough history): none. Macro: no 10-year or curve file. Oil and gold are not on file. 12 sectors, 0 weekly Leading. Skipped (no price or not enough history): none. Macro: no 10-year or curve file. Oil and gold are not on file.",2026-11-28 18:16 IST · 2026-11-28 04:46 PT
-Financials backfill,OK,2026-11-28T12:43Z,"At 200 statements and 200 shareholding names a run, the first pass of about 4,300 stocks takes well under a day when the free sources answer. Liquid names come first, then the rest of the NSE list, then BSE-only names. A name with no shareholding filing is saved for later in the pass, and a name no source answers for is tried again after a few days, so hard names do not stop the batch.",2026-11-28 18:16 IST · 2026-11-28 04:46 PT
-High volume scanner,OK,2026-11-25,"Session 2026-11-27. 149 stocks at 2x or more of their 50-day average volume, 236 at 1.5x or more. Close over Rs 20 and at least Rs 1 crore traded. Built from the saved daily bars. No new download. Delivery % is not in the saved bars, so that column stays blank.",2026-11-28 18:16 IST · 2026-11-28 04:46 PT
-Gap Up scanner,OK,2026-11-25,Session 2026-11-27. 59 stocks gapped above the day before's high on 1.5x or more of their 50-day volume in the last 21 sessions and have held the gap-day low. Gap Up does not feed Buy setups. Built from the saved daily bars. No new download.,2026-11-28 18:16 IST · 2026-11-28 04:46 PT
-EPS Rating,OK,2026-11-25,2213 stocks rated 1 to 99 from saved quarterly and yearly EPS. A stock without the latest quarter or the yearly growth is left blank. No new download.,2026-11-28 18:16 IST · 2026-11-28 04:46 PT
-Highest EPS and RS,OK,2026-11-25,"785 liquid stocks have both ratings, 84 are at EPS 80+ and RS 80+, 1 were dropped as extended, 50 listed.",2026-11-28 18:16 IST · 2026-11-28 04:46 PT
-Minervini 1-Month,OK,2026-11-25,"228 liquid stocks pass all 8 trend template rules (200-day rising over 21 sessions, RS 70+).",2026-11-28 18:16 IST · 2026-11-28 04:46 PT
-Minervini 5-Month,OK,2026-11-25,"194 liquid stocks pass all 8 trend template rules (200-day rising over 105 sessions, RS 70+).",2026-11-28 18:16 IST · 2026-11-28 04:46 PT
-Trading Floor headlines (Google News RSS),OK,2026-11-27,left for the main run after the bhavcopy. No new request on this run.,2026-11-28 18:16 IST · 2026-11-28 04:46 PT
-Trading Floor,OK,2026-11-27,"11 stocks debated: Buy 7, Wait 3, Skip 1. Advice only. No orders and no alerts.",2026-11-28 18:16 IST · 2026-11-28 04:46 PT
-Trading Floor paper test,OK,2026-11-27,"FAKE MONEY. Value Rs 995891.25, cash Rs 85603.06, open 9, waiting 0, closed 2. Next-day bhavcopy open. No orders.",2026-11-28 18:17 IST · 2026-11-28 04:47 PT
-Sector leaders,OK,2026-11-25,3 leader stocks. Strong sectors come from the sector index versus the Nifty 50 when that table is on file.,2026-11-28 18:17 IST · 2026-11-28 04:47 PT
-CANSLIM news (Google News RSS),OK,2026-11-16,left for the main run after the bhavcopy. No new request on this run.,2026-11-28 18:17 IST · 2026-11-28 04:47 PT
-Stock CANSLIM,OK,2026-11-25,4338 stocks have a CANSLIM card for the scorecard. News was checked only for names that already passed the price screen.,2026-11-28 18:18 IST · 2026-11-28 04:48 PT
-Column check,PARTIAL,,"A column is blank on every row: scores, stock_canslim, market_today, sectors, scanner_canslim_near, scanner_leaders, scanner_52w, sector_rotation, earnings_heatmap, institutional_13f, insider_trading, macro_screener, sector_macro, historical_pe, high_volume, rs_ratings. Blank is missing, not zero.",2026-11-28 18:18 IST · 2026-11-28 04:48 PT
-Light rebuild,OK,,Rescored from the financials and shareholding already on disk. No downloads.,2026-11-28 18:18 IST · 2026-11-28 04:48 PT
+Universe (Nifty 50),OK,50,"offline mode, used cache",2026-11-28 19:12 IST · 2026-11-28 05:42 PT
+Universe (Nifty Next 50),OK,50,"offline mode, used cache",2026-11-28 19:12 IST · 2026-11-28 05:42 PT
+Universe (Nifty Midcap 150),OK,150,"offline mode, used cache",2026-11-28 19:12 IST · 2026-11-28 05:42 PT
+Universe (Smallcap 250),OK,251,"offline mode, used cache",2026-11-28 19:12 IST · 2026-11-28 05:42 PT
+Universe (Microcap 250),OK,251,"offline mode, used cache",2026-11-28 19:12 IST · 2026-11-28 05:42 PT
+Universe (Total Market),OK,752,"offline mode, used cache",2026-11-28 19:12 IST · 2026-11-28 05:42 PT
+Universe (NSE equity list),OK,2636,reused cache,2026-11-28 19:12 IST · 2026-11-28 05:42 PT
+Universe (Other NSE),OK,1888,NSE shares that are not in the index lists above,2026-11-28 19:12 IST · 2026-11-28 05:42 PT
+Universe (SME),OK,,switch is off,2026-11-28 19:12 IST · 2026-11-28 05:42 PT
+Universe (BSE only),OK,1698,reused cache,2026-11-28 19:12 IST · 2026-11-28 05:42 PT
+Prices (NSE bhavcopy),OK,2026-11-27,"offline mode, used cache",2026-11-28 19:12 IST · 2026-11-28 05:42 PT
+Fundamentals (Yahoo statements),OK,2026-11-25,"offline mode, used cache",2026-11-28 19:12 IST · 2026-11-28 05:42 PT
+Analyst and profile (Yahoo Finance),OK,2026-11-25,"offline mode, used cache",2026-11-28 19:12 IST · 2026-11-28 05:42 PT
+Earnings dates (Yahoo Finance),OK,2026-11-25,reused cache,2026-11-28 19:12 IST · 2026-11-28 05:42 PT
+Shareholding (NSE),OK,2026-10-25,"offline mode, used cache",2026-11-28 19:12 IST · 2026-11-28 05:42 PT
+Insiders (NSE PIT),CACHED,,saved file has no PIT counts,2026-11-28 19:12 IST · 2026-11-28 05:42 PT
+Statement currency,OK,,2 names had non-INR statements and were converted to rupees using cached INR=X rates,2026-11-28 19:13 IST · 2026-11-28 05:43 PT
+News headlines (RSS),OK,2026-11-27,"offline mode, used cache",2026-11-28 19:14 IST · 2026-11-28 05:44 PT
+Option walls (NSE),OK,,"offline mode, used cache",2026-11-28 19:14 IST · 2026-11-28 05:44 PT
+Put/call (NSE open interest),OK,,reused cache,2026-11-28 19:14 IST · 2026-11-28 05:44 PT
+FII and DII cash (NSE),OK,,"offline mode, used cache",2026-11-28 19:14 IST · 2026-11-28 05:44 PT
+FII derivatives (NSE participant OI),OK,,reused cache,2026-11-28 19:14 IST · 2026-11-28 05:44 PT
+Macro (World Bank and FRED),OK,,"offline mode, used cache",2026-11-28 19:14 IST · 2026-11-28 05:44 PT
+Backtest,OK,,reused the last test (it rebuilds on the after-close run),2026-11-28 19:14 IST · 2026-11-28 05:44 PT
+Price candles,OK,2026-11-25,"Light rebuild. Prices did not change, so the saved candle files were kept.",2026-11-28 19:14 IST · 2026-11-28 05:44 PT
+Relative strength,OK,,Reused the last after-close rank. Only the 3:00 AM PT run recalculates it.,2026-11-28 19:14 IST · 2026-11-28 05:44 PT
+EPS Rating,OK,2026-11-25,"4057 stocks rated 1 to 99 on EPS growth (last 2 quarters vs a year ago, blended with 3-year yearly EPS growth) versus every India stock with data. A stock with no usable EPS history is left blank.",2026-11-28 19:14 IST · 2026-11-28 05:44 PT
+Market cap (saved share counts),OK,2026-11-25,"4371 names have a saved share count in cache/market_cap.csv. Market cap = shares x close, in Rs crore. 0 asked from Yahoo this run, 0 found.",2026-11-28 19:15 IST · 2026-11-28 05:45 PT
+Pattern scanners,OK,2026-11-25,"VCP 75, CANSLIM 0, box 212, flag 177, Qullamaggie 88, Marios 68, Episodic Pivot 190, leaders 1, 52-week 1556. No new downloads.",2026-11-28 19:15 IST · 2026-11-28 05:45 PT
+Buy setups,OK,2026-11-25,"44 chart setups, 12 with a BUY or Not scored yet label. The market check passes when the Nifty 50 or SENSEX is in an uptrend. This desk never places trades.",2026-11-28 19:15 IST · 2026-11-28 05:45 PT
+Sector rotation,OK,2026-11-25,"12 sectors, 1 weekly Leading. Skipped (no price or not enough history): none. Macro: no 10-year or curve file. Oil and gold are not on file. 12 sectors, 0 weekly Leading. Skipped (no price or not enough history): none. Macro: no 10-year or curve file. Oil and gold are not on file.",2026-11-28 19:15 IST · 2026-11-28 05:45 PT
+Financials backfill,OK,2026-11-28T13:42Z,"At 200 statements and 200 shareholding names a run, the first pass of about 4,300 stocks takes well under a day when the free sources answer. Liquid names come first, then the rest of the NSE list, then BSE-only names. A name with no shareholding filing is saved for later in the pass, and a name no source answers for is tried again after a few days, so hard names do not stop the batch.",2026-11-28 19:15 IST · 2026-11-28 05:45 PT
+High volume scanner,OK,2026-11-25,"Session 2026-11-27. 149 stocks at 2x or more of their 50-day average volume, 236 at 1.5x or more. Close over Rs 20 and at least Rs 1 crore traded. Built from the saved daily bars. No new download. Delivery % is not in the saved bars, so that column stays blank.",2026-11-28 19:15 IST · 2026-11-28 05:45 PT
+Gap Up scanner,OK,2026-11-25,Session 2026-11-27. 59 stocks gapped above the day before's high on 1.5x or more of their 50-day volume in the last 21 sessions and have held the gap-day low. Gap Up does not feed Buy setups. Built from the saved daily bars. No new download.,2026-11-28 19:15 IST · 2026-11-28 05:45 PT
+EPS Rating,OK,2026-11-25,2213 stocks rated 1 to 99 from saved quarterly and yearly EPS. A stock without the latest quarter or the yearly growth is left blank. No new download.,2026-11-28 19:15 IST · 2026-11-28 05:45 PT
+Highest EPS and RS,OK,2026-11-25,"785 liquid stocks have both ratings, 84 are at EPS 80+ and RS 80+, 1 were dropped as extended, 50 listed.",2026-11-28 19:15 IST · 2026-11-28 05:45 PT
+Minervini 1-Month,OK,2026-11-25,"228 liquid stocks pass all 8 trend template rules (200-day rising over 21 sessions, RS 70+).",2026-11-28 19:15 IST · 2026-11-28 05:45 PT
+Minervini 5-Month,OK,2026-11-25,"194 liquid stocks pass all 8 trend template rules (200-day rising over 105 sessions, RS 70+).",2026-11-28 19:15 IST · 2026-11-28 05:45 PT
+Trading Floor headlines (Google News RSS),OK,2026-11-27,left for the main run after the bhavcopy. No new request on this run.,2026-11-28 19:15 IST · 2026-11-28 05:45 PT
+Trading Floor,OK,2026-11-27,"11 stocks debated: Buy 7, Wait 3, Skip 1. Advice only. No orders and no alerts.",2026-11-28 19:15 IST · 2026-11-28 05:45 PT
+Trading Floor paper test,OK,2026-11-27,"FAKE MONEY. Value Rs 995891.25, cash Rs 85603.06, open 9, waiting 0, closed 2. Next-day bhavcopy open. No orders.",2026-11-28 19:15 IST · 2026-11-28 05:45 PT
+Sector leaders,OK,2026-11-25,3 leader stocks. Strong sectors come from the sector index versus the Nifty 50 when that table is on file.,2026-11-28 19:15 IST · 2026-11-28 05:45 PT
+CANSLIM news (Google News RSS),OK,2026-11-16,left for the main run after the bhavcopy. No new request on this run.,2026-11-28 19:15 IST · 2026-11-28 05:45 PT
+Stock CANSLIM,OK,2026-11-25,4338 stocks have a CANSLIM card for the scorecard. News was checked only for names that already passed the price screen.,2026-11-28 19:17 IST · 2026-11-28 05:47 PT
+Column check,PARTIAL,,"A column is blank on every row: scores, stock_canslim, market_today, sectors, scanner_canslim_near, scanner_leaders, scanner_52w, sector_rotation, earnings_heatmap, institutional_13f, insider_trading, macro_screener, sector_macro, historical_pe, high_volume, rs_ratings. Blank is missing, not zero.",2026-11-28 19:17 IST · 2026-11-28 05:47 PT
+Light rebuild,OK,,Rescored from the financials and shareholding already on disk. No downloads.,2026-11-28 19:17 IST · 2026-11-28 05:47 PT
